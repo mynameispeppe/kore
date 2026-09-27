@@ -894,7 +894,7 @@ The distance is the same on the sides and at the corner it faces. Combined with 
 | Remove button inside a file row | 12 | 4 | 8 |
 
 - **Place a fixed-size element by its radius:** a button keeps its own size and radius, and its distance from the container's edge is outer radius − its radius.
-- **Inline buttons** inside a control (the password toggle, stepper − and +, segments, a row's remove button) always have radius 8 (`sm`). Their distance from every edge is container radius − 8, and their size is container height − 2 × that distance: in a 48px control with radius 12, 40px buttons 4px from the edges. They don't use the button sizes; their hit area extends to 44px.
+- **Inline buttons** inside a control (the password toggle, stepper − and +, segments, a row's remove button) always have radius 8 (`sm`). Their distance from every edge is container radius − 8, and their size is container height − 2 × that distance: in a 48px control with radius 12, 40px buttons 4px from the edges. They don't use the button sizes; their hit area extends to 44px. They have no background: the icon is 16px in `mute`, hover and pressed turn it `ink`, and the box shows only as the 2px focus border.
 - **Corner actions** (a "More" or close button in the top-right corner of a card, dialog or sheet) are small icon buttons (32px, radius 8) placed with this rule: 24 − 8 = 16px from the top and the right. The header becomes a row that starts at the same 16px and is as tall as the button; the title is centred in that row, so it lines up with the button. The side padding stays 24.
 - **No rounded blocks with a background inside cards** unless each one is its own unit (a clickable row); rows separate with space (see The Separation Ladder).
 - **Never the same radius inside and outside.** Equal radii make the gap look thicker at the corners.
@@ -1063,7 +1063,7 @@ The parts the browser draws still carry the design. Theme them from the palette 
 ### Rules
 
 - **One library per project**, one style, one stroke width (1.5 on a 24px grid). Never mix libraries or filled and outlined styles.
-- **Sizes from the grid:** 16px next to 12–14px text, 20px in buttons and inputs, 24px for standalone and navigation icons.
+- **Sizes from the grid:** 16px inside controls and menus and next to 12–16px text (menu items, inline buttons, steppers, field adornments), 20px in icon-only buttons, 24px for navigation and standalone icons.
 - **Color from text:** icons use `currentColor`, so they follow the text or state color of their container.
 - **Spacing:** icon ↔ text `space-2` (8px) in rows and fields, `space-1` (4px) in badges and chips. Buttons with a label carry no icon (see Button).
 - **Accessibility:** an icon-only button always has an accessible label (`aria-label` or visually hidden text) and a tooltip; decorative icons are hidden from screen readers (`aria-hidden="true"`).
@@ -1287,7 +1287,7 @@ A custom menu, never the browser's native dropdown.
 ### Menu
 
 - **Surface:** `surface-float`, 1px `hairline`, no shadow, radius `md` (12px), padding `space-1` (4px), at least 224px wide, opening `space-2` below its trigger and aligned to it.
-- **Items:** 44px tall, radius `sm` (8px), padding 8, so the text sits 12px from the menu edge; optional 20px icon in `mute`, `space-2` from the label; a shortcut on the right in `caption` `charcoal`. Active and hover: `surface-float-active`.
+- **Items:** 44px tall, radius `sm` (8px), padding 8, so the text sits 12px from the menu edge; optional 16px icon in `mute`, `space-2` from the label; a shortcut on the right in `caption` `charcoal`. Active and hover: `surface-float-active`.
 - **Groups** by category, `space-2` apart, optionally with a `caption` label in `mute`. A destructive item comes last, alone, with a red icon and `ink` text (red text fails contrast on the active surface in dark).
 - **Keyboard:** Enter, Space or ↓ opens and focuses the first item; ↑ ↓ Home End move; Escape closes and returns focus to the trigger; Tab closes. Roles `menu` and `menuitem`, `aria-haspopup`, `aria-expanded`.
 

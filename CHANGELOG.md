@@ -29,6 +29,7 @@ Working toward 1.0.0, the first public release.
 - Shapes: corner actions (a "More" or close button in a card, dialog or sheet) are 32px buttons with radius 8 at 24 − 8 = 16px; the title row starts there and the title is centred on the button.
 - Components: Overlay group, with menu, popover, dialog, sheet (bottom on phones, floating side sheet from `md`) and tooltip (inverted), plus hover on floating surfaces.
 - Contrast: the worst case in dark is now `surface-float-active`; secondary text there uses `charcoal`.
+- Inline buttons have no background: hover and pressed change the icon from `mute` to `ink`; the box shows only as the focus border. Icons: 16px inside controls and menus, 20px in icon-only buttons, 24px for navigation.
 - Icons: Hugeicons always in the free set; the Pro set only on the user's request and license.
 
 ## 0.1.0
