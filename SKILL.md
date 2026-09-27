@@ -1286,7 +1286,7 @@ A custom menu, never the browser's native dropdown.
 
 ### Menu
 
-- **Surface:** `surface-float`, 1px `hairline`, no shadow, radius `md` (12px), padding `space-1` (4px), at least 224px wide, opening `space-2` below its trigger and aligned to it.
+- **Surface:** `surface-float`, 1px `hairline`, no shadow, radius `md` (12px), padding `space-1` (4px), at least 224px wide, opening `space-2` below its trigger with its start edge aligned to the trigger's start edge (left in left-to-right languages); it flips to the end edge or above only when there is no room.
 - **Items:** 44px tall, radius `sm` (8px), padding 8, so the text sits 12px from the menu edge; optional 16px icon in `mute`, `space-2` from the label. Show a keyboard shortcut on the right (`caption`, `charcoal`) only when the product really has it. Active and hover: `surface-float-active`.
 - **Spacing:** items `space-1` (4px) apart, so two highlights never touch; groups `space-2` (8px) apart (The Distance Ratio Rule).
 - **Groups** by category, optionally with a `caption` label in `mute`. A destructive item comes last, alone, with a red icon and `ink` text (red text fails contrast on the active surface in dark).
