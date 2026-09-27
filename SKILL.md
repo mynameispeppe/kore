@@ -395,6 +395,54 @@ components:
     size: 40px
 ---
 
+## Start here
+
+Read this section before any design or UI work with Kore. Kore promotes a minimal, clear and clean interface that never confuses the people using it; every rule below serves that goal.
+
+This file is never edited during a project. The values chosen for a project live in that project's tokens (CSS variables, theme file or config), written from this file and following its token names and roles.
+
+### Before the first line of code
+
+Read the project first: request, dependencies, existing components, styles and assets. Anything already answered there is not asked. Ask the open questions below all together, in one message; if none is open, ask nothing and start.
+
+1. **Is it a landing page or a web app?** Asked only when neither the request nor the project makes it clear. It sets the mode: landing page (persuade) or web app (operate), which changes motion, density, glows and fluid type. A project with both is two jobs, each in its own mode.
+2. **Which framework?** Asked only when the project is empty (plain HTML and CSS, React, Vue, Svelte…). It decides how the tokens are exposed and which Hugeicons package to use. An empty project has no UI library, so Kore's own components apply. In an existing project, read the framework, the UI library and the icon library from the code (The Library-First Rule).
+3. **Is there a brand identity already: logo, palette, fonts?** In an existing project, show what was found and ask only to confirm it. If there is none, use Kore's active identity.
+   - **Logo:** used as it is. Check it on `canvas` in both themes; if it disappears in one, ask for a variant. Never derive the palette from the logo.
+   - **Palette:** apply it with the Custom palette method (Color rules).
+   - **Font:** any font the user chooses, even one outside the Candidates. One font may cover both `display` and `sans`. The type scale does not change: sizes, weights, line-heights and letter-spacing stay Kore's. Before applying it, check weights 400, 500 and 600 (if one is missing, propose the nearest), the glyphs of the UI language, tabular figures (`tnum`) and a web license. Sum up the checks in one message and wait for the OK. Then change only the project's font tokens. Never resize the scale for the new font; sizes change only when the user asks, and always on the grid.
+   - **Code:** when the user wants one font only, code uses the system monospace stack (`ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace`), which loads nothing. If no code appears in the interface, the mono token is unused and nothing is loaded. A proportional font for code only on an explicit request, with a one-line warning that alignment breaks and characters like `0`/`O` and `1`/`l` get confused.
+
+After the answers, sum up the choices in two or three lines and start.
+
+### Building anything
+
+1. Check for a UI library first (The Library-First Rule).
+2. If Kore defines the component, use it. If not, compose it from Kore's components and tokens; never invent values.
+3. Apply Hierarchy, Spacing, Usability and the accessibility rules.
+4. If the request breaks a rule, follow the three steps in Behaviour rules.
+5. Before delivering, run the checklists (Spacing, Three-second check, contrast) and sum up in two lines what was built, including any exception.
+
+### Ask later, when it matters
+
+Everything else starts from a default and is asked only when the work reaches it.
+
+| Topic | Default until asked | Ask when |
+|---|---|---|
+| Themes | Light and dark, following the system preference; no theme switch in the UI | The user wants one theme only or asks for a theme switch, or a custom palette covers one theme only |
+| Language and formats | The language the user writes in; dates, currencies and units of their locale | The first text, date, price or measure goes on screen |
+| Identity | The active values in the frontmatter | The user asks to change colors or fonts: offer the options in Candidates, or apply their palette with the Custom palette method |
+
+### Behaviour rules
+
+- **Never invent values.** Every color, size, radius, space, shadow and duration comes from this file or from the Custom palette method. When something is missing, propose a value that follows the rules and wait for approval.
+- **When no rule covers a choice,** apply *Calm Clarity*: pick the option that keeps the screen calmer and clearer.
+- **Binding rules change only on an explicit request.** They are: the 8-point grid, contrast, The Hairline Rule, The Half-Padding Rule, shadows only on interactive elements, no icons on labeled buttons. When the user asks for something that breaks one:
+  1. name the rule and the consequence (for example: "this text drops to 3.1:1, below the 4.5:1 minimum");
+  2. offer the closest option that follows the rule;
+  3. only if the user confirms, apply the exception where it was asked, leave a note in the project (a code comment or the project notes), and never extend it anywhere else on your own.
+- **Accessibility weighs more.** Contrast minimums, visible focus, 44px touch targets and reduced motion can be broken only on an explicit request, after a clear warning that the change shuts people out. Never break them silently, by default, or to make something look better. The accessibility rules live in Color rules (contrast, focus, meaning), Spacing (touch targets, zoom), Motion (reduced motion), Icons (accessible labels) and Responsive (input, safe areas).
+
 ## Overview
 
 Guiding principle: *Calm Clarity*. When a choice is not covered by a rule, pick the option that keeps the screen calmer and clearer.
@@ -452,6 +500,44 @@ Every interactive element defines all its states: default, hover, focus, active/
 - Light and dark are each designed, never produced by inverting the other. Check surface steps, borders and contrast separately in each.
 - **Glows** (`*-glow`) are atmosphere with a purpose: at most one per screen, anchored at the top of a section, and never on dense task screens (lists, forms, tables).
 
+### Custom palette
+
+A project may replace Kore's colors with its own. The user gives a few base colors; every other token is derived with fixed rules, so the result keeps Kore's contrast and surface steps without choosing each token by hand.
+
+**Base colors, per theme:** `canvas`, `ink`, `primary`, `signature`. Optional: `accent-red`, `accent-green`, `accent-yellow`, `accent-blue`; any missing one keeps Kore's value, so its meaning stays recognisable.
+
+**Derived tokens.** L is OKLCH lightness (0–100). Neutral tokens take the hue of `canvas` with chroma at most 0.01.
+
+| Token | Rule, light | Rule, dark | Check |
+|---|---|---|---|
+| `surface-card` | `canvas` L +1 | `canvas` L +4 | — |
+| `surface-elevated` | `canvas` L −1 | `canvas` L +10 | — |
+| `surface-deep` | `canvas` L +1 | `canvas` L −2 | — |
+| `accent`, `secondary` | `canvas` L −2 | `canvas` L +8 | — |
+| `divider-soft` | `canvas` L −3 | same as `hairline` | — |
+| `body`, `charcoal` | `ink` at 86% and 72% opacity | same | 4.5:1 |
+| `mute` | From `ink` toward `canvas`, stopping at the last value that passes | same | 4.5:1 |
+| `hairline-strong` | Solid, from `ink` toward `canvas`, stopping at the last value that passes | same | 3:1 |
+| `stone` | Halfway between `canvas` and `mute` in L | same | exempt |
+| `hairline` | `ink` at 6% opacity | `ink` at 4% opacity | none, meant to be barely visible |
+| `primary-on` | White or black, whichever contrasts more with `primary` | same | 4.5:1 |
+| `primary-pressed` | `primary` L +5 toward `canvas` | same | `primary-on` still 4.5:1 |
+| `accent-red-on`, `accent-red-pressed` | As `primary-on` and `primary-pressed`, from `accent-red` | same | 4.5:1 |
+| `link`, `info` | `accent-blue` | same | 4.5:1 |
+| `focus-ring` | `ink` | same | 3:1 |
+| `*-glow`, `selection` | The color at 20% opacity | The color at 18–34%, raised until visible on `canvas` | none |
+| `on-light`, `on-light-mute` | Light `ink` and light `charcoal` | same as light | 4.5:1 on white |
+| `scrim` | Kore's value | Kore's value | — |
+
+**Method:**
+
+1. Take the base colors from the project or from the user. If they cover one theme only, ask whether to derive the other theme or ship one theme.
+2. Derive every token with the table. Kore's own values follow these rules within about 1 L point.
+3. Check contrast on `surface-elevated`, the worst case in both themes: a text or border that passes there passes on every surface. For accent colors used as text, if one fails, move its L until it passes and keep its hue.
+4. Show one table: token, value, contrast. Wait for the user's OK, then write the project's tokens.
+
+**Contrast ratio** = (L1 + 0.05) / (L2 + 0.05), where L1 and L2 are the WCAG relative luminance of the lighter and the darker color. Composite translucent colors over the surface before measuring. Never round up: 4.49 fails 4.5.
+
 ## Typography rules
 
 - **Roles, not sizes.** Use the scale tokens (`display-*`, `heading-*`, `body-*`, `caption*`, `button-*`, `code-md`); never a free font size.
@@ -486,6 +572,8 @@ Six tools set how strongly an element pulls the eye. Use them on purpose, and mo
 
 **The One Winner Rule.** Every screen, and every zone of a screen, has one focal point. It beats everything else on at least two of the six tools (for example: largest, full contrast, top-left). Three is overdesign. Two elements with similar weight compete and neither wins.
 
+**Never invert the hierarchy:** metadata (date, author, category) never outweighs the title it belongs to.
+
 ### Three levels
 
 - **Primary:** one element, the focal point. Caught first.
@@ -493,6 +581,8 @@ Six tools set how strongly an element pulls the eye. Use them on purpose, and mo
 - **Tertiary:** everything else; present, never distracting.
 
 If the primary element cannot be named within three seconds of looking at the design, there is no focal point.
+
+To isolate the focal point, surround it with space and place it on a third of the layout (the upper third, or the top-left crossing) rather than at the dead centre.
 
 | Context | Focal point | Typical mistake |
 |---|---|---|
@@ -505,6 +595,7 @@ If the primary element cannot be named within three seconds of looking at the de
 
 ### Typographic levels
 
+- **One `h1` per page;** it names the page.
 - At most **three or four type levels** visible on one screen.
 - Adjacent levels differ clearly in size and/or weight; if two roles look almost the same, drop one.
 - Weight can compensate size: a semibold `heading-sm` can outrank a regular larger line.
@@ -843,7 +934,7 @@ The parts the browser draws still carry the design. Theme them from the palette 
 
 **Library first.** If the project already uses an icon library, keep it and apply the rules below. Otherwise use Kore's default.
 
-**Default: Hugeicons**, free set, *Stroke Rounded* style (MIT license). Its round stroke ends match Kore's round type and corners, and it has official packages for every major stack: React, Vue, Angular, Svelte, SolidJS, React Native and Flutter, plus plain SVG for anything else.
+**Default: Hugeicons**, always the free set (the paid Pro set only when the user asks for it and holds the license), *Stroke Rounded* style (MIT license). Its round stroke ends match Kore's round type and corners, and it has official packages for every major stack: React, Vue, Angular, Svelte, SolidJS, React Native and Flutter, plus plain SVG for anything else.
 
 ### Rules
 
@@ -959,28 +1050,8 @@ If many users look up the docs to do one thing, the interface is the problem.
 
 **The Library-First Rule.** Before building any component, check whether the project already uses a UI library (for example shadcn/ui, Radix, MUI, Headless UI, a native component kit). Look at the dependencies and the existing components; if it is not clear, ask the project owner before writing anything.
 
-- **A library is in use:** never rewrite its components. Keep the library and adapt it to Kore: map Kore's tokens (colors, typography, rounded, spacing, shadows, motion) onto the library's theme, and override a component's styles only where the library's defaults break a Kore rule.
+- **A library is in use:** never rewrite its components. Keep the library and adapt it to Kore: map Kore's tokens (colors, typography, rounded, spacing, shadows, motion) onto the library's theme, and override a component's styles only where the library's defaults break a Kore rule. Library sizes and behaviours that break no binding rule stay as they are: a 40px library button stays 40px, because 40 is on the grid. Typical overrides: shadows on menus, selects, popovers, dialogs and static cards (replaced by a `hairline` border), contrast, focus visibility, off-grid values, animations under reduced motion. Use the library's theming API (theme variables, token overrides) rather than rewriting its internal CSS. If the project uses the library's icon set, keep it; labeled buttons still carry no icon.
 - **No library:** use the Kore components defined below, built on Kore's tokens and following every rule in this file.
-
-> **To do (as of 2026-09-26).** Components still to define, in this order:
-> 1. Overlay: menu/popover (same look as the select menu), dialog, sheet, tooltip.
-> 2. Feedback: toast (including the 5-second "Undo"), skeleton, progress bar, empty state. Spinner and inline errors already exist in Button and Form fields.
-> 3. Data and identity: badge/pill, avatar, status dot.
-> 4. Navigation: top bar, bottom nav (mobile), side nav (desktop), tabs (navigation between sections, not the segmented control).
->
-> After the components: bump Kore to version 1.0.0, then apply Kore to Vitae starting from `globals.css` (Vitae uses shadcn/ui with Base UI, so The Library-First Rule applies).
->
-> **Also to review (draft, not yet approved):** a "Start here" section at the top of this file, telling the AI what to ask the user before starting a project with Kore:
-> 1. Project type: app, landing/marketing, or both (sets Operate vs Persuade: motion, fluid type, glows, density).
-> 2. Platforms and stack: web, iOS, Android; which framework (how tokens are exposed, which icon package).
-> 3. Existing UI library? (The Library-First Rule.)
-> 4. Existing icon library? Otherwise Hugeicons.
-> 5. Keep the active identity or pick candidates: canvas, `signature`, display and sans fonts. If changed: move the choice to the frontmatter, log it in the Changelog, re-check every dependent contrast.
-> 6. Themes: both or one, and which is the default (chosen from the use scene).
-> 7. Language and formats: UI language, dates, currencies, units (metric or imperial).
-> 8. Brand constraints already decided (logo, mandatory color, licensed font): they win over active values but stay subject to contrast and accessibility rules.
->
-> Behaviour rules in the draft: ask once, grouped, at the start; never invent values outside the file (propose, and add to candidates and Changelog if approved); apply *Calm Clarity* where no rule covers a choice; binding rules (8-point grid, contrast, Hairline, Half-Padding, no icons on labeled buttons) change only with the user's explicit consent.
 
 ### Button
 
@@ -1564,102 +1635,3 @@ Alternative values for each token. The frontmatter holds the active value for th
 | Current — controls 8 · inner blocks 8 · cards 12 |  |
 | A · Soft — controls 12 · inner blocks 12 · cards 16 |  |
 | C · Pill — controls full · inner blocks 16 · cards 24 |  |
-
-## Changelog
-
-Versioning follows [semver](https://semver.org): **MAJOR** for breaking changes (renamed or removed tokens, changed scales), **MINOR** for compatible additions (new components or variants), **PATCH** for fixes that don't change usage.
-
-### 0.1.0
-- Initial draft: name, versioning, description.
-- Colors: brand group (`primary`, `primary-on`, `primary-pressed`) for light and dark themes. `surface-light` renamed to `primary-pressed`; light value fixed to `#3f3f46`.
-- Colors: `canvas` for light (Ice `#F8FAFB`) and dark (Night `#0C090A`), placed before the brand group.
-- New Candidates section: alternative values per token, starting with `canvas`.
-- Colors: `primary-pressed` changed to `#2e2e2e` (light) and `#ebecee` (dark); new `secondary` token, `#f4f6f7` (light) and `#1c1c1c` (dark).
-- Candidates: added `primary-pressed` and `secondary`.
-- Colors: new `accent` token (hover surface), `#f4f4f5` (light) and `#1c1c1c` (dark).
-- Description: canvas now described as a cool off-white (light) and a soft near-black (dark).
-- Colors: new `surface-card` token (card background), `#fcfdfd` (light) and `#121212` (dark).
-- Candidates: added `surface-card`.
-- Colors: new `surface-elevated` token (second surface step), `#f4f6f7` (light) and `#1f1f1f` (dark).
-- Candidates: added `surface-elevated`.
-- Colors: new `surface-deep` token (popovers, menus, code wells), `#fcfdfd` (light) and `#060606` (dark).
-- Candidates: added `surface-deep`.
-- Colors: new `hairline` token (thin 1px border for non-interactive elements, row dividers), `rgba(33, 33, 33, 0.06)` (light) and `rgba(255, 255, 255, 0.04)` (dark).
-- Candidates: added `hairline`.
-- Colors: new `hairline-strong` token (1px border for controls: inputs, secondary and outline buttons), `rgba(33, 33, 33, 0.12)` (light) and `rgba(255, 255, 255, 0.12)` (dark).
-- Candidates: added `hairline-strong`.
-- Colors: new `divider-soft` token (faintest divider: footer columns, copyright row), `#efeff1` (light) and `rgba(255, 255, 255, 0.04)` (dark).
-- Candidates: added `divider-soft`.
-- Colors: new `ink` token (main text), `#2a2a2a` (light) and `#f5f3f3` (dark).
-- Candidates: added `ink`.
-- Colors: new `body` token (long-form text), `rgba(42, 42, 42, 0.86)` (light) and `rgba(245, 243, 243, 0.86)` (dark) — `ink` at 86%.
-- Candidates: added `body`.
-- Colors: new `charcoal` token (captions, secondary labels), `rgba(42, 42, 42, 0.72)` (light) and `rgba(245, 243, 243, 0.72)` (dark) — `ink` at 72%.
-- Candidates: added `charcoal`.
-- Colors: new `mute` token (supporting text, inactive labels), `#6a6e72` (light) and `#918d8d` (dark).
-- Candidates: added `mute`.
-- Colors: `ash` removed — tertiary and footer text use `mute`, since anything lighter than `mute` falls below the 4.5:1 text contrast minimum.
-- Colors: new `stone` token (disabled foreground), `#a9adb1` (light) and `#464a4d` (dark).
-- Candidates: added `stone`.
-- Colors: new `on-light` (`#2a2a2a`) and `on-light-mute` (`rgba(42, 42, 42, 0.72)`) tokens for text inside the white light inset; same value in both themes.
-- Candidates: added `on-light` and `on-light-mute`.
-- Colors: `accent-orange` replaced by `signature` (Kore's distinctive colour: glows, chart data, emphasis), `#904E55` (light) and `#F8F1FF` (dark), with `signature-glow` at 20% (light) and 22% (dark).
-- Candidates: added `signature`.
-- Colors: new `accent-yellow` token (warning, highlight strokes), `#92400e` (light) and `#ffc53d` (dark).
-- Candidates: added `accent-yellow`.
-- Colors: new `accent-blue` token (inline links, cool glow), `#386580` (light) and `#5b94b7` (dark) — accessible variants of `#457B9D` — with `accent-blue-glow` at 20% (light) and 34% (dark).
-- Candidates: added `accent-blue`.
-- Colors: new `accent-green` token (success), `#047857` (light) and `#6ee7b7` (dark), with `accent-green-glow` at 20% (light) and 18% (dark).
-- Candidates: added `accent-green`.
-- Colors: new `accent-red` token (errors, destructive actions, attention), `#c53030` (light) and `#ef4444` (dark), with `accent-red-glow` at 20% (light) and 34% (dark).
-- Candidates: added `accent-red`.
-- Colors: new `link` token (inline links), `#386580` (light) and `#5b94b7` (dark) — same values as `accent-blue`, kept as a separate token.
-- Typography: sans font (body and UI) set to Figtree.
-- Candidates: added sans font options.
-- Typography: display font (large headlines) set to Outfit.
-- Candidates: added display font options.
-- Typography: mono font (code, tabular numbers) set to Geist Mono.
-- Candidates: added mono font options.
-- Description: headline and body fonts now described as round geometric sans and friendly geometric sans.
-- Description: "editorial" replaced by "minimal".
-- Typography: `display-xxl` set to Outfit 64/64, weight 500, letter-spacing −0.02em.
-- Candidates: added `display-xxl` sizes and weights.
-- Typography: full scale added — `display-xl` 48/48 and `display-lg` 40/40 (Outfit 500), `heading-md` 24/32 and `heading-sm` 20/28 (Figtree 600), `subtitle` 20/28, `body-lg` 18/28, `body-md` 16/24, `body-sm` 14/20, `button-md` 14/20, `button-sm` 12/16, `caption` 12/16, `caption-emph` 12/16 (Figtree), `code-md` 13/20 (Geist Mono). All line-heights are multiples of 4.
-- Candidates: added `display-xl` sizes.
-- Shapes: `rounded` scale set to 0 / 4 / 8 / 12 / 16 / 24 / full (6px removed, off the 4px grid). Set B: controls and inner blocks 16px (`lg`), cards 24px (`xl`), pills and avatars full.
-- Shapes: `cornerShape: squircle` as progressive enhancement — browsers without `corner-shape` support (Safari, iOS) fall back to round corners with the same radius.
-- Candidates: added `rounded` sets.
-- Description: container vocabulary now rounded-24px with squircle corners where supported.
-- Spacing: scale `space-1` … `space-12` (name = N × 4px) — primary 4 / 8 / 16 / 24 / 32 / 48, half-steps 12 / 20 / 40 only when needed; no 96/128.
-- New Spacing section: scale with when-to-use, binding rules, proximity and hierarchy, reference values, accessibility, common mistakes, checklist, stack-agnostic implementation.
-- Italian version (KORE.it.md) dropped; Kore is maintained in English only.
-- Colors: `hairline-strong` changed to solid `#8a8e92` (light) and `#6e6a6a` (dark) so control borders reach 3:1 (WCAG 1.4.11) on every surface; the old 12% values failed at ~1.3:1.
-- Colors: new `info` (same values as `accent-blue`), `focus-ring` (`#2a2a2a` / `#f5f3f3`) and `selection` (signature at 20% / 22%) tokens.
-- New sections from the Impeccable review: Color rules (contrast, meaning, states, themes, glows), Typography rules, Shadows, Motion, Browser surfaces, Never.
-- New Elevation section (replaces Shadows): levels flat / surface / inset / floating / overlay / interactive, barely perceptible `shadow-rest` and `shadow-hover` tokens, hover lift of 4px, reduced-motion behaviour, `scrim` color and a fixed `zIndex` scale.
-- Shapes: `cornerShape: squircle` removed — squircle corners cannot be concentric when nested, and Safari does not support them. Kore uses round corners everywhere.
-- Description: "with squircle corners where supported" replaced by "with concentric nested corners".
-- New Shapes section: radius by role, binding nested-radius rule (inner = outer − padding ÷ 2, rounded down to the scale), standard cards use hairline-divided rows instead of rounded inner blocks, borders drawn inside the edge.
-- New Responsive section: mobile-first principles, breakpoints `sm` 640 / `md` 768 / `lg` 1024 and `max-content` 1200 (in the frontmatter), grids and gutters, display type stepping down on phones, input-based hover, safe areas, extremes, tables and media, testing.
-- The Never section becomes Do's and Don'ts: 14 Do's with tokens and values (including UI copy, forms, empty and loading states) and 19 Don'ts (the previous 12 plus 7 new).
-- Named rules: The One Primary Rule (Color rules), The Token-Only Rule (Spacing), The Half-Padding Rule (Shapes), The Hairline Rule (Elevation).
-- Motion section rewritten: duration, easing and spring tokens (in the frontmatter), rules for all modes, app mode, landing mode with one focal moment, stack-agnostic implementation. Reviewed with Impeccable and the Motion.dev skill.
-- Elevation: hover timing now uses the motion tokens (`duration-fast`, `ease-out`; pressed `duration-instant`) instead of a free 200ms.
-- Components section added as a placeholder note: components are defined per project; with an existing UI library Kore only reskins it through its tokens and rules.
-- New Hierarchy section: six visual-weight tools, The One Winner Rule, three levels with focal points per context, typographic levels, The Separation Ladder, scanning patterns (F and Z), three-second check.
-- New Usability section based on Nielsen's 10 heuristics, with Kore's concrete values (feedback at 100ms / 300ms / 1s / 3s, 5-second undo, validation on blur, layered help).
-- Shapes: rows inside a standard card now separate with space only (was `hairline` dividers).
-- Do's and Don'ts: 5 Do's and 6 Don'ts added for hierarchy and usability.
-- New Overview section: guiding principle *Calm Clarity*, intro paragraph and ten key characteristics, written with the humanizer skill.
-- Overview: "Creative North Star" renamed to "Guiding principle", with a line on how to use it for choices the rules don't cover.
-- Components: placeholder note replaced by The Library-First Rule (check for a UI library first, ask if unsure; with a library, map tokens and override only where needed; without one, use Kore's components).
-- New Icons section: library-first, default Hugeicons (free, Stroke Rounded, MIT, official packages for all major stacks), rules for stroke, sizes, color, spacing, accessibility and meaning, plus library candidates. Icon settings also in the frontmatter.
-- Components: Button added (five variants, three sizes, icon buttons, all states) in the frontmatter and the Components section; new color tokens `accent-red-on` and `accent-red-pressed`.
-- Button: labeled buttons carry no icon; the only exception is the loading spinner. Icons section spacing updated accordingly.
-- Components: form controls added (text input, textarea, custom select with its own menu, checkbox, radio, switch, segmented control) in the frontmatter and the Components section.
-- Focus: form fields now thicken their border to 2px `ink` with no outer ring; other controls keep the 2px `focus-ring` at a 2px offset.
-- Typography rules: form fields use `body-md` (16px) so mobile Safari doesn't zoom on focus.
-- Switch: reduced from 52 × 32 to 40 × 24 (16px knob), hit area still 44px.
-- Components: containers added (standard, compact and clickable cards, card header and key figure, list rows) in the frontmatter and the Components section.
-- Components: to-do note added listing the components still to define (overlay, feedback, data and identity, navigation) and the next steps.
-- To-do note: added the draft "Start here" questions and AI behaviour rules, pending review.
