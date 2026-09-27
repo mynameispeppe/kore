@@ -1300,7 +1300,7 @@ A custom menu, never the browser's native dropdown.
 ### Dialog
 
 - A modal over a `scrim`: `surface-float`, 1px `hairline`, radius `xl` = padding `space-6` (24px), at most 480px wide, 16px from the screen edges on phones.
-- **Header:** title in `heading-sm`, with the close button as a corner action (Shapes), the title centred on it. **Body:** the object and figures in inline emphasis ("**Next week's plan** and its **21 meals** will be removed."). A consequence that cannot be undone sits on its own line in `accent-red`, weight 500, `space-4` below the body.
+- **Header:** title in `heading-sm`, with the close button as a corner action (Shapes), the title centred on it. **Body:** the object and figures in inline emphasis ("**Next week's plan** and its **21 meals** will be removed."). A consequence that cannot be undone sits on its own line in `accent-red`, weight 500, `space-1` below the body: body and consequence are one message, with the title `space-2` above it.
 - **Actions:** `space-8` below the content, compact buttons 24 − 12 = 12px from the edges, right-aligned, confirm last; the buttons name the action ("Keep plan", "Delete plan"), never "Cancel" and "OK". Initial focus goes to the safer action.
 - Use a dialog only when the action cannot be undone; otherwise act and offer "Undo" (Usability 3). Focus stays inside; Escape, the close button and a click on the scrim close it; focus returns to the trigger. Use the platform's modal element where it exists (`<dialog>` on the web).
 - Opens with a fade and a 0.98 → 1 scale in `duration-base` `ease-out`; only the fade under reduced motion.
