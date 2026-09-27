@@ -24,6 +24,11 @@ Working toward 1.0.0, the first public release.
 - Spacing: The Distance Ratio Rule replaces "one step apart": space between groups ≥ 2 × space inside. Card rows now 12 (compact 8), rows ↔ actions 32. Rules for alignment, density and grouping actions.
 - Hierarchy: action order, right-aligned with the confirming action last and cancel or back to its left.
 - Cards: compact cards drop inner blocks and separate rows with space; new media card and card with actions (actions at the bottom, placed by The Concentric Rule, at least 320px wide, stacking instead of wrapping); each card as tall as its content.
+- Hierarchy: Text hierarchy, how to order and style text inside a component (order first, de-emphasize, labels as a last resort, limits on sizes, weights and colors, numbers, warnings, semantics after hierarchy), based on Refactoring UI, NN/g and Impeccable; inline emphasis for figures and object names in messages.
+- Shapes: controls, menus and popovers go from radius 16 to 12 (`md`), small buttons from 12 to 8; horizontal padding follows (fields 12). Items inside controls and menus always have radius 8, placed at container radius − 8.
+- Shapes: corner actions (a "More" or close button in a card, dialog or sheet) are 32px buttons with radius 8 at 24 − 8 = 16px; the title row starts there and the title is centred on the button.
+- Components: Overlay group, with menu, popover, dialog, sheet (bottom on phones, floating side sheet from `md`) and tooltip (inverted), plus hover on floating surfaces.
+- Contrast: the worst case in dark is now `surface-float-active`; secondary text there uses `charcoal`.
 - Icons: Hugeicons always in the free set; the Pro set only on the user's request and license.
 
 ## 0.1.0

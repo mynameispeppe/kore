@@ -225,7 +225,7 @@ components:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.primary-on}"
     typography: "{typography.button-md}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.md}"
     padding: 0 24px
     height: 48px
   button-primary-pressed:
@@ -235,28 +235,28 @@ components:
     backgroundColor: "{colors.secondary}"
     textColor: "{colors.ink}"
     typography: "{typography.button-md}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.md}"
     padding: 0 24px
     height: 48px
   button-outline:
     backgroundColor: transparent
     textColor: "{colors.ink}"
     typography: "{typography.button-md}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.md}"
     padding: 0 24px
     height: 48px
   button-ghost:
     backgroundColor: transparent
     textColor: "{colors.ink}"
     typography: "{typography.button-md}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.md}"
     padding: 0 24px
     height: 48px
   button-destructive:
     backgroundColor: "{colors.accent-red}"
     textColor: "{colors.accent-red-on}"
     typography: "{typography.button-md}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.md}"
     padding: 0 24px
     height: 48px
   button-destructive-pressed:
@@ -267,20 +267,20 @@ components:
     textColor: "{colors.stone}"
   button-compact:
     typography: "{typography.button-md}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.md}"
     padding: 0 16px
     height: 40px
   button-small:
     typography: "{typography.button-sm}"
-    rounded: "{rounded.md}"
+    rounded: "{rounded.sm}"
     padding: 0 12px
     height: 32px
   text-input:
     backgroundColor: "{colors.surface-deep}"
     textColor: "{colors.ink}"
     typography: "{typography.body-md}"
-    rounded: "{rounded.lg}"
-    padding: 0 16px
+    rounded: "{rounded.md}"
+    padding: 0 12px
     height: 48px
   text-input-compact:
     height: 40px
@@ -305,12 +305,12 @@ components:
     backgroundColor: "{colors.surface-deep}"
     textColor: "{colors.ink}"
     typography: "{typography.body-md}"
-    rounded: "{rounded.lg}"
-    padding: 12px 16px
+    rounded: "{rounded.md}"
+    padding: 12px
   select-menu:
     backgroundColor: "{colors.surface-float}"
-    rounded: "{rounded.lg}"
-    padding: 8px
+    rounded: "{rounded.md}"
+    padding: 4px
   select-option:
     textColor: "{colors.ink}"
     typography: "{typography.body-md}"
@@ -343,39 +343,43 @@ components:
     textColor: "{colors.primary-on}"
   segmented:
     backgroundColor: "{colors.surface-elevated}"
-    rounded: "{rounded.lg}"
-    padding: 8px
+    rounded: "{rounded.md}"
+    padding: 4px
     gap: 8px
     height: 48px
   segmented-item:
     textColor: "{colors.mute}"
     typography: "{typography.button-md}"
     rounded: "{rounded.sm}"
-    padding: 0 12px
-    height: 32px
+    padding: 0 16px
+    height: 40px
   segmented-item-selected:
     backgroundColor: "{colors.surface-card}"
     textColor: "{colors.ink}"
   inline-button:
-    size: container height − 16px
-    rounded: container radius − 8px
-    offset: 8px
-  password-toggle:
+    rounded: "{rounded.sm}"
+    offset: container radius − 8px
+    size: container height − 2 × offset
+  corner-action:
     size: 32px
     rounded: "{rounded.sm}"
-    offset: 8px
+    offset: container radius − 8px
+  password-toggle:
+    size: 40px
+    rounded: "{rounded.sm}"
+    offset: 4px
   stepper:
     backgroundColor: "{colors.surface-deep}"
-    rounded: "{rounded.lg}"
-    padding: 8px
+    rounded: "{rounded.md}"
+    padding: 4px
     height: 48px
     width: 160px
   stepper-button:
     rounded: "{rounded.sm}"
-    size: 32px
+    size: 40px
   file-drop:
     backgroundColor: "{colors.surface-float}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.md}"
     padding: 24px
     minHeight: 128px
   file-drop-active:
@@ -383,11 +387,11 @@ components:
   file-row:
     backgroundColor: "{colors.surface-card}"
     rounded: "{rounded.md}"
-    padding: 8px 8px 8px 12px
+    padding: 4px 4px 4px 12px
     height: 56px
   file-row-remove:
-    rounded: "{rounded.xs}"
-    size: 40px
+    rounded: "{rounded.sm}"
+    size: 48px
   slider-track:
     backgroundColor: "{colors.hairline-strong}"
     height: 4px
@@ -413,6 +417,39 @@ components:
     gapAbove: 32px
     gap: 8px
     offset: card radius − button radius
+  menu:
+    backgroundColor: "{colors.surface-float}"
+    rounded: "{rounded.md}"
+    padding: 4px
+    groupGap: 8px
+  menu-item:
+    rounded: "{rounded.sm}"
+    padding: 0 8px
+    height: 44px
+  menu-item-active:
+    backgroundColor: "{colors.surface-float-active}"
+  popover:
+    backgroundColor: "{colors.surface-float}"
+    rounded: "{rounded.md}"
+    padding: 12px
+  dialog:
+    backgroundColor: "{colors.surface-float}"
+    rounded: "{rounded.xl}"
+    padding: 24px
+    maxWidth: 480px
+  sheet:
+    backgroundColor: "{colors.surface-float}"
+    rounded: "{rounded.xl}"
+    padding: 24px
+    sideWidth: 400px
+    sideOffset: 8px
+  tooltip:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.canvas}"
+    typography: "{typography.caption}"
+    rounded: "{rounded.sm}"
+    padding: 4px 8px
+    offset: 8px
   card-title:
     textColor: "{colors.ink}"
     typography: "{typography.heading-sm}"
@@ -479,14 +516,14 @@ Check every rule that concerns what is being built, one by one; never assume a r
 
 **Always:**
 - Only tokens: every color, space, size, radius, shadow and duration comes from this file (search for free values such as `\b(1[0-9]|2[0-9]|3[0-9])px` outside token definitions).
-- Contrast: text 4.5:1, large text 3:1, control borders, icons and focus 3:1, measured on `surface-elevated` in both themes.
+- Contrast: text 4.5:1, large text 3:1, control borders, icons and focus 3:1, measured on `surface-elevated` and, in dark, `surface-float-active`, in both themes. In dark, `accent-red` text never sits on `surface-elevated` (4.4:1); red icons can.
 - Both themes checked, each on its own.
 
 | Building | Check |
 |---|---|
 | **Container** (card, panel, list) | Hierarchy: one focal point that wins on two of the six tools, primary > secondary > tertiary, no inverted hierarchy (metadata never outweighs the title), groups clear without extra borders. Spacing: uniform padding (`space-6`, compact `space-4`), The Distance Ratio Rule (between ≥ 2 × inside: title ↔ subtitle `space-1`, header ↔ content `space-6`, rows `space-3`, compact rows `space-2`, rows ↔ actions `space-8`), list items `space-2` apart, two highlights never touch. Shapes: horizontal padding = radius, nested radii concentric (outer − distance), no rounded blocks inside cards unless each is a clickable unit, no card inside a card. Actions: at the bottom, right-aligned, confirm last; each card as tall as its content (equal heights only in a grid of cards with the same structure). Elevation: `hairline` border, shadow only if the whole container is clickable. |
 | **Control** (button, field, switch, slider…) | Every state: default, hover, focus, pressed, disabled, and selected, loading, error where they apply. Focus: 2px border inside, `ink` or the foreground color on filled controls. Sizes 32 / 40 / 48px (inline buttons: container height − 16, radius container radius − 8), touch target 44px, targets `space-2` apart. Accessible name, keyboard use, ARIA roles on custom controls. Labeled buttons without icons; labels are a verb and an object. Form text 16px. |
-| **Overlay** (menu, popover, dialog, sheet, tooltip) | Floating level: `surface-float` + `hairline`, no shadow. Opens and closes with the motion tokens. Escape and click outside close it; focus moves in on open and returns to the trigger on close. Options: radius = menu radius − 8, padding = their radius, so text sits on the menu curve's centre. |
+| **Overlay** (menu, popover, dialog, sheet, tooltip) | Floating level: `surface-float` + `hairline`, no shadow; hover inside uses `surface-float-active`; corner actions and action rows placed by The Concentric Rule. Opens and closes with the motion tokens. Escape and click outside close it; focus moves in on open and returns to the trigger on close. Options: radius 8, 4px from the menu edge, padding 8, so text sits on the menu curve's centre. |
 | **Feedback** (toast, error, empty state, loading) | Response times: 100ms, 300ms, 1s, 3s (Usability 1). Messages say what, why and how, next to their cause, without codes. Semantic colors keep their meaning and never work alone. Announced to screen readers (`aria-live`). Motion tokens, reduced motion respected. |
 | **Screen or page** | Without reading, the eye knows where to look first (three-second check). One focal point per zone, one `primary` per view, one `h1`, three or four type levels. Scanning pattern: F for dense content, Z for sparse. Sections `space-12` apart, page margins `space-4` / `space-8`. Responsive: works from 320px, holds at 200% zoom, touch without hover. Color only where it means something. |
 
@@ -524,7 +561,7 @@ Key characteristics (values reflect the active tokens; update them when a projec
 - Headlines from 40px up in Outfit, everything else in Figtree, code and data in Geist Mono.
 - A single signature color used rarely: `#904E55` in light, `#F8F1FF` in dark.
 - Depth comes from surface steps and 1px borders. Only clickable elements have a shadow, and it is barely visible.
-- Cards have 24px corners and controls 16px; content starts on the corner's centre and nested radii are concentric.
+- Cards have 24px corners and controls 12px; content starts on the corner's centre and nested radii are concentric.
 - Every space, size and line-height comes from a token on the 8-point grid.
 - One focal point per screen. Groups separate with the lightest step that works: space, then background, then line, then card.
 - Motion explains what is happening. It is quick in apps, and a landing page gets one carefully built moment.
@@ -604,7 +641,7 @@ A project may replace Kore's colors with its own. The user gives a few base colo
 
 1. Take the base colors from the project or from the user. If they cover one theme only, ask whether to derive the other theme or ship one theme.
 2. Derive every token with the table. Kore's own values follow these rules within about 1 L point.
-3. Check contrast on `surface-elevated`, the worst case in both themes: a text or border that passes there passes on every surface. For accent colors used as text, if one fails, move its L until it passes and keep its hue.
+3. Check contrast on the worst surfaces: `surface-elevated` and, in dark, `surface-float-active`. A text or border that passes there passes on every surface. For accent colors used as text, if one fails, move its L until it passes and keep its hue.
 4. Show one table: token, value, contrast. Wait for the user's OK, then write the project's tokens.
 
 **Contrast ratio** = (L1 + 0.05) / (L2 + 0.05), where L1 and L2 are the WCAG relative luminance of the lighter and the darker color. Composite translucent colors over the surface before measuring. Never round up: 4.49 fails 4.5.
@@ -672,6 +709,21 @@ To isolate the focal point, surround it with space and place it on a third of th
 - Weight can compensate size: a semibold `heading-sm` can outrank a regular larger line.
 - Bold only for headings and key terms; if everything is bold, nothing is.
 - No all caps on long text.
+
+### Text hierarchy
+
+Inside a component (a card, a popover, a dialog, a row), decide the order before the style.
+
+1. **Order first.** Decide what the user needs now, the action that comes next, and the context that changes the decision. Say each idea once: if the title already says it, the text below adds something new or disappears.
+2. **Emphasize by de-emphasizing.** The primary element stays `ink`; everything else steps down. Take weight away from the secondary text instead of making the primary louder.
+3. **Labels are a last resort.** Drop a label when the format already says what the value is (a price, a date, an email). Merge label and value when possible ("148 g a day", "12 left in stock", not "Stock: 12"). When a label must stay, it is the quieter half: `body-sm` in `mute`, with the value in `ink`. Emphasize the label instead only on dense reference pages where people scan for it (a spec sheet). Form fields always keep their visible labels.
+4. **Limits.** At most three sizes and three levels in one component. Weights: 400 for text, 500 for labels and buttons, 600 for titles; never below 400. Text colors: `ink`, `body`, `mute`, and nothing else for plain text.
+5. **Numbers.** The number carries the emphasis; its unit is smaller and in `mute` ("148 g *a day*").
+6. **Balance weight and contrast.** Heavy shapes (filled icons, large glyphs) take a softer color (`mute`); thin text keeps `ink`.
+7. **Warnings are never quiet.** A consequence the user must not miss ("This can't be undone.") sits on its own line, in weight 500 and its semantic color, never in `mute`. The words carry the meaning, so no icon is needed; add one only when the text alone does not say it is a warning.
+8. **Semantics follow hierarchy.** A destructive action in a list or menu is ghost or outline, with red limited to its icon; it becomes a filled `destructive` button only when it is the main action of the moment, as in the confirmation.
+9. **No grey text on colored surfaces.** On a tinted or colored background, secondary text takes a tint of that color, not `mute`.
+10. **Inline emphasis.** In a sentence, the words the user must check stand out in weight 500 and `ink`: figures with their unit (a quantity, a price, a date) and the name of the object an action affects ("**Next week's plan** and its **21 meals** will be removed."). At most two per sentence, never color, never whole phrases. It applies to explanations and messages (errors, confirmations); captions, subtitles and help text stay plain. It works because weight is noticed before reading (pre-attentive processing) and a lone different item stands out (the isolation effect).
 
 ### Grouping and separation
 
@@ -803,7 +855,9 @@ Kore is round: corners use circular arcs from the `rounded` scale, never squircl
 | Role | Token | Value |
 |---|---|---|
 | Cards, sheets, dialogs | `xl` | 24px |
-| Compact cards, controls (buttons, inputs, selects), menus | `lg` | 16px |
+| Compact cards | `lg` | 16px |
+| Controls (buttons, inputs, selects), menus, popovers | `md` | 12px |
+| Small buttons, items inside controls and menus, tooltips | `sm` | 8px |
 | Anything nested inside another rounded shape | from The Concentric Rule | — |
 | Pills, badges, avatars, status dots | `full` | 9999px |
 | Full-width sections, page edges | `none` | 0 |
@@ -816,7 +870,7 @@ Kore is round: corners use circular arcs from the `rounded` scale, never squircl
 |---|---|---|
 | Standard, media and clickable card | 24 | 24 |
 | Compact card | 16 | 16 |
-| Text input, select, textarea (48 and 40) | 16 | 16 |
+| Text input, select, textarea (48 and 40), popover | 12 | 12 |
 | List row highlight, file row | 12 | 12 |
 | Menu option | 8 | 8 |
 
@@ -832,15 +886,16 @@ The distance is the same on the sides and at the corner it faces. Combined with 
 
 | Case | Outer | Distance | Inner |
 |---|---|---|---|
-| Option inside a menu | 16 | 8 | 8, text at 8 + 8 = 16 |
+| Option inside a menu | 12 | 4 | 8, text at 4 + 8 = 12 |
 | Row highlight inside a standard card | 24 | 12 | 12, text at 12 + 12 = 24 |
-| Buttons in a card's action row (40px, radius 16) | 24 | 8 | 16 |
-| Header icon button in a card (32px, radius 12) | 24 | 12 | 12 |
-| Inline button inside a 48px field, stepper or segmented control | 16 | 8 | 8 |
-| Remove button inside a file row | 12 | 8 | 4 |
+| Buttons in an action row (40px, radius 12) in a card or dialog | 24 | 12 | 12 |
+| Corner action (32px, radius 8) in a card, dialog or sheet | 24 | 16 | 8 |
+| Inline button inside a 48px field, stepper or segmented control | 12 | 4 | 8 |
+| Remove button inside a file row | 12 | 4 | 8 |
 
 - **Place a fixed-size element by its radius:** a button keeps its own size and radius, and its distance from the container's edge is outer radius − its radius.
-- **Inline buttons** inside a control (the password toggle, stepper − and +, segments, a row's remove button) sit `space-2` (8px) from every edge: size = container height − 16, radius = container radius − 8. They don't use the button sizes; their hit area extends to 44px.
+- **Inline buttons** inside a control (the password toggle, stepper − and +, segments, a row's remove button) always have radius 8 (`sm`). Their distance from every edge is container radius − 8, and their size is container height − 2 × that distance: in a 48px control with radius 12, 40px buttons 4px from the edges. They don't use the button sizes; their hit area extends to 44px.
+- **Corner actions** (a "More" or close button in the top-right corner of a card, dialog or sheet) are small icon buttons (32px, radius 8) placed with this rule: 24 − 8 = 16px from the top and the right. The header becomes a row that starts at the same 16px and is as tall as the button; the title is centred in that row, so it lines up with the button. The side padding stays 24.
 - **No rounded blocks with a background inside cards** unless each one is its own unit (a clickable row); rows separate with space (see The Separation Ladder).
 - **Never the same radius inside and outside.** Equal radii make the gap look thicker at the corners.
 - **Deeper nesting** applies the rule again from the parent, not from the outermost container.
@@ -1136,9 +1191,9 @@ Five variants, three sizes, one shape. Every button has all its states.
 
 | Size | Height | Horizontal padding | Radius | Type |
 |---|---|---|---|---|
-| default | 48px | `space-6` (24px) | `lg` (16px) | `button-md` |
-| compact | 40px | `space-4` (16px) | `lg` (16px) | `button-md` |
-| small | 32px | `space-3` (12px) | `md` (12px), so it never turns into a pill | `button-sm`, hit area extended to 44px |
+| default | 48px | `space-6` (24px) | `md` (12px) | `button-md` |
+| compact | 40px | `space-4` (16px) | `md` (12px) | `button-md` |
+| small | 32px | `space-3` (12px) | `sm` (8px) | `button-sm`, hit area extended to 44px |
 
 - **Icon buttons** are square in the same three sizes and always carry an accessible label and a tooltip.
 - **No icons on labeled buttons.** A button with a label shows only text. The one exception is the loading spinner, placed before the label with `space-2` (8px).
@@ -1157,14 +1212,14 @@ Text input, textarea and select share one look.
 
 | Part | Spec |
 |---|---|
-| Field | Height 48px (compact 40px); padding `space-4` (16px), textarea `space-3` × `space-4`; radius `lg` (16px); background `surface-deep`; 1px `hairline-strong` border drawn inside |
+| Field | Height 48px (compact 40px); padding `space-3` (12px), equal to the radius; radius `md` (12px); background `surface-deep`; 1px `hairline-strong` border drawn inside |
 | Text | `body-md` (16px) in `ink`; placeholder in `mute`, only as an example, never as the label |
 | Label | `body-sm` medium in `ink`, above the field, `space-2` (8px) away; "(optional)" in `mute` when the field is optional |
 | Help text | `body-sm` in `mute`, below the field, `space-1` (4px) away |
 | Error | Red `accent-red` border plus a message in `accent-red` **with the alert icon**, linked to the field (`aria-invalid`, `aria-describedby`) |
 
 - **States:** hover turns the border `mute`; **focus thickens the border to 2px `ink`, with no outer ring** (2px `accent-red` when the field has an error); disabled uses `surface-elevated`, `stone` text and a `hairline` border; read-only uses `surface-elevated` with no border and stays selectable.
-- **Adornments:** a 20px icon on the left (search) with the text starting at 44px; a unit on the right ("kg", "g") in `mute`.
+- **Adornments:** a 20px icon on the left (search) at 12px, with the text starting at 40px; a unit on the right ("kg", "g") in `mute`, 12px from the edge.
 - **Textarea:** minimum height 96px, resizable vertically only.
 - **Validation** runs when the user leaves the field, and the error disappears as soon as the value is valid.
 
@@ -1173,8 +1228,8 @@ Text input, textarea and select share one look.
 A custom menu, never the browser's native dropdown.
 
 - **Trigger:** looks like a text field, with the Hugeicons down arrow on the right that rotates when open. Placeholder in `mute` until a value is chosen.
-- **Menu:** `surface-float`, 1px `hairline`, radius `lg` (16px), padding `space-2` (8px), opening under the trigger at `space-2`. Opens in `duration-base` with `ease-out`, closes in `duration-fast` with `ease-in`; no border shadow (see The Hairline Rule).
-- **Options:** 44px tall, 8px from the menu edge, radius `sm` (16 − 8 = 8) and horizontal padding 8, so the text sits 16px from the menu edge; `body-md`; the active option has `surface-float-active`; the selected one is medium weight with a check icon on the right.
+- **Menu:** `surface-float`, 1px `hairline`, radius `md` (12px), padding `space-1` (4px), opening under the trigger at `space-2`. Opens in `duration-base` with `ease-out`, closes in `duration-fast` with `ease-in`; no border shadow (see The Hairline Rule).
+- **Options:** 44px tall, 4px from the menu edge, radius `sm` (12 − 4 = 8) and horizontal padding 8, so the text sits 12px from the menu edge; `body-md`; the active option has `surface-float-active`; the selected one is medium weight with a check icon on the right.
 - **Keyboard and screen readers:** arrows move, Enter or Space selects, Escape and click outside close; focus returns to the trigger. Uses `listbox` / `option` roles and `aria-activedescendant`.
 
 ### Checkbox and radio
@@ -1195,13 +1250,13 @@ A custom menu, never the browser's native dropdown.
 
 ### Segmented control
 
-- **Container:** 48px tall, radius `lg` (16px), padding `space-2` (8px), `surface-elevated` with a `hairline` border. It hugs its segments, never stretches to full width.
-- **Segments:** inline buttons, 32px tall, radius `sm` (16 − 8 = 8), padding `space-3` (12px), `space-2` apart, hit area 44px; `button-md`, `mute` text. Selected: `surface-card` with a `hairline` border and `ink` text.
+- **Container:** 48px tall, radius `md` (12px), padding `space-1` (4px), `surface-elevated` with a `hairline` border. It hugs its segments, never stretches to full width.
+- **Segments:** inline buttons, 40px tall, radius `sm` (12 − 4 = 8), padding `space-4` (16px), `space-2` apart, hit area 44px; `button-md`, `mute` text. Selected: `surface-card` with a `hairline` border and `ink` text.
 - For two to five short, mutually exclusive options that switch a view; for more options, use a select.
 
 ### Password
 
-- A text field with a show/hide toggle: an inline button (32px, radius 16 − 8 = 8, 8px from every edge; the text stops 48px from the right edge). Hover `accent`, focus a 2px `ink` border inside. The icon switches between view and view-off; the accessible label and tooltip say "Show password" or "Hide password", with `aria-pressed`.
+- A text field with a show/hide toggle: an inline button (40px, radius 12 − 4 = 8, 4px from every edge; the text stops 52px from the right edge). Hover `accent`, focus a 2px `ink` border inside. The icon switches between view and view-off; the accessible label and tooltip say "Show password" or "Hide password", with `aria-pressed`.
 - Requirements sit under the field, `space-1` apart, in `body-sm`, and update while the user types: unmet is a 16px empty circle and `mute` text; met is a 16px check circle in `accent-green` and `ink` text. The icon changes shape, so the state never depends on color alone. The list is linked with `aria-describedby` and announced with `aria-live="polite"`.
 
 ### Combobox
@@ -1212,15 +1267,15 @@ A custom menu, never the browser's native dropdown.
 
 ### Number stepper
 
-- 160 × 48px, padding `space-2` (8px), radius `lg`, `surface-deep` with a `hairline-strong` border; − and + are inline buttons, 32px with radius 16 − 8 = 8, hit area extended to 44px. The value is centred, with tabular figures.
+- 160 × 48px, padding `space-1` (4px), radius `md`, `surface-deep` with a `hairline-strong` border; − and + are inline buttons, 40px with radius 12 − 4 = 8, hit area extended to 44px. The value is centred, with tabular figures.
 - Show the unit in the label and the limits in the help text before use ("Steps of 10 g, from 0 to 1,000 g"). − is disabled at the minimum and + at the maximum. Typed values snap to the step and the limits.
 - Focus on the value thickens the container border to 2px `ink`. Role `spinbutton` with `aria-valuemin`, `aria-valuemax`, `aria-valuenow`; Arrow Up and Down change the value.
 
 ### File upload
 
-- **Drop area:** the whole area is the control. `surface-float`, `hairline-strong` border, radius `lg`, padding `space-6`, at least 128px tall; a 24px upload icon, the action in `body-md` medium ("Choose a photo or drag it here") and the accepted formats and size limit in `body-sm` `mute` ("JPG or PNG, up to 5 MB"), always visible before the action.
-- **States:** hover `surface-float-active` with a `mute` border; dragging over and focus `surface-float-active` with a 2px `ink` border; error `accent-red` border plus an inline message that says what to do ("front.heic is not a JPG or PNG. Export it as JPG and try again."). Check type and size before uploading.
-- **Chosen file:** a 56px row in `surface-card` with a `hairline` border, radius `md` (12) and left padding 12: file icon in a 40px `surface-elevated` circle, name (truncated) and size in `body-sm` `mute`, and a 40px inline remove button (radius 12 − 8 = 4, 8px from the edges) labelled "Remove side.jpg". Upload progress uses the progress bar (Feedback).
+- **Drop area:** the whole area is the control. `surface-float`, `hairline-strong` border, radius `md`, padding `space-6` (centered content), at least 128px tall; a 24px upload icon, the action in `body-md` medium ("Choose a photo or drag it here") and the accepted formats and size limit in `body-sm` `mute` ("JPG or PNG, up to 5 MB"), always visible before the action.
+- **States:** hover `surface-float-active` with a `mute` border; dragging over and focus `surface-float-active` with a 2px `ink` border; on `surface-float-active` the hint text switches to `charcoal`; error `accent-red` border plus an inline message that says what to do ("front.heic is not a JPG or PNG. Export it as JPG and try again."). Check type and size before uploading.
+- **Chosen file:** a 56px row in `surface-card` with a `hairline` border, radius `md` (12) and left padding 12: file icon in a 40px `surface-elevated` circle, name (truncated) and size in `body-sm` `mute`, and a 48px inline remove button (radius 12 − 4 = 8, 4px from the edges) labelled "Remove side.jpg". Upload progress uses the progress bar (Feedback).
 
 ### Slider
 
@@ -1228,6 +1283,42 @@ A custom menu, never the browser's native dropdown.
 - The label sits on the left and the current value on the right, in `body-sm` medium with tabular figures. A range uses two thumbs that never cross, with the fill between them.
 - Focus: a 2px `primary-on` border inside the thumb. Disabled: `surface-elevated` track and `stone` thumb, no shadow.
 - Use a slider only when an approximate value is fine; for an exact value use the number stepper. Give each thumb a readable value (`aria-valuetext`, for example "€14").
+
+### Menu
+
+- **Surface:** `surface-float`, 1px `hairline`, no shadow, radius `md` (12px), padding `space-1` (4px), at least 224px wide, opening `space-2` below its trigger and aligned to it.
+- **Items:** 44px tall, radius `sm` (8px), padding 8, so the text sits 12px from the menu edge; optional 20px icon in `mute`, `space-2` from the label; a shortcut on the right in `caption` `charcoal`. Active and hover: `surface-float-active`.
+- **Groups** by category, `space-2` apart, optionally with a `caption` label in `mute`. A destructive item comes last, alone, with a red icon and `ink` text (red text fails contrast on the active surface in dark).
+- **Keyboard:** Enter, Space or ↓ opens and focuses the first item; ↑ ↓ Home End move; Escape closes and returns focus to the trigger; Tab closes. Roles `menu` and `menuitem`, `aria-haspopup`, `aria-expanded`.
+
+### Popover
+
+- `surface-float`, 1px `hairline`, radius `md` = padding `space-3` (12px), at most 288px wide, `space-2` from its trigger. Content follows Text hierarchy (label, value, explanation).
+- No buttons in its corners: a small action is a link. Focus moves in on open; Escape or a click outside closes it and returns focus. Role `dialog` with a label.
+
+### Dialog
+
+- A modal over a `scrim`: `surface-float`, 1px `hairline`, radius `xl` = padding `space-6` (24px), at most 480px wide, 16px from the screen edges on phones.
+- **Header:** title in `heading-sm`, with the close button as a corner action (Shapes), the title centred on it. **Body:** the object and figures in inline emphasis ("**Next week's plan** and its **21 meals** will be removed."). A consequence that cannot be undone sits on its own line in `accent-red`, weight 500, `space-4` below the body.
+- **Actions:** `space-8` below the content, compact buttons 24 − 12 = 12px from the edges, right-aligned, confirm last; the buttons name the action ("Keep plan", "Delete plan"), never "Cancel" and "OK". Initial focus goes to the safer action.
+- Use a dialog only when the action cannot be undone; otherwise act and offer "Undo" (Usability 3). Focus stays inside; Escape, the close button and a click on the scrim close it; focus returns to the trigger. Use the platform's modal element where it exists (`<dialog>` on the web).
+- Opens with a fade and a 0.98 → 1 scale in `duration-base` `ease-out`; only the fade under reduced motion.
+
+### Sheet
+
+- **Phones (below `md`):** from the bottom edge, full width, top corners `xl`, padding `space-6` plus the bottom safe area, at most 85% of the screen height.
+- **From `md`:** from the right, 400px wide, `space-2` (8px) from the screen edges, all corners `xl`, full height minus 16px.
+- Header with a corner close button, content, and actions at the bottom (right-aligned, confirm last). Same modal behaviour as the dialog; slides in with `duration-base` `ease-out`, fade only under reduced motion.
+
+### Tooltip
+
+- The one inverted overlay: `ink` background with `canvas` text, so it separates from anything below it without a shadow. `caption`, radius `sm` = padding 8 (4 × 8), `space-2` from its trigger, at most 240px wide.
+- Appears after 500ms of hover and immediately on keyboard focus; Escape hides it. Plain text only, never links or buttons. Linked with `aria-describedby`, role `tooltip`. Every icon-only button has one.
+
+### Overlay rules
+
+- **Hover on floating surfaces:** ghost and outline buttons inside a menu, popover, dialog or sheet use `surface-float-active` for hover and pressed, because `accent` equals `surface-float` in dark.
+- On `surface-float-active`, secondary text uses `charcoal` (not `mute`) and links don't appear; in dark, `mute`, `link` and `hairline-strong` fall below their minimum there.
 
 ### Cards
 
@@ -1241,8 +1332,8 @@ A custom menu, never the browser's native dropdown.
 
 - **Shape and surface:** `surface-card`, 1px `hairline` drawn inside, radius `xl` (24px), the same padding on all four sides.
 - **Header:** title in `heading-sm`, subtitle in `body-sm` `mute`, `space-1` (4px) apart; `space-6` (24px) between the header and the content (`space-4` in compact cards).
-- **Actions:** at the bottom of the card, right-aligned, confirm last with cancel or back to its left (Action order in Hierarchy); compact buttons (40px, radius 16) placed 24 − 16 = 8px from the card's bottom and right edges (The Concentric Rule), `space-2` apart. At most one `primary`, and only when it is the view's main action; in a list of repeated cards use secondary and ghost. A card with actions is at least 320px wide; if the buttons still don't fit, they stack full-width with the confirming action at the bottom, never in a staircase. It has no shadow, since it is not clickable as a whole.
-- **Header action:** an optional "More" icon button (32px, radius 12) at the top right, 24 − 12 = 12px from the corner, with an accessible label ("More options for Leg day") and a tooltip.
+- **Actions:** at the bottom of the card, right-aligned, confirm last with cancel or back to its left (Action order in Hierarchy); compact buttons (40px, radius 12) placed 24 − 12 = 12px from the card's bottom and right edges (The Concentric Rule), `space-2` apart. At most one `primary`, and only when it is the view's main action; in a list of repeated cards use secondary and ghost. A card with actions is at least 320px wide; if the buttons still don't fit, they stack full-width with the confirming action at the bottom, never in a staircase. It has no shadow, since it is not clickable as a whole.
+- **Header action:** an optional "More" button placed as a corner action (Shapes): 32px, radius 8, 16px from the corner, with the title centred on it; accessible label ("More options for Leg day") and tooltip.
 - **Height:** each card is as tall as its content. Cards in a row share one height only in a grid of cards with the same structure.
 - **Key figure:** when a card exists to show one number, the number is its focal point: `display-lg` in `signature`, with its unit and context in `body-sm` `mute` on the same baseline.
 - **Clickable card:** the whole card is one link or button. It fills the full width of its container, with the arrow anchored to the right edge. Focus is a 2px `focus-ring` border inside the card; pressed returns to rest. It never contains other buttons or links.
@@ -1735,7 +1826,8 @@ Alternative values for each token. The frontmatter holds the active value for th
 
 | Set | |
 |---|---|
-| B · Round — controls 16 · inner blocks 16 · cards 24 | active |
+| Kore — cards 24 · compact cards 16 · controls 12 · inner items 8 | active |
+| B · Round — controls 16 · inner blocks 16 · cards 24 |  |
 | Current — controls 8 · inner blocks 8 · cards 12 |  |
 | A · Soft — controls 12 · inner blocks 12 · cards 16 |  |
 | C · Pill — controls full · inner blocks 16 · cards 24 |  |
