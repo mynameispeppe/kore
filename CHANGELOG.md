@@ -12,6 +12,18 @@ Working toward 1.0.0, the first public release.
 - The Library-First Rule: library sizes and behaviours that break no binding rule stay as they are; typical overrides listed; theming through the library's API.
 - Hierarchy: one `h1` per page, no inverted hierarchy (metadata never outweighs its title), focal point placed on a third of the layout.
 - Start here: where the accessibility rules live; Building anything, the five steps for any component or screen.
+- Colors: new `surface-float` (`#fcfdfd` / `#1c1c1c`) and `surface-float-active` (`#f4f6f7` / `#2a2a2a`) for floating layers. In dark, menus used `surface-deep`, darker than the canvas, and disappeared on some screens; floating layers are now lighter than the canvas and the cards.
+- Elevation: floating and overlay levels use `surface-float`; in dark, a higher layer is always lighter.
+- Focus: one style everywhere, a 2px border drawn inside the control with no outer ring; `ink` on empty controls, the foreground color on filled ones, `accent-red` on fields with an error.
+- Components: password with live requirements, combobox, number stepper, file upload and slider.
+- Start here: Checks by context replaces the separate checklists (Spacing pre-delivery checklist, Three-second check): three checks always, plus one row per kind of work (container, control, overlay, feedback, screen); results are reported at delivery; reused code goes through the same checks.
+- List rows: `space-2` (8px) between rows, so two highlights never touch.
+- Shapes: The Radius-Padding Rule (side-aligned content starts on the corner curve's centre: horizontal padding = radius, reduce the radius when the padding is smaller; centered content exempt).
+- Shapes: The Concentric Rule replaces The Half-Padding Rule: inner radius = outer radius − distance, so nested curves share one centre. Menu options now radius 8, row highlights 12, compact card 16.
+- Inline buttons: inside a control they sit 8px from every edge, size = container height − 16, radius = container radius − 8 (password toggle, stepper, segments, file row remove).
+- Spacing: The Distance Ratio Rule replaces "one step apart": space between groups ≥ 2 × space inside. Card rows now 12 (compact 8), rows ↔ actions 32. Rules for alignment, density and grouping actions.
+- Hierarchy: action order, right-aligned with the confirming action last and cancel or back to its left.
+- Cards: compact cards drop inner blocks and separate rows with space; new media card and card with actions (actions at the bottom, placed by The Concentric Rule, at least 320px wide, stacking instead of wrapping); each card as tall as its content.
 - Icons: Hugeicons always in the free set; the Pro set only on the user's request and license.
 
 ## 0.1.0
