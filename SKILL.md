@@ -1229,7 +1229,7 @@ A custom menu, never the browser's native dropdown.
 
 - **Trigger:** looks like a text field, with the Hugeicons down arrow on the right that rotates when open. Placeholder in `mute` until a value is chosen.
 - **Menu:** `surface-float`, 1px `hairline`, radius `md` (12px), padding `space-1` (4px), opening under the trigger at `space-2`. Opens in `duration-base` with `ease-out`, closes in `duration-fast` with `ease-in`; no border shadow (see The Hairline Rule).
-- **Options:** 44px tall, 4px from the menu edge, radius `sm` (12 − 4 = 8) and horizontal padding 8, so the text sits 12px from the menu edge; `body-md`; the active option has `surface-float-active`; the selected one is medium weight with a check icon on the right.
+- **Options:** 44px tall, `space-1` (4px) apart so two highlights never touch, 4px from the menu edge, radius `sm` (12 − 4 = 8) and horizontal padding 8, so the text sits 12px from the menu edge; `body-md`; the active option has `surface-float-active`; the selected one is medium weight with a check icon on the right.
 - **Keyboard and screen readers:** arrows move, Enter or Space selects, Escape and click outside close; focus returns to the trigger. Uses `listbox` / `option` roles and `aria-activedescendant`.
 
 ### Checkbox and radio
@@ -1288,7 +1288,8 @@ A custom menu, never the browser's native dropdown.
 
 - **Surface:** `surface-float`, 1px `hairline`, no shadow, radius `md` (12px), padding `space-1` (4px), at least 224px wide, opening `space-2` below its trigger and aligned to it.
 - **Items:** 44px tall, radius `sm` (8px), padding 8, so the text sits 12px from the menu edge; optional 16px icon in `mute`, `space-2` from the label; a shortcut on the right in `caption` `charcoal`. Active and hover: `surface-float-active`.
-- **Groups** by category, `space-2` apart, optionally with a `caption` label in `mute`. A destructive item comes last, alone, with a red icon and `ink` text (red text fails contrast on the active surface in dark).
+- **Spacing:** items `space-1` (4px) apart, so two highlights never touch; groups `space-2` (8px) apart (The Distance Ratio Rule).
+- **Groups** by category, optionally with a `caption` label in `mute`. A destructive item comes last, alone, with a red icon and `ink` text (red text fails contrast on the active surface in dark).
 - **Keyboard:** Enter, Space or ↓ opens and focuses the first item; ↑ ↓ Home End move; Escape closes and returns focus to the trigger; Tab closes. Roles `menu` and `menuitem`, `aria-haspopup`, `aria-expanded`.
 
 ### Popover
