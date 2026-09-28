@@ -32,6 +32,19 @@ Working toward 1.0.0, the first public release.
 - Inline buttons have no background: hover and pressed change the icon from `mute` to `ink`; the box shows only as the focus border. Icons: 16px inside controls and menus, 20px in icon-only buttons, 24px for navigation.
 - Menus and select options: items 4px apart so highlights never touch; groups 8px apart.
 - Icons: Hugeicons always in the free set; the Pro set only on the user's request and license.
+- Hierarchy: Semantic weight, how to decide what is Primary, Secondary or Tertiary before styling it — the reader's question re-applied at every nesting level, one stated priority per repeating component, defaults declared instead of applied or flagged silently, and no invented component (a badge, a tag) to assert a priority nobody confirmed. Checks by context now verifies it for every container.
+- Shapes: The Concentric Rule now scopes itself to shapes anchored to the container's edge as their own functional unit; an icon, avatar or badge that just leads a block of content keeps a constant radius and sits at the container's own padding instead.
+- Motion: "Stay light" now has two measurable bars instead of a vague phone test — 60fps or better while the animation runs, and zero layout shift caused by it (CLS 0).
+- Hierarchy: The Working Memory Rule in Grouping and separation — a group past four options, actions or facts must be categorized or moved behind a "More" menu instead of listed flat.
+- Responsive: Grids now names container queries explicitly for a component reused at different widths, instead of leaving the technique unnamed.
+- Components: Form fields' error state no longer requires an alert icon by default — the message already carries the meaning (Text hierarchy #7), an icon is added only when it wouldn't.
+- Components: Segmented control caps at four options instead of five, in line with The Working Memory Rule; five or more now goes to a select instead of a flat row.
+- Components: Tooltip's hover delay moved from an off-scale 500ms to `duration-slow` (400ms), an existing Motion token instead of a free value.
+- Components: Button drops from five variants to four — primary, secondary (was outline), tertiary (was ghost), destructive — removing the filled `secondary` variant, which overlapped with outline. Each variant now states its usage cap (primary and destructive at most one per decision; secondary alongside a primary; tertiary unlimited).
+- The One Primary Rule now states explicitly that it counts per decision, not per page: a repeated, independent card or row (a product grid, a list) may each have their own primary.
+- Button sizes now follow vertical padding = half the horizontal padding (12/8/8), changing heights to 44 / 36 / 32 (was 48 / 40 / 32); every cross-reference to the old compact height (40px) updated to 36px.
+- Form fields drop the default/compact split: one height, 40px, for text input, textarea and select. The password toggle recomputes to 32px at the same 4px inset; every cross-reference to the old 48px field updated.
+- Checks by context and Spacing's multiples-of-8 example updated to the new control sizes (44 / 36 / 32 buttons, 40 fields) instead of the old 32 / 40 / 48.
 
 ## 0.1.0
 

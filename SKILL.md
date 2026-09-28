@@ -226,39 +226,32 @@ components:
     textColor: "{colors.primary-on}"
     typography: "{typography.button-md}"
     rounded: "{rounded.md}"
-    padding: 0 24px
-    height: 48px
+    padding: 12px 24px
+    height: 44px
   button-primary-pressed:
     backgroundColor: "{colors.primary-pressed}"
     textColor: "{colors.primary-on}"
   button-secondary:
-    backgroundColor: "{colors.secondary}"
-    textColor: "{colors.ink}"
-    typography: "{typography.button-md}"
-    rounded: "{rounded.md}"
-    padding: 0 24px
-    height: 48px
-  button-outline:
     backgroundColor: transparent
     textColor: "{colors.ink}"
     typography: "{typography.button-md}"
     rounded: "{rounded.md}"
-    padding: 0 24px
-    height: 48px
-  button-ghost:
+    padding: 12px 24px
+    height: 44px
+  button-tertiary:
     backgroundColor: transparent
     textColor: "{colors.ink}"
     typography: "{typography.button-md}"
     rounded: "{rounded.md}"
-    padding: 0 24px
-    height: 48px
+    padding: 12px 24px
+    height: 44px
   button-destructive:
     backgroundColor: "{colors.accent-red}"
     textColor: "{colors.accent-red-on}"
     typography: "{typography.button-md}"
     rounded: "{rounded.md}"
-    padding: 0 24px
-    height: 48px
+    padding: 12px 24px
+    height: 44px
   button-destructive-pressed:
     backgroundColor: "{colors.accent-red-pressed}"
     textColor: "{colors.accent-red-on}"
@@ -268,12 +261,12 @@ components:
   button-compact:
     typography: "{typography.button-md}"
     rounded: "{rounded.md}"
-    padding: 0 16px
-    height: 40px
+    padding: 8px 16px
+    height: 36px
   button-small:
     typography: "{typography.button-sm}"
     rounded: "{rounded.sm}"
-    padding: 0 12px
+    padding: 8px 12px
     height: 32px
   text-input:
     backgroundColor: "{colors.surface-deep}"
@@ -281,8 +274,6 @@ components:
     typography: "{typography.body-md}"
     rounded: "{rounded.md}"
     padding: 0 12px
-    height: 48px
-  text-input-compact:
     height: 40px
   text-input-focus:
     borderColor: "{colors.ink}"
@@ -365,7 +356,7 @@ components:
     rounded: "{rounded.sm}"
     offset: container radius − 8px
   password-toggle:
-    size: 40px
+    size: 32px
     rounded: "{rounded.sm}"
     offset: 4px
   stepper:
@@ -521,8 +512,8 @@ Check every rule that concerns what is being built, one by one; never assume a r
 
 | Building | Check |
 |---|---|
-| **Container** (card, panel, list) | Hierarchy: one focal point that wins on two of the six tools, primary > secondary > tertiary, no inverted hierarchy (metadata never outweighs the title), groups clear without extra borders. Spacing: uniform padding (`space-6`, compact `space-4`), The Distance Ratio Rule (between ≥ 2 × inside: title ↔ subtitle `space-1`, header ↔ content `space-6`, rows `space-3`, compact rows `space-2`, rows ↔ actions `space-8`), list items `space-2` apart, two highlights never touch. Shapes: horizontal padding = radius, nested radii concentric (outer − distance), no rounded blocks inside cards unless each is a clickable unit, no card inside a card. Actions: at the bottom, right-aligned, confirm last; each card as tall as its content (equal heights only in a grid of cards with the same structure). Elevation: `hairline` border, shadow only if the whole container is clickable. |
-| **Control** (button, field, switch, slider…) | Every state: default, hover, focus, pressed, disabled, and selected, loading, error where they apply. Focus: 2px border inside, `ink` or the foreground color on filled controls. Sizes 32 / 40 / 48px (inline buttons: container height − 16, radius container radius − 8), touch target 44px, targets `space-2` apart. Accessible name, keyboard use, ARIA roles on custom controls. Labeled buttons without icons; labels are a verb and an object. Form text 16px. |
+| **Container** (card, panel, list) | Hierarchy: one focal point that wins on two of the six tools, primary > secondary > tertiary, no inverted hierarchy (metadata never outweighs the title), groups clear without extra borders. Semantic weight: no value repeats without a new purpose, roles differ by at least one clear step in size or weight, no asymmetry left unquestioned against the component's stated priority. Spacing: uniform padding (`space-6`, compact `space-4`), The Distance Ratio Rule (between ≥ 2 × inside: title ↔ subtitle `space-1`, header ↔ content `space-6`, rows `space-3`, compact rows `space-2`, rows ↔ actions `space-8`), list items `space-2` apart, two highlights never touch. Shapes: horizontal padding = radius, nested radii concentric (outer − distance), no rounded blocks inside cards unless each is a clickable unit, no card inside a card. Actions: at the bottom, right-aligned, confirm last; each card as tall as its content (equal heights only in a grid of cards with the same structure). Elevation: `hairline` border, shadow only if the whole container is clickable. |
+| **Control** (button, field, switch, slider…) | Every state: default, hover, focus, pressed, disabled, and selected, loading, error where they apply. Focus: see States. Button sizes 44 / 36 / 32px, field height 40px (inline buttons: container height − 2 × (container radius − 8)), touch target 44px, targets `space-2` apart. Accessible name, keyboard use, ARIA roles on custom controls. Labeled buttons without icons; labels are a verb and an object. Form text 16px. |
 | **Overlay** (menu, popover, dialog, sheet, tooltip) | Floating level: `surface-float` + `hairline`, no shadow; hover inside uses `surface-float-active`; corner actions and action rows placed by The Concentric Rule. Opens and closes with the motion tokens. Escape and click outside close it; focus moves in on open and returns to the trigger on close. Options: radius 8, 4px from the menu edge, padding 8, so text sits on the menu curve's centre. |
 | **Feedback** (toast, error, empty state, loading) | Response times: 100ms, 300ms, 1s, 3s (Usability 1). Messages say what, why and how, next to their cause, without codes. Semantic colors keep their meaning and never work alone. Announced to screen readers (`aria-live`). Motion tokens, reduced motion respected. |
 | **Screen or page** | Without reading, the eye knows where to look first (three-second check). One focal point per zone, one `primary` per view, one `h1`, three or four type levels. Scanning pattern: F for dense content, Z for sparse. Sections `space-12` apart, page margins `space-4` / `space-8`. Responsive: works from 320px, holds at 200% zoom, touch without hover. Color only where it means something. |
@@ -589,21 +580,21 @@ Colors are roles, not a bag of swatches. Every token has one job; a color with n
 
 - **Never color alone.** Error, success, warning and info always carry a text label or an icon too, so they work for color-blind users and in grayscale.
 - **Semantic roles stay fixed:** `accent-red` = error and destructive, `accent-green` = success, `accent-yellow` = warning, `info` = information, `link` = links. Never swap them for decoration.
-- **The accent is rare.** `signature` marks the primary moment of a screen (key data, emphasis). Scattered everywhere, it stops meaning anything.
+- **The accent is rare.** `signature` marks the primary moment of a screen (key data, emphasis). Scattered everywhere, it stops meaning anything. Never as a button or a surface, and never a second brand color alongside it.
 
-**The One Primary Rule.** `primary` is spent on the main action of the view and nothing else: at most one solid primary button per view, never on decoration.
+**The One Primary Rule.** `primary` is spent on the main action of its decision and nothing else: at most one solid primary button per decision, never on decoration. A repeated, independent unit (a card in a product grid, a row in a list) is its own decision — each may have its own primary; the rule counts per decision, not per page.
 
 ### States
 
 Every interactive element defines all its states: default, hover, focus, active/pressed, disabled, selected, loading, error. A component with half of them does not ship.
 
-- **Focus, one style everywhere:** a 2px border drawn inside the control, never an outer ring. Empty or outlined controls (fields, unchecked checkbox and radio, switch off, segments, secondary, outline and ghost buttons, clickable cards and rows, the file drop area) use `focus-ring` (`ink`). Filled controls (primary and destructive buttons, checked checkbox and radio, switch on, slider thumb) use their foreground color (`primary-on`, `accent-red-on`), because `ink` would vanish on `primary`. A field with an error keeps the red: 2px `accent-red`. Never remove focus without a replacement.
+- **Focus, one style everywhere:** a 2px border drawn inside the control, never an outer ring. Empty or outlined controls (fields, unchecked checkbox and radio, switch off, segments, secondary and tertiary buttons, clickable cards and rows, the file drop area) use `focus-ring` (`ink`). Filled controls (primary and destructive buttons, checked checkbox and radio, switch on, slider thumb) use their foreground color (`primary-on`, `accent-red-on`), because `ink` would vanish on `primary`. A field with an error keeps the red: 2px `accent-red`. Never remove focus without a replacement.
 - **Selection:** selected items and selected text use `selection`.
 - **Disabled:** foreground `stone`, no hover, cursor not-allowed; keep the element's size so the layout does not shift.
 
 ### Themes
 
-- Light and dark are each designed, never produced by inverting the other. Check surface steps, borders and contrast separately in each.
+- Light and dark are each designed, never produced by inverting the other. Check surface steps, borders and contrast separately in each. Pick the default from the use scene (who, where, what light), never by habit.
 - **Glows** (`*-glow`) are atmosphere with a purpose: at most one per screen, anchored at the top of a section, and never on dense task screens (lists, forms, tables).
 
 ### Custom palette
@@ -649,7 +640,7 @@ A project may replace Kore's colors with its own. The user gives a few base colo
 ## Typography rules
 
 - **Roles, not sizes.** Use the scale tokens (`display-*`, `heading-*`, `body-*`, `caption*`, `button-*`, `code-md`); never a free font size.
-- **Display font only for display.** The display family (`display-*`, 40px and up) never appears in labels, buttons, navigation, form fields or data. Everything else uses the sans.
+- **Display font only for display.** The display family (`display-*`, 40px and up) never appears in labels, buttons, navigation, form fields or data. Everything else uses the sans. Monospace is for code, data and tabular numbers, never a costume for "technical".
 - **Form fields at 16px.** Text inside inputs, textareas and selects uses `body-md` (16px) so mobile Safari does not zoom the page on focus.
 - **Reading floor.** Running text is at least 16px (`body-md`). 14px (`body-sm`) is for metadata and dense UI, 12px (`caption`) only for short labels.
 - **Measure.** Paragraphs stay between 45 and 75 characters per line; cap text containers with a `ch` max-width.
@@ -660,93 +651,6 @@ A project may replace Kore's colors with its own. The user gives a few base colo
 - **Fixed scale in apps.** Product screens use the fixed rem scale. Fluid sizes (clamp) are reserved for display type on marketing pages.
 - **Font loading.** Load only the weights in use, with `font-display: swap` and a metric-compatible fallback, so text is never invisible and the layout does not jump.
 - **Zoom and user settings.** Never block browser zoom, user font size, Dynamic Type or platform text scaling.
-
-## Hierarchy
-
-Hierarchy is the architecture of attention: it tells the eye what to look at first, what next, and what to ignore. A correct hierarchy lets a user understand a screen in under five seconds without reading a word.
-
-### Visual weight
-
-Six tools set how strongly an element pulls the eye. Use them on purpose, and mostly to take weight away from secondary elements.
-
-| Tool | Rule |
-|---|---|
-| Size | The bigger element is read first. Headings are clearly larger than their subheadings; the primary button is larger than secondary actions; functional icons are larger than decorative ones. |
-| Contrast | Primary text uses full contrast (`ink`); metadata steps down (`charcoal`, `mute`), always within the 4.5:1 minimum. |
-| Color | One accent family for primary actions. Saturated beats desaturated; color never carries meaning alone. |
-| Shape | A shape that breaks the pattern stands out (a round badge on a square icon). Kore keeps one corner language, so shape contrast comes from form (pill, circle, dot), never from mixing corner styles. |
-| Position | Top-left is read first in left-to-right layouts; an element surrounded by space weighs more than the same element in a crowd. |
-| Density | A dense area weighs more but can confuse. Reduce density of secondary areas; an isolated element gains weight from the empty space around it. Never the same density everywhere. |
-
-**The One Winner Rule.** Every screen, and every zone of a screen, has one focal point. It beats everything else on at least two of the six tools (for example: largest, full contrast, top-left). Three is overdesign. Two elements with similar weight compete and neither wins.
-
-**Never invert the hierarchy:** metadata (date, author, category) never outweighs the title it belongs to.
-
-### Three levels
-
-- **Primary:** one element, the focal point. Caught first.
-- **Secondary:** two or three elements that support it and add context.
-- **Tertiary:** everything else; present, never distracting.
-
-If the primary element cannot be named within three seconds of looking at the design, there is no focal point.
-
-To isolate the focal point, surround it with space and place it on a third of the layout (the upper third, or the top-left crossing) rather than at the dead centre.
-
-| Context | Focal point | Typical mistake |
-|---|---|---|
-| Landing page | Hero headline or main image | Three elements of similar size in the hero |
-| Dashboard | The most important metric | A grid of identical cards with no leader |
-| Form | The first field to fill | Label and input with the same weight |
-| Product or content card | Image or title | Price, title and badge at the same weight |
-| Error page | The error message | A decorative illustration heavier than the message |
-| Dialog | Title and primary action | Three equivalent buttons |
-
-### Typographic levels
-
-- **One `h1` per page;** it names the page.
-- At most **three or four type levels** visible on one screen.
-- Adjacent levels differ clearly in size and/or weight; if two roles look almost the same, drop one.
-- Weight can compensate size: a semibold `heading-sm` can outrank a regular larger line.
-- Bold only for headings and key terms; if everything is bold, nothing is.
-- No all caps on long text.
-
-### Text hierarchy
-
-Inside a component (a card, a popover, a dialog, a row), decide the order before the style.
-
-1. **Order first.** Decide what the user needs now, the action that comes next, and the context that changes the decision. Say each idea once: if the title already says it, the text below adds something new or disappears.
-2. **Emphasize by de-emphasizing.** The primary element stays `ink`; everything else steps down. Take weight away from the secondary text instead of making the primary louder.
-3. **Labels are a last resort.** Drop a label when the format already says what the value is (a price, a date, an email). Merge label and value when possible ("148 g a day", "12 left in stock", not "Stock: 12"). When a label must stay, it is the quieter half: `body-sm` in `mute`, with the value in `ink`. Emphasize the label instead only on dense reference pages where people scan for it (a spec sheet). Form fields always keep their visible labels.
-4. **Limits.** At most three sizes and three levels in one component. Weights: 400 for text, 500 for labels and buttons, 600 for titles; never below 400. Text colors: `ink`, `body`, `mute`, and nothing else for plain text.
-5. **Numbers.** The number carries the emphasis; its unit is smaller and in `mute` ("148 g *a day*").
-6. **Balance weight and contrast.** Heavy shapes (filled icons, large glyphs) take a softer color (`mute`); thin text keeps `ink`.
-7. **Warnings are never quiet.** A consequence the user must not miss ("This can't be undone.") sits on its own line, in weight 500 and its semantic color, never in `mute`. The words carry the meaning, so no icon is needed; add one only when the text alone does not say it is a warning.
-8. **Semantics follow hierarchy.** A destructive action in a list or menu is ghost or outline, with red limited to its icon; it becomes a filled `destructive` button only when it is the main action of the moment, as in the confirmation.
-9. **No grey text on colored surfaces.** On a tinted or colored background, secondary text takes a tint of that color, not `mute`.
-10. **Inline emphasis.** In a sentence, the words the user must check stand out in weight 500 and `ink`: figures with their unit (a quantity, a price, a date) and the name of the object an action affects ("**Next week's plan** and its **21 meals** will be removed."). At most two per sentence, never color, never whole phrases. It applies to explanations and messages (errors, confirmations); captions, subtitles and help text stay plain. It works because weight is noticed before reading (pre-attentive processing) and a lone different item stands out (the isolation effect).
-
-### Grouping and separation
-
-Elements close together are read as one group (proximity); distance between groups says how related they are.
-
-**The Separation Ladder.** Separate with the lightest step that works, and never skip steps:
-
-1. **Space only**: the gap does the work, zero graphic noise. The default.
-2. **Background change**: a surface step (`surface-card`, `surface-elevated`) for wide sections.
-3. **Line**: a 1px `hairline`, only between sections of equal importance, never on every row.
-4. **Card** (surface + border): maximum separation and weight.
-
-- **Rows in a list separate with space**, not with a divider on every row; a divider on each row makes every item look like its own section.
-- **Containers only when needed:** the group changes context sharply (data vs. actions vs. navigation), proximity is not enough because the layout is dense, or the group is clickable as one unit. A border added "to tidy up" means the grouping is wrong.
-- Other ways to group without containers: alignment on a shared axis, the same background tone, the same type style for the same category.
-
-### Scanning patterns
-
-- **F pattern** (dense content: feeds, tables, search results, dashboards): the left column and the first two lines of each block are always read. Put titles, status and key actions on the left; the first column of a table carries the most important data.
-- **Z pattern** (sparse content: landing pages, cards, simple forms): brand top-left, primary action top-right, key message at the centre-left turn of the Z, final action bottom-right.
-- **Action order.** Actions are right-aligned; the confirming action is last on the right, and cancel or back sits immediately to its left. The same in cards, dialogs and multi-step flows.
-- A perfectly symmetric layout follows no pattern and guides nothing: break symmetry on purpose for the focal point (wider, taller, isolated).
-- Critical information never lives only at the bottom right of an F layout.
 
 ## Spacing
 
@@ -777,7 +681,7 @@ The primary scale is 4 / 8 / 16 / 24 / 32 / 48. The half-steps 12, 20 and 40 exi
 3. **Keep the scale small.** Never add a token for a single case. Repeat the existing ones.
 4. **Uniform card padding.** The same value on all four sides and on every card of the same kind: `space-6` (24px) by default, `space-4` (16px) for compact cards.
 5. **Everything that adds space follows the scale:** card padding, gaps between sections, text spacing, button sizes, layout margins, icon spacing.
-6. **Element sizes are multiples of 8** (4 when needed): icons 16 / 20 / 24, avatars 24 / 32 / 40 / 48, controls 32 / 40 / 48, bars 56 / 64.
+6. **Element sizes are multiples of 8** (4 when needed): icons 16 / 20 / 24, avatars 24 / 32 / 40 / 48, controls 32 / 36 / 40 / 44, bars 56 / 64.
 7. **Line-heights are multiples of 4** (see Typography), so vertical rhythm never breaks.
 8. **Borders don't count.** A 1px border is not spacing: use border-box sizing and fixed heights so a border never forces off-grid padding (no `7px 15px` to compensate).
 9. **Use relative units.** Implement tokens in `rem` (1rem = 16px) so spacing follows the user's text size and zoom.
@@ -808,7 +712,8 @@ Spacing tells the reader what belongs together.
 | Gap between list items | `space-2` / `space-4` / `space-6` | 8 / 16 / 24px |
 | Gap between page sections | `space-12` | 48px |
 | Page side margin | `space-4` phone, `space-8` tablet and up | 16px / 32px |
-| Main button and input height | `space-12` | 48px |
+| Button height | — | 44px |
+| Input height | — | 40px |
 | Button horizontal padding | `space-6` (compact `space-4`) | 24px (16px) |
 
 ### Accessibility
@@ -888,13 +793,14 @@ The distance is the same on the sides and at the corner it faces. Combined with 
 |---|---|---|---|
 | Option inside a menu | 12 | 4 | 8, text at 4 + 8 = 12 |
 | Row highlight inside a standard card | 24 | 12 | 12, text at 12 + 12 = 24 |
-| Buttons in an action row (40px, radius 12) in a card or dialog | 24 | 12 | 12 |
+| Buttons in an action row (36px, radius 12) in a card or dialog | 24 | 12 | 12 |
 | Corner action (32px, radius 8) in a card, dialog or sheet | 24 | 16 | 8 |
-| Inline button inside a 48px field, stepper or segmented control | 12 | 4 | 8 |
+| Inline button inside a 40px field, or a 48px stepper or segmented control | 12 | 4 | 8 |
 | Remove button inside a file row | 12 | 4 | 8 |
 
+- **Two kinds of nested shape.** The formula governs a shape anchored to the container's edge as its own functional unit: the cases in the table above, plus any button, menu item or control placed near a corner. An icon, avatar or badge that simply leads a padded block of content — not anchored to an edge on its own, just the first item in a stack — is not concentric: it keeps a constant radius from the `rounded` scale and sits at the container's own padding, exactly like the text beside it. (Apple's design system names these "concentric" and "fixed" shapes; a capsule, radius = half its height, is a third fixed case.)
 - **Place a fixed-size element by its radius:** a button keeps its own size and radius, and its distance from the container's edge is outer radius − its radius.
-- **Inline buttons** inside a control (the password toggle, stepper − and +, segments, a row's remove button) always have radius 8 (`sm`). Their distance from every edge is container radius − 8, and their size is container height − 2 × that distance: in a 48px control with radius 12, 40px buttons 4px from the edges. They don't use the button sizes; their hit area extends to 44px. They have no background: the icon is 16px in `mute`, hover and pressed turn it `ink`, and the box shows only as the 2px focus border.
+- **Inline buttons** inside a control (the password toggle, stepper − and +, segments, a row's remove button) always have radius 8 (`sm`). Their distance from every edge is container radius − 8, and their size is container height − 2 × that distance: in a 40px field with radius 12, 32px buttons 4px from the edges. They don't use the button sizes; their hit area extends to 44px. They have no background: the icon is 16px in `mute`, hover and pressed turn it `ink`, and the box shows only as the focus border (States).
 - **Corner actions** (a "More" or close button in the top-right corner of a card, dialog or sheet) are small icon buttons (32px, radius 8) placed with this rule: 24 − 8 = 16px from the top and the right. The header becomes a row that starts at the same 16px and is as tall as the button; the title is centred in that row, so it lines up with the button. The side padding stays 24.
 - **No rounded blocks with a background inside cards** unless each one is its own unit (a clickable row); rows separate with space (see The Separation Ladder).
 - **Never the same radius inside and outside.** Equal radii make the gap look thicker at the corners.
@@ -902,7 +808,7 @@ The distance is the same on the sides and at the corner it faces. Combined with 
 
 ### Borders inside the edge
 
-A border must not change the measurements the nested rule relies on. Draw the 1px `hairline` inside the element's edge without taking layout space (in CSS: `outline: 1px solid; outline-offset: -1px`, or an inset ring), so the gap between two nested edges is exactly the padding.
+A border must not change the measurements the nested rule relies on. Draw the 1px `hairline` inside the element's edge without taking layout space (in CSS: `outline: 1px solid; outline-offset: -1px`, or an inset ring), so the gap between two nested edges is exactly the padding. Never a colored border thicker than 1px on one side of a card, list item, callout or alert to signal state — use a semantic color on an icon or text instead.
 
 ## Elevation
 
@@ -927,6 +833,7 @@ Depth tells the reader what sits on what. Static layers separate with a surface 
 - **Barely perceptible.** `shadow-rest` is a hint that the element is clickable; `shadow-hover` suggests a lift, nothing more. Never stack several shadows or raise the opacity to make a point.
 - A shadow always has a vertical offset and a soft blur. A zero-offset colored halo is decoration; a hard shadow with no blur (`4px 4px 0`) is a costume.
 - Dark theme shadows are denser (black at 24–32%) because a light shadow disappears on a near-black canvas.
+- No glass or blur as decoration.
 
 ### Interaction
 
@@ -937,6 +844,155 @@ Depth tells the reader what sits on what. Static layers separate with a surface 
 ### Stacking order
 
 Layers use the fixed `zIndex` scale, never a free number: `base` 0, `raised` 10 (sticky headers, raised items), `dropdown` 100 (menus, popovers), `overlay` 200 (scrim), `modal` 300 (dialogs, sheets), `toast` 400 (notifications). Floating layers render outside clipping containers (popover API, dialog, portal) so they are never cut off.
+
+## Motion
+
+Motion explains feedback, state and relationship, or creates one authored moment the page has earned. Removing an animation should lose meaning, not just decoration.
+
+### Tokens
+
+| Token | Value | Use |
+|---|---|---|
+| `duration-instant` | 100ms | Immediate feedback: press, toggle |
+| `duration-fast` | 150ms | Hover, focus, small state changes, exits of small elements |
+| `duration-base` | 250ms | Routine state changes, opening menus and popovers |
+| `duration-slow` | 400ms | Layout changes, overlays, sheets, view transitions |
+| `duration-focal` | 700ms | Only the authored focal moment of a landing page |
+| `ease-out` | `cubic-bezier(0.16, 1, 0.3, 1)` | Entrances and responses: natural deceleration |
+| `ease-in` | `cubic-bezier(0.4, 0, 1, 1)` | Exits |
+| `ease-in-out` | `cubic-bezier(0.65, 0, 0.35, 1)` | Moving from one place to another |
+| `spring` | stiffness 500, damping 40, mass 1 | Gestures: toggles, drag, swipe; no bounce |
+
+### Rules (all modes)
+
+- **A reason to move.** Motion only acknowledges an action, makes a state change or spatial relationship legible, keeps continuity through a change, or directs attention to a meaningful moment.
+- **Exit faster than entrance.** An element leaves one step faster than it arrived (menu: in `duration-base`, out `duration-fast`; sheet: in `duration-slow`, out `duration-base`).
+- **No bounce by reflex.** No elastic or bouncy curves unless the project's world asks for them; `spring` is tuned without overshoot.
+- **Springs for gestures.** Toggles, drag and swipe use `spring`, so an interrupted gesture continues naturally. Timed transitions use the duration tokens.
+- **Transform and opacity.** Never animate properties that recalculate layout (width, height, top, left, margins); use transforms, and layout techniques (FLIP, view transitions) for size and position changes.
+- **Visible by default.** Content is visible in its resting state; an entrance animation starts from a class added by script, so nothing stays hidden if the script fails.
+- **Loops stop.** Non-essential loops pause when off screen or hidden. No autoplay with sound.
+- **Reduced motion.** `prefers-reduced-motion` keeps fades, color and state changes that carry meaning, and removes spatial movement (slides, lifts, scale). Never a global kill that removes feedback. Nothing flashes more than three times per second.
+- **Stay light.** Keep expensive effects (blur, filters, shaders) in small isolated areas, apply `will-change` only during the animation, and test on a mid-range phone. Verify against two measurable bars: 60fps or better while the animation runs (DevTools Performance panel), and zero layout shift caused by it (CLS 0, Lighthouse) — a failure on either means the animation is too heavy for its purpose, not just "feels off".
+
+### App mode
+
+- Feedback with `duration-instant` and `duration-fast`; state changes with `duration-base`; overlays and sheets with `duration-slow`.
+- **No page-load choreography.** The app opens straight into the task.
+- View transitions only when they explain where the user went (list → detail and back).
+- Loading shows content skeletons; motion never makes the user wait.
+
+### Landing mode
+
+- **One focal moment per page**, built from the product, not a generic fade-and-rise repeated on every section. It uses `duration-focal` and `ease-out`.
+- **Stagger** only for real lists, with a total delay of about 300ms at most.
+- **Scroll-driven motion** only when the scroll itself carries meaning (a progress, a sequence), with a static fallback.
+- Supporting elements (subtitle, call to action) fade in after the focal element with `duration-slow`.
+
+### Implementation
+
+Kore is stack-agnostic: expose the tokens as CSS custom properties and use CSS transitions and keyframes for timed states. Use the Web Animations API or a motion library (for example Motion.dev) when you need springs, interruption, sequencing or exit animations. Never add a dependency for an effect CSS already handles.
+
+## Hierarchy
+
+Hierarchy is the architecture of attention: it tells the eye what to look at first, what next, and what to ignore. A correct hierarchy lets a user understand a screen in under five seconds without reading a word.
+
+### Visual weight
+
+Six tools set how strongly an element pulls the eye. Use them on purpose, and mostly to take weight away from secondary elements.
+
+| Tool | Rule |
+|---|---|
+| Size | The bigger element is read first. Headings are clearly larger than their subheadings; the primary button is larger than secondary actions; functional icons are larger than decorative ones. |
+| Contrast | Primary text uses full contrast (`ink`); metadata steps down (`charcoal`, `mute`), always within the 4.5:1 minimum. |
+| Color | One accent family for primary actions. Saturated beats desaturated; color never carries meaning alone. |
+| Shape | A shape that breaks the pattern stands out (a round badge on a square icon). Kore keeps one corner language, so shape contrast comes from form (pill, circle, dot), never from mixing corner styles. |
+| Position | Top-left is read first in left-to-right layouts; an element surrounded by space weighs more than the same element in a crowd. |
+| Density | A dense area weighs more but can confuse. Reduce density of secondary areas; an isolated element gains weight from the empty space around it. Never the same density everywhere. |
+
+**The One Winner Rule.** Every screen, and every zone of a screen, has one focal point. It beats everything else on at least two of the six tools (for example: largest, full contrast, top-left). Three is overdesign. Two elements with similar weight compete and neither wins.
+
+**Never invert the hierarchy:** metadata (date, author, category) never outweighs the title it belongs to.
+
+### Three levels
+
+- **Primary:** one element, the focal point. Caught first.
+- **Secondary:** two or three elements that support it and add context.
+- **Tertiary:** everything else; present, never distracting.
+
+If the primary element cannot be named within three seconds of looking at the design, there is no focal point.
+
+To isolate the focal point, surround it with space and place it on a third of the layout (the upper third, or the top-left crossing) rather than at the dead centre.
+
+| Context | Focal point | Typical mistake |
+|---|---|---|
+| Landing page | Hero headline or main image | Three elements of similar size in the hero |
+| Dashboard | The most important metric | A grid of identical cards with no leader, or a whole page of same-size icon + heading + text cards |
+| Form | The first field to fill | Label and input with the same weight |
+| Product or content card | Image or title | Price, title and badge at the same weight |
+| Error page | The error message | A decorative illustration heavier than the message |
+| Dialog | Title and primary action | Three equivalent buttons |
+
+### Semantic weight
+
+Before choosing how something looks (Visual weight), decide what it is: apply the same three roles as *Three levels* — Primary, Secondary, Tertiary — to a component, and again to everything nested inside it, and again to the group of components it belongs to.
+
+1. **The reader's question.** At any level, ask: "if the user read only one element here, what would let them act or understand?" That element is Primary; the rest scales toward Secondary or Tertiary by how close it comes to answering the same question. Re-apply it at every level — the section holding several components, then each component, then each row, then each control — never assume the answer at one level carries to the next.
+2. **One priority per repeating component.** For a component that repeats (cards in a grid, rows in a table), answer once: "what should the user perceive first across every instance?" That answer is the default for classifying every field in every instance, so the reasoning is not redone each time.
+3. **State the default; never apply or flag it silently.** Building new content: apply the default and name it in one line ("gave the price more weight — it usually drives the decision here; say if the goal differs"). Reviewing existing content with an asymmetry (one card larger, one field bolder): don't assume it is a mistake — name it as an open question ("this card is bigger than its neighbors — is it the main offer, or should the row be even?"). Correct immediately once answered, and never ask the same question twice for the same component type.
+4. **A weight the content doesn't earn is not fixed by adding a component.** If nothing in the request or the content confirms that one item outranks its peers, the default is equal weight, not an invented badge, tag or highlight to assert a priority no one confirmed (Behaviour rules, Never invent values). Ask, or wait until the priority is confirmed, before building the component that would express it.
+5. Once roles are assigned, style them with *Text hierarchy*.
+
+### Typographic levels
+
+- **One `h1` per page;** it names the page.
+- At most **three or four type levels** visible on one screen.
+- Adjacent levels differ clearly in size and/or weight; if two roles look almost the same, drop one.
+- Weight can compensate size: a semibold `heading-sm` can outrank a regular larger line.
+- Bold only for headings and key terms; if everything is bold, nothing is.
+- No all caps on long text.
+- No eyebrow or kicker label above a heading; the heading carries its own weight.
+
+### Text hierarchy
+
+Inside a component (a card, a popover, a dialog, a row), decide the order before the style.
+
+1. **Order first.** Decide what the user needs now, the action that comes next, and the context that changes the decision. Say each idea once: if the title already says it, the text below adds something new or disappears.
+2. **Emphasize by de-emphasizing.** The primary element stays `ink`; everything else steps down. Take weight away from the secondary text instead of making the primary louder.
+3. **Labels are a last resort.** Drop a label when the format already says what the value is (a price, a date, an email). Merge label and value when possible ("148 g a day", "12 left in stock", not "Stock: 12"). When a label must stay, it is the quieter half: `body-sm` in `mute`, with the value in `ink`. Emphasize the label instead only on dense reference pages where people scan for it (a spec sheet). Form fields always keep their visible labels.
+4. **Limits.** At most three sizes and three levels in one component. Weights: 400 for text, 500 for labels and buttons, 600 for titles; never below 400. Text colors: `ink`, `body`, `mute`, and nothing else for plain text. No gradient text: emphasis comes from weight or size, never decoration.
+5. **Numbers.** The number carries the emphasis; its unit is smaller and in `mute` ("148 g *a day*").
+6. **Balance weight and contrast.** Heavy shapes (filled icons, large glyphs) take a softer color (`mute`); thin text keeps `ink`.
+7. **Warnings are never quiet.** A consequence the user must not miss ("This can't be undone.") sits on its own line, in weight 500 and its semantic color, never in `mute`. The words carry the meaning, so no icon is needed; add one only when the text alone does not say it is a warning.
+8. **Semantics follow hierarchy.** A destructive action in a list or menu is ghost or outline, with red limited to its icon; it becomes a filled `destructive` button only when it is the main action of the moment, as in the confirmation.
+9. **No grey text on colored surfaces.** On a tinted or colored background, secondary text takes a tint of that color, not `mute`.
+10. **Inline emphasis.** In a sentence, the words the user must check stand out in weight 500 and `ink`: figures with their unit (a quantity, a price, a date) and the name of the object an action affects ("**Next week's plan** and its **21 meals** will be removed."). At most two per sentence, never color, never whole phrases. It applies to explanations and messages (errors, confirmations); captions, subtitles and help text stay plain. It works because weight is noticed before reading (pre-attentive processing) and a lone different item stands out (the isolation effect).
+
+### Grouping and separation
+
+Elements close together are read as one group (proximity); distance between groups says how related they are.
+
+**The Separation Ladder.** Separate with the lightest step that works, and never skip steps:
+
+1. **Space only**: the gap does the work, zero graphic noise. The default.
+2. **Background change**: a surface step (`surface-card`, `surface-elevated`) for wide sections.
+3. **Line**: a 1px `hairline`, only between sections of equal importance, never on every row.
+4. **Card** (surface + border): maximum separation and weight.
+
+- **Rows in a list separate with space**, not with a divider on every row; a divider on each row makes every item look like its own section.
+- **Containers only when needed:** the group changes context sharply (data vs. actions vs. navigation), proximity is not enough because the layout is dense, or the group is clickable as one unit. A border added "to tidy up" means the grouping is wrong.
+- Other ways to group without containers: alignment on a shared axis, the same background tone, the same type style for the same category.
+
+**The Working Memory Rule.** A user holds at most four options, actions or facts in mind at once (Miller's Law, revised by Cowan 2001) — past that, they skip, misclick or give up instead of weighing all of them. Up to four in one group: no change needed. Five or more: group them into categories, or move the extra ones behind a "More" menu (Spacing, Grouping actions) rather than listing everything flat.
+
+### Scanning patterns
+
+- **F pattern** (dense content: feeds, tables, search results, dashboards): the left column and the first two lines of each block are always read. Put titles, status and key actions on the left; the first column of a table carries the most important data.
+- **Z pattern** (sparse content: landing pages, cards, simple forms): brand top-left, primary action top-right, key message at the centre-left turn of the Z, final action bottom-right.
+- **Action order.** Actions are right-aligned; the confirming action is last on the right, and cancel or back sits immediately to its left. The same in cards, dialogs and multi-step flows.
+- A perfectly symmetric layout follows no pattern and guides nothing: break symmetry on purpose for the focal point (wider, taller, isolated).
+- Critical information never lives only at the bottom right of an F layout.
+- Number sections (01 / 02 / 03) only when the order itself is information the reader needs.
 
 ## Responsive
 
@@ -962,7 +1018,7 @@ Adapting is rethinking the experience for each context, not scaling pixels down.
 ### Grids
 
 - Columns step 1 → 2 → 3 as space allows; gutters step `space-4` → `space-6` → `space-8`.
-- Prefer layouts that reflow on their own (flex wrap, auto-fit grids) and container-based rules for components used in different widths.
+- Prefer layouts that reflow on their own (flex wrap, auto-fit grids) and container queries for a component used at different widths (a card in a sidebar and in a full-width page), so it adapts to its own box instead of the viewport.
 
 ### Typography
 
@@ -995,61 +1051,13 @@ Adapting is rethinking the experience for each context, not scaling pixels down.
 
 Test on at least one real iPhone and one real Android phone, in Safari, Chrome and Firefox, with a throttled network. Browser device emulation is useful for layout but misses real touch, performance and keyboards.
 
-## Motion
-
-Motion explains feedback, state and relationship, or creates one authored moment the page has earned. Removing an animation should lose meaning, not just decoration.
-
-### Tokens
-
-| Token | Value | Use |
-|---|---|---|
-| `duration-instant` | 100ms | Immediate feedback: press, toggle |
-| `duration-fast` | 150ms | Hover, focus, small state changes, exits of small elements |
-| `duration-base` | 250ms | Routine state changes, opening menus and popovers |
-| `duration-slow` | 400ms | Layout changes, overlays, sheets, view transitions |
-| `duration-focal` | 700ms | Only the authored focal moment of a landing page |
-| `ease-out` | `cubic-bezier(0.16, 1, 0.3, 1)` | Entrances and responses: natural deceleration |
-| `ease-in` | `cubic-bezier(0.4, 0, 1, 1)` | Exits |
-| `ease-in-out` | `cubic-bezier(0.65, 0, 0.35, 1)` | Moving from one place to another |
-| `spring` | stiffness 500, damping 40, mass 1 | Gestures: toggles, drag, swipe; no bounce |
-
-### Rules (all modes)
-
-- **A reason to move.** Motion only acknowledges an action, makes a state change or spatial relationship legible, keeps continuity through a change, or directs attention to a meaningful moment.
-- **Exit faster than entrance.** An element leaves one step faster than it arrived (menu: in `duration-base`, out `duration-fast`; sheet: in `duration-slow`, out `duration-base`).
-- **No bounce by reflex.** No elastic or bouncy curves unless the project's world asks for them; `spring` is tuned without overshoot.
-- **Springs for gestures.** Toggles, drag and swipe use `spring`, so an interrupted gesture continues naturally. Timed transitions use the duration tokens.
-- **Transform and opacity.** Never animate properties that recalculate layout (width, height, top, left, margins); use transforms, and layout techniques (FLIP, view transitions) for size and position changes.
-- **Visible by default.** Content is visible in its resting state; an entrance animation starts from a class added by script, so nothing stays hidden if the script fails.
-- **Loops stop.** Non-essential loops pause when off screen or hidden. No autoplay with sound.
-- **Reduced motion.** `prefers-reduced-motion` keeps fades, color and state changes that carry meaning, and removes spatial movement (slides, lifts, scale). Never a global kill that removes feedback. Nothing flashes more than three times per second.
-- **Stay light.** Keep expensive effects (blur, filters, shaders) in small isolated areas, apply `will-change` only during the animation, and test on a mid-range phone.
-
-### App mode
-
-- Feedback with `duration-instant` and `duration-fast`; state changes with `duration-base`; overlays and sheets with `duration-slow`.
-- **No page-load choreography.** The app opens straight into the task.
-- View transitions only when they explain where the user went (list → detail and back).
-- Loading shows content skeletons; motion never makes the user wait.
-
-### Landing mode
-
-- **One focal moment per page**, built from the product, not a generic fade-and-rise repeated on every section. It uses `duration-focal` and `ease-out`.
-- **Stagger** only for real lists, with a total delay of about 300ms at most.
-- **Scroll-driven motion** only when the scroll itself carries meaning (a progress, a sequence), with a static fallback.
-- Supporting elements (subtitle, call to action) fade in after the focal element with `duration-slow`.
-
-### Implementation
-
-Kore is stack-agnostic: expose the tokens as CSS custom properties and use CSS transitions and keyframes for timed states. Use the Web Animations API or a motion library (for example Motion.dev) when you need springs, interruption, sequencing or exit animations. Never add a dependency for an effect CSS already handles.
-
 ## Browser surfaces
 
 The parts the browser draws still carry the design. Theme them from the palette instead of shipping browser defaults:
 
 - **Text selection:** `selection` background, `ink` text.
 - **Caret:** `ink` (or `signature` in inputs that deserve emphasis).
-- **Focus:** a 2px border drawn inside the control, never an outer ring (see States in Color rules).
+- **Focus:** see States.
 - **Scrollbars:** thin, `hairline-strong` thumb on a transparent track, where the platform allows it.
 - **Links:** `link` color, underline with a 4px offset, thickness 1px.
 - **Numerals:** tabular figures in tables and data.
@@ -1079,6 +1087,186 @@ The parts the browser draws still carry the design. Theme them from the palette 
 | Phosphor | Regular or Light | React, Vue, web components, Flutter, Swift |
 | Tabler Icons | outline | React, Vue, Svelte, Solid, vanilla SVG, web font |
 | Material Symbols | Rounded | web font and SVG, any stack |
+
+## Components
+
+**The Library-First Rule.** Before building any component, check whether the project already uses a UI library (for example shadcn/ui, Radix, MUI, Headless UI, a native component kit). Look at the dependencies and the existing components; if it is not clear, ask the project owner before writing anything.
+
+- **A library is in use:** never rewrite its components. Keep the library and adapt it to Kore: map Kore's tokens (colors, typography, rounded, spacing, shadows, motion) onto the library's theme, and override a component's styles only where the library's defaults break a Kore rule. Library sizes and behaviours that break no binding rule stay as they are: a 40px library button stays 40px, because 40 is on the grid. Typical overrides: shadows on menus, selects, popovers, dialogs and static cards (replaced by a `hairline` border), contrast, focus visibility, off-grid values, animations under reduced motion. Use the library's theming API (theme variables, token overrides) rather than rewriting its internal CSS. If the project uses the library's icon set, keep it; labeled buttons still carry no icon.
+- **No library:** use the Kore components defined below, built on Kore's tokens and following every rule in this file.
+
+### Button
+
+Four variants, three sizes, one shape. Every button has all its states.
+
+| Variant | Background | Text | Border | Shadow | Hover | Pressed | Use |
+|---|---|---|---|---|---|---|---|
+| primary | `primary` | `primary-on` | none | `shadow-rest` | `shadow-hover` + 4px lift | `primary-pressed` | The main action of its decision (The One Primary Rule) |
+| secondary | transparent | `ink` | 1px `hairline-strong` | none | `accent` background | `surface-elevated` | The next most important action, alongside a primary or a destructive; never alone |
+| tertiary | transparent | `ink` | none | none | `accent` background | `surface-elevated` | Everything else; as many as needed |
+| destructive | `accent-red` | `accent-red-on` | none | `shadow-rest` | `shadow-hover` + 4px lift | `accent-red-pressed` | Delete and other destructive actions, at most one per decision |
+
+| Size | Height | Horizontal padding | Vertical padding | Radius | Type |
+|---|---|---|---|---|---|
+| default | 44px | `space-6` (24px) | `space-3` (12px) | `md` (12px) | `button-md` |
+| compact | 36px | `space-4` (16px) | `space-2` (8px) | `md` (12px) | `button-md` |
+| small | 32px | `space-3` (12px) | `space-2` (8px) | `sm` (8px) | `button-sm`, hit area extended to 44px |
+
+- **Icon buttons** are square in the same three sizes and always carry an accessible label and a tooltip.
+- **No icons on labeled buttons.** A button with a label shows only text. The one exception is the loading spinner, placed before the label with `space-2` (8px).
+- **Focus** (States), in the button's text color: `primary-on` on primary, `accent-red-on` on destructive, `ink` on the others (secondary thickens its border from 1 to 2px).
+- **Disabled:** `surface-elevated` background, `stone` text, no shadow, not-allowed cursor; secondary keeps a `hairline` border. Explain why it is disabled when it is not obvious.
+- **Loading:** a spinner plus the running action ("Saving…"); the button keeps its width and ignores further clicks.
+- **Timing:** press in `duration-instant`; shadow and lift in `duration-fast` with `ease-out`; no lift under reduced motion or on touch.
+- **Shadows** only on filled buttons (primary, destructive); secondary and tertiary show hover with a background change.
+- **Destructive in dark** uses black text: white on `#ef4444` is only 3.76:1, black is 5.58:1.
+- **Borders** are drawn inside the edge (inset ring), so they never change the button's size.
+- **Labels** are a verb and an object ("Save meal", "Delete workout"), never "OK", "Yes" or "Submit".
+
+### Form fields
+
+Text input, textarea and select share one look.
+
+| Part | Spec |
+|---|---|
+| Field | Height 40px; padding `space-3` (12px), equal to the radius; radius `md` (12px); background `surface-deep`; 1px `hairline-strong` border drawn inside |
+| Text | `body-md` (16px) in `ink`; placeholder in `mute`, only as an example, never as the label |
+| Label | `body-sm` medium in `ink`, above the field, `space-2` (8px) away; "(optional)" in `mute` when the field is optional |
+| Help text | `body-sm` in `mute`, below the field, `space-1` (4px) away |
+| Error | Red `accent-red` border plus a message in `accent-red`, linked to the field (`aria-invalid`, `aria-describedby`); an icon only when the message alone would not read as an error (Text hierarchy #7) |
+
+- **States:** hover turns the border `mute`; **focus thickens the border to 2px** (States; `accent-red` when the field has an error); disabled uses `surface-elevated`, `stone` text and a `hairline` border; read-only uses `surface-elevated` with no border and stays selectable.
+- **Adornments:** a 20px icon on the left (search) at 12px, with the text starting at 40px; a unit on the right ("kg", "g") in `mute`, 12px from the edge.
+- **Textarea:** minimum height 96px, resizable vertically only.
+- **Validation** runs when the user leaves the field, and the error disappears as soon as the value is valid.
+
+### Select
+
+A custom menu, never the browser's native dropdown.
+
+- **Trigger:** looks like a text field, with the Hugeicons down arrow on the right that rotates when open. Placeholder in `mute` until a value is chosen.
+- **Menu:** `surface-float`, 1px `hairline`, radius `md` (12px), padding `space-1` (4px), opening under the trigger at `space-2`. Opens in `duration-base` with `ease-out`, closes in `duration-fast` with `ease-in`; no border shadow (see The Hairline Rule).
+- **Options:** 44px tall, `space-1` (4px) apart so two highlights never touch, 4px from the menu edge, radius `sm` (12 − 4 = 8) and horizontal padding 8, so the text sits 12px from the menu edge; `body-md`; the active option has `surface-float-active`; the selected one is medium weight with a check icon on the right.
+- **Keyboard and screen readers:** arrows move, Enter or Space selects, Escape and click outside close; focus returns to the trigger. Uses `listbox` / `option` roles and `aria-activedescendant`.
+
+### Checkbox and radio
+
+- **Checkbox:** 20px, radius `xs` (4px), `surface-deep` with a `hairline-strong` border. Checked: `primary` fill with a `primary-on` check icon. Indeterminate: `primary` fill with a minus icon.
+- **Radio:** 20px circle; checked: `primary` fill with an 8px `primary-on` dot.
+- **Rows:** the whole row (control + label) is clickable and at least 44px tall; label in `body-md`, `space-3` (12px) from the control.
+- **Groups** sit in a `fieldset` with a `legend` as the group label.
+- **Disabled:** `surface-elevated` with a `hairline` border and `stone` label; a checked disabled control uses a `stone` fill.
+- **Focus:** the box or circle border (States).
+
+### Switch
+
+- 40 × 24px track, 16px knob, padding `space-1` (4px); hit area extended to 44px with an invisible overlay.
+- **Off:** `surface-elevated` track with a `hairline-strong` border, `ink` knob. **On:** `primary` track, `primary-on` knob. Never green: green means success.
+- The knob moves with `spring` (or `duration-fast` with `ease-out`); under reduced motion it changes without sliding.
+- A switch always sits next to its visible label and applies the change immediately; use a checkbox when the change waits for a Save.
+
+### Segmented control
+
+- **Container:** 48px tall, radius `md` (12px), padding `space-1` (4px), `surface-elevated` with a `hairline` border. It hugs its segments, never stretches to full width.
+- **Segments:** inline buttons, 40px tall, radius `sm` (12 − 4 = 8), padding `space-4` (16px), `space-2` apart, hit area 44px; `button-md`, `mute` text. Selected: `surface-card` with a `hairline` border and `ink` text.
+- For two to four short, mutually exclusive options that switch a view (The Working Memory Rule); for more options, use a select.
+
+### Password
+
+- A text field with a show/hide toggle: an inline button (32px, radius 12 − 4 = 8, 4px from every edge; the text stops 44px from the right edge). Hover `accent`; focus follows States. The icon switches between view and view-off; the accessible label and tooltip say "Show password" or "Hide password", with `aria-pressed`.
+- Requirements sit under the field, `space-1` apart, in `body-sm`, and update while the user types: unmet is a 16px empty circle and `mute` text; met is a 16px check circle in `accent-green` and `ink` text. The icon changes shape, so the state never depends on color alone. The list is linked with `aria-describedby` and announced with `aria-live="polite"`.
+
+### Combobox
+
+- A text field with the search icon on the left and the select menu below (`listbox`, `surface-float`). It filters while the user types; the matching part of each option is semibold.
+- Empty field: show recent items under a `caption` label ("Recent"). No match: one line in `mute` saying what to do ("No foods match “rize”. Check the spelling or add it as a new food.").
+- Keyboard: arrows move, Enter picks, Escape closes. Roles `combobox` and `listbox`, `aria-expanded`, `aria-activedescendant`, `aria-autocomplete="list"`.
+
+### Number stepper
+
+- 160 × 48px, padding `space-1` (4px), radius `md`, `surface-deep` with a `hairline-strong` border; − and + are inline buttons, 40px with radius 12 − 4 = 8, hit area extended to 44px. The value is centred, with tabular figures.
+- Show the unit in the label and the limits in the help text before use ("Steps of 10 g, from 0 to 1,000 g"). − is disabled at the minimum and + at the maximum. Typed values snap to the step and the limits.
+- Focus on the value thickens the container border to 2px (States). Role `spinbutton` with `aria-valuemin`, `aria-valuemax`, `aria-valuenow`; Arrow Up and Down change the value.
+
+### File upload
+
+- **Drop area:** the whole area is the control. `surface-float`, `hairline-strong` border, radius `md`, padding `space-6` (centered content), at least 128px tall; a 24px upload icon, the action in `body-md` medium ("Choose a photo or drag it here") and the accepted formats and size limit in `body-sm` `mute` ("JPG or PNG, up to 5 MB"), always visible before the action.
+- **States:** hover `surface-float-active` with a `mute` border; dragging over and focus `surface-float-active` with a 2px `ink` border; on `surface-float-active` the hint text switches to `charcoal`; error `accent-red` border plus an inline message that says what to do ("front.heic is not a JPG or PNG. Export it as JPG and try again."). Check type and size before uploading.
+- **Chosen file:** a 56px row in `surface-card` with a `hairline` border, radius `md` (12) and left padding 12: file icon in a 40px `surface-elevated` circle, name (truncated) and size in `body-sm` `mute`, and a 48px inline remove button (radius 12 − 4 = 8, 4px from the edges) labelled "Remove side.jpg". Upload progress uses the progress bar (Feedback).
+
+### Slider
+
+- A 4px track: `hairline-strong` for the empty part, `primary` for the filled part. A 20px `primary` thumb with `shadow-rest` (`shadow-hover` on hover, `primary-pressed` while dragging), since it is dragged. The hit area is 44px tall.
+- The label sits on the left and the current value on the right, in `body-sm` medium with tabular figures. A range uses two thumbs that never cross, with the fill between them.
+- Focus: the thumb border (States). Disabled: `surface-elevated` track and `stone` thumb, no shadow.
+- Use a slider only when an approximate value is fine; for an exact value use the number stepper. Give each thumb a readable value (`aria-valuetext`, for example "€14").
+
+### Menu
+
+- **Surface:** `surface-float`, 1px `hairline`, no shadow, radius `md` (12px), padding `space-1` (4px), at least 224px wide, opening `space-2` below its trigger with its start edge aligned to the trigger's start edge (left in left-to-right languages); it flips to the end edge or above only when there is no room.
+- **Items:** 44px tall, radius `sm` (8px), padding 8, so the text sits 12px from the menu edge; optional 16px icon in `mute`, `space-2` from the label. Show a keyboard shortcut on the right (`caption`, `charcoal`) only when the product really has it. Active and hover: `surface-float-active`.
+- **Spacing:** items `space-1` (4px) apart, so two highlights never touch; groups `space-2` (8px) apart (The Distance Ratio Rule).
+- **Groups** by category, optionally with a `caption` label in `mute`. A destructive item comes last, alone, with a red icon and `ink` text (red text fails contrast on the active surface in dark).
+- **Keyboard:** Enter, Space or ↓ opens and focuses the first item; ↑ ↓ Home End move; Escape closes and returns focus to the trigger; Tab closes. Roles `menu` and `menuitem`, `aria-haspopup`, `aria-expanded`.
+
+### Popover
+
+- `surface-float`, 1px `hairline`, radius `md` = padding `space-3` (12px), at most 288px wide, `space-2` from its trigger. Content follows Text hierarchy (label, value, explanation).
+- No buttons in its corners: a small action is a link. Focus moves in on open; Escape or a click outside closes it and returns focus. Role `dialog` with a label.
+
+### Dialog
+
+- A modal over a `scrim`: `surface-float`, 1px `hairline`, radius `xl` = padding `space-6` (24px), at most 480px wide, 16px from the screen edges on phones.
+- **Header:** title in `heading-sm`, a statement that names the action with a verb and an object ("Delete this plan"), never a question; the close button is a corner action (Shapes), with the title centred on it. **Body:** the object and figures in inline emphasis ("**Next week's plan** and its **21 meals** will be removed."). A consequence that cannot be undone sits on its own line in `accent-red`, weight 500, `space-1` below the body: body and consequence are one message, centred between title and actions with `space-6` above and below it.
+- **Actions:** `space-6` below the message, compact buttons 24 − 12 = 12px from the edges, right-aligned, confirm last; the buttons name the action ("Keep plan", "Delete plan"), never "Yes", "No", "OK" or "Submit". Initial focus goes to the safer action.
+- Use a dialog only when the action cannot be undone or truly needs interruption and protected focus; otherwise act and offer "Undo" (Usability 3) or use an inline or progressive alternative. Focus stays inside; Escape, the close button and a click on the scrim close it; focus returns to the trigger. Use the platform's modal element where it exists (`<dialog>` on the web).
+- Opens with a fade and a 0.98 → 1 scale in `duration-base` `ease-out`; only the fade under reduced motion.
+
+### Sheet
+
+- **Phones (below `md`):** from the bottom edge, full width, top corners `xl`, padding `space-6` plus the bottom safe area, at most 85% of the screen height.
+- **From `md`:** from the right, 400px wide, `space-2` (8px) from the screen edges, all corners `xl`, full height minus 16px.
+- Header with a corner close button, content, and actions at the bottom (right-aligned, confirm last). Same modal behaviour as the dialog; slides in with `duration-base` `ease-out`, fade only under reduced motion.
+
+### Tooltip
+
+- The one inverted overlay: `ink` background with `canvas` text, so it separates from anything below it without a shadow. `caption`, radius `sm` = padding 8 (4 × 8), `space-2` from its trigger, at most 240px wide.
+- Appears after `duration-slow` (400ms) of hover and immediately on keyboard focus; Escape hides it. Plain text only, never links or buttons. Linked with `aria-describedby`, role `tooltip`. Every icon-only button has one.
+
+### Overlay rules
+
+- **Hover on floating surfaces:** ghost and outline buttons inside a menu, popover, dialog or sheet use `surface-float-active` for hover and pressed, because `accent` equals `surface-float` in dark.
+- On `surface-float-active`, secondary text uses `charcoal` (not `mute`) and links don't appear; in dark, `mute`, `link` and `hairline-strong` fall below their minimum there.
+
+### Cards
+
+| Card | Padding | Inside | Shadow |
+|---|---|---|---|
+| Standard | `space-6` (24px), radius 24 | Rows separated by space only (`space-3`, 12px) | none |
+| Compact | `space-4` (16px), radius 16 | Rows separated by space only (`space-2`, 8px) | none |
+| Media | image full-bleed at the top (16:9, clipped by the card radius, with `alt` text), then `space-6` padding | Title, subtitle, a detail line with 16px icons `space-2` from their text | none (or clickable) |
+| With actions | `space-6` (24px) | Content, then the action row `space-8` (32px) below it | none |
+| Clickable | `space-6` (24px) | Title, subtitle and a Hugeicons arrow on the right | `shadow-rest`, `shadow-hover` + 4px lift on hover |
+
+- **Shape and surface:** `surface-card`, 1px `hairline` drawn inside, radius `xl` (24px), the same padding on all four sides.
+- **Header:** title in `heading-sm`, subtitle in `body-sm` `mute`, `space-1` (4px) apart; `space-6` (24px) between the header and the content (`space-4` in compact cards).
+- **Actions:** at the bottom of the card, right-aligned, confirm last with cancel or back to its left (Action order in Hierarchy); compact buttons (36px, radius 12) placed 24 − 12 = 12px from the card's bottom and right edges (The Concentric Rule), `space-2` apart. At most one `primary` per card (The One Primary Rule): a repeated card keeps its own primary when it has a clear main action (a product's "Buy"); use secondary and tertiary instead when the card's actions are all lower-emphasis, with none of them the point of the card. A card with actions is at least 320px wide; if the buttons still don't fit, they stack full-width with the confirming action at the bottom, never in a staircase. It has no shadow, since it is not clickable as a whole.
+- **Header action:** an optional "More" button placed as a corner action (Shapes): 32px, radius 8, 16px from the corner, with the title centred on it; accessible label ("More options for Leg day") and tooltip.
+- **Height:** each card is as tall as its content. Cards in a row share one height only in a grid of cards with the same structure.
+- **Key figure:** when a card exists to show one number, the number is its focal point: `display-lg` in `signature`, with its unit and context in `body-sm` `mute` on the same baseline.
+- **Clickable card:** the whole card is one link or button. It fills the full width of its container, with the arrow anchored to the right edge. Focus follows States; pressed returns to rest. It never contains other buttons or links.
+- **Spacing between cards:** `space-8` (32px); on phones `space-4` to `space-6`.
+- **Never nest cards.** Inner content uses rows separated by space; a rounded block with a background appears only when each item is its own unit (a clickable row).
+
+### List rows
+
+- **Row:** at least 56px tall, padding `space-2` × `space-3`; leading element, text and trailing element separated by `space-4` (16px).
+- **Leading:** a 40px circle in `surface-elevated` with a 20px icon, or an avatar.
+- **Text:** title in `body-md` medium `ink`; secondary line in `body-sm` `mute`, one line, truncated with an ellipsis.
+- **Trailing:** a value in `body-sm` `mute` with tabular figures, and/or the Hugeicons arrow when the row opens something.
+- **Clickable rows** are links: hover gives the `accent` background, pressed `surface-elevated`, focus follows States on the highlight. The highlight extends `space-3` (12px) beyond the text, with radius 24 − 12 = 12 inside a standard card (The Concentric Rule), so the text stays on the card curve's centre.
+- **Static rows** do not react to hover.
+- Rows separate with space only, never with a divider on every row. Rows in a list are `space-2` (8px) apart, so two highlights never touch.
 
 ## Usability
 
@@ -1169,239 +1357,6 @@ Help comes in layers, from best to last resort:
 4. Searchable, task-oriented documentation with numbered steps (at most five per task).
 
 If many users look up the docs to do one thing, the interface is the problem.
-
-## Components
-
-**The Library-First Rule.** Before building any component, check whether the project already uses a UI library (for example shadcn/ui, Radix, MUI, Headless UI, a native component kit). Look at the dependencies and the existing components; if it is not clear, ask the project owner before writing anything.
-
-- **A library is in use:** never rewrite its components. Keep the library and adapt it to Kore: map Kore's tokens (colors, typography, rounded, spacing, shadows, motion) onto the library's theme, and override a component's styles only where the library's defaults break a Kore rule. Library sizes and behaviours that break no binding rule stay as they are: a 40px library button stays 40px, because 40 is on the grid. Typical overrides: shadows on menus, selects, popovers, dialogs and static cards (replaced by a `hairline` border), contrast, focus visibility, off-grid values, animations under reduced motion. Use the library's theming API (theme variables, token overrides) rather than rewriting its internal CSS. If the project uses the library's icon set, keep it; labeled buttons still carry no icon.
-- **No library:** use the Kore components defined below, built on Kore's tokens and following every rule in this file.
-
-### Button
-
-Five variants, three sizes, one shape. Every button has all its states.
-
-| Variant | Background | Text | Border | Shadow | Hover | Pressed | Use |
-|---|---|---|---|---|---|---|---|
-| primary | `primary` | `primary-on` | none | `shadow-rest` | `shadow-hover` + 4px lift | `primary-pressed` | The main action of the view (The One Primary Rule) |
-| secondary | `secondary` | `ink` | 1px `hairline-strong` | `shadow-rest` | `shadow-hover` + 4px lift | `surface-elevated` | Other important actions |
-| outline | transparent | `ink` | 1px `hairline-strong` | none | `accent` background | `surface-elevated` | Tertiary actions, next to a primary |
-| ghost | transparent | `ink` | none | none | `accent` background | `surface-elevated` | Low-emphasis actions, toolbars |
-| destructive | `accent-red` | `accent-red-on` | none | `shadow-rest` | `shadow-hover` + 4px lift | `accent-red-pressed` | Delete and other destructive actions |
-
-| Size | Height | Horizontal padding | Radius | Type |
-|---|---|---|---|---|
-| default | 48px | `space-6` (24px) | `md` (12px) | `button-md` |
-| compact | 40px | `space-4` (16px) | `md` (12px) | `button-md` |
-| small | 32px | `space-3` (12px) | `sm` (8px) | `button-sm`, hit area extended to 44px |
-
-- **Icon buttons** are square in the same three sizes and always carry an accessible label and a tooltip.
-- **No icons on labeled buttons.** A button with a label shows only text. The one exception is the loading spinner, placed before the label with `space-2` (8px).
-- **Focus:** a 2px border inside, in the button's text color: `primary-on` on primary, `accent-red-on` on destructive, `ink` on the others (secondary and outline thicken their border from 1 to 2px). No outer ring.
-- **Disabled:** `surface-elevated` background, `stone` text, no shadow, not-allowed cursor; outline keeps a `hairline` border. Explain why it is disabled when it is not obvious.
-- **Loading:** a spinner plus the running action ("Saving…"); the button keeps its width and ignores further clicks.
-- **Timing:** press in `duration-instant`; shadow and lift in `duration-fast` with `ease-out`; no lift under reduced motion or on touch.
-- **Shadows** only on filled buttons (primary, secondary, destructive); outline and ghost show hover with a background change.
-- **Destructive in dark** uses black text: white on `#ef4444` is only 3.76:1, black is 5.58:1.
-- **Borders** are drawn inside the edge (inset ring), so they never change the button's size.
-- **Labels** are a verb and an object ("Save meal", "Delete workout"), never "OK", "Yes" or "Submit".
-
-### Form fields
-
-Text input, textarea and select share one look.
-
-| Part | Spec |
-|---|---|
-| Field | Height 48px (compact 40px); padding `space-3` (12px), equal to the radius; radius `md` (12px); background `surface-deep`; 1px `hairline-strong` border drawn inside |
-| Text | `body-md` (16px) in `ink`; placeholder in `mute`, only as an example, never as the label |
-| Label | `body-sm` medium in `ink`, above the field, `space-2` (8px) away; "(optional)" in `mute` when the field is optional |
-| Help text | `body-sm` in `mute`, below the field, `space-1` (4px) away |
-| Error | Red `accent-red` border plus a message in `accent-red` **with the alert icon**, linked to the field (`aria-invalid`, `aria-describedby`) |
-
-- **States:** hover turns the border `mute`; **focus thickens the border to 2px `ink`, with no outer ring** (2px `accent-red` when the field has an error); disabled uses `surface-elevated`, `stone` text and a `hairline` border; read-only uses `surface-elevated` with no border and stays selectable.
-- **Adornments:** a 20px icon on the left (search) at 12px, with the text starting at 40px; a unit on the right ("kg", "g") in `mute`, 12px from the edge.
-- **Textarea:** minimum height 96px, resizable vertically only.
-- **Validation** runs when the user leaves the field, and the error disappears as soon as the value is valid.
-
-### Select
-
-A custom menu, never the browser's native dropdown.
-
-- **Trigger:** looks like a text field, with the Hugeicons down arrow on the right that rotates when open. Placeholder in `mute` until a value is chosen.
-- **Menu:** `surface-float`, 1px `hairline`, radius `md` (12px), padding `space-1` (4px), opening under the trigger at `space-2`. Opens in `duration-base` with `ease-out`, closes in `duration-fast` with `ease-in`; no border shadow (see The Hairline Rule).
-- **Options:** 44px tall, `space-1` (4px) apart so two highlights never touch, 4px from the menu edge, radius `sm` (12 − 4 = 8) and horizontal padding 8, so the text sits 12px from the menu edge; `body-md`; the active option has `surface-float-active`; the selected one is medium weight with a check icon on the right.
-- **Keyboard and screen readers:** arrows move, Enter or Space selects, Escape and click outside close; focus returns to the trigger. Uses `listbox` / `option` roles and `aria-activedescendant`.
-
-### Checkbox and radio
-
-- **Checkbox:** 20px, radius `xs` (4px), `surface-deep` with a `hairline-strong` border. Checked: `primary` fill with a `primary-on` check icon. Indeterminate: `primary` fill with a minus icon.
-- **Radio:** 20px circle; checked: `primary` fill with an 8px `primary-on` dot.
-- **Rows:** the whole row (control + label) is clickable and at least 44px tall; label in `body-md`, `space-3` (12px) from the control.
-- **Groups** sit in a `fieldset` with a `legend` as the group label.
-- **Disabled:** `surface-elevated` with a `hairline` border and `stone` label; a checked disabled control uses a `stone` fill.
-- **Focus:** a 2px border inside the box or circle: `ink` when empty, `primary-on` when checked.
-
-### Switch
-
-- 40 × 24px track, 16px knob, padding `space-1` (4px); hit area extended to 44px with an invisible overlay.
-- **Off:** `surface-elevated` track with a `hairline-strong` border, `ink` knob. **On:** `primary` track, `primary-on` knob. Never green: green means success.
-- The knob moves with `spring` (or `duration-fast` with `ease-out`); under reduced motion it changes without sliding.
-- A switch always sits next to its visible label and applies the change immediately; use a checkbox when the change waits for a Save.
-
-### Segmented control
-
-- **Container:** 48px tall, radius `md` (12px), padding `space-1` (4px), `surface-elevated` with a `hairline` border. It hugs its segments, never stretches to full width.
-- **Segments:** inline buttons, 40px tall, radius `sm` (12 − 4 = 8), padding `space-4` (16px), `space-2` apart, hit area 44px; `button-md`, `mute` text. Selected: `surface-card` with a `hairline` border and `ink` text.
-- For two to five short, mutually exclusive options that switch a view; for more options, use a select.
-
-### Password
-
-- A text field with a show/hide toggle: an inline button (40px, radius 12 − 4 = 8, 4px from every edge; the text stops 52px from the right edge). Hover `accent`, focus a 2px `ink` border inside. The icon switches between view and view-off; the accessible label and tooltip say "Show password" or "Hide password", with `aria-pressed`.
-- Requirements sit under the field, `space-1` apart, in `body-sm`, and update while the user types: unmet is a 16px empty circle and `mute` text; met is a 16px check circle in `accent-green` and `ink` text. The icon changes shape, so the state never depends on color alone. The list is linked with `aria-describedby` and announced with `aria-live="polite"`.
-
-### Combobox
-
-- A text field with the search icon on the left and the select menu below (`listbox`, `surface-float`). It filters while the user types; the matching part of each option is semibold.
-- Empty field: show recent items under a `caption` label ("Recent"). No match: one line in `mute` saying what to do ("No foods match “rize”. Check the spelling or add it as a new food.").
-- Keyboard: arrows move, Enter picks, Escape closes. Roles `combobox` and `listbox`, `aria-expanded`, `aria-activedescendant`, `aria-autocomplete="list"`.
-
-### Number stepper
-
-- 160 × 48px, padding `space-1` (4px), radius `md`, `surface-deep` with a `hairline-strong` border; − and + are inline buttons, 40px with radius 12 − 4 = 8, hit area extended to 44px. The value is centred, with tabular figures.
-- Show the unit in the label and the limits in the help text before use ("Steps of 10 g, from 0 to 1,000 g"). − is disabled at the minimum and + at the maximum. Typed values snap to the step and the limits.
-- Focus on the value thickens the container border to 2px `ink`. Role `spinbutton` with `aria-valuemin`, `aria-valuemax`, `aria-valuenow`; Arrow Up and Down change the value.
-
-### File upload
-
-- **Drop area:** the whole area is the control. `surface-float`, `hairline-strong` border, radius `md`, padding `space-6` (centered content), at least 128px tall; a 24px upload icon, the action in `body-md` medium ("Choose a photo or drag it here") and the accepted formats and size limit in `body-sm` `mute` ("JPG or PNG, up to 5 MB"), always visible before the action.
-- **States:** hover `surface-float-active` with a `mute` border; dragging over and focus `surface-float-active` with a 2px `ink` border; on `surface-float-active` the hint text switches to `charcoal`; error `accent-red` border plus an inline message that says what to do ("front.heic is not a JPG or PNG. Export it as JPG and try again."). Check type and size before uploading.
-- **Chosen file:** a 56px row in `surface-card` with a `hairline` border, radius `md` (12) and left padding 12: file icon in a 40px `surface-elevated` circle, name (truncated) and size in `body-sm` `mute`, and a 48px inline remove button (radius 12 − 4 = 8, 4px from the edges) labelled "Remove side.jpg". Upload progress uses the progress bar (Feedback).
-
-### Slider
-
-- A 4px track: `hairline-strong` for the empty part, `primary` for the filled part. A 20px `primary` thumb with `shadow-rest` (`shadow-hover` on hover, `primary-pressed` while dragging), since it is dragged. The hit area is 44px tall.
-- The label sits on the left and the current value on the right, in `body-sm` medium with tabular figures. A range uses two thumbs that never cross, with the fill between them.
-- Focus: a 2px `primary-on` border inside the thumb. Disabled: `surface-elevated` track and `stone` thumb, no shadow.
-- Use a slider only when an approximate value is fine; for an exact value use the number stepper. Give each thumb a readable value (`aria-valuetext`, for example "€14").
-
-### Menu
-
-- **Surface:** `surface-float`, 1px `hairline`, no shadow, radius `md` (12px), padding `space-1` (4px), at least 224px wide, opening `space-2` below its trigger with its start edge aligned to the trigger's start edge (left in left-to-right languages); it flips to the end edge or above only when there is no room.
-- **Items:** 44px tall, radius `sm` (8px), padding 8, so the text sits 12px from the menu edge; optional 16px icon in `mute`, `space-2` from the label. Show a keyboard shortcut on the right (`caption`, `charcoal`) only when the product really has it. Active and hover: `surface-float-active`.
-- **Spacing:** items `space-1` (4px) apart, so two highlights never touch; groups `space-2` (8px) apart (The Distance Ratio Rule).
-- **Groups** by category, optionally with a `caption` label in `mute`. A destructive item comes last, alone, with a red icon and `ink` text (red text fails contrast on the active surface in dark).
-- **Keyboard:** Enter, Space or ↓ opens and focuses the first item; ↑ ↓ Home End move; Escape closes and returns focus to the trigger; Tab closes. Roles `menu` and `menuitem`, `aria-haspopup`, `aria-expanded`.
-
-### Popover
-
-- `surface-float`, 1px `hairline`, radius `md` = padding `space-3` (12px), at most 288px wide, `space-2` from its trigger. Content follows Text hierarchy (label, value, explanation).
-- No buttons in its corners: a small action is a link. Focus moves in on open; Escape or a click outside closes it and returns focus. Role `dialog` with a label.
-
-### Dialog
-
-- A modal over a `scrim`: `surface-float`, 1px `hairline`, radius `xl` = padding `space-6` (24px), at most 480px wide, 16px from the screen edges on phones.
-- **Header:** title in `heading-sm`, a statement that names the action with a verb and an object ("Delete this plan"), never a question; the close button is a corner action (Shapes), with the title centred on it. **Body:** the object and figures in inline emphasis ("**Next week's plan** and its **21 meals** will be removed."). A consequence that cannot be undone sits on its own line in `accent-red`, weight 500, `space-1` below the body: body and consequence are one message, centred between title and actions with `space-6` above and below it.
-- **Actions:** `space-6` below the message, compact buttons 24 − 12 = 12px from the edges, right-aligned, confirm last; the buttons name the action ("Keep plan", "Delete plan"), never "Cancel" and "OK". Initial focus goes to the safer action.
-- Use a dialog only when the action cannot be undone; otherwise act and offer "Undo" (Usability 3). Focus stays inside; Escape, the close button and a click on the scrim close it; focus returns to the trigger. Use the platform's modal element where it exists (`<dialog>` on the web).
-- Opens with a fade and a 0.98 → 1 scale in `duration-base` `ease-out`; only the fade under reduced motion.
-
-### Sheet
-
-- **Phones (below `md`):** from the bottom edge, full width, top corners `xl`, padding `space-6` plus the bottom safe area, at most 85% of the screen height.
-- **From `md`:** from the right, 400px wide, `space-2` (8px) from the screen edges, all corners `xl`, full height minus 16px.
-- Header with a corner close button, content, and actions at the bottom (right-aligned, confirm last). Same modal behaviour as the dialog; slides in with `duration-base` `ease-out`, fade only under reduced motion.
-
-### Tooltip
-
-- The one inverted overlay: `ink` background with `canvas` text, so it separates from anything below it without a shadow. `caption`, radius `sm` = padding 8 (4 × 8), `space-2` from its trigger, at most 240px wide.
-- Appears after 500ms of hover and immediately on keyboard focus; Escape hides it. Plain text only, never links or buttons. Linked with `aria-describedby`, role `tooltip`. Every icon-only button has one.
-
-### Overlay rules
-
-- **Hover on floating surfaces:** ghost and outline buttons inside a menu, popover, dialog or sheet use `surface-float-active` for hover and pressed, because `accent` equals `surface-float` in dark.
-- On `surface-float-active`, secondary text uses `charcoal` (not `mute`) and links don't appear; in dark, `mute`, `link` and `hairline-strong` fall below their minimum there.
-
-### Cards
-
-| Card | Padding | Inside | Shadow |
-|---|---|---|---|
-| Standard | `space-6` (24px), radius 24 | Rows separated by space only (`space-3`, 12px) | none |
-| Compact | `space-4` (16px), radius 16 | Rows separated by space only (`space-2`, 8px) | none |
-| Media | image full-bleed at the top (16:9, clipped by the card radius, with `alt` text), then `space-6` padding | Title, subtitle, a detail line with 16px icons `space-2` from their text | none (or clickable) |
-| With actions | `space-6` (24px) | Content, then the action row `space-8` (32px) below it | none |
-| Clickable | `space-6` (24px) | Title, subtitle and a Hugeicons arrow on the right | `shadow-rest`, `shadow-hover` + 4px lift on hover |
-
-- **Shape and surface:** `surface-card`, 1px `hairline` drawn inside, radius `xl` (24px), the same padding on all four sides.
-- **Header:** title in `heading-sm`, subtitle in `body-sm` `mute`, `space-1` (4px) apart; `space-6` (24px) between the header and the content (`space-4` in compact cards).
-- **Actions:** at the bottom of the card, right-aligned, confirm last with cancel or back to its left (Action order in Hierarchy); compact buttons (40px, radius 12) placed 24 − 12 = 12px from the card's bottom and right edges (The Concentric Rule), `space-2` apart. At most one `primary`, and only when it is the view's main action; in a list of repeated cards use secondary and ghost. A card with actions is at least 320px wide; if the buttons still don't fit, they stack full-width with the confirming action at the bottom, never in a staircase. It has no shadow, since it is not clickable as a whole.
-- **Header action:** an optional "More" button placed as a corner action (Shapes): 32px, radius 8, 16px from the corner, with the title centred on it; accessible label ("More options for Leg day") and tooltip.
-- **Height:** each card is as tall as its content. Cards in a row share one height only in a grid of cards with the same structure.
-- **Key figure:** when a card exists to show one number, the number is its focal point: `display-lg` in `signature`, with its unit and context in `body-sm` `mute` on the same baseline.
-- **Clickable card:** the whole card is one link or button. It fills the full width of its container, with the arrow anchored to the right edge. Focus is a 2px `focus-ring` border inside the card; pressed returns to rest. It never contains other buttons or links.
-- **Spacing between cards:** `space-8` (32px); on phones `space-4` to `space-6`.
-- **Never nest cards.** Inner content uses rows separated by space; a rounded block with a background appears only when each item is its own unit (a clickable row).
-
-### List rows
-
-- **Row:** at least 56px tall, padding `space-2` × `space-3`; leading element, text and trailing element separated by `space-4` (16px).
-- **Leading:** a 40px circle in `surface-elevated` with a 20px icon, or an avatar.
-- **Text:** title in `body-md` medium `ink`; secondary line in `body-sm` `mute`, one line, truncated with an ellipsis.
-- **Trailing:** a value in `body-sm` `mute` with tabular figures, and/or the Hugeicons arrow when the row opens something.
-- **Clickable rows** are links: hover gives the `accent` background, pressed `surface-elevated`, focus a 2px `focus-ring` border inside the highlight. The highlight extends `space-3` (12px) beyond the text, with radius 24 − 12 = 12 inside a standard card (The Concentric Rule), so the text stays on the card curve's centre.
-- **Static rows** do not react to hover.
-- Rows separate with space only, never with a divider on every row. Rows in a list are `space-2` (8px) apart, so two highlights never touch.
-
-## Do's and Don'ts
-
-### Do
-
-- **Do** spend `primary` on one main action per view (The One Primary Rule).
-- **Do** separate static layers with a surface step and a 1px `hairline`; give `shadow-rest` / `shadow-hover` only to clickable elements (The Hairline Rule).
-- **Do** take every margin, padding and gap from the `space-*` scale, and give cards the same padding on all four sides: `space-6` (24px), compact `space-4` (16px) (The Token-Only Rule).
-- **Do** set horizontal padding equal to the radius and compute nested radii as outer − distance (The Radius-Padding Rule, The Concentric Rule).
-- **Do** use the display font only for `display-*` roles (40px and up), the sans for everything else, and the mono only for code, data and measurements.
-- **Do** keep running text at 16px (`body-md`) or larger, in lines of 45–75 characters.
-- **Do** give every control all its states (default, hover, focus, active, disabled, selected, loading, error), with a visible focus (a 2px border inside the control, see States).
-- **Do** pair every status color with a text label or an icon.
-- **Do** size controls at 48px, compact 40px, minimum 32px with a 44 × 44px hit area.
-- **Do** label actions with a verb and an object ("Save meal", "Delete workout"); name the object and the consequence on destructive actions; prefer undo over a confirmation when recovery is safe.
-- **Do** write errors that say what failed and how to recover, without blaming the user or showing internal codes.
-- **Do** keep form labels visible at all times; a placeholder is an example, never the label.
-- **Do** make empty states explain the situation and offer the next useful action; show loading with content skeletons, not a spinner in the middle of the page.
-- **Do** give every screen and zone one focal point that wins on at least two weight tools (The One Winner Rule).
-- **Do** separate with the lightest step that works: space, then background, then line, then card (The Separation Ladder).
-- **Do** answer every action within 100ms, show loading after 300ms and progress after 1s.
-- **Do** offer "Undo" for 5 seconds after a destructive action instead of asking first, when the action can be undone.
-- **Do** show limits, formats and requirements before the user acts, and validate when they leave a field.
-- **Do** check both themes, every width from 320px to 4K, and 200% text zoom before shipping.
-
-### Don't
-
-- **Don't** use gradient text. Emphasis comes from weight or size.
-- **Don't** put a colored border thicker than 1px on the left or right side of cards, list items, callouts or alerts.
-- **Don't** put an eyebrow or kicker label above a heading. The heading carries its own weight.
-- **Don't** number sections (01 / 02 / 03) unless the order itself is information the reader needs.
-- **Don't** nest cards. Inner blocks use `surface-elevated` as rows or wells, never as cards.
-- **Don't** use glass or blur as decoration.
-- **Don't** use hard offset shadows with no blur.
-- **Don't** use monospace as a costume for "technical".
-- **Don't** use emoji or Unicode symbols instead of icons. Icons come from one real library or authored SVG, with one stroke and weight.
-- **Don't** build a whole page out of same-size icon + heading + text cards.
-- **Don't** open a modal for a task that needs neither interruption nor protected focus; try inline or progressive alternatives first.
-- **Don't** pick the light or dark default by habit; choose it from the use scene (who, where, what light).
-- **Don't** use `signature` or any `*-glow` as a button or a surface, or on dense task screens.
-- **Don't** introduce a second brand color.
-- **Don't** add a spacing, color or radius token for a single case.
-- **Don't** put translucent text (`body`, `charcoal`, `on-light-mute`) on a new surface without re-checking its contrast.
-- **Don't** mix corner shapes: no squircle, no cut corners.
-- **Don't** hide a function behind hover.
-- **Don't** use "Yes", "No", "OK" or "Submit" on confirmations; the button names the action.
-- **Don't** put three primary actions, or three equally weighted elements, in the same zone.
-- **Don't** put a divider on every row of a list; rows separate with space.
-- **Don't** add a container or border just to tidy up; fix the grouping instead.
-- **Don't** show error codes, database values or internal terms to users.
-- **Don't** let users discover a limit only after they submit.
-- **Don't** use different names, icons or formats for the same thing in different places.
 
 ## Candidates
 
