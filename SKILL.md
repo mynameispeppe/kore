@@ -8,7 +8,7 @@ description: |
   geometric sans for body and UI, and a monospace for code. Surfaces rely on
   subtle low-opacity gradient glows, hairline 1px borders, and a strict
   rounded-24px container vocabulary with concentric nested corners. All
-  spacing, sizing and line-heights sit on an 8-point grid (4px half-steps).
+  spacing and sizing sit on an 8-point grid (4px half-steps).
   There is no decorative chrome — just type, content, and atmospheric depth.
 colors:
   light:
@@ -20,32 +20,28 @@ colors:
     surface-float-active: "#f4f6f7"
     hairline: "rgba(33, 33, 33, 0.06)"
     hairline-strong: "#8a8e92"
-    divider-soft: "#efeff1"
     ink: "#2a2a2a"
     body: "rgba(42, 42, 42, 0.86)"
     charcoal: "rgba(42, 42, 42, 0.72)"
     mute: "#6a6e72"
     stone: "#a9adb1"
-    on-light: "#2a2a2a"
     on-light-mute: "rgba(42, 42, 42, 0.72)"
     primary: "#212121"
     primary-on: "#ffffff"
     primary-pressed: "#2e2e2e"
-    secondary: "#f4f6f7"
-    accent: "#f4f4f5"
-    signature: "#904E55"
-    signature-glow: "rgba(144, 78, 85, 0.20)"
-    accent-yellow: "#92400e"
-    accent-blue: "#386580"
-    accent-blue-glow: "rgba(56, 101, 128, 0.20)"
-    accent-green: "#047857"
-    accent-green-glow: "rgba(4, 120, 87, 0.20)"
-    accent-red: "#c53030"
-    accent-red-glow: "rgba(197, 48, 48, 0.20)"
-    accent-red-on: "#ffffff"
-    accent-red-pressed: "#b91c1c"
-    link: "#386580"
+    surface-hover: "#f4f4f5"
+    accent: "#904E55"
+    accent-glow: "rgba(144, 78, 85, 0.20)"
+    warning: "#92400e"
     info: "#386580"
+    info-glow: "rgba(56, 101, 128, 0.20)"
+    success: "#047857"
+    success-glow: "rgba(4, 120, 87, 0.20)"
+    danger: "#c53030"
+    danger-glow: "rgba(197, 48, 48, 0.20)"
+    danger-on: "#ffffff"
+    danger-pressed: "#b91c1c"
+    link: "#386580"
     focus-ring: "#2a2a2a"
     selection: "rgba(144, 78, 85, 0.20)"
     scrim: "rgba(12, 9, 10, 0.32)"
@@ -58,32 +54,28 @@ colors:
     surface-float-active: "#2a2a2a"
     hairline: "rgba(255, 255, 255, 0.04)"
     hairline-strong: "#6e6a6a"
-    divider-soft: "rgba(255, 255, 255, 0.04)"
     ink: "#f5f3f3"
     body: "rgba(245, 243, 243, 0.86)"
     charcoal: "rgba(245, 243, 243, 0.72)"
     mute: "#918d8d"
     stone: "#464a4d"
-    on-light: "#2a2a2a"
     on-light-mute: "rgba(42, 42, 42, 0.72)"
     primary: "#fcfdff"
     primary-on: "#000000"
     primary-pressed: "#ebecee"
-    secondary: "#1c1c1c"
-    accent: "#1c1c1c"
-    signature: "#F8F1FF"
-    signature-glow: "rgba(248, 241, 255, 0.22)"
-    accent-yellow: "#ffc53d"
-    accent-blue: "#5b94b7"
-    accent-blue-glow: "rgba(91, 148, 183, 0.34)"
-    accent-green: "#6ee7b7"
-    accent-green-glow: "rgba(110, 231, 183, 0.18)"
-    accent-red: "#ef4444"
-    accent-red-glow: "rgba(239, 68, 68, 0.34)"
-    accent-red-on: "#000000"
-    accent-red-pressed: "#f87171"
-    link: "#5b94b7"
+    surface-hover: "#1c1c1c"
+    accent: "#F8F1FF"
+    accent-glow: "rgba(248, 241, 255, 0.22)"
+    warning: "#ffc53d"
     info: "#5b94b7"
+    info-glow: "rgba(91, 148, 183, 0.34)"
+    success: "#6ee7b7"
+    success-glow: "rgba(110, 231, 183, 0.18)"
+    danger: "#ef4444"
+    danger-glow: "rgba(239, 68, 68, 0.34)"
+    danger-on: "#000000"
+    danger-pressed: "#f87171"
+    link: "#5b94b7"
     focus-ring: "#f5f3f3"
     selection: "rgba(248, 241, 255, 0.22)"
     scrim: "rgba(0, 0, 0, 0.60)"
@@ -92,77 +84,90 @@ fonts:
   sans: Figtree
   mono: Geist Mono
 typography:
-  display-xxl:
-    fontFamily: Outfit
-    fontSize: 64px
-    fontWeight: 500
-    lineHeight: 64px
-    letterSpacing: -0.02em
-  display-xl:
-    fontFamily: Outfit
-    fontSize: 48px
-    fontWeight: 500
-    lineHeight: 48px
-    letterSpacing: -0.02em
   display-lg:
     fontFamily: Outfit
-    fontSize: 40px
-    fontWeight: 500
+    fontSize: 57px
+    fontWeight: 400
+    lineHeight: 64px
+    letterSpacing: -0.25px
+  display-md:
+    fontFamily: Outfit
+    fontSize: 45px
+    fontWeight: 400
+    lineHeight: 52px
+  display-sm:
+    fontFamily: Outfit
+    fontSize: 36px
+    fontWeight: 400
+    lineHeight: 44px
+  headline-lg:
+    fontFamily: Figtree
+    fontSize: 32px
+    fontWeight: 400
     lineHeight: 40px
-    letterSpacing: -0.02em
-  heading-md:
+  headline-md:
+    fontFamily: Figtree
+    fontSize: 28px
+    fontWeight: 400
+    lineHeight: 36px
+  headline-sm:
     fontFamily: Figtree
     fontSize: 24px
-    fontWeight: 600
+    fontWeight: 400
     lineHeight: 32px
-    letterSpacing: -0.01em
-  heading-sm:
+  title-lg:
     fontFamily: Figtree
-    fontSize: 20px
-    fontWeight: 600
-    lineHeight: 28px
-    letterSpacing: -0.01em
-  subtitle:
-    fontFamily: Figtree
-    fontSize: 20px
+    fontSize: 22px
     fontWeight: 400
     lineHeight: 28px
+  title-md:
+    fontFamily: Figtree
+    fontSize: 16px
+    fontWeight: 500
+    lineHeight: 24px
+    letterSpacing: 0.15px
+  title-sm:
+    fontFamily: Figtree
+    fontSize: 14px
+    fontWeight: 500
+    lineHeight: 20px
+    letterSpacing: 0.1px
   body-lg:
-    fontFamily: Figtree
-    fontSize: 18px
-    fontWeight: 400
-    lineHeight: 28px
-  body-md:
     fontFamily: Figtree
     fontSize: 16px
     fontWeight: 400
     lineHeight: 24px
+    letterSpacing: 0.5px
+  body-md:
+    fontFamily: Figtree
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 20px
+    letterSpacing: 0.25px
   body-sm:
     fontFamily: Figtree
-    fontSize: 14px
+    fontSize: 12px
     fontWeight: 400
-    lineHeight: 20px
-  button-md:
+    lineHeight: 16px
+    letterSpacing: 0.4px
+  label-lg:
     fontFamily: Figtree
     fontSize: 14px
     fontWeight: 500
     lineHeight: 20px
-  button-sm:
+    letterSpacing: 0.1px
+  label-md:
     fontFamily: Figtree
     fontSize: 12px
     fontWeight: 500
     lineHeight: 16px
-    letterSpacing: 0.01em
-  caption:
+    letterSpacing: 0.5px
+  label-sm:
     fontFamily: Figtree
-    fontSize: 12px
-    fontWeight: 400
+    fontSize: 11px
+    fontWeight: 500
     lineHeight: 16px
-  caption-emph:
-    fontFamily: Figtree
-    fontSize: 12px
-    fontWeight: 600
-    lineHeight: 16px
+    letterSpacing: 0.5px
   code-md:
     fontFamily: Geist Mono
     fontSize: 13px
@@ -224,7 +229,7 @@ components:
   button-primary:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.primary-on}"
-    typography: "{typography.button-md}"
+    typography: "{typography.label-lg}"
     rounded: "{rounded.md}"
     padding: 12px 24px
     height: 44px
@@ -234,44 +239,44 @@ components:
   button-secondary:
     backgroundColor: transparent
     textColor: "{colors.ink}"
-    typography: "{typography.button-md}"
+    typography: "{typography.label-lg}"
     rounded: "{rounded.md}"
     padding: 12px 24px
     height: 44px
   button-tertiary:
     backgroundColor: transparent
     textColor: "{colors.ink}"
-    typography: "{typography.button-md}"
+    typography: "{typography.label-lg}"
     rounded: "{rounded.md}"
     padding: 12px 24px
     height: 44px
   button-destructive:
-    backgroundColor: "{colors.accent-red}"
-    textColor: "{colors.accent-red-on}"
-    typography: "{typography.button-md}"
+    backgroundColor: "{colors.danger}"
+    textColor: "{colors.danger-on}"
+    typography: "{typography.label-lg}"
     rounded: "{rounded.md}"
     padding: 12px 24px
     height: 44px
   button-destructive-pressed:
-    backgroundColor: "{colors.accent-red-pressed}"
-    textColor: "{colors.accent-red-on}"
+    backgroundColor: "{colors.danger-pressed}"
+    textColor: "{colors.danger-on}"
   button-disabled:
     backgroundColor: "{colors.surface-elevated}"
     textColor: "{colors.stone}"
   button-compact:
-    typography: "{typography.button-md}"
+    typography: "{typography.label-lg}"
     rounded: "{rounded.md}"
     padding: 8px 16px
     height: 36px
   button-small:
-    typography: "{typography.button-sm}"
+    typography: "{typography.label-lg}"
     rounded: "{rounded.sm}"
     padding: 8px 12px
     height: 32px
   text-input:
     backgroundColor: "{colors.surface-deep}"
     textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
+    typography: "{typography.body-lg}"
     rounded: "{rounded.md}"
     padding: 0 12px
     height: 40px
@@ -279,23 +284,23 @@ components:
     borderColor: "{colors.ink}"
     borderWidth: 2px
   text-input-error:
-    borderColor: "{colors.accent-red}"
+    borderColor: "{colors.danger}"
   text-input-disabled:
     backgroundColor: "{colors.surface-elevated}"
     textColor: "{colors.stone}"
   field-label:
     textColor: "{colors.ink}"
-    typography: "{typography.body-sm}"
+    typography: "{typography.body-md}"
   field-help:
     textColor: "{colors.mute}"
-    typography: "{typography.body-sm}"
+    typography: "{typography.body-md}"
   field-error:
-    textColor: "{colors.accent-red}"
-    typography: "{typography.body-sm}"
+    textColor: "{colors.danger}"
+    typography: "{typography.body-md}"
   textarea:
     backgroundColor: "{colors.surface-deep}"
     textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
+    typography: "{typography.body-lg}"
     rounded: "{rounded.md}"
     padding: 12px
   select-menu:
@@ -340,7 +345,7 @@ components:
     height: 48px
   segmented-item:
     textColor: "{colors.mute}"
-    typography: "{typography.button-md}"
+    typography: "{typography.label-lg}"
     rounded: "{rounded.sm}"
     padding: 0 16px
     height: 40px
@@ -437,19 +442,19 @@ components:
   tooltip:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.canvas}"
-    typography: "{typography.caption}"
+    typography: "{typography.body-sm}"
     rounded: "{rounded.sm}"
     padding: 4px 8px
     offset: 8px
   card-title:
     textColor: "{colors.ink}"
-    typography: "{typography.heading-sm}"
+    typography: "{typography.title-lg}"
   card-subtitle:
     textColor: "{colors.mute}"
-    typography: "{typography.body-sm}"
+    typography: "{typography.body-md}"
   card-key-figure:
-    textColor: "{colors.signature}"
-    typography: "{typography.display-lg}"
+    textColor: "{colors.accent}"
+    typography: "{typography.display-sm}"
   card-clickable:
     backgroundColor: "{colors.surface-card}"
     textColor: "{colors.ink}"
@@ -457,13 +462,13 @@ components:
     padding: 24px
   list-row:
     textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
+    typography: "{typography.title-sm}"
     rounded: "{rounded.md}"
     padding: 8px 12px
     height: 56px
     gap: 8px
   list-row-hover:
-    backgroundColor: "{colors.accent}"
+    backgroundColor: "{colors.surface-hover}"
   list-row-icon:
     backgroundColor: "{colors.surface-elevated}"
     textColor: "{colors.ink}"
@@ -486,7 +491,7 @@ Read the project first: request, dependencies, existing components, styles and a
 3. **Is there a brand identity already: logo, palette, fonts?** In an existing project, show what was found and ask only to confirm it. If there is none, use Kore's active identity.
    - **Logo:** used as it is. Check it on `canvas` in both themes; if it disappears in one, ask for a variant. Never derive the palette from the logo.
    - **Palette:** apply it with the Custom palette method (Color rules).
-   - **Font:** any font the user chooses, even one outside the Candidates. One font may cover both `display` and `sans`. The type scale does not change: sizes, weights, line-heights and letter-spacing stay Kore's. Before applying it, check weights 400, 500 and 600 (if one is missing, propose the nearest), the glyphs of the UI language, tabular figures (`tnum`) and a web license. Sum up the checks in one message and wait for the OK. Then change only the project's font tokens. Never resize the scale for the new font; sizes change only when the user asks, and always on the grid.
+   - **Font:** any font the user chooses, even one outside the Candidates. One font may cover both `display` and `sans`. The type scale does not change: sizes, weights, line-heights and letter-spacing stay Kore's. Before applying it, check weights 400 and 500 (if one is missing, propose the nearest), the glyphs of the UI language, tabular figures (`tnum`) and a web license. Sum up the checks in one message and wait for the OK. Then change only the project's font tokens. Never resize the scale for the new font; sizes change only when the user asks, and always on the grid.
    - **Code:** when the user wants one font only, code uses the system monospace stack (`ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace`), which loads nothing. If no code appears in the interface, the mono token is unused and nothing is loaded. A proportional font for code only on an explicit request, with a one-line warning that alignment breaks and characters like `0`/`O` and `1`/`l` get confused.
 
 After the answers, sum up the choices in two or three lines and start.
@@ -507,7 +512,7 @@ Check every rule that concerns what is being built, one by one; never assume a r
 
 **Always:**
 - Only tokens: every color, space, size, radius, shadow and duration comes from this file (search for free values such as `\b(1[0-9]|2[0-9]|3[0-9])px` outside token definitions).
-- Contrast: text 4.5:1, large text 3:1, control borders, icons and focus 3:1, measured on `surface-elevated` and, in dark, `surface-float-active`, in both themes. In dark, `accent-red` text never sits on `surface-elevated` (4.4:1); red icons can.
+- Contrast: text 4.5:1, large text 3:1, control borders, icons and focus 3:1, measured on `surface-elevated` and, in dark, `surface-float-active`, in both themes. In dark, `danger` text never sits on `surface-elevated` (4.4:1); red icons can.
 - Both themes checked, each on its own.
 
 | Building | Check |
@@ -544,16 +549,16 @@ Everything else starts from a default and is asked only when the work reaches it
 
 Guiding principle: *Calm Clarity*. When a choice is not covered by a rule, pick the option that keeps the screen calmer and clearer.
 
-Kore aims for a screen that feels quiet and reads at a glance. Its forms are round and friendly, laid on a strict 8-point grid. Surfaces are subdued, a cool off-white by day and a warm near-black by night. Space, a change of tone or a 1px border is enough to separate them, and only elements you can click carry a shadow. Color is used sparingly. One signature color marks the moment that matters and semantic colors mark state, while everything else stays neutral so the content comes first. Every screen has a single point of entry, and the interface answers every action, prevents errors and uses the words of the people who use it.
+Kore aims for a screen that feels quiet and reads at a glance. Its forms are round and friendly, laid on a strict 8-point grid. Surfaces are subdued, a cool off-white by day and a warm near-black by night. Space, a change of tone or a 1px border is enough to separate them, and only elements you can click carry a shadow. Color is used sparingly. One accent color marks the moment that matters and semantic colors mark state, while everything else stays neutral so the content comes first. Every screen has a single point of entry, and the interface answers every action, prevents errors and uses the words of the people who use it.
 
 Key characteristics (values reflect the active tokens; update them when a project picks different candidates):
 
 - Two themes designed with the same care, Ice (`#F8FAFB`) and Night (`#0C090A`), each built on its own instead of as the inverse of the other.
-- Headlines from 40px up in Outfit, everything else in Figtree, code and data in Geist Mono.
-- A single signature color used rarely: `#904E55` in light, `#F8F1FF` in dark.
+- Display roles in Outfit, everything else in Figtree, code and data in Geist Mono.
+- A single accent color used rarely: `#904E55` in light, `#F8F1FF` in dark.
 - Depth comes from surface steps and 1px borders. Only clickable elements have a shadow, and it is barely visible.
 - Cards have 24px corners and controls 12px; content starts on the corner's centre and nested radii are concentric.
-- Every space, size and line-height comes from a token on the 8-point grid.
+- Every space and size comes from a token on the 8-point grid.
 - One focal point per screen. Groups separate with the lightest step that works: space, then background, then line, then card.
 - Motion explains what is happening. It is quick in apps, and a landing page gets one carefully built moment.
 - Every action gets a response within 100ms, a deletion offers "Undo" instead of a confirmation, and errors are prevented and explained in plain words.
@@ -579,8 +584,8 @@ Colors are roles, not a bag of swatches. Every token has one job; a color with n
 ### Meaning
 
 - **Never color alone.** Error, success, warning and info always carry a text label or an icon too, so they work for color-blind users and in grayscale.
-- **Semantic roles stay fixed:** `accent-red` = error and destructive, `accent-green` = success, `accent-yellow` = warning, `info` = information, `link` = links. Never swap them for decoration.
-- **The accent is rare.** `signature` marks the primary moment of a screen (key data, emphasis). Scattered everywhere, it stops meaning anything. Never as a button or a surface, and never a second brand color alongside it.
+- **Semantic roles stay fixed:** `danger` = error and destructive, `success` = success, `warning` = warning, `info` = information, `link` = links. Never swap them for decoration.
+- **The accent is rare.** `accent` marks the primary moment of a screen (key data, emphasis). Scattered everywhere, it stops meaning anything. Never as a button or a surface, and never a second brand color alongside it.
 
 **The One Primary Rule.** `primary` is spent on the main action of its decision and nothing else: at most one solid primary button per decision, never on decoration. A repeated, independent unit (a card in a product grid, a row in a list) is its own decision — each may have its own primary; the rule counts per decision, not per page.
 
@@ -588,7 +593,7 @@ Colors are roles, not a bag of swatches. Every token has one job; a color with n
 
 Every interactive element defines all its states: default, hover, focus, active/pressed, disabled, selected, loading, error. A component with half of them does not ship.
 
-- **Focus, one style everywhere:** a 2px border drawn inside the control, never an outer ring. Empty or outlined controls (fields, unchecked checkbox and radio, switch off, segments, secondary and tertiary buttons, clickable cards and rows, the file drop area) use `focus-ring` (`ink`). Filled controls (primary and destructive buttons, checked checkbox and radio, switch on, slider thumb) use their foreground color (`primary-on`, `accent-red-on`), because `ink` would vanish on `primary`. A field with an error keeps the red: 2px `accent-red`. Never remove focus without a replacement.
+- **Focus, one style everywhere:** a 2px border drawn inside the control, never an outer ring. Empty or outlined controls (fields, unchecked checkbox and radio, switch off, segments, secondary and tertiary buttons, clickable cards and rows, the file drop area) use `focus-ring` (`ink`). Filled controls (primary and destructive buttons, checked checkbox and radio, switch on, slider thumb) use their foreground color (`primary-on`, `danger-on`), because `ink` would vanish on `primary`. A field with an error keeps the red: 2px `danger`. Never remove focus without a replacement.
 - **Selection:** selected items and selected text use `selection`.
 - **Disabled:** foreground `stone`, no hover, cursor not-allowed; keep the element's size so the layout does not shift.
 
@@ -601,7 +606,7 @@ Every interactive element defines all its states: default, hover, focus, active/
 
 A project may replace Kore's colors with its own. The user gives a few base colors; every other token is derived with fixed rules, so the result keeps Kore's contrast and surface steps without choosing each token by hand.
 
-**Base colors, per theme:** `canvas`, `ink`, `primary`, `signature`. Optional: `accent-red`, `accent-green`, `accent-yellow`, `accent-blue`; any missing one keeps Kore's value, so its meaning stays recognisable.
+**Base colors, per theme:** `canvas`, `ink`, `primary`, `accent`. Optional: `danger`, `success`, `warning`, `info`; any missing one keeps Kore's value, so its meaning stays recognisable.
 
 **Derived tokens.** L is OKLCH lightness (0–100). Neutral tokens take the hue of `canvas` with chroma at most 0.01.
 
@@ -612,8 +617,7 @@ A project may replace Kore's colors with its own. The user gives a few base colo
 | `surface-deep` | `canvas` L +1 | `canvas` L −2 | — |
 | `surface-float` | `canvas` L +1 | `canvas` L +8 | Floating layers must be lighter than `canvas` and `surface-card` in dark |
 | `surface-float-active` | `canvas` L −1 | `surface-float` L +6 | — |
-| `accent`, `secondary` | `canvas` L −2 | `canvas` L +8 | — |
-| `divider-soft` | `canvas` L −3 | same as `hairline` | — |
+| `surface-hover` | `canvas` L −2 | `canvas` L +8 | — |
 | `body`, `charcoal` | `ink` at 86% and 72% opacity | same | 4.5:1 |
 | `mute` | From `ink` toward `canvas`, stopping at the last value that passes | same | 4.5:1 |
 | `hairline-strong` | Solid, from `ink` toward `canvas`, stopping at the last value that passes | same | 3:1 |
@@ -621,28 +625,28 @@ A project may replace Kore's colors with its own. The user gives a few base colo
 | `hairline` | `ink` at 6% opacity | `ink` at 4% opacity | none, meant to be barely visible |
 | `primary-on` | White or black, whichever contrasts more with `primary` | same | 4.5:1 |
 | `primary-pressed` | `primary` L +5 toward `canvas` | same | `primary-on` still 4.5:1 |
-| `accent-red-on`, `accent-red-pressed` | As `primary-on` and `primary-pressed`, from `accent-red` | same | 4.5:1 |
-| `link`, `info` | `accent-blue` | same | 4.5:1 |
+| `danger-on`, `danger-pressed` | As `primary-on` and `primary-pressed`, from `danger` | same | 4.5:1 |
+| `link` | `info` | same | 4.5:1 |
 | `focus-ring` | `ink` | same | 3:1 |
 | `*-glow`, `selection` | The color at 20% opacity | The color at 18–34%, raised until visible on `canvas` | none |
-| `on-light`, `on-light-mute` | Light `ink` and light `charcoal` | same as light | 4.5:1 on white |
+| `on-light-mute` | Light `charcoal` | same as light | 4.5:1 on white |
 | `scrim` | Kore's value | Kore's value | — |
 
 **Method:**
 
 1. Take the base colors from the project or from the user. If they cover one theme only, ask whether to derive the other theme or ship one theme.
 2. Derive every token with the table. Kore's own values follow these rules within about 1 L point.
-3. Check contrast on the worst surfaces: `surface-elevated` and, in dark, `surface-float-active`. A text or border that passes there passes on every surface. For accent colors used as text, if one fails, move its L until it passes and keep its hue.
+3. Check contrast on the worst surfaces: `surface-elevated` and, in dark, `surface-float-active`. A text or border that passes there passes on every surface. For `danger`, `success`, `warning` or `info` used as text, if one fails, move its L until it passes and keep its hue.
 4. Show one table: token, value, contrast. Wait for the user's OK, then write the project's tokens.
 
 **Contrast ratio** = (L1 + 0.05) / (L2 + 0.05), where L1 and L2 are the WCAG relative luminance of the lighter and the darker color. Composite translucent colors over the surface before measuring. Never round up: 4.49 fails 4.5.
 
 ## Typography rules
 
-- **Roles, not sizes.** Use the scale tokens (`display-*`, `heading-*`, `body-*`, `caption*`, `button-*`, `code-md`); never a free font size.
-- **Display font only for display.** The display family (`display-*`, 40px and up) never appears in labels, buttons, navigation, form fields or data. Everything else uses the sans. Monospace is for code, data and tabular numbers, never a costume for "technical".
-- **Form fields at 16px.** Text inside inputs, textareas and selects uses `body-md` (16px) so mobile Safari does not zoom the page on focus.
-- **Reading floor.** Running text is at least 16px (`body-md`). 14px (`body-sm`) is for metadata and dense UI, 12px (`caption`) only for short labels.
+- **Roles, not sizes.** Use the scale tokens (`display-*`, `headline-*`, `title-*`, `body-*`, `label-*`, `code-md`); never a free font size.
+- **Display font only for display.** The display family (the `display-*` roles) never appears in labels, buttons, navigation, form fields or data. Everything else uses the sans. Monospace is for code, data and tabular numbers, never a costume for "technical".
+- **Form fields at 16px.** Text inside inputs, textareas and selects uses `body-lg` (16px) so mobile Safari does not zoom the page on focus.
+- **Reading floor.** Running text is `body-md` (14px), the default for most app text. `body-lg` (16px) is for introductory paragraphs and primary reading text; `body-sm` (12px) for supporting notes, legal text and secondary descriptions in dense layouts.
 - **Measure.** Paragraphs stay between 45 and 75 characters per line; cap text containers with a `ch` max-width.
 - **Heading spacing.** More space above a heading than below it, so the heading belongs to the text it introduces.
 - **Paragraph rhythm.** Separate paragraphs with space or with a first-line indent, never both.
@@ -651,6 +655,21 @@ A project may replace Kore's colors with its own. The user gives a few base colo
 - **Fixed scale in apps.** Product screens use the fixed rem scale. Fluid sizes (clamp) are reserved for display type on marketing pages.
 - **Font loading.** Load only the weights in use, with `font-display: swap` and a metric-compatible fallback, so text is never invisible and the layout does not jump.
 - **Zoom and user settings.** Never block browser zoom, user font size, Dynamic Type or platform text scaling.
+- **Line-height per script.** The scale's line-heights are set for Latin, Greek, Cyrillic and Hebrew. Arabic, Chinese, Japanese and Korean add 10% to the line-height; Devanagari, Thai and Khmer add up to 20%. Sizes do not change, and the result is not rounded to the grid.
+
+### Roles and sizes
+
+Five roles, each in three sizes (Large, Medium, Small). The role says what the text does; the size says how prominent it is. Values are dimension / line-height.
+
+| Role | Large | Medium | Small |
+|---|---|---|---|
+| **Display** (`display-*`, Outfit). The largest text: short text or key figures, best on large screens. | `display-lg` 57 / 64. The main text or figure of top prominence on very large screens, or a single isolated visual (a temperature, a big score). | `display-md` 45 / 52. Expressive text or prominent figures on medium screens, or primary regions. | `display-sm` 36 / 44. The compact display: impact on small screens or narrow layouts without much vertical space. |
+| **Headline**. Short, high-impact text that marks the primary passages or main regions. | `headline-lg` 32 / 40. The main title of a screen or view ("Profile", "Your orders"). | `headline-md` 28 / 36. Headings of important sections and high-priority dialogs (the title inside a dialog). | `headline-sm` 24 / 32. Headings of secondary content regions or less prominent sections on the same page. |
+| **Title**. Smaller than Headline, medium emphasis: divides secondary passages or regions. | `title-lg` 22 / 28. Titles of cards and articles, primary app bar headings (a contact's name). | `title-md` 16 / 24. Main categories and section dividers ("Top News"). | `title-sm` 14 / 20. Subcategory headings, items of complex lists, compact sub-headers inside components. |
+| **Body**. Long passages, line-height about 1.5×, simple highly legible font. | `body-lg` 16 / 24. Introductory paragraphs or primary reading text (the opening of an article). | `body-md` 14 / 20. The default for most app text: article paragraphs, option descriptions in settings. | `body-sm` 12 / 16. Supporting text, secondary notes, legal text and disclaimers, secondary descriptions in dense layouts. |
+| **Label**. Small functional styles for components and micro-text. | `label-lg` 14 / 20. Action elements: the text inside buttons. | `label-md` 12 / 16. Navigation components: text under navigation bar icons, tabs. | `label-sm` 11 / 16. Micro-text and captions: timecodes, badges, small tags. |
+
+`code-md` (13 / 20, Geist Mono) covers code; Material has no role for it.
 
 ## Spacing
 
@@ -670,7 +689,7 @@ Base unit 8px, with 4px half-steps for fine adjustments. Token names count 4px u
 | `space-6` | 24px | Medium gap | Default card padding, gap between sections inside a card, gap between fields in a form |
 | `space-8` | 32px | Large gap | Card outer margin, gap between cards, layout gutters, page side margin from tablet up |
 | `space-10` | 40px | Half-step (5 × 8) | Only when 32 is visibly too tight and 48 too loose |
-| `space-12` | 48px | Section spacing | Space between page sections, main button and input height |
+| `space-12` | 48px | Section spacing | Space between page sections |
 
 The primary scale is 4 / 8 / 16 / 24 / 32 / 48. The half-steps 12, 20 and 40 exist so they can be used as tokens, but only when the primary value next to them is visibly wrong. No other values.
 
@@ -682,7 +701,7 @@ The primary scale is 4 / 8 / 16 / 24 / 32 / 48. The half-steps 12, 20 and 40 exi
 4. **Uniform card padding.** The same value on all four sides and on every card of the same kind: `space-6` (24px) by default, `space-4` (16px) for compact cards.
 5. **Everything that adds space follows the scale:** card padding, gaps between sections, text spacing, button sizes, layout margins, icon spacing.
 6. **Element sizes are multiples of 8** (4 when needed): icons 16 / 20 / 24, avatars 24 / 32 / 40 / 48, controls 32 / 36 / 40 / 44, bars 56 / 64.
-7. **Line-heights are multiples of 4** (see Typography), so vertical rhythm never breaks.
+7. **The grid applies to containers, not to text.** Element sizes, padding and gaps follow the scale. Line-heights come from the type scale and the script factor (Typography), and need not be multiples of 4.
 8. **Borders don't count.** A 1px border is not spacing: use border-box sizing and fixed heights so a border never forces off-grid padding (no `7px 15px` to compensate).
 9. **Use relative units.** Implement tokens in `rem` (1rem = 16px) so spacing follows the user's text size and zoom.
 
@@ -905,7 +924,7 @@ Six tools set how strongly an element pulls the eye. Use them on purpose, and mo
 |---|---|
 | Size | The bigger element is read first. Headings are clearly larger than their subheadings; the primary button is larger than secondary actions; functional icons are larger than decorative ones. |
 | Contrast | Primary text uses full contrast (`ink`); metadata steps down (`charcoal`, `mute`), always within the 4.5:1 minimum. |
-| Color | One accent family for primary actions. Saturated beats desaturated; color never carries meaning alone. |
+| Color | One color family for primary actions. Saturated beats desaturated; color never carries meaning alone. |
 | Shape | A shape that breaks the pattern stands out (a round badge on a square icon). Kore keeps one corner language, so shape contrast comes from form (pill, circle, dot), never from mixing corner styles. |
 | Position | Top-left is read first in left-to-right layouts; an element surrounded by space weighs more than the same element in a crowd. |
 | Density | A dense area weighs more but can confuse. Reduce density of secondary areas; an isolated element gains weight from the empty space around it. Never the same density everywhere. |
@@ -948,8 +967,8 @@ Before choosing how something looks (Visual weight), decide what it is: apply th
 - **One `h1` per page;** it names the page.
 - At most **three or four type levels** visible on one screen.
 - Adjacent levels differ clearly in size and/or weight; if two roles look almost the same, drop one.
-- Weight can compensate size: a semibold `heading-sm` can outrank a regular larger line.
-- Bold only for headings and key terms; if everything is bold, nothing is.
+- Weight can compensate size: a medium `label-lg` (14px) can outrank a regular `body-lg` (16px).
+- Bold only for key terms; if everything is bold, nothing is.
 - No all caps on long text.
 - No eyebrow or kicker label above a heading; the heading carries its own weight.
 
@@ -959,12 +978,12 @@ Inside a component (a card, a popover, a dialog, a row), decide the order before
 
 1. **Order first.** Decide what the user needs now, the action that comes next, and the context that changes the decision. Say each idea once: if the title already says it, the text below adds something new or disappears.
 2. **Emphasize by de-emphasizing.** The primary element stays `ink`; everything else steps down. Take weight away from the secondary text instead of making the primary louder.
-3. **Labels are a last resort.** Drop a label when the format already says what the value is (a price, a date, an email). Merge label and value when possible ("148 g a day", "12 left in stock", not "Stock: 12"). When a label must stay, it is the quieter half: `body-sm` in `mute`, with the value in `ink`. Emphasize the label instead only on dense reference pages where people scan for it (a spec sheet). Form fields always keep their visible labels.
-4. **Limits.** At most three sizes and three levels in one component. Weights: 400 for text, 500 for labels and buttons, 600 for titles; never below 400. Text colors: `ink`, `body`, `mute`, and nothing else for plain text. No gradient text: emphasis comes from weight or size, never decoration.
+3. **Labels are a last resort.** Drop a label when the format already says what the value is (a price, a date, an email). Merge label and value when possible ("148 g a day", "12 left in stock", not "Stock: 12"). When a label must stay, it is the quieter half: `body-md` in `mute`, with the value in `ink`. Emphasize the label instead only on dense reference pages where people scan for it (a spec sheet). Form fields always keep their visible labels.
+4. **Limits.** At most three sizes and three levels in one component. Weights: 400 for text and titles, 500 for labels and buttons; never below 400. Text colors: `ink`, `body`, `mute`, and nothing else for plain text. No gradient text: emphasis comes from weight or size, never decoration.
 5. **Numbers.** The number carries the emphasis; its unit is smaller and in `mute` ("148 g *a day*").
 6. **Balance weight and contrast.** Heavy shapes (filled icons, large glyphs) take a softer color (`mute`); thin text keeps `ink`.
 7. **Warnings are never quiet.** A consequence the user must not miss ("This can't be undone.") sits on its own line, in weight 500 and its semantic color, never in `mute`. The words carry the meaning, so no icon is needed; add one only when the text alone does not say it is a warning.
-8. **Semantics follow hierarchy.** A destructive action in a list or menu is ghost or outline, with red limited to its icon; it becomes a filled `destructive` button only when it is the main action of the moment, as in the confirmation.
+8. **Semantics follow hierarchy.** A destructive action in a list or menu is tertiary or secondary, with red limited to its icon; it becomes a filled `destructive` button only when it is the main action of the moment, as in the confirmation.
 9. **No grey text on colored surfaces.** On a tinted or colored background, secondary text takes a tint of that color, not `mute`.
 10. **Inline emphasis.** In a sentence, the words the user must check stand out in weight 500 and `ink`: figures with their unit (a quantity, a price, a date) and the name of the object an action affects ("**Next week's plan** and its **21 meals** will be removed."). At most two per sentence, never color, never whole phrases. It applies to explanations and messages (errors, confirmations); captions, subtitles and help text stay plain. It works because weight is noticed before reading (pre-attentive processing) and a lone different item stands out (the isolation effect).
 
@@ -1022,7 +1041,7 @@ Adapting is rethinking the experience for each context, not scaling pixels down.
 
 ### Typography
 
-- Below `sm`, display roles step down one level: `display-xxl` 64 → 48, `display-xl` 48 → 40. Line-height stays equal to the size.
+- Below `sm`, display roles step down one level: `display-lg` 57 → 45, `display-md` 45 → 36. Line-height steps with the role (64 → 52, 52 → 44).
 - Product screens keep the fixed scale at every width (see Typography rules).
 
 ### Input
@@ -1056,7 +1075,7 @@ Test on at least one real iPhone and one real Android phone, in Safari, Chrome a
 The parts the browser draws still carry the design. Theme them from the palette instead of shipping browser defaults:
 
 - **Text selection:** `selection` background, `ink` text.
-- **Caret:** `ink` (or `signature` in inputs that deserve emphasis).
+- **Caret:** `ink` (or `accent` in inputs that deserve emphasis).
 - **Focus:** see States.
 - **Scrollbars:** thin, `hairline-strong` thumb on a transparent track, where the platform allows it.
 - **Links:** `link` color, underline with a 4px offset, thickness 1px.
@@ -1102,19 +1121,19 @@ Four variants, three sizes, one shape. Every button has all its states.
 | Variant | Background | Text | Border | Shadow | Hover | Pressed | Use |
 |---|---|---|---|---|---|---|---|
 | primary | `primary` | `primary-on` | none | `shadow-rest` | `shadow-hover` + 4px lift | `primary-pressed` | The main action of its decision (The One Primary Rule) |
-| secondary | transparent | `ink` | 1px `hairline-strong` | none | `accent` background | `surface-elevated` | The next most important action, alongside a primary or a destructive; never alone |
-| tertiary | transparent | `ink` | none | none | `accent` background | `surface-elevated` | Everything else; as many as needed |
-| destructive | `accent-red` | `accent-red-on` | none | `shadow-rest` | `shadow-hover` + 4px lift | `accent-red-pressed` | Delete and other destructive actions, at most one per decision |
+| secondary | transparent | `ink` | 1px `hairline-strong` | none | `surface-hover` background | `surface-elevated` | The next most important action, alongside a primary or a destructive; never alone |
+| tertiary | transparent | `ink` | none | none | `surface-hover` background | `surface-elevated` | Everything else; as many as needed |
+| destructive | `danger` | `danger-on` | none | `shadow-rest` | `shadow-hover` + 4px lift | `danger-pressed` | Delete and other destructive actions, at most one per decision |
 
 | Size | Height | Horizontal padding | Vertical padding | Radius | Type |
 |---|---|---|---|---|---|
-| default | 44px | `space-6` (24px) | `space-3` (12px) | `md` (12px) | `button-md` |
-| compact | 36px | `space-4` (16px) | `space-2` (8px) | `md` (12px) | `button-md` |
-| small | 32px | `space-3` (12px) | `space-2` (8px) | `sm` (8px) | `button-sm`, hit area extended to 44px |
+| default | 44px | `space-6` (24px) | `space-3` (12px) | `md` (12px) | `label-lg` |
+| compact | 36px | `space-4` (16px) | `space-2` (8px) | `md` (12px) | `label-lg` |
+| small | 32px | `space-3` (12px) | `space-2` (8px) | `sm` (8px) | `label-lg`, hit area extended to 44px |
 
 - **Icon buttons** are square in the same three sizes and always carry an accessible label and a tooltip.
 - **No icons on labeled buttons.** A button with a label shows only text. The one exception is the loading spinner, placed before the label with `space-2` (8px).
-- **Focus** (States), in the button's text color: `primary-on` on primary, `accent-red-on` on destructive, `ink` on the others (secondary thickens its border from 1 to 2px).
+- **Focus** (States), in the button's text color: `primary-on` on primary, `danger-on` on destructive, `ink` on the others (secondary thickens its border from 1 to 2px).
 - **Disabled:** `surface-elevated` background, `stone` text, no shadow, not-allowed cursor; secondary keeps a `hairline` border. Explain why it is disabled when it is not obvious.
 - **Loading:** a spinner plus the running action ("Saving…"); the button keeps its width and ignores further clicks.
 - **Timing:** press in `duration-instant`; shadow and lift in `duration-fast` with `ease-out`; no lift under reduced motion or on touch.
@@ -1130,12 +1149,12 @@ Text input, textarea and select share one look.
 | Part | Spec |
 |---|---|
 | Field | Height 40px; padding `space-3` (12px), equal to the radius; radius `md` (12px); background `surface-deep`; 1px `hairline-strong` border drawn inside |
-| Text | `body-md` (16px) in `ink`; placeholder in `mute`, only as an example, never as the label |
-| Label | `body-sm` medium in `ink`, above the field, `space-2` (8px) away; "(optional)" in `mute` when the field is optional |
-| Help text | `body-sm` in `mute`, below the field, `space-1` (4px) away |
-| Error | Red `accent-red` border plus a message in `accent-red`, linked to the field (`aria-invalid`, `aria-describedby`); an icon only when the message alone would not read as an error (Text hierarchy #7) |
+| Text | `body-lg` (16px) in `ink`; placeholder in `mute`, only as an example, never as the label |
+| Label | `label-lg` in `ink`, above the field, `space-2` (8px) away; "(optional)" in `mute` when the field is optional |
+| Help text | `body-md` in `mute`, below the field, `space-1` (4px) away |
+| Error | Red `danger` border plus a message in `danger`, linked to the field (`aria-invalid`, `aria-describedby`); an icon only when the message alone would not read as an error (Text hierarchy #7) |
 
-- **States:** hover turns the border `mute`; **focus thickens the border to 2px** (States; `accent-red` when the field has an error); disabled uses `surface-elevated`, `stone` text and a `hairline` border; read-only uses `surface-elevated` with no border and stays selectable.
+- **States:** hover turns the border `mute`; **focus thickens the border to 2px** (States; `danger` when the field has an error); disabled uses `surface-elevated`, `stone` text and a `hairline` border; read-only uses `surface-elevated` with no border and stays selectable.
 - **Adornments:** a 20px icon on the left (search) at 12px, with the text starting at 40px; a unit on the right ("kg", "g") in `mute`, 12px from the edge.
 - **Textarea:** minimum height 96px, resizable vertically only.
 - **Validation** runs when the user leaves the field, and the error disappears as soon as the value is valid.
@@ -1168,18 +1187,18 @@ A custom menu, never the browser's native dropdown.
 ### Segmented control
 
 - **Container:** 48px tall, radius `md` (12px), padding `space-1` (4px), `surface-elevated` with a `hairline` border. It hugs its segments, never stretches to full width.
-- **Segments:** inline buttons, 40px tall, radius `sm` (12 − 4 = 8), padding `space-4` (16px), `space-2` apart, hit area 44px; `button-md`, `mute` text. Selected: `surface-card` with a `hairline` border and `ink` text.
+- **Segments:** inline buttons, 40px tall, radius `sm` (12 − 4 = 8), padding `space-4` (16px), `space-2` apart, hit area 44px; `label-md`, `mute` text. Selected: `surface-card` with a `hairline` border and `ink` text.
 - For two to four short, mutually exclusive options that switch a view (The Working Memory Rule); for more options, use a select.
 
 ### Password
 
-- A text field with a show/hide toggle: an inline button (32px, radius 12 − 4 = 8, 4px from every edge; the text stops 44px from the right edge). Hover `accent`; focus follows States. The icon switches between view and view-off; the accessible label and tooltip say "Show password" or "Hide password", with `aria-pressed`.
-- Requirements sit under the field, `space-1` apart, in `body-sm`, and update while the user types: unmet is a 16px empty circle and `mute` text; met is a 16px check circle in `accent-green` and `ink` text. The icon changes shape, so the state never depends on color alone. The list is linked with `aria-describedby` and announced with `aria-live="polite"`.
+- A text field with a show/hide toggle: an inline button (32px, radius 12 − 4 = 8, 4px from every edge; the text stops 44px from the right edge). Hover `surface-hover`; focus follows States. The icon switches between view and view-off; the accessible label and tooltip say "Show password" or "Hide password", with `aria-pressed`.
+- Requirements sit under the field, `space-1` apart, in `body-md`, and update while the user types: unmet is a 16px empty circle and `mute` text; met is a 16px check circle in `success` and `ink` text. The icon changes shape, so the state never depends on color alone. The list is linked with `aria-describedby` and announced with `aria-live="polite"`.
 
 ### Combobox
 
-- A text field with the search icon on the left and the select menu below (`listbox`, `surface-float`). It filters while the user types; the matching part of each option is semibold.
-- Empty field: show recent items under a `caption` label ("Recent"). No match: one line in `mute` saying what to do ("No foods match “rize”. Check the spelling or add it as a new food.").
+- A text field with the search icon on the left and the select menu below (`listbox`, `surface-float`). It filters while the user types; the matching part of each option is weight 500.
+- Empty field: show recent items under a `body-sm` label ("Recent"). No match: one line in `mute` saying what to do ("No foods match “rize”. Check the spelling or add it as a new food.").
 - Keyboard: arrows move, Enter picks, Escape closes. Roles `combobox` and `listbox`, `aria-expanded`, `aria-activedescendant`, `aria-autocomplete="list"`.
 
 ### Number stepper
@@ -1190,23 +1209,23 @@ A custom menu, never the browser's native dropdown.
 
 ### File upload
 
-- **Drop area:** the whole area is the control. `surface-float`, `hairline-strong` border, radius `md`, padding `space-6` (centered content), at least 128px tall; a 24px upload icon, the action in `body-md` medium ("Choose a photo or drag it here") and the accepted formats and size limit in `body-sm` `mute` ("JPG or PNG, up to 5 MB"), always visible before the action.
-- **States:** hover `surface-float-active` with a `mute` border; dragging over and focus `surface-float-active` with a 2px `ink` border; on `surface-float-active` the hint text switches to `charcoal`; error `accent-red` border plus an inline message that says what to do ("front.heic is not a JPG or PNG. Export it as JPG and try again."). Check type and size before uploading.
-- **Chosen file:** a 56px row in `surface-card` with a `hairline` border, radius `md` (12) and left padding 12: file icon in a 40px `surface-elevated` circle, name (truncated) and size in `body-sm` `mute`, and a 48px inline remove button (radius 12 − 4 = 8, 4px from the edges) labelled "Remove side.jpg". Upload progress uses the progress bar (Feedback).
+- **Drop area:** the whole area is the control. `surface-float`, `hairline-strong` border, radius `md`, padding `space-6` (centered content), at least 128px tall; a 24px upload icon, the action in `label-lg` ("Choose a photo or drag it here") and the accepted formats and size limit in `body-md` `mute` ("JPG or PNG, up to 5 MB"), always visible before the action.
+- **States:** hover `surface-float-active` with a `mute` border; dragging over and focus `surface-float-active` with a 2px `ink` border; on `surface-float-active` the hint text switches to `charcoal`; error `danger` border plus an inline message that says what to do ("front.heic is not a JPG or PNG. Export it as JPG and try again."). Check type and size before uploading.
+- **Chosen file:** a 56px row in `surface-card` with a `hairline` border, radius `md` (12) and left padding 12: file icon in a 40px `surface-elevated` circle, name (truncated) and size in `body-md` `mute`, and a 48px inline remove button (radius 12 − 4 = 8, 4px from the edges) labelled "Remove side.jpg". Upload progress uses the progress bar (Feedback).
 
 ### Slider
 
 - A 4px track: `hairline-strong` for the empty part, `primary` for the filled part. A 20px `primary` thumb with `shadow-rest` (`shadow-hover` on hover, `primary-pressed` while dragging), since it is dragged. The hit area is 44px tall.
-- The label sits on the left and the current value on the right, in `body-sm` medium with tabular figures. A range uses two thumbs that never cross, with the fill between them.
+- The label sits on the left and the current value on the right, in `label-lg` with tabular figures. A range uses two thumbs that never cross, with the fill between them.
 - Focus: the thumb border (States). Disabled: `surface-elevated` track and `stone` thumb, no shadow.
 - Use a slider only when an approximate value is fine; for an exact value use the number stepper. Give each thumb a readable value (`aria-valuetext`, for example "€14").
 
 ### Menu
 
 - **Surface:** `surface-float`, 1px `hairline`, no shadow, radius `md` (12px), padding `space-1` (4px), at least 224px wide, opening `space-2` below its trigger with its start edge aligned to the trigger's start edge (left in left-to-right languages); it flips to the end edge or above only when there is no room.
-- **Items:** 44px tall, radius `sm` (8px), padding 8, so the text sits 12px from the menu edge; optional 16px icon in `mute`, `space-2` from the label. Show a keyboard shortcut on the right (`caption`, `charcoal`) only when the product really has it. Active and hover: `surface-float-active`.
+- **Items:** 44px tall, radius `sm` (8px), padding 8, so the text sits 12px from the menu edge, in `body-md`; optional 16px icon in `mute`, `space-2` from the label. Show a keyboard shortcut on the right (`body-sm`, `charcoal`) only when the product really has it. Active and hover: `surface-float-active`.
 - **Spacing:** items `space-1` (4px) apart, so two highlights never touch; groups `space-2` (8px) apart (The Distance Ratio Rule).
-- **Groups** by category, optionally with a `caption` label in `mute`. A destructive item comes last, alone, with a red icon and `ink` text (red text fails contrast on the active surface in dark).
+- **Groups** by category, optionally with a `body-sm` label in `mute`. A destructive item comes last, alone, with a red icon and `ink` text (red text fails contrast on the active surface in dark).
 - **Keyboard:** Enter, Space or ↓ opens and focuses the first item; ↑ ↓ Home End move; Escape closes and returns focus to the trigger; Tab closes. Roles `menu` and `menuitem`, `aria-haspopup`, `aria-expanded`.
 
 ### Popover
@@ -1217,7 +1236,7 @@ A custom menu, never the browser's native dropdown.
 ### Dialog
 
 - A modal over a `scrim`: `surface-float`, 1px `hairline`, radius `xl` = padding `space-6` (24px), at most 480px wide, 16px from the screen edges on phones.
-- **Header:** title in `heading-sm`, a statement that names the action with a verb and an object ("Delete this plan"), never a question; the close button is a corner action (Shapes), with the title centred on it. **Body:** the object and figures in inline emphasis ("**Next week's plan** and its **21 meals** will be removed."). A consequence that cannot be undone sits on its own line in `accent-red`, weight 500, `space-1` below the body: body and consequence are one message, centred between title and actions with `space-6` above and below it.
+- **Header:** title in `headline-md`, a statement that names the action with a verb and an object ("Delete this plan"), never a question; the close button is a corner action (Shapes), with the title centred on it. **Body:** the object and figures in inline emphasis ("**Next week's plan** and its **21 meals** will be removed."). A consequence that cannot be undone sits on its own line in `danger`, weight 500, `space-1` below the body: body and consequence are one message, centred between title and actions with `space-6` above and below it.
 - **Actions:** `space-6` below the message, compact buttons 24 − 12 = 12px from the edges, right-aligned, confirm last; the buttons name the action ("Keep plan", "Delete plan"), never "Yes", "No", "OK" or "Submit". Initial focus goes to the safer action.
 - Use a dialog only when the action cannot be undone or truly needs interruption and protected focus; otherwise act and offer "Undo" (Usability 3) or use an inline or progressive alternative. Focus stays inside; Escape, the close button and a click on the scrim close it; focus returns to the trigger. Use the platform's modal element where it exists (`<dialog>` on the web).
 - Opens with a fade and a 0.98 → 1 scale in `duration-base` `ease-out`; only the fade under reduced motion.
@@ -1230,12 +1249,12 @@ A custom menu, never the browser's native dropdown.
 
 ### Tooltip
 
-- The one inverted overlay: `ink` background with `canvas` text, so it separates from anything below it without a shadow. `caption`, radius `sm` = padding 8 (4 × 8), `space-2` from its trigger, at most 240px wide.
+- The one inverted overlay: `ink` background with `canvas` text, so it separates from anything below it without a shadow. `body-sm`, radius `sm` = padding 8 (4 × 8), `space-2` from its trigger, at most 240px wide.
 - Appears after `duration-slow` (400ms) of hover and immediately on keyboard focus; Escape hides it. Plain text only, never links or buttons. Linked with `aria-describedby`, role `tooltip`. Every icon-only button has one.
 
 ### Overlay rules
 
-- **Hover on floating surfaces:** ghost and outline buttons inside a menu, popover, dialog or sheet use `surface-float-active` for hover and pressed, because `accent` equals `surface-float` in dark.
+- **Hover on floating surfaces:** tertiary and secondary buttons inside a menu, popover, dialog or sheet use `surface-float-active` for hover and pressed, because `surface-hover` equals `surface-float` in dark.
 - On `surface-float-active`, secondary text uses `charcoal` (not `mute`) and links don't appear; in dark, `mute`, `link` and `hairline-strong` fall below their minimum there.
 
 ### Cards
@@ -1249,11 +1268,11 @@ A custom menu, never the browser's native dropdown.
 | Clickable | `space-6` (24px) | Title, subtitle and a Hugeicons arrow on the right | `shadow-rest`, `shadow-hover` + 4px lift on hover |
 
 - **Shape and surface:** `surface-card`, 1px `hairline` drawn inside, radius `xl` (24px), the same padding on all four sides.
-- **Header:** title in `heading-sm`, subtitle in `body-sm` `mute`, `space-1` (4px) apart; `space-6` (24px) between the header and the content (`space-4` in compact cards).
+- **Header:** title in `title-lg`, subtitle in `body-md` `mute`, `space-1` (4px) apart; `space-6` (24px) between the header and the content (`space-4` in compact cards).
 - **Actions:** at the bottom of the card, right-aligned, confirm last with cancel or back to its left (Action order in Hierarchy); compact buttons (36px, radius 12) placed 24 − 12 = 12px from the card's bottom and right edges (The Concentric Rule), `space-2` apart. At most one `primary` per card (The One Primary Rule): a repeated card keeps its own primary when it has a clear main action (a product's "Buy"); use secondary and tertiary instead when the card's actions are all lower-emphasis, with none of them the point of the card. A card with actions is at least 320px wide; if the buttons still don't fit, they stack full-width with the confirming action at the bottom, never in a staircase. It has no shadow, since it is not clickable as a whole.
 - **Header action:** an optional "More" button placed as a corner action (Shapes): 32px, radius 8, 16px from the corner, with the title centred on it; accessible label ("More options for Leg day") and tooltip.
 - **Height:** each card is as tall as its content. Cards in a row share one height only in a grid of cards with the same structure.
-- **Key figure:** when a card exists to show one number, the number is its focal point: `display-lg` in `signature`, with its unit and context in `body-sm` `mute` on the same baseline.
+- **Key figure:** when a card exists to show one number, the number is its focal point: `display-sm` in `accent`, with its unit and context in `body-md` `mute` on the same baseline.
 - **Clickable card:** the whole card is one link or button. It fills the full width of its container, with the arrow anchored to the right edge. Focus follows States; pressed returns to rest. It never contains other buttons or links.
 - **Spacing between cards:** `space-8` (32px); on phones `space-4` to `space-6`.
 - **Never nest cards.** Inner content uses rows separated by space; a rounded block with a background appears only when each item is its own unit (a clickable row).
@@ -1262,9 +1281,9 @@ A custom menu, never the browser's native dropdown.
 
 - **Row:** at least 56px tall, padding `space-2` × `space-3`; leading element, text and trailing element separated by `space-4` (16px).
 - **Leading:** a 40px circle in `surface-elevated` with a 20px icon, or an avatar.
-- **Text:** title in `body-md` medium `ink`; secondary line in `body-sm` `mute`, one line, truncated with an ellipsis.
-- **Trailing:** a value in `body-sm` `mute` with tabular figures, and/or the Hugeicons arrow when the row opens something.
-- **Clickable rows** are links: hover gives the `accent` background, pressed `surface-elevated`, focus follows States on the highlight. The highlight extends `space-3` (12px) beyond the text, with radius 24 − 12 = 12 inside a standard card (The Concentric Rule), so the text stays on the card curve's centre.
+- **Text:** title in `title-sm` `ink`; secondary line in `body-md` `mute`, one line, truncated with an ellipsis.
+- **Trailing:** a value in `body-md` `mute` with tabular figures, and/or the Hugeicons arrow when the row opens something.
+- **Clickable rows** are links: hover gives the `surface-hover` background, pressed `surface-elevated`, focus follows States on the highlight. The highlight extends `space-3` (12px) beyond the text, with radius 24 − 12 = 12 inside a standard card (The Concentric Rule), so the text stays on the card curve's centre.
 - **Static rows** do not react to hover.
 - Rows separate with space only, never with a divider on every row. Rows in a list are `space-2` (8px) apart, so two highlights never touch.
 
@@ -1460,37 +1479,18 @@ Alternative values for each token. The frontmatter holds the active value for th
 | Value | |
 |---|---|
 | `#8a8e92` | active |
-| `rgba(33, 33, 33, 0.12)` | below 3:1 for control borders |
-| `rgba(33, 33, 33, 0.16)` |  |
-| `rgba(33, 33, 33, 0.20)` |  |
-| `rgba(33, 33, 33, 0.24)` |  |
+| `#868a8e` |  |
+| `#7f8387` |  |
+| `#767a7e` |  |
 
 ### hairline-strong — dark
 
 | Value | |
 |---|---|
 | `#6e6a6a` | active |
-| `rgba(255, 255, 255, 0.12)` | below 3:1 for control borders |
-| `rgba(255, 255, 255, 0.16)` |  |
-| `rgba(255, 255, 255, 0.24)` |  |
-| `rgba(255, 255, 255, 0.28)` |  |
-
-### divider-soft — light
-
-| Value | |
-|---|---|
-| `#efeff1` | active |
-| `rgba(33, 33, 33, 0.03)` |  |
-| `rgba(33, 33, 33, 0.04)` |  |
-| `rgba(33, 33, 33, 0.05)` |  |
-
-### divider-soft — dark
-
-| Value | |
-|---|---|
-| `rgba(255, 255, 255, 0.04)` | active |
-| `rgba(255, 255, 255, 0.02)` |  |
-| `rgba(255, 255, 255, 0.03)` |  |
+| `#726e6e` |  |
+| `#777373` |  |
+| `#7d7979` |  |
 
 ### ink — light
 
@@ -1583,19 +1583,30 @@ Alternative values for each token. The frontmatter holds the active value for th
 | `#4a4646` |  |
 | `#3f3b3b` |  |
 
-### on-light — light & dark
-
-| Value | |
-|---|---|
-| `#2a2a2a` | active |
-| `#000000` |  |
-
 ### on-light-mute — light & dark
 
 | Value | |
 |---|---|
 | `rgba(42, 42, 42, 0.72)` | active |
 | `#6a6e72` |  |
+
+### primary — light
+
+| Hex | |
+|---|---|
+| `#212121` | active |
+| `#000000` |  |
+| `#1a1a1a` |  |
+| `#2a2a2a` |  |
+
+### primary — dark
+
+| Hex | |
+|---|---|
+| `#fcfdff` | active |
+| `#ffffff` |  |
+| `#f5f3f3` |  |
+| `#ebecee` |  |
 
 ### primary-pressed — light
 
@@ -1615,16 +1626,7 @@ Alternative values for each token. The frontmatter holds the active value for th
 | `#dcdee1` |  |
 | `#d1d4d8` |  |
 
-### secondary — light
-
-| Hex | |
-|---|---|
-| `#f4f6f7` | active |
-| `#f2f4f5` |  |
-| `#f0f2f4` |  |
-| `#eef0f2` |  |
-
-### signature — light
+### accent — light
 
 | Hex | |
 |---|---|
@@ -1632,7 +1634,7 @@ Alternative values for each token. The frontmatter holds the active value for th
 | `#EB5E28` |  |
 | `#F8F1FF` |  |
 
-### signature — dark
+### accent — dark
 
 | Hex | |
 |---|---|
@@ -1640,7 +1642,7 @@ Alternative values for each token. The frontmatter holds the active value for th
 | `#EB5E28` |  |
 | `#904E55` |  |
 
-### accent-yellow — light
+### warning — light
 
 | Hex | |
 |---|---|
@@ -1649,7 +1651,7 @@ Alternative values for each token. The frontmatter holds the active value for th
 | `#a16207` |  |
 | `#d97706` |  |
 
-### accent-yellow — dark
+### warning — dark
 
 | Hex | |
 |---|---|
@@ -1659,7 +1661,7 @@ Alternative values for each token. The frontmatter holds the active value for th
 | `#f5b83d` |  |
 | `#ffd166` |  |
 
-### accent-blue — light
+### info — light
 
 | Hex | |
 |---|---|
@@ -1669,7 +1671,7 @@ Alternative values for each token. The frontmatter holds the active value for th
 | `#44799b` |  |
 | `#407191` |  |
 
-### accent-blue — dark
+### info — dark
 
 | Hex | |
 |---|---|
@@ -1679,7 +1681,7 @@ Alternative values for each token. The frontmatter holds the active value for th
 | `#477ea1` |  |
 | `#4b86ab` |  |
 
-### accent-green — light
+### success — light
 
 | Hex | |
 |---|---|
@@ -1688,7 +1690,7 @@ Alternative values for each token. The frontmatter holds the active value for th
 | `#2f855a` |  |
 | `#3a7d44` |  |
 
-### accent-green — dark
+### success — dark
 
 | Hex | |
 |---|---|
@@ -1697,7 +1699,7 @@ Alternative values for each token. The frontmatter holds the active value for th
 | `#34d399` |  |
 | `#86efac` |  |
 
-### accent-red — light
+### danger — light
 
 | Hex | |
 |---|---|
@@ -1706,7 +1708,7 @@ Alternative values for each token. The frontmatter holds the active value for th
 | `#be123c` |  |
 | `#9b2c2c` |  |
 
-### accent-red — dark
+### danger — dark
 
 | Hex | |
 |---|---|
@@ -1749,34 +1751,6 @@ Alternative values for each token. The frontmatter holds the active value for th
 | JetBrains Mono |  |
 | IBM Plex Mono |  |
 | Martian Mono |  |
-
-### display-xxl — size / line-height
-
-| Size / line-height | |
-|---|---|
-| 64 / 64 | active |
-| 96 / 96 |  |
-| 88 / 88 |  |
-| 80 / 80 |  |
-| 72 / 72 |  |
-
-### display-xxl — weight
-
-| Weight | |
-|---|---|
-| 500 | active |
-| 300 |  |
-| 400 |  |
-| 600 |  |
-
-### display-xl — size / line-height
-
-| Size / line-height | |
-|---|---|
-| 48 / 48 | active |
-| 56 / 56 |  |
-| 52 / 52 |  |
-| 44 / 44 |  |
 
 ### rounded — set
 
