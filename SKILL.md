@@ -1018,6 +1018,24 @@ A custom menu, never the browser's native dropdown.
 - **Hover on floating surfaces:** tertiary and secondary buttons inside a menu, popover, dialog or sheet use `surface-float-active` for hover and pressed, because `surface-hover` equals `surface-float` in dark.
 - On `surface-float-active`, secondary text uses `charcoal` (not `mute`) and links don't appear; in dark, `mute`, `link` and `hairline-strong` fall below their minimum there.
 
+### Alert
+
+An inline message about the state of what the user is looking at. It sits in the page, above the content it concerns, and never covers anything. A single field's error stays with the field (Form fields).
+
+| Kind | Icon and color | Role |
+|---|---|---|
+| Info | Info circle, `info` | `status` |
+| Success | Check circle, `success` | `status` |
+| Warning | Alert circle, `warning` | `alert` |
+| Error | Cancel circle, `danger` | `alert` |
+
+- **Container:** a tint of the kind (`info`, `success`, `warning`, `danger`): in light, its hue at OKLCH L 90 and chroma 0.05 (warning takes the hue of its dark value, 84°, because the light one is amber and would read orange); in dark, its hue at L 26 and chroma 0.07. 1px `hairline` drawn inside, no shadow, radius `md` = padding `space-3` (12px), full width of its column.
+- **Content:** a 20px icon in the kind's color, `space-2` (8px) from the text, aligned to the first line. Title in `title-sm` `ink`, one line, a statement that names the situation ("Payment failed"). Message under it in `body-md` `ink`, `space-1` (4px) below, saying what happened and what to do next. The title alone is enough when the message would repeat it. The text stays `ink` for every kind (`mute` fails 4.5:1 on the light tint): the icon and the title carry the meaning, never the color alone.
+- **Action:** at most one, a link inside the message sentence on the words that name the fix ("Check your connection or try again."), never a separate label after the full stop. An alert with an action has a message. It follows the link rules (no focus marks) and the type of the message around it (`body-md`).
+- **Dismiss:** only info and success can be dismissed, with an inline button (Shapes: 24px, radius 4, 16px icon, `space-2` (8px) from the top and right edges so the focus marks never touch the border, hit area 44px) that carries an accessible label and a tooltip. The text stops `space-2` before it. Warning and error stay until the cause is gone.
+- **Announcement:** `alert` interrupts the reader, so use it only for a warning or an error that appears after the page loaded; `status` waits for a pause. Focus does not move to an alert.
+- **Stacking:** at most one alert per screen zone; two on one screen means the most severe first, `space-4` (16px) apart (twice the 8px inside an alert, The Distance Ratio Rule).
+
 ### Cards
 
 | Card | Padding | Inside | Shadow |
@@ -1137,6 +1155,21 @@ Help comes in layers, from best to last resort:
 4. Searchable, task-oriented documentation with numbered steps (at most five per task).
 
 If many users look up the docs to do one thing, the interface is the problem.
+
+## Copy
+
+Rules for every string in the interface: labels, titles, messages, errors, empty states. Adapted from the humanizer skill (MIT, © Siqi Chen), which builds on Wikipedia's "Signs of AI writing". Check each string against them before it ships, and delete any line that adds nothing the user did not already have.
+
+1. **State the point.** No run-up ("Let's get started", "Here's what you need to know"), no closing flourish ("You're all set!"), no chat wrapper ("Certainly!", "I hope this helps"), no staged interjection before a fact ("Oops!", "Uh-oh!").
+2. **No contrast for effect.** Never "not X, but Y", "not just X", "no guessing", "without the hassle". Say what the thing does. Keep a contrast only when it corrects something the user really believes.
+3. **One line, one new fact.** Cut a line that repeats the title or the line above it ("Payment failed" followed by "Your payment did not go through").
+4. **The fact, not the depth.** No "at its core", "the real question", "the language of". Replace the saying with the specific claim.
+5. **Three only when there are three.** Never a triad for rhythm ("Fast, simple and secure").
+6. **No dashes as connectors.** Use a period, comma, colon or parentheses.
+7. **Plain words.** None of: actually, additionally, crucial, delve, enhance, foster, highlight (verb), key (adjective), landscape, pivotal, robust (figurative), showcase, valuable, vibrant.
+8. **No sales language.** Say what the thing is or does ("Track your meals"), never "Discover a stunning new way to eat".
+9. **Simple verbs.** "is", "has", "shows", never "serves as", "boasts", "features", "offers".
+10. **Emphasis by content, not decoration.** No emoji or arrows in labels and headings; bold follows Inline emphasis (Text hierarchy #10).
 
 ## Candidates
 
