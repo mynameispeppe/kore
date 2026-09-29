@@ -919,9 +919,10 @@ Text input, textarea and select share one look.
 
 A custom menu, never the browser's native dropdown.
 
+- **States:** the trigger takes every state of Form fields (hover, error with its message, disabled, read-only).
 - **Trigger:** looks like a text field, with the Hugeicons down arrow on the right that rotates when open. Placeholder in `mute` until a value is chosen.
 - **Menu:** `surface-float`, 1px `hairline`, radius `md` (12px), padding `space-1` (4px), opening under the trigger at `space-2`. Opens in `duration-base` with `ease-out`, closes in `duration-fast` with `ease-in`; no border shadow (see The Hairline Rule).
-- **Options:** 44px tall, `space-1` (4px) apart so two highlights never touch, 4px from the menu edge, radius `sm` (12 − 4 = 8) and horizontal padding 8, so the text sits 12px from the menu edge; `body-md`; the active option has `surface-float-active`; the selected one is medium weight with a check icon on the right.
+- **Options:** 44px tall, `space-1` (4px) apart so two highlights never touch, 4px from the menu edge, radius `sm` (12 − 4 = 8) and horizontal padding 8, so the text sits 12px from the menu edge; `body-md`; the active option has `surface-float-active`; the selected one is weight 500 with a check icon on the right.
 - **Keyboard and screen readers:** arrows move, Enter or Space selects, Escape and click outside close; focus returns to the trigger. Uses `listbox` / `option` roles and `aria-activedescendant`.
 
 ### Checkbox and radio
@@ -930,6 +931,8 @@ A custom menu, never the browser's native dropdown.
 - **Radio:** 20px circle; checked: `primary` fill with an 8px `primary-on` dot.
 - **Rows:** the whole row (control + label) is clickable and at least 44px tall; label in `body-md`, `space-3` (12px) from the control.
 - **Groups** sit in a `fieldset` with a `legend` as the group label.
+- **Hover:** the border turns `mute`; a checked control turns `primary-pressed`.
+- **Error:** a `danger` border plus a message in `danger` under the control or the group, linked (`aria-invalid`, `aria-describedby`), as in Form fields.
 - **Disabled:** `surface-elevated` with a `hairline` border and `stone` label; a checked disabled control uses a `stone` fill.
 - **Focus:** see States.
 
@@ -938,12 +941,19 @@ A custom menu, never the browser's native dropdown.
 - 40 × 24px track, 16px knob, padding `space-1` (4px); hit area extended to 44px with an invisible overlay.
 - **Off:** `surface-elevated` track with a `hairline-strong` border, `ink` knob. **On:** `primary` track, `primary-on` knob. Never green: green means success.
 - The knob moves with `spring` (or `duration-fast` with `ease-out`); under reduced motion it changes without sliding.
+- **Focus:** see States, around the whole track.
+- **Hover:** off, the border turns `mute`; on, the track turns `primary-pressed`.
+- **Disabled:** `surface-elevated` track with a `hairline` border, `stone` knob, `stone` label; on keeps a `stone` track.
+- **Loading:** while the change is saved, the knob shows a 12px spinner turning in `duration-spin` and the switch ignores further clicks; if saving fails, it returns to its previous position with an error message.
 - A switch always sits next to its visible label and applies the change immediately; use a checkbox when the change waits for a Save.
 
 ### Segmented control
 
 - **Container:** 48px tall, radius `md` (12px), padding `space-2` (8px), `surface-elevated` with a `hairline` border. It hugs its segments, never stretches to full width.
 - **Segments:** inline buttons, 32px tall, radius `xs` (12 − 8 = 4), padding `space-4` (16px), `space-2` apart, hit area 44px; `label-md`, `mute` text. Selected: `surface-card` with a `hairline` border and `ink` text.
+- **Focus:** see States, around the focused segment (radius 4), never around the whole container.
+- **Hover:** the segment's text turns `ink` (a background would not stand out on `surface-elevated`).
+- **Disabled:** every segment in `stone`, no hover; the selected one keeps its `surface-card` background.
 - For two to four short, mutually exclusive options that switch a view (The Working Memory Rule); for more options, use a select.
 
 ### Password
@@ -975,6 +985,7 @@ A custom menu, never the browser's native dropdown.
 - **Surface:** `surface-float`, 1px `hairline`, no shadow, radius `md` (12px), padding `space-1` (4px), at least 224px wide, opening `space-2` below its trigger with its start edge aligned to the trigger's start edge (left in left-to-right languages); it flips to the end edge or above only when there is no room.
 - **Items:** 44px tall, radius `sm` (8px), padding 8, so the text sits 12px from the menu edge, in `body-md`; optional 16px icon in `mute`, `space-2` from the label. Show a keyboard shortcut on the right (`body-sm`, `charcoal`) only when the product really has it. Active and hover: `surface-float-active`.
 - **Spacing:** items `space-1` (4px) apart, so two highlights never touch; groups `space-2` (8px) apart (The Distance Ratio Rule).
+- **Disabled item:** `stone` text and icon, no hover; it stays reachable with the arrows (`aria-disabled`) and a tooltip says why when it is not obvious.
 - **Groups** by category, optionally with a `body-sm` label in `mute`. A destructive item comes last, alone, with a red icon and `ink` text (red text fails contrast on the active surface in dark).
 - **Keyboard:** Enter, Space or ↓ opens and focuses the first item; ↑ ↓ Home End move; Escape closes and returns focus to the trigger; Tab closes. Roles `menu` and `menuitem`, `aria-haspopup`, `aria-expanded`.
 
