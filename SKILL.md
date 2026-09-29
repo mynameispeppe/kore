@@ -1036,6 +1036,20 @@ An inline message about the state of what the user is looking at. It sits in the
 - **Announcement:** `alert` interrupts the reader, so use it only for a warning or an error that appears after the page loaded; `status` waits for a pause. Focus does not move to an alert.
 - **Stacking:** at most one alert per screen zone; two on one screen means the most severe first, `space-4` (16px) apart (twice the 8px inside an alert, The Distance Ratio Rule).
 
+### Toast
+
+A short confirmation of what the user just did ("Lunch saved"), shown for a moment and then gone. Anything the user must read, act on or come back to is an Alert, so a toast has no warning or error kind.
+
+- **Kinds:** success (check circle, `success`) and info (info circle, `info`), with the same icons and colors as the Alert.
+- **Surface:** the tint of its kind, exactly as the Alert's container and opaque so the content behind never shows through, 1px `hairline` drawn inside, no shadow, radius `md` = padding `space-3` (12px), at least 44px tall, at most 400px wide. It sits on the `toast` layer of the `zIndex` scale (400), above dialogs and sheets.
+- **Content:** always a 20px icon in the kind's color, `space-2` (8px) before the text. Title in `title-sm` `ink`, one line, a statement of what happened ("Lunch deleted"), never a question or an apology. An optional message under it in `body-md` `ink`, `space-1` (4px) below.
+- **Action:** at most one, "undo", as a link inside the message sentence ("You have 5 seconds to undo."), used after a destructive action that runs without a confirmation (Usability 3). The message states the time left, never a question ("Want to undo?"). It follows the link rules (no focus marks).
+- **Duration:** 3 seconds for a confirmation, 5 seconds when it offers "Undo" (Usability 1 and 3). Hover or keyboard focus pauses it; Escape closes it.
+- **Position:** bottom centre, `space-4` (16px) from the bottom and side edges on phones and `space-6` (24px) from `md` up, above the bottom safe area and `space-4` above a FAB when there is one.
+- **One at a time:** a new toast replaces the current one.
+- **Announcement:** role `status` with `aria-live="polite"`; focus never moves to it.
+- **Motion:** in with `duration-base` and `ease-out` (fade and a 4px rise), out with `duration-fast` and `ease-in`; fade only under reduced motion.
+
 ### Cards
 
 | Card | Padding | Inside | Shadow |
