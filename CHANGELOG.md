@@ -15,12 +15,12 @@ Working toward 1.0.0, the first public release.
 - Colors: new `surface-float` (`#fcfdfd` / `#1c1c1c`) and `surface-float-active` (`#f4f6f7` / `#2a2a2a`) for floating layers. In dark, menus used `surface-deep`, darker than the canvas, and disappeared on some screens; floating layers are now lighter than the canvas and the cards.
 - Elevation: floating and overlay levels use `surface-float`; in dark, a higher layer is always lighter.
 - Focus: one style everywhere, a 2px border drawn inside the control with no outer ring; `ink` on empty controls, the foreground color on filled ones, `accent-red` on fields with an error.
-- Components: password with live requirements, combobox, number stepper, file upload and slider.
+- Components: password with live requirements, combobox, number stepper and slider.
 - Start here: Checks by context replaces the separate checklists (Spacing pre-delivery checklist, Three-second check): three checks always, plus one row per kind of work (container, control, overlay, feedback, screen); results are reported at delivery; reused code goes through the same checks.
 - List rows: `space-2` (8px) between rows, so two highlights never touch.
 - Shapes: The Radius-Padding Rule (side-aligned content starts on the corner curve's centre: horizontal padding = radius, reduce the radius when the padding is smaller; centered content exempt).
 - Shapes: The Concentric Rule replaces The Half-Padding Rule: inner radius = outer radius − distance, so nested curves share one centre. Menu options now radius 8, row highlights 12, compact card 16.
-- Inline buttons: inside a control they sit 8px from every edge, size = container height − 16, radius = container radius − 8 (password toggle, stepper, segments, file row remove).
+- Inline buttons: inside a control they sit 8px from every edge, size = container height − 16, radius = container radius − 8 (password toggle, stepper, segments).
 - Spacing: The Distance Ratio Rule replaces "one step apart": space between groups ≥ 2 × space inside. Card rows now 12 (compact 8), rows ↔ actions 32. Rules for alignment, density and grouping actions.
 - Hierarchy: action order, right-aligned with the confirming action last and cancel or back to its left.
 - Cards: compact cards drop inner blocks and separate rows with space; new media card and card with actions (actions at the bottom, placed by The Concentric Rule, at least 320px wide, stacking instead of wrapping); each card as tall as its content.
@@ -41,6 +41,9 @@ Working toward 1.0.0, the first public release.
 - Components: Segmented control caps at four options instead of five, in line with The Working Memory Rule; five or more now goes to a select instead of a flat row.
 - Components: Tooltip's hover delay moved from an off-scale 500ms to `duration-slow` (400ms), an existing Motion token instead of a free value.
 - Components: Button drops from five variants to four — primary, secondary (was outline), tertiary (was ghost), destructive — removing the filled `secondary` variant, which overlapped with outline. Each variant now states its usage cap (primary and destructive at most one per decision; secondary alongside a primary; tertiary unlimited).
+- Components: file upload (drop area, chosen file row) removed.
+- Focus: one style for every component, four corner marks outside the control that follow its radius (curve only, at least 10px, 2px thick, 2px away, `focus-ring` now `mute`). Links take no marks; menu items and options keep the highlight. The 2px inside border and the per-variant focus colors are removed.
+- Components: Button gains an `elevated` variant (for complex, colored or image backgrounds) and the floating action button (44px); `secondary` is the standard supporting action and `tertiary` also covers the cancel action of a dialog; labels use sentence case.
 - Color: the `secondary` token is removed. It duplicated `surface-hover` and no component used it since the Button rename.
 - Color: `signature` renamed `accent` (with `accent-glow`), the name Apple and Material give to the rarely used vivid color. The old neutral `accent` (hover background) is now `surface-hover`.
 - Color: state colors renamed by role, without the `accent-` prefix: `accent-red` → `danger` (`danger-on`, `danger-pressed`, `danger-glow`), `accent-green` → `success`, `accent-yellow` → `warning`. `accent-blue` is removed: `info` takes its value and `link` follows `info`.
