@@ -532,7 +532,7 @@ Everything else starts from a default and is asked only when the work reaches it
 |---|---|---|
 | Themes | Light and dark, following the system preference; no theme switch in the UI | The user wants one theme only or asks for a theme switch, or a custom palette covers one theme only |
 | Language and formats | The language the user writes in; dates, currencies and units of their locale | The first text, date, price or measure goes on screen |
-| Identity | The active values in the frontmatter | The user asks to change colors or fonts: offer the options in Candidates, or apply their palette with the Custom palette method |
+| Identity | The active values in the frontmatter | The user asks to change colors or fonts: offer the `canvas` and font options in Candidates, or apply their palette with the Custom palette method |
 
 ### Behaviour rules
 
@@ -605,12 +605,14 @@ Every interactive element defines all its states: default, hover, focus, active/
 
 A project may replace Kore's colors with its own. The user gives a few base colors; every other token is derived with fixed rules, so the result keeps Kore's contrast and surface steps without choosing each token by hand.
 
-**Base colors, per theme:** `canvas`, `ink`, `primary`, `accent`. Optional: `danger`, `success`, `warning`, `info`; any missing one keeps Kore's value, so its meaning stays recognisable.
+**Base colors, per theme:** `canvas`, `accent`. Optional: `danger`, `success`, `warning`, `info`; any missing one keeps Kore's value, so its meaning stays recognisable.
 
 **Derived tokens.** L is OKLCH lightness (0–100). Neutral tokens take the hue of `canvas` with chroma at most 0.01.
 
 | Token | Rule, light | Rule, dark | Check |
 |---|---|---|---|
+| `ink` | `canvas` hue, chroma ≤ 0.01, L 28 | same hue and chroma, L 96 | 4.5:1 on every surface |
+| `primary` | `ink` L −4 | `ink` L +3 | `primary-on` 4.5:1 |
 | `surface-card` | `canvas` L +1 | `canvas` L +4 | — |
 | `surface-elevated` | `canvas` L −1 | `canvas` L +10 | — |
 | `surface-deep` | `canvas` L +1 | `canvas` L −2 | — |
@@ -1374,7 +1376,7 @@ If many users look up the docs to do one thing, the interface is the problem.
 
 ## Candidates
 
-Alternative values for each token. The frontmatter holds the active value for the current project; to change it in a new project, pick a candidate from here. Every alternative we evaluate for a token is added to its list.
+Alternative values for `canvas` and the fonts, the two starting choices of a project. Every other color is derived (see Custom palette) or chosen by the user (`accent`). The frontmatter holds the active values; every alternative we evaluate is added to its list.
 
 ### canvas — light
 
@@ -1396,321 +1398,6 @@ Alternative values for each token. The frontmatter holds the active value for th
 | Spider | `#040200` |  |
 | Sable | `#060606` |  |
 | True Black | `#0A0B0B` |  |
-
-### surface-card — light
-
-| Hex | |
-|---|---|
-| `#fcfdfd` | active |
-| `#ffffff` |  |
-| `#f1f4f5` |  |
-| `#eceff1` |  |
-
-### surface-card — dark
-
-| Hex | |
-|---|---|
-| `#121212` | active |
-| `#151213` |  |
-| `#1a1718` |  |
-| `#1f1c1d` |  |
-
-### surface-elevated — light
-
-| Hex | |
-|---|---|
-| `#f4f6f7` | active |
-| `#f0f3f5` |  |
-| `#ebeef0` |  |
-| `#e5e9ec` |  |
-
-### surface-elevated — dark
-
-| Hex | |
-|---|---|
-| `#1f1f1f` | active |
-| `#181818` |  |
-| `#242424` |  |
-| `#2a2a2a` |  |
-
-### surface-deep — light
-
-| Hex | |
-|---|---|
-| `#fcfdfd` | active |
-| `#f1f4f5` |  |
-| `#ebeef0` |  |
-| `#e6eaed` |  |
-
-### surface-deep — dark
-
-| Hex | |
-|---|---|
-| `#060606` | active |
-| `#080607` |  |
-| `#040404` |  |
-| `#000000` |  |
-
-### hairline — light
-
-| Value | |
-|---|---|
-| `rgba(33, 33, 33, 0.06)` | active |
-| `rgba(33, 33, 33, 0.04)` |  |
-| `rgba(33, 33, 33, 0.08)` |  |
-| `rgba(33, 33, 33, 0.10)` |  |
-
-### hairline — dark
-
-| Value | |
-|---|---|
-| `rgba(255, 255, 255, 0.04)` | active |
-| `rgba(255, 255, 255, 0.08)` |  |
-| `rgba(255, 255, 255, 0.10)` |  |
-| `rgba(255, 255, 255, 0.12)` |  |
-
-### hairline-strong — light
-
-| Value | |
-|---|---|
-| `#8a8e92` | active |
-| `#868a8e` |  |
-| `#7f8387` |  |
-| `#767a7e` |  |
-
-### hairline-strong — dark
-
-| Value | |
-|---|---|
-| `#6e6a6a` | active |
-| `#726e6e` |  |
-| `#777373` |  |
-| `#7d7979` |  |
-
-### ink — light
-
-| Hex | |
-|---|---|
-| `#2a2a2a` | active |
-| `#18181b` |  |
-| `#1b1d1f` |  |
-| `#111111` |  |
-
-### ink — dark
-
-| Hex | |
-|---|---|
-| `#f5f3f3` | active |
-| `#f5f5f5` |  |
-| `#ededed` |  |
-| `#e8e6e6` |  |
-
-### body — light
-
-| Value | |
-|---|---|
-| `rgba(42, 42, 42, 0.86)` | active |
-| `rgba(42, 42, 42, 0.92)` |  |
-| `rgba(42, 42, 42, 0.80)` |  |
-| `rgba(42, 42, 42, 0.74)` |  |
-
-### body — dark
-
-| Value | |
-|---|---|
-| `rgba(245, 243, 243, 0.86)` | active |
-| `rgba(245, 243, 243, 0.92)` |  |
-| `rgba(245, 243, 243, 0.80)` |  |
-| `rgba(245, 243, 243, 0.74)` |  |
-
-### charcoal — light
-
-| Value | |
-|---|---|
-| `rgba(42, 42, 42, 0.72)` | active |
-| `rgba(42, 42, 42, 0.80)` |  |
-| `rgba(42, 42, 42, 0.76)` |  |
-| `rgba(42, 42, 42, 0.68)` |  |
-
-### charcoal — dark
-
-| Value | |
-|---|---|
-| `rgba(245, 243, 243, 0.72)` | active |
-| `rgba(245, 243, 243, 0.80)` |  |
-| `rgba(245, 243, 243, 0.76)` |  |
-| `rgba(245, 243, 243, 0.68)` |  |
-
-### mute — light
-
-| Hex | |
-|---|---|
-| `#6a6e72` | active |
-| `#666666` |  |
-| `#6b6b6b` |  |
-| `#707070` |  |
-
-### mute — dark
-
-| Hex | |
-|---|---|
-| `#918d8d` | active |
-| `#a39f9f` |  |
-| `#9a9696` |  |
-| `#8a8686` |  |
-
-### stone — light
-
-| Hex | |
-|---|---|
-| `#a9adb1` | active |
-| `#b8bcc0` |  |
-| `#c4c8cc` |  |
-| `#cfd2d5` |  |
-
-### stone — dark
-
-| Hex | |
-|---|---|
-| `#464a4d` | active |
-| `#5e5a5a` |  |
-| `#524e4e` |  |
-| `#4a4646` |  |
-| `#3f3b3b` |  |
-
-### on-light-mute — light & dark
-
-| Value | |
-|---|---|
-| `rgba(42, 42, 42, 0.72)` | active |
-| `#6a6e72` |  |
-
-### primary — light
-
-| Hex | |
-|---|---|
-| `#212121` | active |
-| `#000000` |  |
-| `#1a1a1a` |  |
-| `#2a2a2a` |  |
-
-### primary — dark
-
-| Hex | |
-|---|---|
-| `#fcfdff` | active |
-| `#ffffff` |  |
-| `#f5f3f3` |  |
-| `#ebecee` |  |
-
-### primary-pressed — light
-
-| Hex | |
-|---|---|
-| `#2e2e2e` | active |
-| `#000000` |  |
-| `#0a0a0a` |  |
-| `#383838` |  |
-
-### primary-pressed — dark
-
-| Hex | |
-|---|---|
-| `#ebecee` | active |
-| `#e6e7e9` |  |
-| `#dcdee1` |  |
-| `#d1d4d8` |  |
-
-### accent — light
-
-| Hex | |
-|---|---|
-| `#904E55` | active |
-| `#EB5E28` |  |
-| `#F8F1FF` |  |
-
-### accent — dark
-
-| Hex | |
-|---|---|
-| `#F8F1FF` | active |
-| `#EB5E28` |  |
-| `#904E55` |  |
-
-### warning — light
-
-| Hex | |
-|---|---|
-| `#92400e` | active |
-| `#b45309` |  |
-| `#a16207` |  |
-| `#d97706` |  |
-
-### warning — dark
-
-| Hex | |
-|---|---|
-| `#ffc53d` | active |
-| `#facc15` |  |
-| `#fbbf24` |  |
-| `#f5b83d` |  |
-| `#ffd166` |  |
-
-### info — light
-
-| Hex | |
-|---|---|
-| `#386580` | active |
-| `#457B9D` |  |
-| `#788AA3` |  |
-| `#44799b` |  |
-| `#407191` |  |
-
-### info — dark
-
-| Hex | |
-|---|---|
-| `#5b94b7` | active |
-| `#457B9D` |  |
-| `#788AA3` |  |
-| `#477ea1` |  |
-| `#4b86ab` |  |
-
-### success — light
-
-| Hex | |
-|---|---|
-| `#047857` | active |
-| `#15803d` |  |
-| `#2f855a` |  |
-| `#3a7d44` |  |
-
-### success — dark
-
-| Hex | |
-|---|---|
-| `#6ee7b7` | active |
-| `#4ade80` |  |
-| `#34d399` |  |
-| `#86efac` |  |
-
-### danger — light
-
-| Hex | |
-|---|---|
-| `#c53030` | active |
-| `#b91c1c` |  |
-| `#be123c` |  |
-| `#9b2c2c` |  |
-
-### danger — dark
-
-| Hex | |
-|---|---|
-| `#ef4444` | active |
-| `#f87171` |  |
-| `#ff5a6e` |  |
-| `#fb7185` |  |
 
 ### font — sans (body and UI)
 
@@ -1746,13 +1433,3 @@ Alternative values for each token. The frontmatter holds the active value for th
 | JetBrains Mono |  |
 | IBM Plex Mono |  |
 | Martian Mono |  |
-
-### rounded — set
-
-| Set | |
-|---|---|
-| Kore — cards 24 · compact cards 16 · controls 12 · inner items 8 | active |
-| B · Round — controls 16 · inner blocks 16 · cards 24 |  |
-| Current — controls 8 · inner blocks 8 · cards 12 |  |
-| A · Soft — controls 12 · inner blocks 12 · cards 16 |  |
-| C · Pill — controls full · inner blocks 16 · cards 24 |  |
