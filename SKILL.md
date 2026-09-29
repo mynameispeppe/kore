@@ -9,7 +9,7 @@ description: |
   subtle low-opacity gradient glows, hairline 1px borders, and a strict
   rounded-24px container vocabulary with concentric nested corners. All
   spacing and sizing sit on an 8-point grid (4px half-steps).
-  There is no decorative chrome — just type, content, and atmospheric depth.
+  There is no decorative chrome, only type, content and atmospheric depth.
 colors:
   light:
     canvas: "#F8FAFB"
@@ -339,7 +339,7 @@ Colors are roles, not a bag of swatches. Every token has one job; a color with n
 - **Semantic roles stay fixed:** `danger` = error and destructive, `success` = success, `warning` = warning, `info` = information, `link` = links. Never swap them for decoration.
 - **The accent is rare.** `accent` marks the primary moment of a screen (key data, emphasis). Scattered everywhere, it stops meaning anything. Never as a button or a surface, and never a second brand color alongside it.
 
-**The One Primary Rule.** `primary` is spent on the main action of its decision and nothing else: at most one solid primary button per decision, never on decoration. A repeated, independent unit (a card in a product grid, a row in a list) is its own decision — each may have its own primary; the rule counts per decision, not per page.
+**The One Primary Rule.** `primary` is spent on the main action of its decision and nothing else: at most one solid primary button per decision, never on decoration. A repeated, independent unit (a card in a product grid, a row in a list) is its own decision: each may have its own primary; the rule counts per decision, not per page.
 
 ### States
 
@@ -570,7 +570,7 @@ The distance is the same on the sides and at the corner it faces. Combined with 
 | Corner action (32px, radius 8) in a card, dialog or sheet | 24 | 16 | 8 |
 | Inline button inside a 40px field, or a 48px stepper or segmented control | 12 | 8 | 4 |
 
-- **Two kinds of nested shape.** The formula governs a shape anchored to the container's edge as its own functional unit: the cases in the table above, plus any button, menu item or control placed near a corner. An icon, avatar or badge that simply leads a padded block of content — not anchored to an edge on its own, just the first item in a stack — is not concentric: it keeps a constant radius from the `rounded` scale and sits at the container's own padding, exactly like the text beside it. (Apple's design system names these "concentric" and "fixed" shapes; a capsule, radius = half its height, is a third fixed case.)
+- **Two kinds of nested shape.** The formula governs a shape anchored to the container's edge as its own functional unit: the cases in the table above, plus any button, menu item or control placed near a corner. An icon, avatar or badge that simply leads a padded block of content (not anchored to an edge on its own, just the first item in a stack) is not concentric: it keeps a constant radius from the `rounded` scale and sits at the container's own padding, exactly like the text beside it. (Apple's design system names these "concentric" and "fixed" shapes; a capsule, radius = half its height, is a third fixed case.)
 - **Place a fixed-size element by its radius:** a button keeps its own size and radius, and its distance from the container's edge is outer radius − its radius.
 - **Inline buttons** inside a control (the password toggle, stepper − and +, segments) sit 8px (`space-2`) from every edge, so the focus marks (States) never touch the container's border. Their radius is container radius − 8 (4px, `xs`, in a container with radius 12), and their size is container height − 16: in a 40px field, 24px buttons. They don't use the button sizes; their hit area extends to 44px. They have no background: the icon is 16px in `mute`, hover and pressed turn it `ink`, and the box shows only as the focus marks (States).
 - **Corner actions** (a "More" or close button in the top-right corner of a card, dialog or sheet) are small icon buttons (32px, radius 8) placed with this rule: 24 − 8 = 16px from the top and the right. The header becomes a row that starts at the same 16px and is as tall as the button; the title is centred in that row, so it lines up with the button. The side padding stays 24.
@@ -580,7 +580,7 @@ The distance is the same on the sides and at the corner it faces. Combined with 
 
 ### Borders inside the edge
 
-A border must not change the measurements the nested rule relies on. Draw the 1px `hairline` inside the element's edge without taking layout space (in CSS: `outline: 1px solid; outline-offset: -1px`, or an inset ring), so the gap between two nested edges is exactly the padding. Never a colored border thicker than 1px on one side of a card, list item, callout or alert to signal state — use a semantic color on an icon or text instead.
+A border must not change the measurements the nested rule relies on. Draw the 1px `hairline` inside the element's edge without taking layout space (in CSS: `outline: 1px solid; outline-offset: -1px`, or an inset ring), so the gap between two nested edges is exactly the padding. Never a colored border thicker than 1px on one side of a card, list item, callout or alert to signal state. Use a semantic color on an icon or text instead.
 
 ## Elevation
 
@@ -646,7 +646,7 @@ Motion explains feedback, state and relationship, or creates one authored moment
 - **Visible by default.** Content is visible in its resting state; an entrance animation starts from a class added by script, so nothing stays hidden if the script fails.
 - **Loops stop.** Non-essential loops pause when off screen or hidden. No autoplay with sound.
 - **Reduced motion.** `prefers-reduced-motion` keeps fades, color and state changes that carry meaning, and removes spatial movement (slides, lifts, scale). Never a global kill that removes feedback. Nothing flashes more than three times per second.
-- **Stay light.** Keep expensive effects (blur, filters, shaders) in small isolated areas, apply `will-change` only during the animation, and test on a mid-range phone. Verify against two measurable bars: 60fps or better while the animation runs (DevTools Performance panel), and zero layout shift caused by it (CLS 0, Lighthouse) — a failure on either means the animation is too heavy for its purpose, not just "feels off".
+- **Stay light.** Keep expensive effects (blur, filters, shaders) in small isolated areas, apply `will-change` only during the animation, and test on a mid-range phone. Verify against two measurable bars: 60fps or better while the animation runs (DevTools Performance panel), and zero layout shift caused by it (CLS 0, Lighthouse). A failure on either means the animation is too heavy for its purpose, not just "feels off".
 
 ### App mode
 
@@ -708,11 +708,11 @@ To isolate the focal point, surround it with space and place it on a third of th
 
 ### Semantic weight
 
-Before choosing how something looks (Visual weight), decide what it is: apply the same three roles as *Three levels* — Primary, Secondary, Tertiary — to a component, and again to everything nested inside it, and again to the group of components it belongs to.
+Before choosing how something looks (Visual weight), decide what it is: apply the same three roles as *Three levels* (Primary, Secondary, Tertiary) to a component, and again to everything nested inside it, and again to the group of components it belongs to.
 
-1. **The reader's question.** At any level, ask: "if the user read only one element here, what would let them act or understand?" That element is Primary; the rest scales toward Secondary or Tertiary by how close it comes to answering the same question. Re-apply it at every level — the section holding several components, then each component, then each row, then each control — never assume the answer at one level carries to the next.
+1. **The reader's question.** At any level, ask: "if the user read only one element here, what would let them act or understand?" That element is Primary; the rest scales toward Secondary or Tertiary by how close it comes to answering the same question. Re-apply it at every level: the section holding several components, then each component, then each row, then each control. Never assume the answer at one level carries to the next.
 2. **One priority per repeating component.** For a component that repeats (cards in a grid, rows in a table), answer once: "what should the user perceive first across every instance?" That answer is the default for classifying every field in every instance, so the reasoning is not redone each time.
-3. **State the default; never apply or flag it silently.** Building new content: apply the default and name it in one line ("gave the price more weight — it usually drives the decision here; say if the goal differs"). Reviewing existing content with an asymmetry (one card larger, one field bolder): don't assume it is a mistake — name it as an open question ("this card is bigger than its neighbors — is it the main offer, or should the row be even?"). Correct immediately once answered, and never ask the same question twice for the same component type.
+3. **State the default; never apply or flag it silently.** Building new content: apply the default and name it in one line ("gave the price more weight: it usually drives the decision here; say if the goal differs"). Reviewing existing content with an asymmetry (one card larger, one field bolder): don't assume it is a mistake, so name it as an open question ("this card is bigger than its neighbors: is it the main offer, or should the row be even?"). Correct immediately once answered, and never ask the same question twice for the same component type.
 4. **A weight the content doesn't earn is not fixed by adding a component.** If nothing in the request or the content confirms that one item outranks its peers, the default is equal weight, not an invented badge, tag or highlight to assert a priority no one confirmed (Behaviour rules, Never invent values). Ask, or wait until the priority is confirmed, before building the component that would express it.
 5. Once roles are assigned, style them with *Text hierarchy*.
 
@@ -756,7 +756,7 @@ Elements close together are read as one group (proximity); distance between grou
 - **Containers only when needed:** the group changes context sharply (data vs. actions vs. navigation), proximity is not enough because the layout is dense, or the group is clickable as one unit. A border added "to tidy up" means the grouping is wrong.
 - Other ways to group without containers: alignment on a shared axis, the same background tone, the same type style for the same category.
 
-**The Working Memory Rule.** A user holds at most four options, actions or facts in mind at once (Miller's Law, revised by Cowan 2001) — past that, they skip, misclick or give up instead of weighing all of them. Up to four in one group: no change needed. Five or more: group them into categories, or move the extra ones behind a "More" menu (Spacing, Grouping actions) rather than listing everything flat.
+**The Working Memory Rule.** A user holds at most four options, actions or facts in mind at once (Miller's Law, revised by Cowan 2001). Past that, they skip, misclick or give up instead of weighing all of them. Up to four in one group: no change needed. Five or more: group them into categories, or move the extra ones behind a "More" menu (Spacing, Grouping actions) rather than listing everything flat.
 
 ### Scanning patterns
 
