@@ -216,6 +216,7 @@ motion:
   duration-base: 250ms
   duration-slow: 400ms
   duration-focal: 700ms
+  duration-spin: 700ms
   ease-out: "cubic-bezier(0.16, 1, 0.3, 1)"
   ease-in: "cubic-bezier(0.4, 0, 1, 1)"
   ease-in-out: "cubic-bezier(0.65, 0, 0.35, 1)"
@@ -874,6 +875,7 @@ Motion explains feedback, state and relationship, or creates one authored moment
 | `duration-base` | 250ms | Routine state changes, opening menus and popovers |
 | `duration-slow` | 400ms | Layout changes, overlays, sheets, view transitions |
 | `duration-focal` | 700ms | Only the authored focal moment of a landing page |
+| `duration-spin` | 700ms | One turn of a loading spinner; 1400ms under reduced motion |
 | `ease-out` | `cubic-bezier(0.16, 1, 0.3, 1)` | Entrances and responses: natural deceleration |
 | `ease-in` | `cubic-bezier(0.4, 0, 1, 1)` | Exits |
 | `ease-in-out` | `cubic-bezier(0.65, 0, 0.35, 1)` | Moving from one place to another |
@@ -1126,14 +1128,14 @@ Five variants, three sizes, one shape, plus the floating action button. Every bu
 | Size | Height | Horizontal padding | Vertical padding | Radius | Type |
 |---|---|---|---|---|---|
 | default | 44px | `space-6` (24px) | `space-3` (12px) | `md` (12px) | `label-lg` |
-| compact | 36px | `space-4` (16px) | `space-2` (8px) | `md` (12px) | `label-lg` |
+| compact | 36px | `space-4` (16px) | `space-2` (8px) | `md` (12px) | `label-lg`, hit area extended to 44px |
 | small | 32px | `space-3` (12px) | `space-2` (8px) | `sm` (8px) | `label-lg`, hit area extended to 44px |
 
 - **Icon buttons** are square in the same three sizes and always carry an accessible label and a tooltip.
 - **No icons on labeled buttons.** A button with a label shows only text. The one exception is the loading spinner, placed before the label with `space-2` (8px).
 - **Focus:** see States.
 - **Disabled:** `surface-elevated` background, `stone` text, no shadow, not-allowed cursor; secondary keeps a `hairline` border. Explain why it is disabled when it is not obvious.
-- **Loading:** a spinner plus the running action ("Saving…"); the button keeps its width and ignores further clicks.
+- **Loading:** a spinner plus the running action ("Saving…"), turning in `duration-spin`; the button keeps its width and ignores further clicks.
 - **Timing:** press in `duration-instant`; shadow and lift in `duration-fast` with `ease-out`; no lift under reduced motion or on touch.
 - **Shadows** only on filled buttons (primary, destructive) and on elevated; secondary and tertiary show hover with a background change.
 - **Destructive in dark** uses black text: white on `#ef4444` is only 3.76:1, black is 5.58:1.
@@ -1147,7 +1149,7 @@ Text input, textarea and select share one look.
 
 | Part | Spec |
 |---|---|
-| Field | Height 40px; padding `space-3` (12px), equal to the radius; radius `md` (12px); background `surface-deep`; 1px `hairline-strong` border drawn inside |
+| Field | Height 40px, hit area extended to 44px; padding `space-3` (12px), equal to the radius; radius `md` (12px); background `surface-deep`; 1px `hairline-strong` border drawn inside |
 | Text | `body-lg` (16px) in `ink`; placeholder in `mute`, only as an example, never as the label |
 | Label | `label-lg` in `ink`, above the field, `space-2` (8px) away; "(optional)" in `mute` when the field is optional |
 | Help text | `body-md` in `mute`, below the field, `space-1` (4px) away |
@@ -1229,7 +1231,7 @@ A custom menu, never the browser's native dropdown.
 ### Dialog
 
 - A modal over a `scrim`: `surface-float`, 1px `hairline`, radius `xl` = padding `space-6` (24px), at most 480px wide, 16px from the screen edges on phones.
-- **Header:** title in `headline-md`, a statement that names the action with a verb and an object ("Delete this plan"), never a question; the close button is a corner action (Shapes), with the title centred on it. **Body:** the object and figures in inline emphasis ("**Next week's plan** and its **21 meals** will be removed."). A consequence that cannot be undone sits on its own line in `danger`, weight 500, `space-1` below the body: body and consequence are one message, centred between title and actions with `space-6` above and below it.
+- **Header:** title in `headline-md`, a statement that names the action with a verb and an object ("Delete this plan"), never a question; the close button is a corner action (Shapes), with the title centred on it. **Body:** in `body-md`, the object and figures in inline emphasis ("**Next week's plan** and its **21 meals** will be removed."). A consequence that cannot be undone sits on its own line in `danger`, weight 500, `space-1` below the body: body and consequence are one message, centred between title and actions with `space-6` above and below it.
 - **Actions:** `space-6` below the message, compact buttons 24 − 12 = 12px from the edges, right-aligned, confirm last, the cancel action tertiary; the buttons name the action ("Keep plan", "Delete plan"), never "Yes", "No", "OK" or "Submit". Initial focus goes to the safer action.
 - Use a dialog only when the action cannot be undone or truly needs interruption and protected focus; otherwise act and offer "Undo" (Usability 3) or use an inline or progressive alternative. Focus stays inside; Escape, the close button and a click on the scrim close it; focus returns to the trigger. Use the platform's modal element where it exists (`<dialog>` on the web).
 - Opens with a fade and a 0.98 → 1 scale in `duration-base` `ease-out`; only the fade under reduced motion.

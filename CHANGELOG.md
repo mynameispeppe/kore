@@ -42,6 +42,7 @@ Working toward 1.0.0, the first public release.
 - Components: Tooltip's hover delay moved from an off-scale 500ms to `duration-slow` (400ms), an existing Motion token instead of a free value.
 - Components: Button drops from five variants to four — primary, secondary (was outline), tertiary (was ghost), destructive — removing the filled `secondary` variant, which overlapped with outline. Each variant now states its usage cap (primary and destructive at most one per decision; secondary alongside a primary; tertiary unlimited).
 - Components: file upload (drop area, chosen file row) removed.
+- Touch targets: the compact button (36px) and the field (40px) extend their hit area to 44px. New token `duration-spin` for the loading spinner. The dialog message is `body-md`.
 - Focus: one style for every component, four corner marks outside the control that follow its radius (curve only, at least 10px, 2px thick, 2px away, `focus-ring` now `mute`). Links take no marks; menu items and options keep the highlight. The 2px inside border and the per-variant focus colors are removed.
 - Components: Button gains an `elevated` variant (for complex, colored or image backgrounds) and the floating action button (44px); `secondary` is the standard supporting action and `tertiary` also covers the cancel action of a dialog; labels use sentence case.
 - Color: the `secondary` token is removed. It duplicated `surface-hover` and no component used it since the Button rename.
