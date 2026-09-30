@@ -343,7 +343,7 @@ Colors are roles, not a bag of swatches. Every token has one job; a color with n
 
 Every interactive element defines all its states: default, hover, focus, active/pressed, disabled, selected, loading, error. A component with half of them does not ship.
 
-- **Focus, one style everywhere:** four corner marks drawn outside the control, one per corner, each following the control's radius. A mark is the curve of the corner only, at least 10px long (radius + 2px), 2px thick, in `focus-ring` (`mute`), 2px away from the edge and concentric with it. Filled and outlined controls take the same marks. They show on keyboard focus only, and they must reach 3:1 against the surface behind them. Exceptions: links (text links and clickable rows) take no marks, a button inside an image takes none (the card holds the focus), and menu items and select options show the active item with `surface-float-active`. Apart from links, never remove focus without a replacement.
+- **Focus, one style everywhere:** four corner marks drawn outside the control, one per corner, each with the same radius as the control (a button of radius 12 has marks of radius 12, a field of radius 12 the same). A mark is the curve of the corner only, at least 10px long (radius + 2px), 2px thick, in `focus-ring` (`mute`), 1px away from the edge. Filled and outlined controls take the same marks. They show on keyboard focus only, and they must reach 3:1 against the surface behind them. Exceptions: links (text links and clickable rows) take no marks, a button inside an image takes none (the card holds the focus), and menu items and select options show the active item with `surface-float-active`. Apart from links, never remove focus without a replacement.
 - **Selection:** selected items and selected text use `selection`.
 - **Disabled:** foreground `stone`, no hover, cursor not-allowed; keep the element's size so the layout does not shift.
 
@@ -954,6 +954,16 @@ A custom menu, never the browser's native dropdown.
 - **Disabled:** every segment in `stone`, no hover; the selected one keeps its `surface-card` background.
 - For two to four short, mutually exclusive options that switch a view (The Working Memory Rule); for more options, use a select.
 
+### Tabs
+
+Tabs switch between views of the same content. They are a segmented control (same look, same focus) with the role `tablist`, plus a panel.
+
+- **Bar and tabs:** exactly as the Segmented control: container 48px, radius `md` (12px), padding `space-2` (8px); tabs 32px, radius `xs` (4px), padding `space-4` (16px), `label-md`. Selected: `surface-card` with a `hairline` border and `ink` text; the others `mute`. Hover, focus and disabled as in the segmented control.
+- **Panel:** `space-4` (16px) under the bar, a Card (Cards) holding the content of the selected tab, with a title and text. One panel is visible at a time.
+- **Markup:** `role="tablist"` on the bar; `role="tab"`, `aria-selected` and `aria-controls` on each tab; `role="tabpanel"` and `aria-labelledby` on the panel. Only the selected tab has `tabindex="0"`.
+- **Keyboard:** Left and Right Arrow move to the previous and next tab (from the last to the first) and select it; Home and End go to the first and the last; Tab leaves the bar for the panel.
+- **Use:** two to four short labels (The Working Memory Rule); for more, use a select. A tab never starts an action or opens another page: that is a button or a link.
+
 ### Password
 
 - A text field with a show/hide toggle: an inline button (24px, radius 12 − 8 = 4, 8px from every edge; the text stops 40px from the right edge). Hover `surface-hover`; focus follows States. The icon switches between view and view-off; the accessible label and tooltip say "Show password" or "Hide password", with `aria-pressed`.
@@ -1125,6 +1135,7 @@ No user action stays without a visible response.
 
 - A submitting button becomes disabled, shows a spinner and a label ("Saving…"). Completion shows a toast ("Saved") that disappears after about 3 seconds.
 - Page and view changes show a skeleton or a thin progress bar at the top, never a silent swap.
+- A multi-step flow shows where the user is and how many steps are left ("Step 2 of 4"), with a progress bar.
 
 ### 2. Speak the user's language
 
@@ -1155,6 +1166,7 @@ No user action stays without a visible response.
 - Constrain input to valid values: date pickers with invalid ranges blocked, numeric inputs with min, max and step.
 - Show limits and formats before the action ("Max 5 MB", `DD/MM/YYYY` as a format hint), not after it fails.
 - Validate when the user leaves a field and suggest corrections; do not wait for submit.
+- **Accept variants, keep one format.** A field accepts spaces, dashes, dots and capitals in values such as phone numbers, card numbers and dates, and normalises them when the user leaves it. It never rejects input that only differs in format.
 - Disable an action whose preconditions are not met, and explain why in a tooltip or helper text.
 - Keep advanced or risky options behind progressive disclosure.
 
@@ -1164,6 +1176,7 @@ No user action stays without a visible response.
 - Offer recent items, suggestions and autocomplete instead of asking people to type from memory.
 - Show a preview before publishing or confirming.
 - Always show where the user is (active navigation, title, breadcrumb).
+- In a navigation bar or a short list, the key actions sit at the start and at the end, the least important in the middle: people remember the first and the last items best.
 
 ### 7. Flexibility and efficiency
 
@@ -1186,6 +1199,7 @@ No user action stays without a visible response.
 - Neutral, solution-oriented language; the user is never blamed.
 - Show the message inline next to the field that caused it, not in a generic toast at the top.
 - Empty states are silent errors: explain why nothing is shown and what to do next ("No projects yet. Create one").
+- The last step of a flow says what happened and what comes next ("Plan saved. Your first week starts on Monday"), never a bare "Done".
 
 ### 10. Help and documentation
 
