@@ -1,15 +1,13 @@
 ---
 version: 0.1.0
-name: Kore
+name: kore
 description: |
-  A dual-theme minimal design system, light and dark with equal weight: a
-  high-contrast canvas (a cool off-white in light, a soft near-black in
-  dark), an oversized round geometric sans for headlines, a friendly
-  geometric sans for body and UI, and a monospace for code. Surfaces rely on
-  subtle low-opacity gradient glows, hairline 1px borders, and a strict
-  rounded-24px container vocabulary with concentric nested corners. All
-  spacing and sizing sit on an 8-point grid (4px half-steps).
-  There is no decorative chrome, only type, content and atmospheric depth.
+  Design system for building web interfaces: landing pages, web apps and
+  their components (hero, card, button, form, dialog, menu, toast, list,
+  navigation, layout). Use it for any request to design, build, style or
+  review UI, in any framework. It defines tokens (color, type, spacing,
+  radius, elevation, motion), component rules and checks to run before
+  delivering. Read the whole Start here section before writing any UI code.
 colors:
   light:
     canvas: "#F8FAFB"
@@ -272,7 +270,7 @@ Check every rule that concerns what is being built, one by one; never assume a r
 | **Container** (card, panel, list) | Hierarchy: one focal point that wins on two of the six tools, primary > secondary > tertiary, no inverted hierarchy (metadata never outweighs the title), groups clear without extra borders. Semantic weight: no value repeats without a new purpose, roles differ by at least one clear step in size or weight, no asymmetry left unquestioned against the component's stated priority. Spacing: uniform padding (`space-6`, compact `space-4`), The Distance Ratio Rule (between ≥ 2 × inside: title ↔ subtitle `space-1`, header ↔ content `space-6`, rows `space-3`, compact rows `space-2`, rows ↔ actions `space-8`), list items `space-2` apart, two highlights never touch. Shapes: horizontal padding = radius, nested radii concentric (outer − distance), no rounded blocks inside cards unless each is a clickable unit, no card inside a card. Actions: at the bottom, right-aligned, confirm last; each card as tall as its content (equal heights only in a grid of cards with the same structure). Elevation: `hairline` border, shadow only if the whole container is clickable. |
 | **Control** (button, field, switch, slider…) | Every state: default, hover, focus, pressed, disabled, and selected, loading, error where they apply. Focus: see States. Button sizes 44 / 36 / 32px, field height 40px (inline buttons: container height − 16), touch target 44px, targets `space-2` apart. Accessible name, keyboard use, ARIA roles on custom controls. Labeled buttons without icons; labels are a verb and an object. Form text 16px. |
 | **Overlay** (menu, popover, dialog, sheet, tooltip) | Floating level: `surface-float` + `hairline`, no shadow; hover inside uses `surface-float-active`; corner actions and action rows placed by The Concentric Rule. Opens and closes with the motion tokens. Escape and click outside close it; focus moves in on open and returns to the trigger on close. Options: radius 8, 4px from the menu edge, padding 8, so text sits on the menu curve's centre. |
-| **Feedback** (toast, error, empty state, loading) | Response times: 100ms, 300ms, 1s, 3s (Usability 1). Messages say what, why and how, next to their cause, without codes. Semantic colors keep their meaning and never work alone. Announced to screen readers (`aria-live`). Motion tokens, reduced motion respected. |
+| **Feedback** (alert, toast, error, empty state, loading) | Response times: 100ms, 300ms, 1s, 3s (Usability 1). Messages say what, why and how, next to their cause, without codes. Semantic colors keep their meaning and never work alone. Announced to screen readers (`aria-live`). Motion tokens, reduced motion respected. Alert and toast: a message with an action ("Undo", "Try again") has a `tertiary` button on the right and no close button; without an action it has the close button; only an error alert has an action; a toast lasts 3 seconds (success, info), 5 seconds with "Undo", warning or error; hover and focus pause it. |
 | **Screen or page** | Without reading, the eye knows where to look first (three-second check). One focal point per zone, one `primary` per view, one `h1`, three or four type levels. Scanning pattern: F for dense content, Z for sparse. Sections `space-12` apart, page margins `space-4` / `space-8`. Responsive: works from 320px, holds at 200% zoom, touch without hover. Color only where it means something. |
 
 **If the element is clickable,** add the Control row to its own row (a clickable card is a Container plus a Control).
@@ -1029,26 +1027,45 @@ An inline message about the state of what the user is looking at. It sits in the
 | Warning | Alert circle, `warning` | `alert` |
 | Error | Cancel circle, `danger` | `alert` |
 
-- **Container:** a tint of the kind (`info`, `success`, `warning`, `danger`): in light, its hue at OKLCH L 90 and chroma 0.05 (warning takes the hue of its dark value, 84°, because the light one is amber and would read orange); in dark, its hue at L 26 and chroma 0.07. 1px `hairline` drawn inside, no shadow, radius `md` = padding `space-3` (12px), full width of its column.
-- **Content:** a 20px icon in the kind's color, `space-2` (8px) from the text, aligned to the first line. Title in `title-sm` `ink`, one line, a statement that names the situation ("Payment failed"). Message under it in `body-md` `ink`, `space-1` (4px) below, saying what happened and what to do next. The title alone is enough when the message would repeat it. The text stays `ink` for every kind (`mute` fails 4.5:1 on the light tint): the icon and the title carry the meaning, never the color alone.
-- **Action:** at most one, a link inside the message sentence on the words that name the fix ("Check your connection or try again."), never a separate label after the full stop. An alert with an action has a message. It follows the link rules (no focus marks) and the type of the message around it (`body-md`).
-- **Dismiss:** only info and success can be dismissed, with an inline button (Shapes: 24px, radius 4, 16px icon, `space-2` (8px) from the top and right edges so the focus marks never touch the border, hit area 44px) that carries an accessible label and a tooltip. The text stops `space-2` before it. Warning and error stay until the cause is gone.
+- **Container:** a tint of the kind (`info`, `success`, `warning`, `danger`): in light, its hue at OKLCH L 90 and chroma 0.05 (warning takes the hue of its dark value, 84°, because the light one is amber and would read orange); in dark, its hue at L 26 and chroma 0.07. 1px `hairline` drawn inside, no shadow, radius `lg` (16px), full width of its column, at least 48px tall. Padding 16px on the left (The Radius-Padding Rule) and `space-2` (8px) on the other sides, where the button sits (The Concentric Rule).
+- **Content:** a 20px icon in the kind's color, `space-2` (8px) from the text, on the title's line. The text block is inset 6px above and below ((32 − 20) / 2), so a one-line alert is 48px tall. Title in `title-sm` `ink`, one line, a statement that names the situation ("Payment failed"). Message under it in `body-md` `ink`, `space-1` (4px) below, saying what happened and what to do next. The title alone is enough when the message would repeat it. The text stays `ink` for every kind (`mute` fails 4.5:1 on the light tint): the icon and the title carry the meaning, never the color alone.
+- **Action and close:** a message with an action has one `tertiary` button, small (32px, radius 8), vertically centred on the right, `space-2` (8px) from the edge (16 − 8 = 8, The Concentric Rule), and no close button. Its label is a verb and an object ("Update card") or "Try again". Only an error alert has an action, where the user has something to do to recover (Usability 9); its message does not name the fix, and an alert with an action has a message.
+- **Close:** without an action, the message has a close button: a `tertiary` icon button, small (32px, radius 8, 16px icon), in the same place, with an accessible label and a tooltip. The text stops `space-2` before the button.
+- **Auto-close:** optional, after 5 seconds when the product asks for it; hover or keyboard focus pauses it; Escape closes it.
 - **Announcement:** `alert` interrupts the reader, so use it only for a warning or an error that appears after the page loaded; `status` waits for a pause. Focus does not move to an alert.
 - **Stacking:** at most one alert per screen zone; two on one screen means the most severe first, `space-4` (16px) apart (twice the 8px inside an alert, The Distance Ratio Rule).
 
 ### Toast
 
-A short confirmation of what the user just did ("Lunch saved"), shown for a moment and then gone. Anything the user must read, act on or come back to is an Alert, so a toast has no warning or error kind.
+A short floating message about what the user just did ("Lunch saved") or what just failed ("Could not save your meal"), shown for a moment and then gone. A message that belongs to the page and stays in it is an Alert.
 
-- **Kinds:** success (check circle, `success`) and info (info circle, `info`), with the same icons and colors as the Alert.
-- **Surface:** the tint of its kind, exactly as the Alert's container and opaque so the content behind never shows through, 1px `hairline` drawn inside, no shadow, radius `md` = padding `space-3` (12px), at least 44px tall, at most 400px wide. It sits on the `toast` layer of the `zIndex` scale (400), above dialogs and sheets.
-- **Content:** always a 20px icon in the kind's color, `space-2` (8px) before the text. Title in `title-sm` `ink`, one line, a statement of what happened ("Lunch deleted"), never a question or an apology. An optional message under it in `body-md` `ink`, `space-1` (4px) below.
-- **Action:** at most one, "undo", as a link inside the message sentence ("You have 5 seconds to undo."), used after a destructive action that runs without a confirmation (Usability 3). The message states the time left, never a question ("Want to undo?"). It follows the link rules (no focus marks).
-- **Duration:** 3 seconds for a confirmation, 5 seconds when it offers "Undo" (Usability 1 and 3). Hover or keyboard focus pauses it; Escape closes it.
+- **Kinds:** success, info, warning and error, with the same icons and colors as the Alert.
+- **Surface:** exactly as the Alert's container (tint of the kind, 1px `hairline` drawn inside, no shadow, radius `lg` (16px), 16px padding on the left and `space-2` (8px) on the other sides), opaque so the content behind never shows through. 400px wide (on phones, the screen width minus 2 × `space-4`), at least 48px tall. It sits on the `toast` layer of the `zIndex` scale (400), above dialogs and sheets.
+- **Content:** exactly as the Alert: a 20px icon in the kind's color on the title's line, the text block inset 6px above and below. Title in `title-sm` `ink`, one line, a statement of what happened ("Lunch deleted"), never a question or an apology. An optional message under it in `body-md` `ink`, `space-1` (4px) below.
+- **Action and close:** as in the Alert. The actions are "Undo" (after a destructive action that runs without a confirmation, Usability 3) and "Try again" (an error). A toast with an action has no close button and closes by time or Escape.
+- **Undo message:** the message under the title states the time left as plain text, never a link or a question ("You have 5 seconds to undo.", not "Want to undo?").
+- **Duration:** 3 seconds for a success or info confirmation; 5 seconds when it offers "Undo", and for a warning or an error (Usability 1 and 3). Hover or keyboard focus pauses it; the close button and Escape close it.
 - **Position:** bottom centre, `space-4` (16px) from the bottom and side edges on phones and `space-6` (24px) from `md` up, above the bottom safe area and `space-4` above a FAB when there is one.
 - **One at a time:** a new toast replaces the current one.
-- **Announcement:** role `status` with `aria-live="polite"`; focus never moves to it.
+- **Announcement:** role `status` with `aria-live="polite"` for success and info, role `alert` for warning and error; focus never moves to it.
 - **Motion:** in with `duration-base` and `ease-out` (fade and a 4px rise), out with `duration-fast` and `ease-in`; fade only under reduced motion.
+
+### Badge
+
+A short label for the state or category of the element it sits on ("Paid", "Draft"), or a count. It cannot be clicked: a label that filters or can be removed is a Chip.
+
+| Kind | Fill | Text |
+|---|---|---|
+| Neutral | none | `ink` |
+| Info, Success, Warning, Error | the tint of the kind, exactly as the Alert's container | `ink` |
+| Count | `ink` | `canvas` |
+
+- **Shape:** a capsule 24px tall, radius `full`, `space-2` (8px) padding on the sides, 1px `hairline` drawn inside (the count has none), no shadow.
+- **Text:** `label-sm`, one line, one or two words in sentence case that name the state ("Overdue"). The tint never works alone: the text carries the meaning, and `ink` on the tint holds 4.5:1 in both themes.
+- **Count:** a whole number in `label-sm` with tabular figures, a 24px circle for one or two digits, "99+" from 100, in a capsule. It is filled with `ink` because `primary` is spent on the main action (The One Primary Rule). The control it sits on carries an accessible name that says what is counted ("Filters, 3 active").
+- **Position:** pinned on the top right corner of the container it describes (button, icon, card), its centre on the corner. Never beside the text.
+- **States:** none. It takes no focus and has no hover or pressed look.
+- **Announcement:** a badge is not announced. When it appears after the page loaded and the information matters, the page says it in its own text.
 
 ### Cards
 
@@ -1106,7 +1123,7 @@ No user action stays without a visible response.
 
 ### 3. Control and freedom
 
-- **Undo over confirmation.** A destructive action runs, then a toast offers "Undo" for 5 seconds. Confirm first only when the action truly cannot be undone.
+- **Undo over confirmation.** A destructive action runs, then a toast offers "Undo" for 5 seconds, as a button on its right (Toast). Confirm first only when the action truly cannot be undone.
 - Leaving a form with unsaved changes asks before discarding them.
 - Dialogs and sheets always have a visible close control and close on click outside and on Escape.
 - In multi-step flows, completed steps stay clickable.
