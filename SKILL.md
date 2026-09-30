@@ -1108,6 +1108,22 @@ It shows how far a task has gone, or that content is loading. A bar is for work 
 - **Timing:** shown only after 300ms, so a fast load does not flash.
 - **Markup:** the container has `aria-busy="true"` and one visually hidden label ("Loading your plan"); the blocks are `aria-hidden="true"`.
 
+### Empty state
+
+It sits where content should be and is not. It is a silent error (Usability 9): it says why nothing is shown and what to do next. Content that is still loading is a Skeleton (Progress), not an empty state.
+
+| Case | Title | Message | Action |
+|---|---|---|---|
+| First use, nothing created yet | what is missing ("No workouts yet") | the next step | one `primary` button |
+| A search or filter matches nothing | names what was asked ("No foods match “rize”") | how to widen it | one `tertiary` button ("Clear filter") |
+| Nothing left to do, on purpose | a statement ("Nothing due today") | what comes next | none |
+
+- **Layout:** inside its container (a Card or a page region), centred, with `space-8` (32px) above and below. An icon, then the text, then the action.
+- **Icon:** 24px in `mute`, in a 48px circle filled with `surface-elevated`, hidden from screen readers (`aria-hidden="true"`). `space-4` (16px) below it.
+- **Text:** title in `title-md` `ink`, a statement, never a question. A title that quotes what the user searched for is in weight 400 and the quoted words in weight 500 ("No foods match “**rize**”"). Message under it in `body-md` `mute`, `space-1` (4px) below, at most 384px wide. The Copy rules apply: no "Oops", no apology, no blame.
+- **Action:** at most one, `space-6` (24px) under the text, with a label that is a verb and an object. `primary` only when it is the screen's main action (The One Primary Rule).
+- **Announcement:** none on load. When the empty result follows a search or a filter the user just applied, the region is `role="status"`.
+
 ### Cards
 
 | Card | Padding | Inside | Shadow |
