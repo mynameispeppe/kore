@@ -433,7 +433,7 @@ Base unit 8px, with 4px half-steps for fine adjustments. Token names count 4px u
 
 | Token | Value | Role | When to use it |
 |---|---|---|---|
-| `space-1` | 4px | Micro adjustment | Icon ↔ text inside badges and chips, title ↔ subtitle, label ↔ helper text |
+| `space-1` | 4px | Micro adjustment | Icon ↔ text inside badges, title ↔ subtitle, label ↔ helper text |
 | `space-2` | 8px | Base unit | Tight groups: items in a compact list, buttons in a toolbar, label ↔ input |
 | `space-3` | 12px | Half-step (8 + 4) | Only when 8 is visibly too tight and 16 too loose |
 | `space-4` | 16px | Small gap | Compact card padding, icon spacing in lists and cards, gap between related items, page side margin on phones |
@@ -477,7 +477,7 @@ Spacing tells the reader what belongs together.
 | Card padding | `space-6` (compact `space-4`) | 24px (16px) |
 | Gap between sections inside a card | `space-6` | 24px |
 | Icon spacing in cards and lists | `space-4` | 16px |
-| Icon ↔ text in badges and chips | `space-1` | 4px |
+| Icon ↔ text in badges | `space-1` | 4px |
 | Title ↔ subtitle | `space-1` | 4px |
 | Label ↔ input | `space-2` | 8px |
 | Gap between list items | `space-2` / `space-4` / `space-6` | 8 / 16 / 24px |
@@ -844,7 +844,7 @@ The parts the browser draws still carry the design. Theme them from the palette 
 - **One library per project**, one style, one stroke width (1.5 on a 24px grid). Never mix libraries or filled and outlined styles.
 - **Sizes from the grid:** 16px inside controls and menus and next to 12–16px text (menu items, inline buttons, steppers, field adornments), 20px in icon-only buttons, 24px for navigation and standalone icons.
 - **Color from text:** icons use `currentColor`, so they follow the text or state color of their container.
-- **Spacing:** icon ↔ text `space-2` (8px) in rows and fields, `space-1` (4px) in badges and chips. Buttons with a label carry no icon (see Button).
+- **Spacing:** icon ↔ text `space-2` (8px) in rows, fields and chips, `space-1` (4px) in badges. Buttons with a label carry no icon (see Button).
 - **Accessibility:** an icon-only button always has an accessible label (`aria-label` or visually hidden text) and a tooltip; decorative icons are hidden from screen readers (`aria-hidden="true"`).
 - **Clear meaning:** one icon means one thing across the product (pencil = edit, trash = delete). When an icon is not obvious, add the word.
 - **No stand-ins:** never emoji or Unicode symbols instead of icons.
@@ -1066,6 +1066,17 @@ A short label for the state or category of the element it sits on ("Paid", "Draf
 - **Position:** pinned on the top right corner of the container it describes (button, icon, card), its centre on the corner. Never beside the text.
 - **States:** none. It takes no focus and has no hover or pressed look.
 - **Announcement:** a badge is not announced. When it appears after the page loaded and the information matters, the page says it in its own text.
+
+### Chip
+
+A small label you can act on: it turns a filter on and off ("Vegetarian", "Under 20 minutes"). Kore has the filter chip only. A label that just states something is a Badge.
+
+- **Shape:** 32px tall, radius `sm` (8px), `space-3` (12px) padding on the sides, `label-lg`, one line. Its hit area extends to 44px, and chips sit `space-2` (8px) apart.
+- **Default:** no fill, 1px `hairline-strong` drawn inside, `ink` text. Hover: `surface-hover`. Pressed: `surface-elevated`. Focus: the corner marks (States).
+- **Selected:** `surface-elevated` fill, 1px `hairline`, and a check at the start: a 16px circle filled with `ink` holding a 12px check in `canvas`, 8px from the left edge and `space-2` (8px) before the label (the left padding becomes 8px). Hover keeps the fill and draws the border in `mute`. The state never rests on color alone: the check carries it.
+- **Disabled:** `stone` text, 1px `hairline`, no fill, cursor not-allowed; selected and disabled keeps the `surface-elevated` fill and draws the circle in `stone`.
+- **Markup:** a button with `aria-pressed`, inside a group with an accessible label ("Diet"). Enter and Space toggle it.
+- **Animation:** the fill changes with `duration-fast`.
 
 ### Cards
 
