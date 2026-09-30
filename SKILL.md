@@ -1136,6 +1136,32 @@ A round picture of a person or an account.
 - **Accessibility:** an image has an `alt` with the name, or an empty one when the name sits next to it. Initials and the icon have `role="img"` and an `aria-label` with the name, or `aria-hidden="true"` when the name sits next to them.
 - **Interaction:** an avatar is not interactive. A control that shows one (a profile menu) is a button with an accessible label.
 
+### Table
+
+It compares the same facts across many items.
+
+- **Container:** a Card (Cards). The table extends 12px into the card's padding and each cell has 12px of padding on the sides, so the first column's text lines up with the card's content at 24px.
+- **Filter:** a table that can grow past one page has a search field above the card, `space-4` (16px) away, never inside it. It is a text field (Form fields) with a search icon at the start, at most 320px wide, and its label above it like every field ("Search workouts"); the placeholder gives examples ("Push day, yoga, run…"). It filters the rows by the first column while the user types, and returns to the first page. When it holds text it shows a clear button at the end (the inline button of Shapes, with the X, label "Clear search"); the browser's own clear control is hidden.
+- **Header:** 40px tall, `label-md` in `mute`; the header of the sorted column is `ink`. `<th scope="col">` and a `<caption>`, visible or hidden.
+- **Rows:** 56px tall, `body-md`, content centred vertically. A 1px `hairline` under the header and under every row except the last: a table is read across columns, so the line guides the eye (the one exception to The Separation Ladder). No background on hover unless the whole row is a link.
+- **First column:** the item's name, weight 500; it is the column the eye reads first (F pattern).
+- **Alignment:** text on the left. Bare numbers on the right, with tabular figures, so the digits line up. A number with its unit ("55 min", "€2"), statuses and buttons in the centre. A header follows its column.
+- **Cells:** a status is a Badge; an action is a `tertiary` icon button, small, with an accessible label that names the row ("More options for Push day").
+- **Sorting:** only on columns where sorting helps to compare (numbers, dates, names), never on statuses or actions. The header holds a button with a 16px arrow and a 44px hit area. One column is sorted at a time: a click on the active column alternates ascending and descending (there is no unsorted state); a click on another column sorts it ascending. The active header has `aria-sort` and is `ink`; the other sortable headers stay `mute`, with the arrow pointing down and no `aria-sort`. The arrow points up for ascending and down for descending, and turns in `duration-fast`. A new order returns to the first page.
+- **Loading:** skeleton rows in the shape of the table under the real header, and a skeleton of the pagination; the card has `aria-busy="true"` and the skeleton is not interactive.
+- **No rows:** an Empty state inside the card, in place of the table and the pagination. When the filter matches nothing, its title quotes the search ("No workouts match “rize”") and its button, "Clear filter", empties the field and puts the focus back in it.
+- **Phones:** the table scrolls inside its own container, or becomes stacked cards (Responsive); the page never scrolls sideways.
+
+### Pagination
+
+It goes under a table or a long list, after a 1px `hairline` line placed right under the last row, as wide as the table, with `space-3` (12px) of space below it.
+
+- **Left:** the range ("1–4 of 12") in `body-md` `mute` with tabular figures, in a region with `aria-live="polite"`. It counts the rows that pass the filter, and the number of pages follows it.
+- **Right:** the previous and next buttons (`tertiary`, small, icon only, 16px arrow, accessible label and tooltip) with "Page 2 of 3" between them, `space-2` (8px) apart.
+- **Limits:** a button is disabled on the first and the last page; when the button that has the focus becomes disabled, the focus moves to the other one.
+- **No list of page numbers:** a user holds at most four options in mind (The Working Memory Rule). For long sets, filter and search instead of offering more pages.
+- **Loading:** blocks in the same shape (Progress, Skeleton).
+
 ### Cards
 
 | Card | Padding | Inside | Shadow |
