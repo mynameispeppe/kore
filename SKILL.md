@@ -343,7 +343,7 @@ Colors are roles, not a bag of swatches. Every token has one job; a color with n
 
 Every interactive element defines all its states: default, hover, focus, active/pressed, disabled, selected, loading, error. A component with half of them does not ship.
 
-- **Focus, one style everywhere:** four corner marks drawn outside the control, one per corner, each with the same radius as the control (a button of radius 12 has marks of radius 12, a field of radius 12 the same). A mark is the curve of the corner only, at least 10px long (radius + 2px), 2px thick, in `focus-ring` (`mute`), 1px away from the edge. Filled and outlined controls take the same marks. They show on keyboard focus only, and they must reach 3:1 against the surface behind them. Exceptions: links (text links and clickable rows) take no marks, a button inside an image takes none (the card holds the focus), and menu items and select options show the active item with `surface-float-active`. Apart from links, never remove focus without a replacement.
+- **Focus, one style everywhere:** four corner marks drawn outside the control, one per corner, each with the same radius as the control (a button of radius 12 has marks of radius 12, a field of radius 12 the same). A mark is the curve of the corner only, at least 10px long (radius + 2px), 2px thick, in `focus-ring` (`mute`), 1px away from the edge. Filled and outlined controls take the same marks. They show on keyboard focus only, and they must reach 3:1 against the surface behind them. Exceptions: links (text links and clickable rows) take no marks, a button inside an image takes none (the card holds the focus), menu items and select options show the active item with `surface-float-active`, and an accordion heading shows focus with an underline and an `ink` chevron. Apart from links, never remove focus without a replacement.
 - **Selection:** selected items and selected text use `selection`.
 - **Disabled:** foreground `stone`, no hover, cursor not-allowed; keep the element's size so the layout does not shift.
 
@@ -1161,6 +1161,18 @@ It goes under a table or a long list, after a 1px `hairline` line placed right u
 - **Limits:** a button is disabled on the first and the last page; when the button that has the focus becomes disabled, the focus moves to the other one.
 - **No list of page numbers:** a user holds at most four options in mind (The Working Memory Rule). For long sets, filter and search instead of offering more pages.
 - **Loading:** blocks in the same shape (Progress, Skeleton).
+
+### Accordion
+
+A list of headings that each open an answer or a section underneath ("What is your return policy?"). Use it for content people scan and open only in part; content they all need to read is shown, not hidden.
+
+- **Structure:** no container, no background, no shadow. A 1px `hairline` between one item and the next (a line between sections of equal importance, The Separation Ladder), none above the first or under the last.
+- **Heading:** a full-width button inside a heading element (`<h3>`), at least 56px tall, `space-3` (12px) above and below the text, `title-md` `ink`, left-aligned, the question or the section name in one line when it can. The whole row is the click target.
+- **Chevron:** 20px in `mute` at the end of the row, `space-4` (16px) from the text. It points down when the item is closed and turns 180° when it is open, in `duration-base` with `ease-out` (none under reduced motion). It turns `ink` on hover and on focus.
+- **Answer:** `body-lg` in `body` colour, `space-4` (16px) under the text, not inset. It appears with a fade (`duration-base`); never animate its height (Motion).
+- **Open items:** each item opens and closes on its own, so several can be open together. The first item starts open only when it holds the answer most people look for.
+- **Focus:** the heading shows focus with the underline a link has (1px, 4px offset) and an `ink` chevron, not with the corner marks.
+- **Markup:** a `<button>` with `aria-expanded` and `aria-controls`; the answer is a `region` with `aria-labelledby` pointing to the heading, and it is `hidden` while closed. Enter and Space open and close it.
 
 ### Cards
 
