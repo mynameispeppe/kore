@@ -1088,6 +1088,26 @@ A small label you can act on: it turns a filter on and off ("Vegetarian", "Under
 - **Markup:** a button with `aria-pressed`, inside a group with an accessible label ("Diet"). Enter and Space toggle it.
 - **Animation:** the fill changes with `duration-fast`.
 
+### Progress
+
+It shows how far a task has gone, or that content is loading. A bar is for work the user waits on; a skeleton is for content that loads (Usability 1). Never a spinner alone in the middle of a page, a card or a list.
+
+**Bar**
+
+- **Shape:** 8px tall, radius `full`, the full width of its column. Track `stone`, fill `ink`.
+- **Label:** a bar always has one, above it: the task's name in `body-md` `ink` ("Importing meals") on the left, the value on the right in `body-md` with weight 500 and tabular figures ("3 of 5" or "60%"), `space-2` (8px) above the bar.
+- **Known amount:** the value is the real one. `role="progressbar"` with `aria-labelledby`, `aria-valuemin`, `aria-valuemax`, `aria-valuenow` and `aria-valuetext`.
+- **Unknown amount:** a segment 40% wide slides across the track in 1400ms (2 × `duration-spin`) with `ease-in-out`, in a loop. No value, `aria-busy="true"` and no `aria-valuenow`. Under reduced motion the segment fills the track and fades between 100% and 30% opacity.
+- **Motion:** the fill moves with a transform (scale from the left), `duration-base`, `ease-out`; never by animating its width.
+- **Flows:** a multi-step flow shows the bar with the step ("Step 2 of 4"), Usability 1.
+
+**Skeleton**
+
+- **Shape:** blocks in the shape of the content they replace: lines as tall as their text (20px for `body-md`, 28px for a card title), circles for avatars (40px), radius `sm` (8px), with the same spacing as the real content so nothing moves when it arrives.
+- **Color and motion:** `stone` at 60% opacity, pulsing down to 30% in 1400ms with `ease-in-out`, opacity only. Under reduced motion there is no pulse.
+- **Timing:** shown only after 300ms, so a fast load does not flash.
+- **Markup:** the container has `aria-busy="true"` and one visually hidden label ("Loading your plan"); the blocks are `aria-hidden="true"`.
+
 ### Cards
 
 | Card | Padding | Inside | Shadow |
@@ -1135,6 +1155,7 @@ No user action stays without a visible response.
 
 - A submitting button becomes disabled, shows a spinner and a label ("Saving…"). Completion shows a toast ("Saved") that disappears after about 3 seconds.
 - Page and view changes show a skeleton or a thin progress bar at the top, never a silent swap.
+- Content that loads always shows a skeleton in the shape of the content. Never a spinner alone in the middle of the page, a card or a list. A spinner lives only inside the button that started the action.
 - A multi-step flow shows where the user is and how many steps are left ("Step 2 of 4"), with a progress bar.
 
 ### 2. Speak the user's language
