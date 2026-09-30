@@ -1174,6 +1174,16 @@ A list of headings that each open an answer or a section underneath ("What is yo
 - **Focus:** the heading shows focus with the underline a link has (1px, 4px offset) and an `ink` chevron, not with the corner marks.
 - **Markup:** a `<button>` with `aria-expanded` and `aria-controls`; the answer is a `region` with `aria-labelledby` pointing to the heading, and it is `hidden` while closed. Enter and Space open and close it.
 
+### Breadcrumb
+
+It shows where the current page sits in the structure and takes the user back up to any level (Usability 6). Use it only where the structure is at least three levels deep.
+
+- **Items:** in an ordered list inside `<nav aria-label="Breadcrumb">`, in `body-md`, `space-2` (8px) apart. The ancestors are links in `mute`; the current page is the last item, in `ink` at weight 500, it is not a link and has `aria-current="page"`.
+- **Separator:** a 16px chevron in `mute`, `space-2` (8px) from the items on both sides, hidden from screen readers.
+- **Links:** no underline at rest; on hover and on focus the text turns `ink` and is underlined (1px, 4px offset). They take no corner marks (States). Each link has a 44px hit area.
+- **Long trails:** from four levels, the first level and the last two stay and the levels in between fold into one `tertiary` icon button (small, "…", label "Show the hidden levels") that opens a Menu with them. A trail that still does not fit wraps onto a second line.
+- **Position:** at the top of the content, above the page title, `space-4` (16px) above the title.
+
 ### Cards
 
 | Card | Padding | Inside | Shadow |
