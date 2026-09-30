@@ -1124,6 +1124,18 @@ It sits where content should be and is not. It is a silent error (Usability 9): 
 - **Action:** at most one, `space-6` (24px) under the text, with a label that is a verb and an object. `primary` only when it is the screen's main action (The One Primary Rule).
 - **Announcement:** none on load. When the empty result follows a search or a filter the user just applied, the region is `role="status"`.
 
+### Avatar
+
+A round picture of a person or an account.
+
+- **Shape:** a circle (radius `full`) with a 1px `hairline` drawn inside. Sizes 32, 40, 48 and 64px; 40px is the default, the one in list rows.
+- **Content, in this order:** the image (`object-fit: cover`); without an image, the initials (one or two letters) in `ink` on `surface-elevated`; without a name, a person icon in `mute`, half the size of the avatar. It has one neutral color: never a random or a semantic color, so color never means anything here.
+- **Initials:** `label-md` at 32px, `label-lg` at 40px, `title-md` at 48px, `title-lg` at 64px.
+- **Presence:** only online shows a dot: `success`, 12px (8px on a 32px avatar), at the bottom right with its outer edge on the corner of the avatar's box, so its centre sits on the circle, and a 2px ring in `canvas`. The dot has an accessible name ("Online"); where there is room, the state is also written ("Coach · online").
+- **Group:** avatars overlap by 8px, each with a 2px ring in `canvas`; at most four are shown and the rest become one count avatar ("+3", same size, `surface-elevated`). The group has one label that names its members.
+- **Accessibility:** an image has an `alt` with the name, or an empty one when the name sits next to it. Initials and the icon have `role="img"` and an `aria-label` with the name, or `aria-hidden="true"` when the name sits next to them.
+- **Interaction:** an avatar is not interactive. A control that shows one (a profile menu) is a button with an accessible label.
+
 ### Cards
 
 | Card | Padding | Inside | Shadow |
