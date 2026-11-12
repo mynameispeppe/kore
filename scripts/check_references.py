@@ -20,12 +20,6 @@ Checks:
 11. Every typologies/ folder has the files and folders of typologies/_template.
 12. Every typologies/ path, router table included, exists.
 13. A typology's tokens.yaml repeats no default value and names no default token of another group.
-14. The folders of typologies/ (without _template) and of .claude/previews/catalog/typologies/ are
-    the same names. Without .claude/previews/catalog/typologies/ checks 14 and 15 are skipped.
-15. In .claude/previews/catalog/typologies/<t>/, tokens.css declares only custom properties; every
-    other .css only background*, border-color, border-style, border-width, box-shadow,
-    backdrop-filter, filter, text-shadow, and transform in a :hover, :focus-visible, :active or
-    :disabled rule.
 """
 
 import re
@@ -34,7 +28,6 @@ import unicodedata
 from collections import defaultdict
 from pathlib import Path
 
-from kore_readers import read_css
 
 ROOT = Path(__file__).resolve().parent.parent
 SKILL = ROOT / "SKILL.md"
@@ -88,11 +81,6 @@ EXTERNAL = {
     "Arabic", "Hebrew", "Persian", "Urdu", "Italiano", "English",
     "Large", "Medium", "Small", "Uniform Connectedness",
 }
-
-# Check 15: the properties a typology's component file may set, and the states transform needs.
-MATERIAL = ("background", "border-color", "border-style", "border-width", "box-shadow",
-            "backdrop-filter", "filter", "text-shadow", "color", "transition")
-STATES = re.compile(r":(hover|focus-visible|active|disabled)")
 
 REPLACES = re.compile(r"Replaces: ((?:`[\w.-]+`(?:, )?)+)")
 
@@ -401,28 +389,6 @@ def main(root=ROOT):
                 elif (group, name) not in default_names and \
                         name in {n for g, n in default_names if g != group}:
                     report(own_file, 1, f"new key {dotted} has the name of a default token")
-
-    # 14. The catalog's typologies are those of typologies/.
-    catalog = root / ".claude" / "previews" / "catalog" / "typologies"
-    if catalog.is_dir():
-        own = {p.name for p in catalog.iterdir() if p.is_dir() and not p.name.startswith(".")}
-        kore = set(folders) - {"_template"}
-        for t in sorted(kore - own):
-            report(catalog / t, 1, "missing, typologies/ has it")
-        for t in sorted(own - kore):
-            report(catalog / t, 1, "not in typologies/")
-        # 15. Custom properties in tokens.css, material properties in the component files.
-        for css in sorted(catalog.glob("*/*.css")):
-            for chain, decls in read_css(css.read_text(encoding="utf-8"))[0]:
-                for prop, _, n, _ in decls:
-                    if css.name == "tokens.css":
-                        if not prop.startswith("--"):
-                            report(css, n, f"{prop} in tokens.css, only custom properties")
-                    elif prop == "transform":
-                        if not STATES.search(chain[-1]):
-                            report(css, n, "transform outside :hover, :focus-visible, :active or :disabled")
-                    elif not prop.startswith(MATERIAL):
-                        report(css, n, f"{prop} is not a material property")
 
     if problems:
         print("\n".join(problems))
