@@ -1,0 +1,9 @@
+- **Media card:** an image above the text. padding 0; overflow hidden.
+- **Media slot:** position relative; aspect-ratio 16/9; margin `space-2` `space-2` 0; border-radius `rounded-lg` (The Concentric Rule); overflow hidden; background `surface-elevated`; outline `line-thin` solid `hairline`; outline-offset −`line-thin`.
+- **Media image:** with alt text. position absolute; inset 0; width 100%; height 100%; object-fit cover; border-radius inherit.
+- **Media body:** padding `space-6`; display flex; flex-direction column.
+- **Media body zones:** every zone after the first: margin-top `space-6`.
+- **Summary:** one sentence. font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`; color `mute`.
+- **Read more link:** a "Read more" text link. justify-self start; font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`; color `link`; text-decoration underline `line-thin`; text-underline-offset `space-1`.
+- **Read more focus:** on :focus-visible: outline none, changed in 0s, and the corner marks of States.
+- **Media card in a row:** overflow-wrap anywhere.

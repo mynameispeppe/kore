@@ -38,7 +38,6 @@
 ## 4. Consistency and standards
 
 - **The same action** has the same name, icon and position everywhere ("Save" is always "Save"; a pencil always means edit).
-- **Semantic colors** keep one meaning: red only for errors and destructive actions.
 - **One format** for dates, currencies and units across the product, produced by shared helpers.
 - **Centralise what varies:** design tokens in one place, recurring labels as shared constants.
 - **Consistency is not uniformity:** a primary and a secondary button look different on purpose.

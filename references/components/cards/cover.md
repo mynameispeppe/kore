@@ -1,0 +1,9 @@
+- **Cover card:** the whole card is one link, one column of the card grid, its photo filling the card, the title and subtitle over it. display grid; grid-template-columns minmax(0, 1fr); aspect-ratio auto; justify-content normal; padding 0; color `ink`; text-decoration none. Hover, pressed and reduced motion as the Clickable card. (replaced in: minimalism)
+- **Cover image:** grid-area 1/1; overflow hidden; border-radius `rounded-xl`. Its image, with alt text: width 100%; aspect-ratio 1/1; object-fit cover.
+- **Cover text:** grid-area 1/1; align-self end; position relative; z-index `zIndex-raised`; display grid; grid-template-columns minmax(0, 1fr) auto; column-gap `space-4`; row-gap `space-1`; padding 0 `space-6` `space-6`; overflow-wrap anywhere.
+- **Cover title:** font-family `title-md`; font-size `title-md`; font-weight `title-md`; line-height `title-md`; letter-spacing `title-md`; color `on-photo`.
+- **Cover subtitle:** font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`; color `on-photo-mute`.
+- **Cover veil:** the cover text's ::before: content ""; position absolute; z-index −1, behind the text; top −2 × `space-12`; inset-inline 0; bottom 0; border-radius 0 0 `rounded-xl` `rounded-xl`; background `veil-fade`: `veil-cover` faded in from transparent over its first 2 × `space-12`, then solid to the card's bottom.
+- **Arrow circle:** hidden from assistive technology (the card is already the link). grid-column 2; grid-row 1 / span 2; align-self center; display grid; place-items center; width `space-10`; height `space-10`; border-radius `rounded-full`; background `surface-card`; color `ink`.
+- **Arrow:** the Hugeicons `ArrowRight02`, `icon-md`.
+- **Arrow in RTL:** transform scaleX(−1).

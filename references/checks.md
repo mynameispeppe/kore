@@ -27,7 +27,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] No horizontal scroll from 320 to 2560px, nothing cut at 200% zoom, `100dvh` for full height (Extremes).
 - [ ] Images: format, `srcset`, reserved size, loading, `alt` (Images).
 - [ ] Selection, caret, scrollbars, links and numerals themed (Browser surfaces).
-- [ ] Every line of the component's file, and of the files in its Uses line, holds (Components).
+- [ ] Every line of the component's file, and of the files read through its Uses line, holds (Components).
 
 ## Judge, always
 

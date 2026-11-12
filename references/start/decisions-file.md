@@ -20,5 +20,5 @@
 - **Group:** the name of its group (Affinity Grouping); elements answering the same question share it.
 - **Level:** `Primary`, `Secondary` or `Tertiary` inside its group (Semantic weight); `—` for what follows its own rule (a section heading, a label, a whole component).
 - **Style:** type role, weight and color token (From role to style, Roles and sizes; a heading, Typographic levels); for a component, its name and variant (its file); for an image, ratio and radius (Images).
-- **Space:** the token to the next element or group, and to which one (The Distance Ratio Rule, Reference values, Grouping and separation); `—` for the last one.
+- **Space:** the token to the next element or group, and to which one (The Distance Ratio Rule, Scale, Grouping and separation); `—` for the last one.
 - **Rule:** the sections or rules each value comes from, separated by commas. A value with no rule behind it is not written: it is a choice the user makes (Ask later, when it matters).

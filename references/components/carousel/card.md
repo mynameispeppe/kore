@@ -1,0 +1,24 @@
+**Card variant**
+
+- **Header:** the section's title at the start, the navigation at the end. display flex; align-items center; justify-content space-between; gap `space-4`.
+- **Section title:** font-family `title-md`; font-size `title-md`; font-weight `title-md`; line-height `title-md`; letter-spacing `title-md`.
+- **Navigation:** the position and the arrows, small tertiary buttons, shown on every device. display flex; align-items center; gap `space-2`.
+- **Position:** the status, "<position> of <total>". font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`; font-variant-numeric tabular-nums; color `mute`.
+- **Card track:** cursor grab; display grid; grid-auto-flow column; grid-template-rows auto auto auto auto auto; grid-auto-columns min(calc(`space-48` + `space-32`), calc(100% − `space-4` − `space-8`)); column-gap `space-4`; row-gap 0; overflow-x auto; scroll-snap-type x mandatory; scroll-behavior smooth; scrollbar-width none; padding `space-1`; margin −`space-1`; scroll-padding-inline `space-1`. The scrollbar of WebKit: display none.
+- **Card track from sm:** 2 cards in view. column-gap `space-8`; grid-auto-columns calc((100% − 2 × `space-8` − `space-8`) / 2).
+- **Card track from lg:** 3 cards in view. grid-auto-columns calc((100% − 3 × `space-8` − `space-8`) / 3). Every card is wider than tall.
+- **Card track reduced motion:** scroll-behavior auto.
+- **Scrolling:** on touch, the native scroll snapping to the start of a card; with a mouse the row is dragged, at 30% of the pointer past the first and the last card, and the spring settles on a card. A drag that moved does not open the card's link.
+- **Card slide:** position relative; isolation isolate; overflow-wrap anywhere; scroll-snap-align start; translate var(--ox, 0) 0, where --ox is the drag's offset set by the script; display grid; grid-row span 5; grid-template-rows subgrid; row-gap 0. Its focus marks follow `rounded-xl`.
+- **Offer slide:** the slide of an offer has no look of its own: background none; outline 0.
+- **Offer link:** the whole card is one link (Cards: Clickable card), as tall as its content. display grid; grid-row span 5; grid-template-rows subgrid; overflow-wrap anywhere.
+- **Offer photo:** 16:9, optional, a Media slot (Cards). grid-row 1.
+- **Offer text:** grid-row 2 / span 3; display grid; grid-template-rows subgrid; padding-inline `space-6`.
+- **Label row:** optional, the Hugeicons `Tag01` before the label: `icon-sm`, in `mute`; grid-row 1; display flex; align-items center; gap `space-2`; margin-block `space-6` `space-2`; font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`; color `mute`.
+- **Offer title:** grid-row 2; margin-top `space-6`, 0 when a card of the row has a label row; font-family `title-md`; font-size `title-md`; font-weight `title-md`; line-height `title-md`; letter-spacing `title-md`.
+- **Offer subtitle:** grid-row 3; margin-top `space-1`; margin-bottom `space-6`, 0 when a card of the row has a bottom row; font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`; color `mute`.
+- **Bottom row:** optional: the code at the start, the end arrow at the end. grid-row 5; display flex; align-items center; justify-content space-between; gap `space-4`; margin `space-4` `space-6` `space-6`; padding-top `space-4`; border-top `line-thin` solid `hairline`.
+- **Code:** font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`; font-variant-numeric tabular-nums; color `mute`.
+- **End arrow:** the Hugeicons `ArrowRight02`, `icon-md`, hidden from assistive technology. color `ink`.
+- **End arrow in RTL:** transform scaleX(−1).
+- **Aligned zones:** a card without an optional zone keeps its other zones aligned with the cards beside it; the cards share one height.

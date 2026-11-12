@@ -45,16 +45,6 @@
 - **Density never collapses groups.** When content must be dense, keep the ratio and reduce the elements (fewer, smaller), never the ratio.
 - **Space the siblings from the parent.** Put the gap on the container (flex or grid gap, stack spacing) instead of margins on each child, so gaps never collapse or double.
 - **Grouping actions.** Related actions sit `space-2` apart (`space-3` between 32px buttons, Adjacent targets); different groups at least `space-4`; a destructive action is always its own group. Rare actions go in a "More" menu, grouped by category with space or a label, destructive last.
-- **Whitespace is structure.** Group with space first; add a divider only when space alone cannot separate the groups.
-
-## Reference values
-
-| Situation | Token | Value |
-|---|---|---|
-| Title ↔ subtitle | `space-1` | 4px |
-| Label ↔ input | `space-2` | 8px |
-| Gap between page sections | App: `space-12`; Site: `space-32`, `space-48` from `md` | 48px; 128px, 192px |
-| Page side margin | `space-4` phone, `space-8` tablet and up | 16px / 32px |
 
 ## Accessibility
 
@@ -69,32 +59,8 @@
 - **Skip link.** The first focusable element of every page is a "Skip to content" link that moves focus to `<main>`; hidden until focused, it then shows as an `elevated` button at the top start corner, `space-2` from the edges, `zIndex` `toast` (WCAG 2.4.1).
 - **Focus after a route change.** In a single-page app, focus moves to the new page's `<h1>` (`tabindex="-1"`) and the document title changes. A multi-page site does this on its own.
 
-## Common mistakes
-
-- **Random values** everywhere (`padding: 13px 22px`).
-- **Too many spacing tokens.**
-- **Different padding** on cards of the same kind, or on different sides of one card.
-- **Mixing 10, 14, 23, 31px** with no reason.
-- **No scale** defined at all.
-
 ## Implementation
 
-**Tokens in any stack.** Kore is stack-agnostic. Expose the scale as tokens in whatever the project uses: CSS custom properties, a Tailwind theme, an SCSS map, Swift or Kotlin constants. Reference in CSS:
-
-```css
-:root {
-  --space-1: 0.25rem;  /*  4 */
-  --space-2: 0.5rem;   /*  8 */
-  --space-3: 0.75rem;  /* 12, half-step */
-  --space-4: 1rem;     /* 16 */
-  --space-5: 1.25rem;  /* 20, half-step */
-  --space-6: 1.5rem;   /* 24 */
-  --space-8: 2rem;     /* 32 */
-  --space-10: 2.5rem;  /* 40, half-step */
-  --space-12: 3rem;    /* 48 */
-  --space-32: 8rem;    /* 128, Site sections */
-  --space-48: 12rem;   /* 192, Site sections */
-}
-```
+**Tokens in any stack.** Kore is stack-agnostic. Expose the scale as tokens in whatever the project uses: CSS custom properties, a Tailwind theme, an SCSS map, Swift or Kotlin constants.
 
 **Border-box.** Every element has `box-sizing: border-box`, so its padding and border sit inside the width it is given.

@@ -1,0 +1,10 @@
+- **Clickable card:** the whole card is one link or button, a square, with its icon at the top and the title and subtitle at the bottom. It never contains other buttons or links. Several items that each open something are List rows inside one card; they become clickable cards only when the user asks for cards. An item without its own icon is a List row. aspect-ratio 1; justify-content space-between; gap `space-4`; text-decoration none; box-shadow `shadow-rest`; transition box-shadow `duration-fast` `ease-out`, transform `duration-fast` `ease-out`.
+- **Clickable hover:** on mouse hover (hover: hover): box-shadow `shadow-hover`; transform translateY(−`space-1`). (replaced in: minimalism)
+- **Clickable pressed:** transform none; box-shadow `shadow-rest`; transition-duration `duration-instant`.
+- **Clickable focus:** on :focus-visible: outline none, changed in 0s; the title takes the underline of Clickable focus title.
+- **Clickable focus title:** text-decoration underline `line-thick`; text-underline-offset `space-1`, all changed in 0s (the link focus underline, States).
+- **Clickable reduced motion:** transform none.
+- **Clickable top:** display flex; color `mute`.
+- **Icon circle:** holds one `icon-md` icon. flex none; display grid; place-items center; width `space-10`; height `space-10`; border-radius `rounded-full`; corner-shape round; background `surface-elevated`; box-shadow inset 0 0 0 `line-thin` `hairline`; color `mute`.
+- **Clickable grid:** columns that never stretch, as many as fit, the space left at the end of a row empty; a row of cards shares one height, so a card whose text needs more room makes its row taller instead of clipping. display grid; grid-template-columns repeat(auto-fill, calc(`space-32` + `space-8`)); gap `space-8`.
+- **Clickable grid below sm:** gap `space-6`.

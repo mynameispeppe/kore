@@ -1,0 +1,17 @@
+- **Plot:** for lines and areas. position relative; height `chart`; margin-inline-start `space-10`; margin-bottom `space-6`; touch-action pan-y. A vertical swipe still scrolls the page.
+- **Plot focus:** on :focus-visible: outline none, changed in 0s; the plot wrapper takes the corner marks of States.
+- **Plot wrapper:** holds the plot's focus marks, since the plot clips its own. position relative; its marks follow a radius of 0.
+- **Plot svg:** viewBox 0 0 100 100 with preserveAspectRatio none. position absolute; inset 0; width 100%; height 100%; overflow visible.
+- **Y value:** centred on its grid line, `space-2` from the plot. position absolute; inset-inline-start −`space-10`; width `space-8`; text-align end; transform translateY(−50%); color `mute`; font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`; font-variant-numeric tabular-nums.
+- **X label:** centred under its point. position absolute; bottom −`space-6`; transform translateX(−50%); color `mute`; font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`.
+- **Lines:** `line-thick` strokes, round joins and caps, fill none, with vector-effect non-scaling-stroke on the line and the grid, so the strokes keep their width when the plot stretches.
+- **End point:** centred on the last point, its background the series color. position absolute; width `space-2`; height `space-2`; border-radius `rounded-full`; corner-shape round; transform translate(−50%, −50%); box-shadow 0 0 0 `line-thick` `canvas`, `surface-card` inside a card; pointer-events none.
+- **Area under a line:** the series color at 10% (color-mix with transparent), down to the plot's bottom edge; on a chart with a y axis, only when the axis starts at 0.
+- **Direct label:** it ends at the end point, its bottom edge 50% of its height above the point's centre. position absolute; transform translate(−100%, −150%); white-space nowrap; display flex; align-items center; gap `space-2`; color `ink`; font-family `title-sm`; font-size `title-sm`; font-weight `title-sm`; line-height `title-sm`; letter-spacing `title-sm`; font-variant-numeric tabular-nums.
+- **Chart in RTL:** the chart is mirrored. The plot svg: transform scaleX(−1). The x label: transform translateX(50%). The end point and the lit point: transform translate(50%, −50%). The direct label: transform translate(100%, −150%). The readout too.
+- **Axis values:** round numbers (Y value, X label).
+- **Crosshair:** on a line it follows the pointer and snaps to the nearest point, across the plot's height. position absolute; inset-block 0; width 0; border-inline-start `line-thin` solid `hairline-strong`; pointer-events none.
+- **Lit point:** the points at the crosshair's position, drawn as the End point.
+- **Readout placement:** on a line, at the plot's top, `space-3` after the crosshair; before it when it would cross the end edge.
+- **Line entry:** the line draws from its first point, on the series only; the guides and axes show from the first frame. Before the entry: clip-path inset(0 100% 0 0); during it: animation in `duration-focal` `ease-out`, to clip-path inset(0).
+- **End point entry:** the end points and the direct labels fade in when the line has finished. Before the entry: opacity 0; during it: animation in `duration-slow` `ease-linear` from opacity 0, delayed by `duration-focal`.

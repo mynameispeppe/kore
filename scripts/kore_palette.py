@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Kore palette: derives a project's color tokens from its base colors
-(references/rules/color.md, Custom palette) and measures them (Contrast).
+(references/rules/custom-palette.md) and measures them (Contrast).
 
 Usage: python3 kore_palette.py [--themes light,dark] [--given light|dark]
                                [--canvas C] [--primary C] [--accent C]
@@ -493,7 +493,7 @@ def harmony(color, mode):
     return matrix, [matrix[r][k] for r, k in FEATURED]
 
 
-# ---------------------------------------------------------------- palette (color.md, Custom palette)
+# ---------------------------------------------------------------- palette (custom-palette.md)
 
 ROOT = Path(__file__).resolve().parent.parent
 THEMES = ("light", "dark")
@@ -798,7 +798,7 @@ def show(ratio_where):
 def main(argv=None):
     parser = argparse.ArgumentParser(
         usage="python3 kore_palette.py [--themes light,dark] [--given light|dark] [--canvas C] [--primary C] [--accent C]",
-        description="Derives the color tokens from the base colors (references/rules/color.md, Custom palette) "
+        description="Derives the color tokens from the base colors (references/rules/custom-palette.md) "
                     "and measures them. C is one hex, for the theme --given names, or light=#hex,dark=#hex. "
                     "Then proposes the candidate of references/candidates.md for the first missing role "
                     "(Missing colors, step 2).",

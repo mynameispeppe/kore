@@ -31,10 +31,11 @@ Read this section before any design or UI work with Kore. Kore promotes a clear 
 |---|---|
 | Any UI work: every token's name and value, the source of the project's token file (Token file) | `references/tokens.yaml` |
 | Building or checking any component: The Library-First Rule and the index of components | `references/components/index.md` |
-| Every component being built or checked, also when it comes from a UI library, plus the files listed in its **Uses** line, and in turn theirs | `references/components/<name>.md` |
-| Color: contrast, meaning, states, themes, custom palette | `references/rules/color.md` |
+| Every component being built or checked, also when it comes from a UI library, plus each component of its **Uses** line that the part being built or checked contains, and in turn theirs by the same test | `references/components/<name>.md` |
+| Color: contrast, meaning, states, themes | `references/rules/color.md` |
+| Custom palette | `references/rules/custom-palette.md` |
 | Typography: roles and sizes | `references/rules/typography.md` |
-| Spacing: scale, proximity and hierarchy, reference values, accessibility, implementation | `references/rules/spacing.md` |
+| Spacing: scale, proximity and hierarchy, accessibility, implementation | `references/rules/spacing.md` |
 | Shapes: radius by role, radius and padding, nested radius, borders inside the edge | `references/rules/shape.md` |
 | Elevation: levels, shadows, interaction, stacking order | `references/rules/elevation.md` |
 | Motion: tokens, app mode, site mode, implementation | `references/rules/motion.md` |
@@ -112,10 +113,6 @@ After the answers, sum up the choices in two or three lines, write `PRODUCT.md` 
 Existing code is not proof: a reused or previously approved component goes through the same checks as a new one.
 
 **Demo pages.** In a component catalog or demo page, each demo counts as its own screen for the rules that count per screen (The One Primary Rule, a secondary button never alone), and its numbers and copy are samples, not invented data.
-
-### Redesign and audit
-
-When the user asks for an audit or a redesign, or `KORE-AUDIT.md` has a Redesign section in progress, read `references/audit.md`.
 
 ### Ask later, when it matters
 

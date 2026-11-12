@@ -1,0 +1,22 @@
+- **Bar list:** the labels, then the bars. position relative; display grid; grid-template-columns auto 1fr; column-gap `space-3`; list-style none; margin 0; padding 0.
+- **Baseline:** the bar list's ::before, at the bars' start. content ""; position absolute; grid-column 2; inset-block −`space-1`; inset-inline-start 0; border-inline-start `line-thin` solid `hairline`.
+- **Band:** one category, its hit area. display grid; grid-column 1/-1; grid-template-columns subgrid; align-items center; gap `space-3`; min-height calc(`space-10` + `space-1`); cursor default.
+- **Bar label:** font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`; color `mute`.
+- **Bar row:** the bar and its value. position relative; display flex; align-items center; gap `space-2`.
+- **Bar value:** font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`; font-variant-numeric tabular-nums.
+- **Bar:** square at the baseline, rounded at its far tip. height `space-5`; border-start-end-radius `rounded-xs`; border-end-end-radius `rounded-xs`; background `hairline-strong`; transition opacity `duration-fast` `ease-out`; transform-origin left.
+- **Bar length:** the script sets it: its value over the largest value, times the room after the label less `space-12` + `space-2`, so the largest value fits after its bar.
+- **Bar in RTL:** transform-origin right.
+- **Highlighted bar:** background `chart-1`. Every bar of one series is highlighted; under Emphasis only the highlighted item.
+- **Dimmed bar:** while a band has hover or focus-visible, the bars of the other bands: opacity 50%.
+- **Touching bars:** touching bars and stacked segments are separated by `line-thick` in the surface color, never by a border.
+- **Vertical bar list:** the same rules turned 90°. display flex; column-gap 0; padding-block-start `space-6`.
+- **Vertical baseline:** across the whole width. inset-inline 0; inset-block auto; top calc(`space-6` + `space-48`); height 0; border-inline-start 0; border-block-start `line-thin` solid `hairline`.
+- **Vertical band:** the label under its bar. display flex; align-items center; flex 1 0 calc(`space-10` + `space-1`); flex-direction column-reverse; gap `space-2`.
+- **Vertical bar row:** the value above its bar. flex-direction column-reverse; justify-content flex-start; gap `space-1`; height `space-48`.
+- **Vertical bar:** its height is its value over the largest value, times `space-48`. width `space-5`; border-radius `rounded-xs` `rounded-xs` 0 0; background `chart-1`; transform-origin bottom.
+- **Bar targets:** each bar is its own target (Dimmed bar). Its hit area is its whole band, the bar, its label and the room up to the next band horizontal bars sit at least calc(`space-10` + `space-1`) apart, centre to centre, as Touch targets ask. Where the bands are narrower (touching bars, or more categories than the width holds), the bars are one target, as a line: the pointer snaps to the nearest bar.
+- **Bar readout:** the readout of a bar, above its bar's start. position absolute; bottom calc(100% − `space-1`); inset-inline-start 0; z-index `zIndex-tooltip`; background `surface-float`; outline `line-thin` solid `hairline`; outline-offset −`line-thin`; border-radius `rounded-md`; padding `space-2` `space-3`; display none; flex-direction column; gap `space-1`; white-space nowrap; pointer-events none.
+- **Bar readout shown:** while its band has hover or focus-visible: display flex, changed in 0s.
+- **Band focus:** the band takes the four-corner focus marks of States, following `rounded-xs`; outline none, changed in 0s.
+- **Bar entry:** the bars grow from their baseline, never by animating the width or the height. Before the entry: transform scaleX(0), scaleY(0) for a vertical bar; during it: animation in `duration-focal` `ease-out` from scale 0 to 1, delayed by `duration-instant` for each bar before it. Each bar's value counts with its bar (Counting figures).

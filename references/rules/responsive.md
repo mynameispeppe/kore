@@ -32,7 +32,6 @@
 
 - **Detect the input**, not the screen size: `(hover: hover)` and `(pointer: fine)` for mouse and trackpad, `(hover: none)` and `(pointer: coarse)` for touch.
 - **Hover is an enhancement only**, never the only way to reach a function. The hover lift from Elevation applies only where hover exists; on touch, the pressed state carries the feedback.
-- **Targets at every width.** Touch targets stay at least 44 × 44px at every width, desktop included (many laptops have touch screens); menu items keep their 40px, and links in a list take 32px only when the device has no touch screen (Touch targets).
 
 ## Safe areas
 

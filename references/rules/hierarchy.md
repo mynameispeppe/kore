@@ -87,7 +87,6 @@
 2. **One priority per repeating component.** For a component that repeats (cards in a grid, rows in a table), answer once: "what should the user perceive first across every instance?" That answer is the default for classifying every field in every instance, so the reasoning is not redone each time.
 3. **State the default; never apply or flag it silently.** Building new content: apply the default and name it in one line ("gave the price more weight: it usually drives the decision here; say if the goal differs"). Reviewing existing content with an asymmetry (one card larger, one field bolder): don't assume it is a mistake, so name it as an open question ("this card is bigger than its neighbors: is it the main offer, or should the row be even?"). Correct immediately once answered, and never ask the same question twice for the same component type.
 4. **A weight the content doesn't earn is not fixed by adding a component.** If nothing in the request or the content confirms that one item outranks its peers, the default is equal weight, not an invented badge, tag or highlight to assert a priority no one confirmed (Behaviour rules, Never invent values). Ask, or wait until the priority is confirmed, before building the component that would express it.
-5. **Then the style.** Once roles are assigned, style them with *From role to style* and *Text hierarchy*.
 
 ## From role to style
 
@@ -103,7 +102,6 @@
 - **Figures.** A figure inside the Secondary takes its Emphasis role (Typography).
 - **Outside this rule:** labels (`label-*`: buttons, tabs, group titles, column headers), which follow their components; the key figure (`display-*`); colored surfaces (Text hierarchy 9) and warnings (Text hierarchy 7).
 - **Weight of groups:** the Primary group comes first in the reading order (Scanning patterns). Groups of one level have titles of the same role; a group's weight comes from its position, never from a larger title.
-- **Actions:** at the end of the content they act on (Action order).
 
 ## Typographic levels
 

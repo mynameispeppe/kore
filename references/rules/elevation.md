@@ -30,7 +30,6 @@
 
 - **Hover** on a clickable element: `shadow-rest` → `shadow-hover` (`shadow-raised` → `shadow-raised-hover` on filled and elevated Buttons) and a lift of `space-1` (4px), with `duration-fast` and `ease-out`. **Pressed:** back to rest in `duration-instant`. (replaced in: minimalism)
 - **Reduced motion:** no lift; only the shadow changes, without animation. (replaced in: minimalism)
-- **Touch devices** have no hover: the pressed state carries the feedback.
 
 ## Stacking order
 

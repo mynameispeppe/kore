@@ -178,7 +178,9 @@ def mask(text):
 def rule_lines(path, text):
     """(line, id or None, text) of each rule line of a file, in line order; None when the line has no name."""
     lines = text.splitlines()
-    ids, unnamed = rule_ids(path.stem, mask(text))
+    # a variant's file (components/cards/cover.md) holds rules of its component: cards.cover-card
+    stem = path.parent.name if path.parent.parent.name == "components" else path.stem
+    ids, unnamed = rule_ids(stem, mask(text))
     found = ids + [(int(u.split(": ", 1)[0]), None) for u in unnamed]
     return sorted((n, rid, lines[n - 1]) for n, rid in found)
 

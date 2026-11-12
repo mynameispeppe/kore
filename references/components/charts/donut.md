@@ -1,0 +1,16 @@
+- **Donut:** at most 5 slices, largest first, clockwise from 12 o'clock in `chart-1` onwards, `line-thick` apart in the surface color. position relative; width `space-48`; height `space-48`.
+- **Donut svg:** position absolute; inset 0; width 100%; height 100%; overflow visible.
+- **Ring circle:** every circle of the donut. fill none; r (`space-48` − `space-5`) / 2.
+- **Arc:** one slice's visible ring. stroke-width `space-5`; transition opacity `duration-fast` `ease-out`.
+- **Dimmed arc:** while a slice has hover or focus-visible, the arcs of the other slices: opacity 50%.
+- **Donut centre:** the total, or the value of the slice in hover or focus. position absolute; inset 0; display flex; flex-direction column; align-items center; justify-content center; text-align center; pointer-events none.
+- **Centre value:** color `ink`; font-family `title-md`; font-size `title-md`; font-weight `title-md`; line-height `title-md`; letter-spacing `title-md`; font-variant-numeric tabular-nums.
+- **Centre label:** color `mute`; font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`.
+- **Donut legend:** a donut always has a legend above it, each entry with a square mark, its name and its legend value; never labels on the slices.
+- **Slice:** each slice is its own target (Dimmed arc), and the donut centre shows its value and label in place of the total, so the donut has no floating readout.
+- **Hit ring:** the slice's target on its arc. stroke transparent; stroke-width calc(`space-10` + `space-1`); pointer-events stroke.
+- **Focus ring:** a third circle under the slice's arc, with the arc's dash, so a `focus-ring` band shows on both sides of the slice. stroke transparent; stroke-width calc(`space-5` + 2 × (`line-thick` + the focus mark's width, States)); pointer-events none.
+- **Slice outline:** on :focus: outline none.
+- **Slice focus:** on :focus-visible the focus ring takes stroke `focus-ring`, changed in 0s; under forced colors: stroke Highlight.
+- **Slice entry:** the slices open clockwise from 12 o'clock, also in RTL. Before the entry: stroke-dasharray 0 100; during it: animation in `duration-focal` `ease-out` from that dash, delayed by `duration-instant` for each slice before it.
+- **Centre entry:** the donut centre fades in when the last slice has finished. Before the entry: opacity 0; during it: animation in `duration-slow` `ease-linear` from opacity 0, delayed by `duration-focal`.
