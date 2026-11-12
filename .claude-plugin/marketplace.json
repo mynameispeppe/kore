@@ -1,0 +1,24 @@
+{
+  "name": "kore",
+  "owner": {
+    "name": "mynameispeppe"
+  },
+  "description": "Kore, a design system for web interfaces, and the Humanizer skill it uses for longer text",
+  "plugins": [
+    {
+      "name": "kore",
+      "source": "./",
+      "description": "Design system for web interfaces, with a hook that checks every edited interface file against Kore's measurable rules"
+    },
+    {
+      "name": "humanizer",
+      "source": {
+        "source": "github",
+        "repo": "blader/humanizer",
+        "ref": "v3.1.0",
+        "sha": "225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8"
+      },
+      "description": "Rewrite AI-sounding text so it reads like the writer without changing what it says (MIT, blader/humanizer)"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+shadows:
+  light:
+    shadow-rest: none
+    shadow-hover: none
+    shadow-raised: none
+    shadow-raised-hover: none
+    shadow-raised-pressed: none
+    shadow-raised-rim: none
+    shadow-raised-sm: none
+    gradient-raised: none
+  dark:
+    shadow-rest: none
+    shadow-hover: none
+    shadow-raised: none
+    shadow-raised-hover: none
+    shadow-raised-pressed: none
+    shadow-raised-rim: none
+    shadow-raised-sm: none
+    gradient-raised: none

@@ -1,0 +1,11 @@
+#!/bin/sh
+# Kore check before every commit, without the pre-commit framework.
+# Copy to .git/hooks/pre-commit in the project and make it executable:
+#   cp examples/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+# KORE is the folder that holds Kore's SKILL.md.
+KORE="${KORE:-$HOME/.claude/skills/kore}"
+if [ ! -f "$KORE/scripts/kore_check.py" ]; then
+  echo "Kore check: $KORE/scripts/kore_check.py not found; set KORE to Kore's folder." >&2
+  exit 1
+fi
+exec python3 "$KORE/scripts/kore_check.py" . --staged

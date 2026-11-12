@@ -1,0 +1,331 @@
+# Kore's tokens: every value the rules name. Read before any UI work (SKILL.md, Kore's files).
+colors:
+  light:
+    canvas: "#F8FAFB"
+    surface-card: "#fbfdfe"
+    surface-card-edge: "#c9cacb"
+    surface-elevated: "#f4f6f7"
+    surface-deep: "#fbfdfe"
+    surface-float: "#fbfdfe"
+    surface-float-active: "#f4f6f7"
+    hairline: "rgba(39, 42, 44, 0.06)"
+    hairline-medium: "#dddfe0"
+    hairline-strong: "#838687"
+    ink: "#272a2c"
+    body: "rgba(39, 42, 44, 0.86)"
+    mute: "#656869"
+    stone: "#abaeaf"
+    primary: "#3b2f5c"
+    primary-on: "#ffffff"
+    primary-pressed: "#493d6b"
+    primary-edge: "#2f264a"
+    surface-hover: "#eef0f1"
+    surface-pressed: "#e7e9ea"
+    accent: "#8a4950"
+    accent-glow: "rgba(138, 73, 80, 0.20)"
+    warning: "#92400e"
+    warning-glow: "rgba(146, 64, 14, 0.20)"
+    info: "#386580"
+    info-glow: "rgba(56, 101, 128, 0.20)"
+    success: "#047857"
+    success-glow: "rgba(4, 120, 87, 0.20)"
+    danger: "#c22d2e"
+    danger-glow: "rgba(194, 45, 46, 0.20)"
+    danger-on: "#ffffff"
+    danger-pressed: "#d73d3b"
+    danger-edge: "#9b2425"
+    link: "#386580"
+    focus-ring: "#838687"
+    selection: "rgba(138, 73, 80, 0.20)"
+    scrim: "rgba(12, 9, 10, 0.32)"
+    veil-photo: "rgba(0, 0, 0, 0.60)"
+    veil-cover: "rgba(0, 0, 0, 0.80)"
+    on-photo: "#ffffff"
+    on-photo-mute: "rgba(255, 255, 255, 0.70)"
+    on-vivid: "#0C090A"
+    vivid-info: "#6099bc"
+    vivid-success: "#6ee7b7"
+    vivid-warning: "#ffc53d"
+    vivid-danger: "#ff5a56"
+    chart-1: "#2a78d6"
+    chart-2: "#eb6834"
+    chart-3: "#1baf7a"
+    chart-4: "#eda100"
+    chart-5: "#e87ba4"
+    chart-6: "#008300"
+    chart-7: "#4a3aa7"
+    chart-8: "#e34948"
+  dark:
+    canvas: "#0C090A"
+    surface-card: "#151213"
+    surface-card-edge: "#110e0f"
+    surface-elevated: "#221e1f"
+    surface-deep: "#080606"
+    surface-float: "#201c1d"
+    surface-float-active: "#2e2a2b"
+    hairline: "rgba(250, 241, 243, 0.06)"
+    hairline-medium: "#322d2f"
+    hairline-strong: "#797374"
+    ink: "#faf1f3"
+    body: "rgba(250, 241, 243, 0.86)"
+    mute: "#989192"
+    stone: "#4e494b"
+    primary: "#cebef5"
+    primary-on: "#000000"
+    primary-pressed: "#bdaee4"
+    primary-edge: "#a598c4"
+    surface-hover: "#231f20"
+    surface-pressed: "#282425"
+    accent: "#F8F1FF"
+    accent-glow: "rgba(248, 241, 255, 0.17)"
+    warning: "#ffc53d"
+    warning-glow: "rgba(255, 197, 61, 0.21)"
+    info: "#6099bc"
+    info-glow: "rgba(96, 153, 188, 0.29)"
+    success: "#6ee7b7"
+    success-glow: "rgba(110, 231, 183, 0.21)"
+    danger: "#ff5a56"
+    danger-glow: "rgba(255, 90, 86, 0.30)"
+    danger-on: "#000000"
+    danger-pressed: "#ea4b48"
+    danger-edge: "#cc4845"
+    link: "#6099bc"
+    focus-ring: "#797374"
+    selection: "rgba(248, 241, 255, 0.17)"
+    scrim: "rgba(0, 0, 0, 0.60)"
+    veil-photo: "rgba(0, 0, 0, 0.60)"
+    veil-cover: "rgba(0, 0, 0, 0.80)"
+    on-photo: "#ffffff"
+    on-photo-mute: "rgba(255, 255, 255, 0.70)"
+    on-vivid: "#0C090A"
+    vivid-info: "#6099bc"
+    vivid-success: "#6ee7b7"
+    vivid-warning: "#ffc53d"
+    vivid-danger: "#ff5a56"
+    chart-1: "#3987e5"
+    chart-2: "#d95926"
+    chart-3: "#199e70"
+    chart-4: "#c98500"
+    chart-5: "#d55181"
+    chart-6: "#008300"
+    chart-7: "#9085e9"
+    chart-8: "#e66767"
+fonts:
+  display: Outfit
+  sans: Figtree
+  mono: Geist Mono
+typography:
+  display-lg:
+    fontFamily: Outfit
+    fontSize: 57px
+    fontWeight: 400
+    lineHeight: 64px
+    letterSpacing: -0.25px
+  display-md:
+    fontFamily: Outfit
+    fontSize: 45px
+    fontWeight: 400
+    lineHeight: 52px
+  display-sm:
+    fontFamily: Outfit
+    fontSize: 36px
+    fontWeight: 400
+    lineHeight: 44px
+  headline-lg:
+    fontFamily: Figtree
+    fontSize: 32px
+    fontWeight: 400
+    lineHeight: 40px
+  headline-md:
+    fontFamily: Figtree
+    fontSize: 28px
+    fontWeight: 400
+    lineHeight: 36px
+  headline-sm:
+    fontFamily: Figtree
+    fontSize: 24px
+    fontWeight: 400
+    lineHeight: 32px
+  title-lg:
+    fontFamily: Figtree
+    fontSize: 22px
+    fontWeight: 400
+    lineHeight: 28px
+  title-md:
+    fontFamily: Figtree
+    fontSize: 16px
+    fontWeight: 500
+    lineHeight: 24px
+    letterSpacing: 0.15px
+  title-sm:
+    fontFamily: Figtree
+    fontSize: 14px
+    fontWeight: 500
+    lineHeight: 20px
+    letterSpacing: 0.1px
+  body-lg:
+    fontFamily: Figtree
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 24px
+    letterSpacing: 0.5px
+  body-md:
+    fontFamily: Figtree
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 20px
+    letterSpacing: 0.25px
+  body-sm:
+    fontFamily: Figtree
+    fontSize: 12px
+    fontWeight: 400
+    lineHeight: 16px
+    letterSpacing: 0.4px
+  label-lg:
+    fontFamily: Figtree
+    fontSize: 14px
+    fontWeight: 500
+    lineHeight: 20px
+    letterSpacing: 0.1px
+  label-md:
+    fontFamily: Figtree
+    fontSize: 12px
+    fontWeight: 500
+    lineHeight: 16px
+    letterSpacing: 0.5px
+  label-sm:
+    fontFamily: Figtree
+    fontSize: 11px
+    fontWeight: 500
+    lineHeight: 16px
+    letterSpacing: 0.5px
+  code-md:
+    fontFamily: Geist Mono
+    fontSize: 13px
+    fontWeight: 400
+    lineHeight: 20px
+fontWeight:
+  strong: 600
+rounded:
+  none: 0px
+  xs: 4px
+  sm: 8px
+  md: 12px
+  lg: 16px
+  xl: 24px
+  full: 9999px
+  checkbox: 6px
+sizes:
+  line-thin: 1px
+  line-thick: 2px
+  slider-thumb: 20px
+  checkbox: 18px
+  icon-xs: 14px
+  icon-sm: 16px
+  icon-md: 20px
+  icon-lg: 24px
+  button-sm: 32px
+  button-md: 36px
+  button-lg: 44px
+  button-min: 64px
+  accordion-row: 56px
+  field: 40px
+  textarea-min: 96px
+  chart: 200px
+  tooltip: 240px
+  sidebar: 256px
+  popover: 288px
+  plan-min: 288px
+  field-max: 360px
+  kpi-pair: 360px
+  measure: 60ch
+  empty-text: 384px
+  panel: 400px
+  dialog: 480px
+  upload: 480px
+  list: 480px
+  table-min: 520px
+  steps: 640px
+  glow: 1024px
+  perspective: 1200px
+  tilt: 60deg
+  turn: 45deg
+  fan: 8deg
+  flip: 180deg
+  scale-enter: 0.9
+spacing:
+  space-1: 4px
+  space-2: 8px
+  space-3: 12px
+  space-4: 16px
+  space-5: 20px
+  space-6: 24px
+  space-8: 32px
+  space-10: 40px
+  space-12: 48px
+  space-32: 128px
+  space-48: 192px
+shadows:
+  light:
+    shadow-rest: "0 1px 2px rgba(33, 33, 33, 0.04)"
+    shadow-hover: "0 4px 12px rgba(33, 33, 33, 0.06)"
+    shadow-raised: "inset 0 1px 0 rgb(255 255 255 / .25), inset 0 -2px 0 rgb(0 0 0 / .18), 0 2px 4px rgb(0 0 0 / .12), 0 4px 10px rgb(0 0 0 / .08)"
+    shadow-raised-hover: "inset 0 1px 0 rgb(255 255 255 / .25), inset 0 -2px 0 rgb(0 0 0 / .18), 0 4px 8px rgb(0 0 0 / .14), 0 8px 16px rgb(0 0 0 / .1)"
+    shadow-raised-pressed: "inset 0 2px 3px rgb(0 0 0 / .25)"
+    shadow-raised-rim: "inset 0 1px 0 rgb(255 255 255 / .6)"
+    shadow-raised-sm: "inset 0 1px 0 rgb(255 255 255 / .16), inset 0 -1px 0 rgb(0 0 0 / .10)"
+    gradient-raised: "linear-gradient(to bottom, rgb(255 255 255 / .08), transparent)"
+  dark:
+    shadow-rest: "0 1px 2px rgba(0, 0, 0, 0.24)"
+    shadow-hover: "0 4px 12px rgba(0, 0, 0, 0.32)"
+    shadow-raised: "inset 0 1px 0 rgb(255 255 255 / .25), inset 0 -2px 0 rgb(0 0 0 / .18), 0 2px 4px rgb(0 0 0 / .12), 0 4px 10px rgb(0 0 0 / .08)"
+    shadow-raised-hover: "inset 0 1px 0 rgb(255 255 255 / .25), inset 0 -2px 0 rgb(0 0 0 / .18), 0 4px 8px rgb(0 0 0 / .14), 0 8px 16px rgb(0 0 0 / .1)"
+    shadow-raised-pressed: "inset 0 2px 3px rgb(0 0 0 / .25)"
+    shadow-raised-rim: "inset 0 1px 0 rgb(255 255 255 / .6)"
+    shadow-raised-sm: "inset 0 1px 0 rgb(255 255 255 / .16), inset 0 -1px 0 rgb(0 0 0 / .10)"
+    gradient-raised: "linear-gradient(to bottom, rgb(255 255 255 / .08), transparent)"
+zIndex:
+  base: 0
+  raised: 10
+  overlay: 100
+  modal: 200
+  dropdown: 300
+  tooltip: 400
+  toast: 500
+breakpoints:
+  sm: 640px
+  md: 768px
+  lg: 1024px
+  max-content: 1200px
+motion:
+  duration-instant: 100ms
+  duration-fast: 150ms
+  duration-base: 250ms
+  duration-slow: 400ms
+  duration-focal: 700ms
+  duration-spin: 700ms
+  duration-loop: 40s
+  delay-input: 300ms
+  ease-out: "cubic-bezier(0.16, 1, 0.3, 1)"
+  ease-in: "cubic-bezier(0.4, 0, 1, 1)"
+  ease-in-out: "cubic-bezier(0.65, 0, 0.35, 1)"
+  ease-linear: "linear"
+  spring: "stiffness 500, damping 40, mass 1"
+mix:
+  mix-ledge: 20%
+  mix-edge: 40%
+  mix-icon-edge: 70%
+  mix-hover: 8%
+  mix-pressed: 10%
+  light:
+    mix-tint: 14%
+  dark:
+    mix-tint: 16%
+# The photo veil's top 96px (2 × space-12): veil-cover faded in smoothstep, alpha × t²(3−2t), 11 stops
+gradients:
+  veil-fade: "linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.0224) 9.6px, rgba(0, 0, 0, 0.0832) 19.2px, rgba(0, 0, 0, 0.1728) 28.8px, rgba(0, 0, 0, 0.2816) 38.4px, rgba(0, 0, 0, 0.4) 48px, rgba(0, 0, 0, 0.5184) 57.6px, rgba(0, 0, 0, 0.6272) 67.2px, rgba(0, 0, 0, 0.7168) 76.8px, rgba(0, 0, 0, 0.7776) 86.4px, rgba(0, 0, 0, 0.8) 96px)"
+icons:
+  library: Hugeicons
+  style: Stroke Rounded
+  stroke: 1.5
+  sizes: [16, 20, 24]

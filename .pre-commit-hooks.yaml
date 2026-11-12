@@ -1,0 +1,16 @@
+# Kore check for the pre-commit framework (https://pre-commit.com).
+# In the project's .pre-commit-config.yaml:
+#   repos:
+#     - repo: https://github.com/mynameispeppe/kore
+#       rev: v1.0.0
+#       hooks:
+#         - id: kore-check
+# For a project in a subfolder, add: args: [path/to/project, --staged]
+- id: kore-check
+  name: Kore check
+  description: Blocks the commit when a staged interface file breaks a rule of Kore that a script can measure.
+  entry: scripts/kore_check.py
+  language: script
+  args: [".", "--staged"]
+  pass_filenames: false
+  files: \.(p?css|postcss|scss|sass|less|styl|html?|astro|vue|svelte|[cm]?[jt]sx?)$

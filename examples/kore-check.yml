@@ -1,0 +1,20 @@
+# Kore check on every pull request. Copy to .github/workflows/kore-check.yml.
+# Reports only the files the pull request changes, plus contrast and the
+# whole-project checks; a ✗ marks the pull request as failed.
+name: Kore check
+on: pull_request
+jobs:
+  kore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: mynameispeppe/kore
+          ref: v1.0.0
+          path: .kore
+      # Kore's own files must not be read as part of the project.
+      - run: mv .kore "$RUNNER_TEMP/kore"
+      - run: python3 "$RUNNER_TEMP/kore/scripts/kore_check.py" . --base "origin/${{ github.base_ref }}"

@@ -1,0 +1,21 @@
+---
+// Kore: a Hugeicons icon from @hugeicons/core-free-icons, written as inline
+// SVG when the site is built: no JavaScript reaches the page
+// (references/rules/icons.md, Source). Usage: <Icon icon={Delete02Icon} size={20} />.
+// Hidden from screen readers unless an attribute says otherwise.
+interface Props {
+  icon: readonly (readonly [string, { readonly [key: string]: string | number }])[];
+  size?: 16 | 20 | 24;
+  [attribute: string]: unknown;
+}
+
+const { icon, size = 24, ...attributes } = Astro.props;
+const kebab = (name: string) => name.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase());
+const elements = icon.map(([tag, { key, ...rest }]) => ({
+  Tag: tag,
+  props: Object.fromEntries(Object.entries(rest).map(([name, value]) => [kebab(name), value])),
+}));
+---
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size} height={size} fill="none" {...{ "aria-hidden": "true", ...attributes }}>
+  {elements.map(({ Tag, props }) => <Tag {...props} />)}
+</svg>

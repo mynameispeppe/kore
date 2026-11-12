@@ -1,0 +1,11 @@
+{
+  "name": "kore",
+  "displayName": "Kore",
+  "description": "Design system for web interfaces, with a hook that checks every edited interface file against Kore's measurable rules",
+  "author": {
+    "name": "mynameispeppe"
+  },
+  "license": "MIT",
+  "keywords": ["design-system", "ui", "web", "accessibility"],
+  "dependencies": ["humanizer"]
+}
