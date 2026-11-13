@@ -106,7 +106,7 @@ After the answers, sum up the choices in two or three lines, write `PRODUCT.md` 
 
 1. Check for a UI library first (The Library-First Rule).
 2. If Kore defines the component, use it. If not, compose it from Kore's components and tokens; never invent values.
-3. Before the first line of code, write the Order of decisions (Hierarchy) in `KORE-DECISIONS.md` (Decisions file). Show the user a summary in their language, never the table: what they will see in reading order and what stands out most, the layout in one sentence, and each choice no rule covers as a question. Wait for the OK. Then apply the rules of the sections involved.
+3. Before the first line of code, write the Order of decisions (Hierarchy) in `KORE-DECISIONS.md` (Decisions file). Show the user a summary in their language, never the table: what they will see in reading order and what stands out most, the layout in one sentence, and each choice no rule covers as a question. Wait for the OK. Then apply the rules of the sections involved, and mark each section and component on the page (Decisions file).
 4. If the request breaks a binding rule, do not apply it: follow Binding rules in Behaviour rules.
 5. Before delivering, run `references/checks.md`, box by box. The work is finished only when `scripts/kore_check.py`, with `--url` for each page built or changed (Measure), exits with 0, or, when it cannot run, every Measure box is checked by hand. Report the result in two lines: first, what was built, what was fixed and any choice no rule covered; second, the command of the last `kore_check` run, made after the last edit, and the summary line it printed (`0 ✗, 2 ?`).
 

@@ -558,7 +558,7 @@ def main():
             parser.error(f"--skip {path}: no such file in {root}")
     skip = {relative(root / path, root) for path in args.skip}
     decisions = root / "KORE-DECISIONS.md"
-    from kore_hierarchy import names_file, needs_table, tables, validate  # lazy: kore_hierarchy imports kore_check
+    from kore_hierarchy import names_file, needs_table, tables, type_rows, validate  # lazy: kore_hierarchy imports kore_check
     if decisions.is_file():
         for error in validate(decisions.read_text(encoding="utf-8")):
             report("✗", "KORE-DECISIONS.md", 0, "Decisions file", error)
@@ -626,7 +626,8 @@ def main():
     browser_ran, saved = True, []
     if args.url:
         import kore_browser
-        saved = kore_browser.check(args.url, report, themes, args.shots)
+        saved = kore_browser.check(args.url, report, themes, args.shots,
+                                   type_rows(decisions.read_text(encoding="utf-8") if decisions.is_file() else ""))
         browser_ran = saved is not None
 
     shown = findings

@@ -24,7 +24,7 @@ INSTALL = ("python3 -m pip install --user playwright, then install Google Chrome
 
 # Runs in the page. Returns [kind, rule, message] for each finding.
 MEASURE = r"""
-async ({touch, zoom}) => {
+async ({touch, zoom, tables}) => {
   const out = [];
   // A finding on an element the page waives (data-kore-ignore="<Rule>: <reason>") comes back as ignored.
   const add = (kind, rule, msg, ...els) => {
@@ -373,6 +373,29 @@ async ({touch, zoom}) => {
       }
     }
   }
+  // From role to style: each text row of the Decisions file against the element that carries it.
+  // Not at 200%: the sizes double there and each finding would come twice.
+  const probed = (prop, value) => {
+    const p = document.createElement('div');
+    p.style.cssText = `position:absolute;${prop}:${value}`;
+    document.body.append(p);
+    const got = style(p)[prop === 'color' ? 'color' : 'fontSize'];
+    p.remove();
+    return got;
+  };
+  for (const [table, rows] of zoom ? [] : tables) {
+    for (const root of document.querySelectorAll(`[data-kore="${table}"]`)) {
+      for (const [element, role, weight, color] of rows) {
+        const found = [...root.querySelectorAll(`[data-kore-element="${element}"]`)].filter(el => el.closest('[data-kore]') === root);
+        if (!found.length) add('✗', 'From role to style', `no data-kore-element="${element}" in ${name(root)}`, root);
+        for (const el of found) {
+          const s = style(el);
+          if (s.fontSize !== probed('font-size', `var(--${role}-fontSize)`) || s.fontWeight !== weight || s.color !== probed('color', `var(--${color})`))
+            add('✗', 'From role to style', `${name(el)} is ${s.fontSize} ${s.fontWeight} ${s.color}, its row says ${role} ${weight} ${color}`, el);
+        }
+      }
+    }
+  }
   return out;
 }
 """
@@ -489,10 +512,10 @@ def load(browser, url, theme, selector, width, touch, motion="reduce", state=Non
     return context, page
 
 
-def check(urls, report, themes, shots=None):
+def check(urls, report, themes, shots=None, tables=()):
     """Reports the findings of every page, in each theme of themes ({"light" |
     "dark": selector to set on <html>, or None}), through report(kind, path,
-    line, rule, message), and saves the screenshots in the folder shots.
+    line, rule, message), tables being type_rows of KORE-DECISIONS.md, and saves the screenshots in the folder shots.
     Returns the screenshot paths, or None when the browser cannot run."""
     try:
         from playwright.sync_api import sync_playwright
@@ -504,7 +527,7 @@ def check(urls, report, themes, shots=None):
         if browser is None:
             print(f"kore_check --url found no Chromium-based browser: {INSTALL}.")
             return None
-        saved = []
+        saved, marked = [], set()  # marked: tables whose data-kore root is on a page
         if shots:
             shots.mkdir(parents=True, exist_ok=True)
         for url, name in zip(urls, shot_names(urls)):
@@ -513,7 +536,9 @@ def check(urls, report, themes, shots=None):
                 for width in WIDTHS:
                     touch = width < TOUCH_BELOW
                     context, page = load(browser, url, theme, selector, width, touch)
-                    for kind, rule, message in page.evaluate(MEASURE, {"touch": touch, "zoom": False}):
+                    marked |= set(page.evaluate("names => names.filter(n => document.querySelector(`[data-kore=\"${n}\"]`))",
+                                                [table for table, _ in tables]))
+                    for kind, rule, message in page.evaluate(MEASURE, {"touch": touch, "zoom": False, "tables": tables}):
                         seen[(kind, rule, message)].append((width, theme))
                     if shots and width in SHOTS:
                         page.evaluate(SCROLL_THROUGH)
@@ -529,11 +554,15 @@ def check(urls, report, themes, shots=None):
                 if fixed:
                     seen[("✗", "Zoom", f"font size in px, does not follow the user's text size: {', '.join(fixed[:5])}")]\
                         .append(("200%", theme))
-                for kind, rule, message in page.evaluate(MEASURE, {"touch": False, "zoom": True}):
+                for kind, rule, message in page.evaluate(MEASURE, {"touch": False, "zoom": True, "tables": tables}):
                     seen[(kind, rule, message)].append(("200%", theme))
                 context.close()
             for (kind, rule, message), places in seen.items():
                 report(kind, url, 0, rule, f"{message} ({where(places)})")
+        for table, _ in tables:
+            if table not in marked:
+                report("✗", "KORE-DECISIONS.md", 0, "Decisions file", f'no element with data-kore="{table}" on the pages '
+                       "checked: mark the root of the section or component (On the page)")
         browser.close()
     return saved
 

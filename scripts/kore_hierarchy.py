@@ -164,6 +164,23 @@ def check_values(where, body, roles, colors, spaces, components):
     return errors
 
 
+def type_rows(text):
+    """[(table name, [(Element, role, weight, color)])] for the rows whose Style names a type role."""
+    roles, colors, _ = kore_tokens(typology_line(text))
+    found = []
+    for table in tables(text):
+        rows = [cells(l) for l in table["body"].splitlines() if l.strip().startswith("|")][2:]
+        typed = []
+        for row in (r for r in rows if len(r) == len(COLUMNS)):
+            words = row[4].split()
+            role = next((w for w in words if w in roles), None)
+            if role:
+                typed.append((row[0], role, next((w for w in words if re.fullmatch(r"[1-9]00", w)), None),
+                              next((w for w in words if w in colors), None)))
+        found.append((table["heading"].split(" · ")[0], typed))
+    return found
+
+
 def validate(text):
     errors, names = [], rule_names()
     typology, typologies = typology_line(text), typology_names()
