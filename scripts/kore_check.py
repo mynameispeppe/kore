@@ -558,6 +558,10 @@ def main():
             parser.error(f"--skip {path}: no such file in {root}")
     skip = {relative(root / path, root) for path in args.skip}
     decisions = root / "KORE-DECISIONS.md"
+    from kore_hierarchy import names_file, needs_table, tables, validate  # lazy: kore_hierarchy imports kore_check
+    if decisions.is_file():
+        for error in validate(decisions.read_text(encoding="utf-8")):
+            report("✗", "KORE-DECISIONS.md", 0, "Decisions file", error)
     typology = args.typology or typology_line(decisions.read_text(encoding="utf-8") if decisions.is_file() else "")
     if typology not in typology_names():
         parser.error(f"typology {typology}: no folder typologies/{typology}")
@@ -585,6 +589,10 @@ def main():
         if re.search(r"""@import\s+(url\()?["']tailwindcss|@tailwind\b|@theme\b""", clean):
             uses_tailwind = True
 
+    named = tables(decisions.read_text(encoding="utf-8") if decisions.is_file() else "")
+    for path, rel, text, rules, clean in sources:
+        if needs_table(path, text) and not names_file(named, rel.as_posix()):
+            report("✗", rel, 1, "Decisions file", "no table in KORE-DECISIONS.md names this file: write its Order of decisions")
     all_css, light, dark, token_path, has_interactive = "", {}, {}, None, False
     themes = {"light": None, "dark": None}
     for path, rel, text, rules, clean in sources:

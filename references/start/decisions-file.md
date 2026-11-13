@@ -8,6 +8,7 @@
   ## [Name] · [file], [file]
 
   Shape: [Layout primitive (items)]
+  Primary group: [group]
 
   | Element | Question | Group | Level | Style | Space | Rule |
   |---|---|---|---|---|---|---|
@@ -15,10 +16,11 @@
   ```
 - **Heading:** the name of the section or component, `·`, every file it touches, separated by commas.
 - **Shape:** the Layout primitive (Order of decisions, step 3), with its items in brackets.
+- **Primary group:** the group that answers the main question of the section or component (Order of decisions, step 2).
 - **Element:** one visible element as it reads on screen: a text, an image, a control, or a component taken whole (a Button, a Social links).
 - **Question:** the user's question it answers (Order of decisions), in the user's language.
 - **Group:** the name of its group (Affinity Grouping); elements answering the same question share it.
-- **Level:** `Primary`, `Secondary` or `Tertiary` inside its group (Semantic weight); `—` for what follows its own rule (a section heading, a label, a whole component).
+- **Level:** `Primary`, `Secondary` or `Tertiary` inside its group, one `Primary` per group (Semantic weight); `—` for what follows its own rule (a section heading, a label, a whole component).
 - **Style:** type role, weight and color token (From role to style, Roles and sizes; a heading, Typographic levels); for a component, its name and variant (its file); for an image, ratio and radius (Images).
 - **Space:** the token to the next element or group, and to which one (The Distance Ratio Rule, Scale, Grouping and separation); `—` for the last one.
 - **Rule:** the sections or rules each value comes from, separated by commas. A value with no rule behind it is not written: it is a choice the user makes (Ask later, when it matters).
