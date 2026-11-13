@@ -1,0 +1,4 @@
+**Profile menu**
+
+- **Email row:** padding `space-2`; color `mute`; font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`. Only in the profile menu: the account's email as its first row, then a separator. The arrows skip it and it cannot be selected. Apart from the email, a menu shows only rows to choose and group titles.
+- **Profile trigger:** width calc(`space-10` + `space-1`); height calc(`space-10` + `space-1`); border-radius `rounded-full`; corner-shape round. A tertiary icon Button holding a default Avatar (initials or photo); its hover is a circle around the Avatar and the focus marks follow the same radius. The button carries the accessible label and its Tooltip, both naming the account menu; the initials are `aria-hidden` and the photo has an empty alt text.

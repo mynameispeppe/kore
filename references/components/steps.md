@@ -6,6 +6,7 @@
 
 - **Hierarchy:** the row comes first, then the step's content, then its actions. The open step's label is the focal point (The One Winner Rule): the only label in `title-sm`; the done steps follow in `label-md` `ink` with a filled circle; the steps to do only guide, in `mute`.
 - **Elements:** the Steps' own: flow, row, step, line, step button, circle, step label, step content, actions. Other components: the bar that replaces the row (Progress), Back, Continue and the last step's button (Button), the success message (Toast).
+- **Variant files:** read only the file of each variant that the part being built or checked contains: Vertical `references/components/steps/vertical.md`.
 - **Flow:** the row, the step content and the actions together, centred. width 100%; max-width `steps`; margin-inline auto.
 - **Row:** a `nav` with a label ("Order steps") holding an `ol`, one `li` per step. list-style none; margin 0; padding 0; display flex; align-items center; gap `space-2`.
 - **Step:** display flex; align-items center; gap `space-2`; flex none.
@@ -24,10 +25,5 @@
 - **Actions:** a secondary Button "Back" at the start (not on the first step) and the primary Button at the end: "Continue" on the middle steps, on the last a verb and its object ("Place order"). The primary: margin-inline-start auto.
 - **Sticky actions:** they stick to the bottom of the screen while the step's content scrolls, on a band in the colour of the surface below. position sticky; bottom 0; z-index `zIndex-raised`; justify-content flex-end; background `canvas`; margin-block calc(`space-4` × −1); padding-block `space-4` calc(`space-4` + the bottom safe area).
 - **Covering actions:** only while the band covers the content: box-shadow 0 calc(`line-thin` × −1) 0 `hairline`.
-- **Vertical:** the steps in a column at any width, with no Progress bar. The row: flex-direction column; align-items stretch; gap 0. Each step: display block; position relative. Each step but the last: padding-bottom `space-6`.
-- **Vertical line:** each step but the last, ::before, at the circle's centre, from the bottom of the step button to the next step, beside the open content too. content ""; position absolute; top calc(`space-10` + `space-1`); bottom 0; inset-inline-start calc((`space-6` − `line-thin`) / 2); border-inline-start `line-thin` solid `hairline`.
-- **Vertical content:** under the open step's button, indented to its label. padding-inline-start calc(`space-6` + `space-2`).
-- **Vertical actions:** "Back" then the primary, both at the start, not sticky. position static; justify-content flex-start; gap `space-2`; margin-block 0; padding-block 0; box-shadow none; background none. The primary: margin-inline-start 0.
-- **Vertical step change:** the old content closes and the new one opens at the same time, height and opacity, in `duration-base` with `ease-out`; under reduced motion they swap at once.
 - **Continue:** checks the step's fields as a submit does (Form fields) and moves on only when they are valid.
 - **Last step:** the primary shows its spinner (Button, Loading), then a success toast.

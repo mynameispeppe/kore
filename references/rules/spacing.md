@@ -1,7 +1,5 @@
 # Spacing
 
-**Consistency.** The goal is not "8px everywhere": it is consistent spacing. Every margin, padding, gap, offset and element size comes from one small scale, repeated across the whole project. Consistency beats improvisation.
-
 ## Scale
 
 **Base unit** 8px, with 4px half-steps for fine adjustments. Token names count 4px units: `space-N` = N × 4px, so the name tells the value.
@@ -37,8 +35,6 @@
 
 ## Proximity and hierarchy
 
-**Proximity.** Spacing tells the reader what belongs together.
-
 - **Inside < between.** Space inside a group is always smaller than space between groups: label ↔ input `space-2`, field ↔ field `space-6`, section ↔ section `space-12` in App mode, `space-32` / `space-48` in Site mode.
 - **The Distance Ratio Rule (binding).** The space between two groups is at least twice the space inside each group. Below that ratio the eye reads them as one group. Examples: label ↔ input 8, field ↔ field 24; card rows 12, header ↔ rows 24, rows ↔ actions 32. Inside a page section, outside a component, each level takes half the space of the level above it, starting from `space-12` (48px): groups `space-6` (24px) apart, the parts of a group `space-3` (12px) apart; title ↔ subtitle stays `space-1`.
 - **Alignment confirms the group.** Grouped elements share an axis (left edge, baseline or grid column); proximity without alignment looks accidental.
@@ -61,6 +57,6 @@
 
 ## Implementation
 
-**Tokens in any stack.** Kore is stack-agnostic. Expose the scale as tokens in whatever the project uses: CSS custom properties, a Tailwind theme, an SCSS map, Swift or Kotlin constants.
+**Tokens in any stack.** Expose the scale as tokens in whatever the project uses: CSS custom properties, a Tailwind theme, an SCSS map, Swift or Kotlin constants.
 
 **Border-box.** Every element has `box-sizing: border-box`, so its padding and border sit inside the width it is given.

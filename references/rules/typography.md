@@ -16,7 +16,7 @@
 
 ## Roles and sizes
 
-**Role and size.** Five roles, each in three sizes (Large, Medium, Small). The role says what the text does; the size says how prominent it is. Values are dimension / line-height · weight · letter-spacing, in px.
+**Role and size.** Five roles, each in three sizes (Large, Medium, Small). Values are dimension / line-height · weight · letter-spacing, in px.
 
 | Role | Large | Medium | Small |
 |---|---|---|---|
@@ -26,6 +26,6 @@
 | **Body**. Long passages, line-height about 1.5×, simple highly legible font. | `body-lg` 16 / 24 · 400 · 0.5. Introductory paragraphs or primary reading text (the opening of an article). | `body-md` 14 / 20 · 400 · 0.25. The default for most app text: article paragraphs, option descriptions in settings. | `body-sm` 12 / 16 · 400 · 0.4. Supporting text, secondary notes, legal text and disclaimers, secondary descriptions in dense layouts. |
 | **Label**. Small functional styles for components and micro-text. | `label-lg` 14 / 20 · 500 · 0.1. Action elements: the text inside buttons. | `label-md` 12 / 16 · 500 · 0.5. Navigation components: tabs, top bar links. | `label-sm` 11 / 16 · 500 · 0.5. Micro-text and captions: timecodes, badges, small tags. |
 
-**Code.** `code-md` (13 / 20 · 400 · 0, font `mono`) covers code; Material has no role for it.
+**Code.** `code-md` (13 / 20 · 400 · 0, font `mono`) covers code.
 
 **Emphasis.** Where a rule asks for text in weight 500 inside 400 text, use the 500 role of the same size: `body-lg` → `title-md`, `body-md` → `title-sm`, `body-sm` → `label-md`. Inside 500 text, the words a rule singles out take `strong` (600).

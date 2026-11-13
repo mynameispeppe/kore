@@ -6,6 +6,7 @@
 
 - **Hierarchy:** among the buttons of one decision, the primary is the focal point (The One Primary Rule): filled with `primary` and raised. The destructive has the same weight in `danger`; the elevated is raised but neutral; the secondary shows only its ring; the tertiary only its label. Inside a button there is one thing to read: the label in `label-lg`, or the icon on an icon button.
 - **Elements:** the Button's own: button, label, hit area, icon, rest label, busy label, spinner, FAB, FAB menu, FAB menu item. Other components: the Tooltip of icon buttons and of the FAB; the Menu, whose behaviour the FAB menu takes. The variants, the sizes and the icon button are variants of the button, not elements.
+- **Add-on files:** read only the file of each add-on that the part being built or checked contains: FAB `references/components/button/fab.md`.
 - **Button:** position relative; display inline-flex; align-items center; justify-content center; gap `space-2`; height `button-md`; padding 0 `space-4`; border-radius `rounded-md`; font-family `label-lg`; font-size `label-lg`; font-weight `label-lg`; line-height `label-lg`; letter-spacing `label-lg`; white-space nowrap; outline `line-thin` solid transparent; outline-offset −`line-thin`; color `ink`; transition box-shadow `duration-fast` `ease-out`, transform `duration-fast` `ease-out`, background-color `duration-instant` `ease-out`.
 - **Forced colors:** the transparent outline of the Button rule draws the edge in forced colors.
 - **Labeled button:** min-width `button-min`.
@@ -56,12 +57,3 @@
 - **Busy label while loading:** visibility visible.
 - **Spinner:** an `icon-sm` SVG, viewBox 24, a three-quarter arc of radius 9, stroke currentColor, stroke-width 2, round caps. animation spin `duration-spin` `ease-linear` infinite.
 - **Reduced motion:** transform none; transition 0s on every property; no lift on touch either.
-- **FAB:** an icon-only button floating over the content that opens 2–6 related actions; one per screen; a single action uses an icon button. It is a primary button with width `button-md`; height `button-md`; padding `space-2`; border-radius `rounded-md`, and one `icon-md` icon, an accessible label and a tooltip. Placed bottom right, `space-4` from the edges on phones and `space-6` from `md` up.
-- **FAB icon:** transition rotate `duration-fast` `ease-in`.
-- **FAB icon open:** with `aria-expanded="true"` and `aria-controls`: rotate `turn`, the + becomes ×; transition rotate `duration-slow` `ease-out`.
-- **FAB tooltip open:** visibility hidden, so it never covers the item above.
-- **FAB menu:** a Menu above the FAB, centred on it: top auto; bottom `space-4` above it; inset-inline 0; margin-inline auto; min-width 0; `width: max-content`; max-height none; overflow visible; background none; outline 0; border-radius 0; padding 0; gap `space-4`; align-items center; animation 0s.
-- **FAB menu item:** an elevated icon button, `button-md`. animation fabIn `duration-slow` `ease-out`: from opacity 0, rotate `turn` and scale `scale-enter` to opacity 1, rotate 0 and scale 1.
-- **FAB menu item closing:** the items leave with fabOut, the reverse of fabIn, in `duration-fast` with `ease-in`, forwards.
-- **FAB reduced motion:** the items' animation-name fadeIn, without movement; the FAB icon: transition 0s.
-- **FAB keyboard:** as the Menu (`menu`, `menuitem`): ↑ ↓ move, Escape closes and returns focus to the FAB, Tab and a click outside close.

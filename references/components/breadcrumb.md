@@ -6,6 +6,7 @@
 
 - **Hierarchy:** the levels read in order, from the first to the current page. The current page is the focal point (The One Winner Rule): `title-sm` in `ink`, after the ancestors in `body-md` and `mute`. The separators, in `mute`, only divide.
 - **Elements:** the Breadcrumb's own: breadcrumb, list, item, link, link hit area, separator, separator icon, current page. Other components: the more button (Button, tertiary icon, small, with a Tooltip) and the Menu it opens, inside an item.
+- **Add-on files:** read only the file of each add-on that the part being built or checked contains: Long trails `references/components/breadcrumb/long-trails.md`.
 - **Depth:** only where the structure is at least three levels deep.
 - **Markup:** a `<nav aria-label="Breadcrumb">` holding an ordered list.
 - **Breadcrumb:** font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`.
@@ -20,5 +21,4 @@
 - **Separator in RTL:** transform scaleX(−1).
 - **Separator icon:** a chevron. flex none; display block; width `icon-sm`; height `icon-sm`.
 - **Current page:** the last item; it is not a link and has `aria-current="page"`. color `ink`; font-family `title-sm`; font-size `title-sm`; font-weight `title-sm`; line-height `title-sm`; letter-spacing `title-sm`.
-- **Long trails:** from five levels up, at every width, the levels between the first and the parent fold into a `…` icon button (`button-sm`, tertiary, with an accessible label and a tooltip) in place of one item. It opens a Menu with those levels as links, in order. The first level, the parent and the current page stay visible. A trail that still does not fit wraps onto a second line, `space-6` between the lines, so the hit areas never overlap.
 - **Position:** at the top of the content, above the page title, `space-4` above the title.

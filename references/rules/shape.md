@@ -26,7 +26,7 @@
 inner radius = outer radius − distance between the two edges
 ```
 
-**Same distance.** The distance is the same on the sides and at the corner it faces. Combined with The Radius-Padding Rule, the inner shape sits halfway, and its own content lands exactly on the outer curve's centre, aligned with the rest of the container.
+**Same distance.** The distance is the same on the sides and at the corner it faces.
 
 | Case | Outer | Distance | Inner |
 |---|---|---|---|
@@ -37,12 +37,12 @@ inner radius = outer radius − distance between the two edges
 | Inline button inside a 40px field, or a 48px stepper | 12 | 8 | 4 |
 | Segment inside a 48px segmented control or tab bar | 16 | 8 | 8 |
 
-- **Two kinds of nested shape.** The formula governs a shape anchored to the container's edge as its own functional unit: the cases in the table above, plus any button, menu item or control placed near a corner. An icon, avatar or badge that simply leads a padded block of content (not anchored to an edge on its own, just the first item in a stack) is not concentric: it keeps a constant radius from the `rounded` scale and sits at the container's own padding, exactly like the text beside it. (Apple's design system names these "concentric" and "fixed" shapes; a capsule, radius = half its height, is a third fixed case.)
+- **Two kinds of nested shape.** The formula governs a shape anchored to the container's edge as its own functional unit: the cases in the table above, plus any button, menu item or control placed near a corner. An icon, avatar or badge that simply leads a padded block of content (not anchored to an edge on its own, just the first item in a stack) is not concentric: it keeps a constant radius from the `rounded` scale and sits at the container's own padding, exactly like the text beside it.
 - **Place a fixed-size element by its radius:** a button keeps its own size and radius, and its distance from the container's edge is outer radius − its radius.
 - **Inline buttons** inside a control (the password toggle, stepper − and +, segments) sit 8px (`space-2`) from every edge, so the focus marks (States) never touch the container's border. Their radius is container radius − 8 (4px, `xs`, in a container with radius 12), and their size is container height − 16: in a 40px field, 24px buttons. They don't use the button sizes; their hit area extends to 44px. They have no background: the icon is 16px in `mute`, hover and pressed turn it `ink`, and the box shows only as the focus marks (States).
 - **Corner actions** (a "More" or close button in the top-right corner of a card, dialog or sheet) are small icon buttons (32px, radius 8) placed with this rule: 24 − 8 = 16px from the top and the right. The header becomes a row that starts at the same 16px and is as tall as the button; the title is centred in that row, so it lines up with the button; a title on several lines centres its first line on the button. The side padding stays 24.
 - **No rounded blocks with a background inside cards** unless each one is its own unit (a clickable row); rows separate with space (see The Separation Ladder).
-- **Never the same radius inside and outside.** Equal radii make the gap look thicker at the corners.
+- **Never the same radius inside and outside.**
 - **Deeper nesting** applies the rule again from the parent, not from the outermost container.
 
 ## Borders inside the edge

@@ -6,6 +6,7 @@
 
 - **Hierarchy:** the header comes first, then the message, then the actions. The title is the focal point (The One Winner Rule): `title-lg` in `ink`, read before the message in `body-lg` and the buttons. A consequence that cannot be undone follows in `title-md` `danger`; the dividers only separate.
 - **Elements:** the Dialog's own: dialog, scrim, header, title, header divider, message, body, emphasis, consequence, actions, actions divider. Other components: the close button (Button, tertiary icon, small, with a Tooltip) and the action buttons (Button).
+- **Add-on files:** read only the file of each add-on that the part being built or checked contains: Sign-in dialog `references/components/dialog/sign-in.md`.
 - **Markup:** the platform's modal element where it exists (`<dialog>` on the web), named by its title (`aria-labelledby`) and described by its message (`aria-describedby`).
 - **Dialog:** width min(`dialog`, 100vw − `space-8`), so it stays `space-4` from the screen's edges on phones; max-width none; padding 0; border 0; border-radius `rounded-xl`; background `surface-float`; outline `line-thin` solid `hairline`; outline-offset −`line-thin`; color `ink`.
 - **Scrim:** the dialog's ::backdrop: background `scrim`.
@@ -19,7 +20,6 @@
 - **Emphasis:** the object and the figures in the body, each a `<strong>` (Emphasis). font-family `title-md`; font-size `title-md`; font-weight `title-md`; line-height `title-md`; letter-spacing `title-md`; color `ink`.
 - **Consequence:** an effect that cannot be undone, on its own line under the body. font-family `title-md`; font-size `title-md`; font-weight `title-md`; line-height `title-md`; letter-spacing `title-md`; color `danger`.
 - **Actions:** right-aligned, confirm last, the cancel action tertiary; the buttons name the action with a verb and an object, never "Yes", "No", "OK" or "Submit". They sit `space-3` from the dialog's edges (the `rounded-xl` corner less the button's `rounded-md`). display flex; justify-content flex-end; flex-wrap wrap; gap `space-2`; position relative; padding `space-4` `space-3` `space-3`.
-- **Sign-in dialog:** these actions are for a dialog that asks for a decision; a dialog that holds a sign-in form keeps the form's own submit and gets no cancel, the close button cancels (Sign in).
 - **Focus:** initial focus goes to the safer action; in a dialog with a form, to its first field. Focus stays inside; Escape, the close button and a click on the scrim close it; focus returns to the trigger.
 - **Dialog open:** opacity from 0 and scale from 0.98 to 1: animation `duration-slow` `ease-out`.
 - **Dialog closing:** it fades to 0 and scales to 0.98 in `duration-base` with `ease-in`, and stays so until it is hidden.

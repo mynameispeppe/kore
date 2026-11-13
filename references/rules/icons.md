@@ -2,7 +2,7 @@
 
 **Library first.** If the project already uses an icon library, keep it and apply the rules below. Otherwise use Kore's default.
 
-**Default: Hugeicons**, always the free set (the paid Pro set only when the user asks for it and holds the license), *Stroke Rounded* style (MIT license). Its round stroke ends match Kore's round type and corners, and it has official packages for every major stack: React, Vue, Angular, Svelte, SolidJS, React Native and Flutter, plus plain SVG for anything else.
+**Default: Hugeicons**, always the free set (the paid Pro set only when the user asks for it and holds the license), *Stroke Rounded* style (MIT license).
 
 **Source:**
 - **A framework** (React, Vue, Angular, Svelte, SolidJS, React Native, Flutter, Astro): install its official Hugeicons renderer together with the free icons: `@hugeicons/react`, `vue`, `angular`, `svelte` or `solid-js`, or `@hugeicons/react-native` with `react-native-svg`, each with `@hugeicons/core-free-icons`; in Flutter, `hugeicons` (`HugeIcons.strokeRounded<Name>`). This includes Vite + React and Next.js. Astro has none: install `@hugeicons/core-free-icons` and copy `references/icons/Icon.astro` unchanged into the project's components (inline SVG at build, no JavaScript on the page): `<Icon icon={Delete02Icon} size={20} />`. A version the renderer does not support (Svelte 4, Angular before 17.1) follows Plain HTML and any other stack.

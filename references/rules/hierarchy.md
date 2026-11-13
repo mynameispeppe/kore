@@ -45,8 +45,6 @@
 
 ## Visual weight
 
-**Weight tools.** Six tools set how strongly an element pulls the eye. Use them on purpose, and mostly to take weight away from secondary elements.
-
 | Tool | Rule |
 |---|---|
 | Size | The bigger element is read first. Headings are clearly larger than their subheadings; the primary button is larger than secondary actions; functional icons are larger than decorative ones. |
@@ -127,11 +125,9 @@
 7. **Warnings are never quiet.** A consequence the user must not miss ("This can't be undone.") sits on its own line, in the emphasis role of its size (Emphasis) and its semantic color, never in `mute`. The words carry the meaning, so no icon is needed; add one only when the text alone does not say it is a warning.
 8. **Semantics follow hierarchy.** A destructive action in a list or menu is tertiary or secondary, with red limited to its icon; it becomes a filled `destructive` button only when it is the main action of the moment, as in the confirmation.
 9. **No grey text on colored surfaces.** On a tinted or colored background, secondary text takes a tint of that color, not `mute`.
-10. **Inline emphasis.** In a sentence, the words the user must check stand out in the emphasis role of their size (Emphasis) and `ink`: figures with their unit (a quantity, a price, a date) and the name of the object an action affects ("**Next week's plan** and its **21 meals** will be removed."). At most two per sentence, never color, never whole phrases. It applies to explanations and messages (errors, confirmations); captions, subtitles and help text stay plain. It works because weight is noticed before reading (pre-attentive processing) and a lone different item stands out (the isolation effect).
+10. **Inline emphasis.** In a sentence, the words the user must check stand out in the emphasis role of their size (Emphasis) and `ink`: figures with their unit (a quantity, a price, a date) and the name of the object an action affects ("**Next week's plan** and its **21 meals** will be removed."). At most two per sentence, never color, never whole phrases. It applies to explanations and messages (errors, confirmations); captions, subtitles and help text stay plain.
 
 ## Grouping and separation
-
-**Groups by distance.** Elements close together are read as one group (proximity); distance between groups says how related they are.
 
 **The Separation Ladder.** Separate with the lightest step that works, and never skip steps:
 

@@ -1,0 +1,8 @@
+**Selection**
+
+- **Selection:** the first column holds a checkbox per row (Checkbox and radio) with a label that names the row ("Select Leg day"). A selected row keeps its background: the checked box shows the state. Selection is kept by item through sorting, filtering and pages. One visually hidden `role="status"` says the count after each change ("2 selected", "1 selected", "No rows selected").
+- **Select all:** in the header, one more checkbox. With nothing selected it selects the rows of the current page ("Select all on this page"); with any row selected, on any page, it clears the whole selection ("Clear selection"), checked when the whole page is selected, otherwise indeterminate; disabled while the page shows no rows.
+- **Delete:** acts at once and offers "Undo" in a Toast (Usability 3); focus then moves to the select-all checkbox.
+- **Selection column:** its cells: width calc(`space-10` + `space-1`); padding-inline-end 0. The checkbox in a row: min-height calc(`space-10` + `space-1`); width calc(`space-10` + `space-1`); justify-content flex-start.
+- **Select-all box:** min-height `space-10`; width calc(`space-10` + `space-1`); justify-content flex-start. Its hit area (::before), centred: content ""; position absolute; inset-inline 0; top 50%; height calc(`space-10` + `space-1`); transform translateY(−50%).
+- **Selection count:** while a row is selected, a line under the card, `space-3` away, lined up with the pagination: "2 of 24 selected"; the total counts every row, filtered or not. margin-top calc(`space-3` − `space-6`); padding-inline `space-6`; color `mute`; font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`; font-variant-numeric tabular-nums.

@@ -1,7 +1,5 @@
 # Usability
 
-**Heuristics.** Based on Nielsen's 10 usability heuristics. They are principles, applied in the context of each product; the values below are Kore's defaults.
-
 ## 1. System status is always visible
 
 **No user action stays without a visible response.**
@@ -40,11 +38,9 @@
 - **The same action** has the same name, icon and position everywhere ("Save" is always "Save"; a pencil always means edit).
 - **One format** for dates, currencies and units across the product, produced by shared helpers.
 - **Centralise what varies:** design tokens in one place, recurring labels as shared constants.
-- **Consistency is not uniformity:** a primary and a secondary button look different on purpose.
 
 ## 5. Prevent errors
 
-- **If many users make the same mistake**, the design is wrong, not the users.
 - **Constrain input** to valid values: date pickers with invalid ranges blocked, numeric inputs with min, max and step.
 - **Show limits and formats** before the action ("Max 5 MB", `DD/MM/YYYY` as a format hint), not after it fails.
 - **Validate when the user leaves a field** and suggest corrections; do not wait for submit.
@@ -99,5 +95,3 @@
 4. **Searchable, task-oriented documentation** with numbered steps (at most five per task).
 
 **Help and contact links** sit in the same place and order on every page where they appear (WCAG 3.2.6).
-
-**If many users look up the docs** to do one thing, the interface is the problem.

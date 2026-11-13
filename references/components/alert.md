@@ -13,6 +13,7 @@
 
 - **Hierarchy:** the icon comes first, then the title with the message under it, then the action or the close. The title is the focal point (The One Winner Rule): `title-sm` in `ink`, read before the message (`body-md` in `ink`) and the button. The icon names the kind together with the title, never alone.
 - **Elements:** the Alert's own: stack, alert, icon box, icon (the kind's icon in the table, `icon-md`), text, title, message, action slot. Other components: the action (Button, tertiary, small) or the close (Button, tertiary icon, small, with a Tooltip), inside the action slot. The kinds are variants of the alert, not elements.
+- **Add-on files:** read only the file of each add-on that the part being built or checked contains: Action `references/components/alert/action.md`, Close `references/components/alert/close.md`.
 - **Stack:** display flex; flex-direction column; gap `space-4`.
 - **Alert:** position relative; display flex; align-items flex-start; gap `space-3`; width 100%; min-height `space-12`; max-width `dialog`; padding `space-2` `space-2` `space-2` `space-4`; border-radius `rounded-lg`; color `ink`.
 - **Container:** background-color color-mix(in srgb, the kind's vivid color `mix-tint`, `canvas`); box-shadow `shadow-raised-rim`, inset 0 −`line-thick` 0 color-mix(in srgb, the kind's vivid color `mix-ledge`, transparent), 0 0 0 `line-thin` color-mix(in srgb, the kind's semantic color `mix-edge`, transparent). (replaced in: minimalism)
@@ -25,11 +26,6 @@
 - **Message:** font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`; color `ink`.
 - **Message text:** every alert has a message under the title: what happened and what to do next, never a restatement of the title. The message of an alert with an action does not name the fix.
 - **Action slot:** flex none; align-self center; margin-inline-start `space-3`.
-- **Action slot under the text:** when the title does not fit on one line beside the action, the action slot moves under the message, at the end of the text, `space-2` under it.
-- **Action:** an alert with an action has one tertiary button, small, in the action slot, and no close. Its label is a verb and an object, or "Try again". Every error alert has one action, so the user can recover from here (Usability 9); an alert of another kind has one when the user can fix the situation from here.
-- **Action hover:** background-color color-mix(in srgb, `ink` `mix-hover`, transparent); transition box-shadow `duration-fast` `ease-out`, transform `duration-fast` `ease-out`, background-color `duration-instant` `ease-out`.
-- **Action pressed:** background-color color-mix(in srgb, `ink` `mix-pressed`, transparent).
-- **Close:** an alert without an action has a close in the action slot: a tertiary icon button, small, with an `icon-sm` icon, an accessible label and a tooltip.
 - **No auto-close:** an alert never closes by itself: it stays until its state changes or the user closes it. A message that should disappear after a moment is a Toast.
 - **Announcement:** an alert present when the page loads has the role `status`; one that appears after has the role of its kind in the table. `alert` interrupts the reader; `status` waits for a pause.
 - **Focus:** focus does not move to an alert; when an alert closes, focus moves to the next focusable element after it.

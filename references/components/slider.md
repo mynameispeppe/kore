@@ -7,6 +7,7 @@
 - **Use:** only when an approximate value is fine; for an exact value use the Number stepper.
 - **Hierarchy:** the label comes first, then the track. The thumb is the focal point (The One Winner Rule): the only `ink` fill with a shadow; the filled part of the track in `primary` follows; the empty part in `hairline-strong` only guides.
 - **Elements:** the Slider's own: slider, label row, label, wrapper, input, track, thumb, focus marks, value bubble, range track. Other components: the bubble's look (Tooltip).
+- **Add-on files:** read only the file of each add-on that the part being built or checked contains: Range `references/components/slider/range.md`.
 - **Slider:** the label above, the track under it. display flex; flex-direction column; gap `space-2`; max-width `field-max`.
 - **Label row:** display flex; justify-content space-between.
 - **Label:** a `<label>` tied to the input; in a range it names the group (`role="group"` with `aria-labelledby`). color `ink`; font-family `label-lg`; font-size `label-lg`; font-weight `label-lg`; line-height `label-lg`; letter-spacing `label-lg`.
@@ -24,7 +25,3 @@
 - **Keyboard:** the arrow keys move the thumb by one step, Home and End to the limits, as the native input does.
 - **Track click:** a click or a tap on the track moves the nearest thumb there and keeps dragging it.
 - **Disabled:** no bubble. The input: cursor not-allowed; the track: background `hairline-medium`; the thumb: background `stone`; box-shadow none; the label: color `stone`.
-- **Range:** two inputs over one track, with two thumbs that never cross and the fill between them; each thumb has its own accessible name, the label's minimum and maximum. The wrapper: height calc(`space-10` + `space-1`); cursor pointer.
-- **Range track:** the wrapper's ::before. content ""; position absolute; inset-inline 0; top 50%; transform translateY(−50%); height `space-2`; border-radius `rounded-full`; corner-shape round; background linear-gradient(to right, `hairline-strong` up to the first thumb's centre, `primary` up to the second's, `hairline-strong` after it).
-- **Range inputs:** only the thumbs take the pointer. position absolute; inset 0; pointer-events none; their tracks: background none; their thumbs: pointer-events auto; cursor pointer.
-- **Top thumb:** the last thumb moved sits on top, changed only once it is released: a stacking change during a native drag stops the drag. z-index `zIndex-raised`.

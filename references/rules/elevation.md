@@ -1,6 +1,6 @@
 # Elevation
 
-**Depth** tells the reader what sits on what. Static layers separate with a surface step and a 1px `hairline`; only interactive elements cast a shadow (the inset bevel of `gradient-raised` and `shadow-raised-sm` is not one). In dark, a layer that sits higher is lighter, never darker: without a shadow, the surface step is what separates it. (replaced in: minimalism)
+**Depth.** Static layers separate with a surface step and a 1px `hairline`; only interactive elements cast a shadow (the inset bevel of `gradient-raised` and `shadow-raised-sm` is not one). In dark, a layer that sits higher is lighter, never darker: without a shadow, the surface step is what separates it. (replaced in: minimalism)
 
 ## Levels
 
@@ -23,7 +23,7 @@
 
 - **Barely perceptible.** `shadow-rest` is a hint that the element is clickable; `shadow-hover` suggests a lift, nothing more. Never stack several shadows or raise the opacity to make a point; the stacked shadows are only the `shadow-raised` tokens, on filled and elevated Buttons (Button).
 - **Offset and blur.** A shadow always has a vertical offset and a soft blur. A zero-offset colored halo is decoration; a hard shadow with no blur (`4px 4px 0`) is a costume.
-- **Dark theme shadows** are denser (black at 24–32%) because a light shadow disappears on a near-black canvas.
+- **Dark theme shadows** are denser (black at 24–32%).
 - **Glass.** Glass and blur are never decoration: they are used only where a component's file prescribes them.
 
 ## Interaction

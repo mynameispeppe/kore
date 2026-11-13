@@ -6,6 +6,7 @@
 
 - **Hierarchy:** the search comes first, then the results, then the key hints. The search input is the focal point (The One Winner Rule): `body-lg` in `ink`, the largest type of the palette. The highlighted result follows, the only one with a fill; the group titles, shortcuts and key hints, in `label-md` and `mute`, only guide.
 - **Elements:** the Command palette's own: opening hint, palette, search, search input, separator, results, group, status, no-results note, no-results text, search term, key hints, hint, key. Other components: the opening button (Button, tertiary), the results' items, group titles and separators (Menu), the search icon (the Hugeicons `Search01`, `icon-sm`, `mute`) and the toast (Toast).
+- **Add-on files:** read only the file of each add-on that the part being built or checked contains: Shortcuts `references/components/command-palette/shortcuts.md`.
 - **Opening:** ⌘K on Mac, Ctrl+K elsewhere, and a button that says so, showing only the current platform's keys. The same keys close it again.
 - **Opening hint:** beside the opening button, "or press" and the keys in a key. font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`; color `mute`.
 - **Palette:** a modal `<dialog>` with an accessible label. position fixed; inset `space-12` 0 auto 0; margin 0 auto; width min(`dialog`, 100vw − `space-8`); padding 0; border 0; border-radius `rounded-md`; background `surface-float`; outline `line-thin` solid `hairline`; outline-offset −`line-thin`; color `ink`.
@@ -21,9 +22,6 @@
 - **Result:** padding 0 `space-3`. One result is highlighted at a time: the first, then the one the arrows or a moving mouse reach. Enter runs it.
 - **Result hover:** a result not highlighted: background none, changed in 0s, so hover adds no second highlight.
 - **Empty search:** only the actions show; the pages show once the user types.
-- **Shortcuts:** a command with a shortcut (Usability 7) shows it in a key at the end of its result, the only place a command's shortcut is shown: the current platform's keys (⌘ and a letter on Mac, Ctrl+ and the letter elsewhere). The shortcut runs the command from anywhere on the page, with the palette open or closed.
-- **Shortcut slot:** margin-inline-start auto.
-- **Key:** display inline-flex; align-items center; height `space-5`; padding 0 `space-1`; border-radius `rounded-xs`; box-shadow inset 0 0 0 `line-thin` `hairline-medium`; color `mute`; font-family `mono`; font-size `label-md`; font-weight `label-md`; line-height `label-md`; letter-spacing `label-md`.
 - **Key hints:** under the results: "↑↓ to navigate", "↵ to select", "esc to close". Hidden from screen readers. display flex; flex-wrap wrap; gap `space-4`; padding `space-2` `space-5`; border-top `line-thin` solid `hairline`; color `mute`; font-family `label-md`; font-size `label-md`; font-weight `label-md`; line-height `label-md`; letter-spacing `label-md`.
 - **Key hints without hover:** on devices without hover (hover: none): display none.
 - **Hint:** a key, then its words. display inline-flex; align-items center; gap `space-2`.
