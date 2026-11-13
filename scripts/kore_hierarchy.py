@@ -56,9 +56,9 @@ def cells(line):
 
 
 def kore_tokens(typology, kore=KORE):
-    """Type roles ({role: (size, weight)}), color names and space names of
+    """Type roles ({role: (size, weight)}), color names and spaces ({name: px}) of
     references/tokens.yaml, the typology's tokens.yaml replacing and adding keys."""
-    roles, colors, spaces = {}, set(), set()
+    roles, colors, spaces = {}, set(), {}
     for name, entries in tokens_for(kore, typology).items():
         for path, value in entries:
             if path[0] == "typography" and path[-1] in ("fontSize", "fontWeight"):
@@ -66,7 +66,7 @@ def kore_tokens(typology, kore=KORE):
             elif path[0] == "colors":
                 colors.add(name)
             elif path[0] == "spacing":
-                spaces.add(name)
+                spaces[name] = int(re.sub(r"\D", "", value))
     return {r: tuple(v) for r, v in roles.items()}, colors, spaces
 
 
@@ -90,7 +90,7 @@ def check_values(where, body, roles, colors, spaces, components):
                           "this element takes Primary, Secondary or Tertiary (Semantic weight)")
         if space != "—":
             named = re.findall(r"space-\d+", space)
-            if not named or set(named) - spaces:
+            if not named or set(named) - set(spaces):
                 errors.append(f"{where}, {name}: Space is {space}; it names a space token "
                               f"({', '.join(sorted(spaces, key=lambda s: int(s[6:])))}) or —")
         if not role:
@@ -130,6 +130,26 @@ def check_values(where, body, roles, colors, spaces, components):
         if len(found) > 1:
             errors.append(f"{where}, question {question} is answered by {len(found)} groups: "
                           f"{', '.join(found.values())} (The Relatedness Test)")
+    elements = {r[0].strip().casefold(): r[2].strip() for r in body}
+    links = []  # (row's Element, space token, target Element, row's group, target's group)
+    for row in body:
+        link = re.match(r"(space-\d+) to (.+)$", row[5])
+        if not link:
+            if row[5].strip() != "—":
+                errors.append(f"{where}, {row[0]}: Space is {row[5]}; it reads space-N to [Element] or — (Decisions file)")
+            continue
+        target = link.group(2).strip()
+        if target.casefold() not in elements or target.casefold() == row[0].strip().casefold():
+            errors.append(f"{where}, {row[0]}: Space goes to {target}, no Element of the table (Decisions file)")
+        elif link.group(1) in spaces:
+            links.append((row[0], link.group(1), target, row[2].strip(), elements[target.casefold()]))
+    for name, token, target, a, b in links:
+        if a.casefold() == b.casefold():
+            continue
+        inside = [(spaces[t], t) for _, t, _, x, y in links if x.casefold() == y.casefold() and x.casefold() in (a.casefold(), b.casefold())]
+        if inside and spaces[token] < 2 * max(inside)[0]:
+            errors.append(f"{where}, {name}: {token} to {target} joins groups {a} and {b}; it is at least twice "
+                          f"{max(inside)[1]}, their largest inside space (The Distance Ratio Rule)")
     for group, items in groups.items():
         primaries = [i for i in items if i[1] == "Primary"]
         if len(primaries) > 1:
@@ -165,7 +185,7 @@ def check_values(where, body, roles, colors, spaces, components):
 
 
 def type_rows(text):
-    """[(table name, [(Element, role, weight, color)])] for the rows whose Style names a type role."""
+    """[(table name, [(Element, role, weight, color, space token, target)])] for every row; role, weight and color are None when Style names no type role, token and target when Space is —."""
     roles, colors, _ = kore_tokens(typology_line(text))
     found = []
     for table in tables(text):
@@ -174,9 +194,10 @@ def type_rows(text):
         for row in (r for r in rows if len(r) == len(COLUMNS)):
             words = row[4].split()
             role = next((w for w in words if w in roles), None)
-            if role:
-                typed.append((row[0], role, next((w for w in words if re.fullmatch(r"[1-9]00", w)), None),
-                              next((w for w in words if w in colors), None)))
+            link = re.match(r"(space-\d+) to (.+)$", row[5])
+            typed.append((row[0], role, next((w for w in words if re.fullmatch(r"[1-9]00", w)), None) if role else None,
+                          next((w for w in words if w in colors), None) if role else None,
+                          link and link.group(1), link and link.group(2)))
         found.append((table["heading"].split(" · ")[0], typed))
     return found
 

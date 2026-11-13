@@ -11,7 +11,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 **Bounded verification** (as impeccable): look at the result through `--shots <folder>`, with the folder outside the project (the agent's temporary folder): the script saves each page, whole, at 375 and 1440px in each theme the token file defines, and lists the files. Read each once; fix everything they show in one batch; take at most one more round, then stop. Never write your own browser scripts, and no automated tests the user did not ask for.
 
-- [ ] Every file of a section or component built is named in the heading of its table in `KORE-DECISIONS.md`; every table holds and names its Primary group and a Shape built only from the Layout primitives; every group has one Primary; elements of one group answer one question, and each question has one group; on the page, each text element marked with `data-kore-element` has the size, weight and color of its row's Style (Order of decisions, Semantic weight, Decisions file, The Relatedness Test, Layout primitives, From role to style).
+- [ ] Every file of a section or component built is named in the heading of its table in `KORE-DECISIONS.md`; every table holds and names its Primary group and a Shape built only from the Layout primitives; every group has one Primary; elements of one group answer one question, and each question has one group; on the page, each text element marked with `data-kore-element` has the size, weight and color of its row's Style; every Space reads `space-N to [Element]` of another row, and a Space between two groups is at least twice every Space inside them; on the page, every row's element carries `data-kore-element` and sits at its Space from its Element (Order of decisions, Semantic weight, Decisions file, The Relatedness Test, Layout primitives, From role to style, The Distance Ratio Rule).
 - [ ] Every color, space, size, radius, shadow, duration, easing, z-index, breakpoint and opacity comes from a token or from a value a rule computes (Never invent values).
 - [ ] Spacing on the scale, sizes multiples of 8, padding uniform, gaps on the container (Spacing).
 - [ ] Text 4.5:1, large text 3:1, icons, control borders and focus 3:1, on the worst surface, in each theme the token file defines (Contrast).
@@ -32,10 +32,9 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 ## Judge, always
 
-- [ ] Groups by the Relatedness Test, the reader's question asked at each level, shape from the Layout primitives, style from From role to style, then separation (Order of decisions, Semantic weight).
 - [ ] One focal point per zone, winning on size, weight and color; metadata never outweighs its title (Visual weight).
 - [ ] Each idea said once, labels only when needed, the number carries the emphasis, warnings never quiet, at most three sizes in a component (Text hierarchy).
-- [ ] Groups separated with the lightest step of The Separation Ladder; group titles all or none (Grouping and separation).
+- [ ] Group titles all or none (Grouping and separation).
 - [ ] Color never alone, semantic colors keep their role, the accent marks one moment, one `primary` per decision (Meaning).
 - [ ] Every string passes Copy; no AI tells the user did not ask for (Copy, AI tells).
 - [ ] Every action answers, destructive actions offer Undo, errors say what, why and how, state lives in the URL (Usability).
@@ -94,6 +93,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] Each group's Question is the one its user asks: read as that user, it names what they want to know or do there (The reader's question).
 - [ ] Each Shape follows from its table's groups: the groups are counted first, then the primitive whose Use for fits them is chosen (Order of decisions, Layout primitives).
 - [ ] The code builds the Shape as written: each primitive of the Shape is how its items sit on screen (Layout primitives).
+- [ ] Groups are separated with the lightest step of The Separation Ladder that keeps them apart: space first, then background, line, card (Grouping and separation).
 
 ## Deliver
 

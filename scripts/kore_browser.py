@@ -379,20 +379,28 @@ async ({touch, zoom, tables}) => {
     const p = document.createElement('div');
     p.style.cssText = `position:absolute;${prop}:${value}`;
     document.body.append(p);
-    const got = style(p)[prop === 'color' ? 'color' : 'fontSize'];
+    const got = style(p)[{color: 'color', width: 'width'}[prop] || 'fontSize'];
     p.remove();
     return got;
   };
   for (const [table, rows] of zoom ? [] : tables) {
     for (const root of document.querySelectorAll(`[data-kore="${table}"]`)) {
-      for (const [element, role, weight, color] of rows) {
-        const found = [...root.querySelectorAll(`[data-kore-element="${element}"]`)].filter(el => el.closest('[data-kore]') === root);
-        if (!found.length) add('✗', 'From role to style', `no data-kore-element="${element}" in ${name(root)}`, root);
-        for (const el of found) {
+      const first = element => [...root.querySelectorAll(`[data-kore-element="${element}"]`)].filter(el => el.closest('[data-kore]') === root);
+      for (const [element, role, weight, color, space, target] of rows) {
+        const found = first(element);
+        if (!found.length) add('✗', 'Decisions file', `no data-kore-element="${element}" in ${name(root)}`, root);
+        for (const el of role ? found : []) {
           const s = style(el);
           if (s.fontSize !== probed('font-size', `var(--${role}-fontSize)`) || s.fontWeight !== weight || s.color !== probed('color', `var(--${color})`))
             add('✗', 'From role to style', `${name(el)} is ${s.fontSize} ${s.fontWeight} ${s.color}, its row says ${role} ${weight} ${color}`, el);
         }
+        // Space: the gap to the target's box, vertical when one box ends above the other starts, else horizontal.
+        const other = first(target || '')[0];
+        if (!space || !found.length || !other) continue;
+        const a = found[0].getBoundingClientRect(), b = other.getBoundingClientRect();
+        const gap = Math.max(b.top - a.bottom, a.top - b.bottom) >= 0 ? Math.max(b.top - a.bottom, a.top - b.bottom) : Math.max(b.left - a.right, a.left - b.right);
+        const want = parseFloat(probed('width', `var(--${space})`));
+        if (Math.abs(gap - want) > 1) add('✗', 'The Distance Ratio Rule', `${name(found[0])} is ${Math.round(gap)}px from ${target}, its row says ${space} (${want}px)`, found[0]);
       }
     }
   }
