@@ -117,6 +117,19 @@ def check_values(where, body, roles, colors, spaces, components):
             if role.startswith("label-"):
                 errors.append(f"{where}, {name}: {role} follows its component, so its Level is — (From role to style)")
             groups.setdefault(group, []).append((name, level, role, color))
+    by_group, by_question = {}, {}  # Relatedness Test: rows of every Level, — included
+    for row in body:
+        question, group = row[1].strip(), row[2].strip()
+        by_group.setdefault(group.casefold(), (group, {}))[1].setdefault(question.casefold(), question)
+        by_question.setdefault(question.casefold(), (question, {}))[1].setdefault(group.casefold(), group)
+    for group, questions in by_group.values():
+        if len(questions) > 1:
+            errors.append(f"{where}, group {group} answers {len(questions)} questions: "
+                          f"{', '.join(questions.values())} (The Relatedness Test)")
+    for question, found in by_question.values():
+        if len(found) > 1:
+            errors.append(f"{where}, question {question} is answered by {len(found)} groups: "
+                          f"{', '.join(found.values())} (The Relatedness Test)")
     for group, items in groups.items():
         primaries = [i for i in items if i[1] == "Primary"]
         if len(primaries) > 1:

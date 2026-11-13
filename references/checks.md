@@ -11,7 +11,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 **Bounded verification** (as impeccable): look at the result through `--shots <folder>`, with the folder outside the project (the agent's temporary folder): the script saves each page, whole, at 375 and 1440px in each theme the token file defines, and lists the files. Read each once; fix everything they show in one batch; take at most one more round, then stop. Never write your own browser scripts, and no automated tests the user did not ask for.
 
-- [ ] Every file of a section or component built is named in the heading of its table in `KORE-DECISIONS.md`; every table holds and names its Primary group; every group has one Primary (Order of decisions, Semantic weight, Decisions file).
+- [ ] Every file of a section or component built is named in the heading of its table in `KORE-DECISIONS.md`; every table holds and names its Primary group; every group has one Primary; elements of one group answer one question, and each question has one group (Order of decisions, Semantic weight, Decisions file, The Relatedness Test).
 - [ ] Every color, space, size, radius, shadow, duration, easing, z-index, breakpoint and opacity comes from a token or from a value a rule computes (Never invent values).
 - [ ] Spacing on the scale, sizes multiples of 8, padding uniform, gaps on the container (Spacing).
 - [ ] Text 4.5:1, large text 3:1, icons, control borders and focus 3:1, on the worst surface, in each theme the token file defines (Contrast).
@@ -88,6 +88,10 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] The hero holds only title, subtitle and calls to action; the title is the `h1` (Hero).
 - [ ] At most four items per section; quotes at most three lines with the name and role the user gives; profiles on other sites as Social links (Sections).
 - [ ] One focal moment per page, the hero; each section under it reveals once on scroll (One focal moment per page, Scroll reveal).
+
+## Closed list
+
+- [ ] Each group's Question is the one its user asks: read as that user, it names what they want to know or do there (The reader's question).
 
 ## Deliver
 
