@@ -8,8 +8,7 @@
 - **Loading:** the main image is the largest one on the first screen (the navigation + the first section), one per page: `fetchpriority="high"`, never lazy. The other images on the first screen are never lazy. Every other image has `loading="lazy"` and `decoding="async"`.
 - **Missing image:** a placeholder at the ratio of the expected image, reserving its space like the real one (Reserved space), chosen in this order:
   1. **An image generation tool, when the environment has one:** one image per placeholder, at its ratio, showing the subject the section needs (a book cover, a portrait, a landscape).
-  2. **Otherwise a placeholder photo:** `https://picsum.photos/seed/<subject>/<width>/<height>`, with the subject in English and the size at the placeholder's ratio (`book-cover/800/1000` for 4:5). This is the default for every placeholder, screenshots included: the network is assumed.
-  3. **Only when the user says there is no network:** a slot in `surface-elevated` with a `hairline` border; at its centre a `label-md` `mute` text says what goes there and the ratio ("Hero photo, 3:2").
+  2. **Otherwise the placeholder file:** copy `references/images/placeholder.svg` once into the project's images folder; every placeholder, screenshots included, points to that copy. It fills any ratio, with or without `object-fit`.
 
   A placeholder is a plain `<img>` with `width`, `height` and `alt` (Alternative text): Format and Resolutions apply to the real image. Its `alt` says what will go there ("Placeholder: book cover"). The delivery report lists every placeholder and asks for images at least 2400px wide for those that follow the layout, and twice the shown size for fixed-size ones (Resolutions).
 - **Alternative text:** every `<img>` has an `alt`: an image that informs says what it shows; a decorative image, or one whose text already sits next to it, has `alt=""`.
