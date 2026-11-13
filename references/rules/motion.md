@@ -27,7 +27,7 @@
 - **Exit faster than entrance.** An element leaves one step faster than it arrived (menu: in `duration-base`, out `duration-fast`; sheet: in `duration-slow`, out `duration-base`).
 - **No bounce by reflex.** No elastic or bouncy curves unless the project's world asks for them; `spring` is tuned without overshoot.
 - **Springs for gestures.** Toggles, drag and swipe use `spring`, so an interrupted gesture continues naturally. Timed transitions use the duration tokens.
-- **Transform and opacity.** Never animate properties that recalculate layout (width, height, top, left, margins); use transforms, and layout techniques (FLIP, view transitions) for size and position changes. The one exception is content that opens in place: an Accordion answer, a Sidebar row's children and the sub-links of the Top bar's panel animate their wrapper's `grid-template-rows` from `0fr` to `1fr` and back, so the content below and the scrollbar move with it; the Chip's check animates its width, its margin and the chip's left padding, so the label slides over.
+- **Transform and opacity.** Never animate properties that recalculate layout (width, height, top, left, margins); use transforms, and layout techniques (FLIP, view transitions) for size and position changes. Content that opens in place animates its layout: an Accordion answer, a Sidebar row's children and the sub-links of the Top bar's panel animate their wrapper's `grid-template-rows` from `0fr` to `1fr` and back, so the content below and the scrollbar move with it; the Chip's check animates its width, its margin and the chip's left padding, so the label slides over.
 - **Visible by default.** Content is visible in its resting state; an entrance animation starts from a class added by script, so nothing stays hidden if the script fails.
 - **Loops stop.** Non-essential loops pause when off screen or hidden, and anything that moves on its own for more than 5 seconds has a pause button (WCAG 2.2.2). No autoplay with sound.
 - **Reduced motion.** `prefers-reduced-motion` keeps fades, color and state changes that carry meaning, and removes spatial movement (slides, lifts, scale). Never a global kill that removes feedback. Nothing flashes more than three times per second.
@@ -36,7 +36,7 @@
 ## App mode
 
 - **Feedback** with `duration-instant` and `duration-fast`; state changes with `duration-base`; dialogs and sheets with `duration-slow`.
-- **No page-load choreography.** The app opens straight into the task. The one exception is the Dashboard's entry (Dashboard).
+- **No page-load choreography.** The app opens straight into the task; the Dashboard opens with its entry (Dashboard).
 - **View transitions** only when they explain where the user went (list → detail and back).
 - **Loading** shows content skeletons; motion never makes the user wait.
 

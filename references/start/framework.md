@@ -11,7 +11,7 @@ Asked only when the project is empty; in an existing project, read the framework
 The framework decides how the tokens are exposed and which Hugeicons package to use.
 
 **Token file.** The project's tokens live in one file, `tokens.css`, as CSS variables. A project with both modes still has one file: the mode changes how the tokens are used, not their values.
-- **Names:** each variable takes the token's name as written in `references/tokens.yaml` (`--ink`, `--space-4`, `--shadow-rest`, `--duration-base`, `--ease-out`), with three exceptions:
+- **Names:** each variable takes the token's name as written in `references/tokens.yaml` (`--ink`, `--space-4`, `--shadow-rest`, `--duration-base`, `--ease-out`); three groups take these names:
   - `rounded`, `zIndex` and `fontWeight` keys carry their group in front: `--rounded-md`, `--zIndex-modal`, `--fontWeight-strong`;
   - each typography token gives one variable per property, named after the property: `--body-md-fontSize`, `--body-md-fontWeight`, `--body-md-lineHeight`, `--body-md-letterSpacing`, and `--body-md-fontFamily`, which points to the font variable;
   - fonts become `--font-display`, `--font-sans`, `--font-mono`, each followed by its system fallback: `ui-sans-serif, system-ui, sans-serif` (mono: `ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`).

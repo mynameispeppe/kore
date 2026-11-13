@@ -46,7 +46,7 @@
 
 **Priority.** Accessibility has the same priority as the grid. When the two conflict, usability wins.
 
-- **Touch targets** are at least 44 × 44px, 48px preferred, as in the Apple Human Interface Guidelines and WCAG 2.5.5; the AA minimum of WCAG 2.5.8 is 24px. A smaller control extends its hit area to 44px with padding or an invisible overlay. Two exceptions, whose items touch and are each their own hit area: menu items, 40px tall, so the menu stays compact (Menu); links in a list, 32px rows when the device has no touch screen and 44px with any touch screen (`any-pointer: coarse`), so a column of links stays compact (Footer).
+- **Touch targets** are at least 44 × 44px, 48px preferred, as in the Apple Human Interface Guidelines and WCAG 2.5.5; the AA minimum of WCAG 2.5.8 is 24px. A smaller control extends its hit area to 44px with padding or an invisible overlay. A list whose items touch, each item its own hit area, keeps its items compact: menu items are 40px tall (Menu); links in a list are 32px rows when the device has no touch screen and 44px with any touch screen (`any-pointer: coarse`) (Footer).
 - **Adjacent targets** are at least `space-2` (8px) apart, measured between visible edges, and their 44px hit areas never overlap, so a finger never hits the wrong one: two 32px targets sit `space-3` (12px) apart, larger ones `space-2`.
 - **Never shrink spacing below the scale to fit content.** Change the layout instead: wrap, stack, scroll or cut content.
 - **Zoom.** Layouts must hold at 200% text zoom without overlapping or cutting text.

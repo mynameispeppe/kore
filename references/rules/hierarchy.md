@@ -148,7 +148,7 @@
 
 - **F pattern** (dense content: feeds, tables, search results, dashboards): the left column and the first two lines of each block are always read. Put titles, status and key actions on the left; the first column of a table carries the most important data.
 - **Z pattern** (sparse content: landing pages, cards, simple forms): brand top-left, primary action top-right, key message at the centre-left turn of the Z, final action bottom-right.
-- **Action order.** In a component (card, dialog, form, multi-step flow), actions are right-aligned; the confirming action is last on the right, and cancel or back sits immediately to its left. In a page section, actions are the last item under the text they act on (title, text, actions), aligned with that text (centred when it is centred, Layout primitives 4), `space-6` below it; the main action comes first.
+- **Action order.** In a component (card, dialog, form, multi-step flow), actions are right-aligned; the confirming action is last on the right, and cancel or back sits immediately to its left. An action that opens more options instead of answering, as Customise does, sits at the left, apart from the answers (Cookie banner). In a page section, actions are the last item under the text they act on (title, text, actions), aligned with that text (centred when it is centred, Layout primitives 4), `space-6` below it; the main action comes first.
 - **A perfectly symmetric layout** follows no pattern and guides nothing: break symmetry on purpose for the focal point (wider, taller, isolated).
 - **Critical information** never lives only at the bottom right of an F layout.
 - **Number sections** (01 / 02 / 03) only when the order itself is information the reader needs.

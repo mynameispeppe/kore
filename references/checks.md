@@ -54,7 +54,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] Actions at the end, right-aligned, confirm last (Scanning patterns).
 
 **Control** (Button, Form fields, Select, Checkbox and radio, Switch, Segmented control, Tabs, Password, Combobox, Number stepper, Slider, Date picker, File upload, Chip, Pagination, Steps)
-- [ ] The variant follows the action's role: one `primary` per decision, a `secondary` never alone, a destructive action in its own group (Button, The One Primary Rule).
+- [ ] The variant follows the action's role: one `primary` per decision, a `secondary` next to a primary or a destructive (Secondary alone), a destructive action in its own group (Button, The One Primary Rule).
 - [ ] Labels are a verb and an object; labeled buttons carry no icon (Button).
 - [ ] Limits and formats shown before use, validation when leaving the field, paste never blocked (Usability).
 

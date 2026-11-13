@@ -21,7 +21,7 @@
 - **Destructive:** delete and other destructive actions, at most one per decision. background `danger`; color `danger-on`; the edge color `danger-edge`.
 - **Elevated:** instead of secondary when the background is complex, colored or an image, where a transparent button would lose emphasis. background `surface-card`; color `ink`; the edge color `surface-card-edge`.
 - **Filled:** primary, destructive and elevated: background-image `gradient-raised`; box-shadow `shadow-raised-sm`, inset 0 0 0 `line-thin` the variant's edge color. (replaced in: minimalism)
-- **Secondary:** box-shadow inset 0 0 0 `line-thin` `hairline-medium`. The standard supporting action next to a primary or a destructive, never alone (Secondary alone).
+- **Secondary:** box-shadow inset 0 0 0 `line-thin` `hairline-medium`. The supporting action next to a primary or a destructive (Secondary alone).
 - **Tertiary:** low-priority actions and secondary options; the cancel action in a dialog; any number per decision. No background, no ring and no shadow at rest.
 - **Shadows:** only on filled buttons (primary, destructive) and on elevated; secondary and tertiary take `shadow-raised-sm` only in hover, with the background change.
 - **Borders:** box-shadow rings, so they never change the button's size: inside the edge (inset) on every variant, so buttons side by side look the same size.
@@ -48,7 +48,7 @@
 - **Icon:** flex none; display block.
 - **No icons on labeled buttons:** a Button with a label shows only text, plus the spinner while loading (Loading). A sign-in provider's logo is not an icon but part of its name, as the provider requires (Sign in). Buttons inside a control are part of the control and keep `icon-sm` icons (Icons). The rule is for the Button component, not every `<button>` element: rows, selects, accordions, chips and menu items follow their own component's rules.
 - **Labels:** a verb and an object, never "OK", "Yes" or "Submit", in sentence case, never all caps.
-- **Secondary alone:** when in the Cookie banner, a secondary stands without a primary.
+- **Secondary alone:** a secondary stands without a primary only in a decision with no main action (The One Primary Rule), as in the Cookie banner.
 - **Loading:** cursor progress; `aria-busy="true"` and `aria-disabled="true"`, so it ignores further clicks and keeps its place in the Tab order; it returns to rest when the action ends.
 - **Loading cell:** the button that holds a busy label: display inline-grid; place-items center.
 - **Rest label and busy label:** grid-area 1/1, one cell, so the button keeps the longer label's width.
