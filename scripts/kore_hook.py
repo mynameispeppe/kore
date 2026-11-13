@@ -22,7 +22,7 @@ PostToolUse on Edit, Write and MultiEdit:
 
 PostToolUse on Bash: the files the command changed (newer than the hook's
 last look) get the same checks as an Edit or Write of them; a kore_check
-run with --url clears the mark.
+run with --url that prints 0 ✗ and opened the browser clears the mark.
 
 SessionStart: the tables already in KORE-DECISIONS.md count as seen.
 
@@ -49,10 +49,10 @@ import tempfile
 from pathlib import Path
 
 from check_references import tokens_for
-from kore_check import typology_line, typology_names
+from kore_check import (MARKUP_FILES, SCRIPT_FILES, SKIP_DIRS, STYLE_FILES, UNCHECKED_STYLES, typology_line,
+                        typology_names)
 
-UI_FILES = {".css", ".pcss", ".postcss", ".scss", ".sass", ".less", ".styl", ".html", ".htm", ".astro", ".vue",
-            ".svelte", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".mts", ".cts"}
+UI_FILES = {*STYLE_FILES, *UNCHECKED_STYLES, *MARKUP_FILES, *SCRIPT_FILES}
 KORE = Path(__file__).resolve().parent.parent
 CHECK = KORE / "scripts" / "kore_check.py"
 DECISIONS = "KORE-DECISIONS.md"
@@ -61,7 +61,6 @@ LEVELS = {"Primary", "Secondary", "Tertiary", "—"}
 PRIMITIVES = {"Stack", "Inline", "Sidebar", "Grid"}
 SCRIPTS = {".js", ".ts", ".mjs", ".cjs", ".mts", ".cts"}  # no markup of their own
 TOKENS = re.compile(r"--canvas\s*:")
-SKIP_DIRS = {"node_modules", ".git", "dist", "build", ".next", ".astro", ".svelte-kit", "out", "coverage"}
 
 
 def data_file(event, name):
@@ -300,19 +299,9 @@ def questions_note(event, project, written):
 def save_state(event, state):
     path = data_file(event, "decisions")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(state))
-
-
-def is_kore_project(project):
-    for path in Path(project).rglob("*"):
-        if any(part in SKIP_DIRS for part in path.parts) or path.suffix.lower() not in UI_FILES:
-            continue
-        try:
-            if TOKENS.search(path.read_text(encoding="utf-8", errors="ignore")):
-                return True
-        except OSError:
-            continue
-    return False
+    temp = path.with_name(f"{path.name}.{os.getpid()}")
+    temp.write_text(json.dumps(state))
+    os.replace(temp, path)  # one step: a hook running beside this one never reads a half-written file
 
 
 def decisions_note(event, project, edited):
@@ -474,7 +463,10 @@ def after_tool(event, project):
         notes += more
     if event.get("tool_name") == "Bash":
         command = tool_input.get("command", "")
-        if "kore_check" in command and "--url" in command and mark(event).exists():
+        response = event.get("tool_response") or {}
+        output = response.get("stdout", "") if isinstance(response, dict) else str(response)
+        passed = re.search(r"(?m)^0 ✗", output) and "not checked in a browser" not in output
+        if "kore_check" in command and "--url" in command and passed and mark(event).exists():
             mark(event).unlink()
     if errors:
         print("\n".join(errors + notes), file=sys.stderr)

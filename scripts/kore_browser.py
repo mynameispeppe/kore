@@ -472,7 +472,11 @@ def load(browser, url, theme, selector, width, touch, motion="reduce", state=Non
     context = browser.new_context(viewport={"width": width, "height": HEIGHT}, color_scheme=theme,
                                   has_touch=touch, reduced_motion=motion)
     page = context.new_page()
-    page.goto(url, wait_until="networkidle")
+    from playwright.sync_api import TimeoutError as PageTimeout
+    try:
+        page.goto(url, wait_until="networkidle")
+    except PageTimeout:
+        pass  # a page that polls its server never goes idle: it is measured as it has loaded
     if selector:
         page.evaluate(SET_THEME, selector)
     fragment = urlparse(url).fragment
