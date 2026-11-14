@@ -42,6 +42,7 @@
 3. **Only Grid stretches its items** to fill the width; Stack, Inline and Sidebar keep each item at its content's size, except the wide item of a Sidebar.
 4. **Centre a whole container or nothing in it:** centred content is the only content of its container (empty state, error page); never one group among start-aligned groups. Tables follow Table.
 5. **The gap sits on the primitive** (Proximity and hierarchy): `space-2` between controls in an Inline (Grouping actions), `space-4` (16px) between pieces of text.
+6. **One primitive per group.** The smallest primitive holding every item of a group holds only items of that group: the gap sits on the primitive, so a group gets its own primitive to keep The Distance Ratio Rule.
 
 ## Visual weight
 

@@ -2,6 +2,7 @@
 """The checks of the Hierarchy rule group (references/rules/hierarchy.md), starting with the Decisions file table."""
 import difflib
 import hashlib
+import os
 import re
 from pathlib import Path
 
@@ -241,6 +242,34 @@ def validate(text):
             for item in items:
                 if item.casefold() not in names_in:
                     errors.append(f"{where}: Shape item {item} is no Element of the table (Decisions file)")
+            lowered = [i.casefold() for i in items]
+            for l in table["body"].splitlines():
+                if l.strip().startswith("|") and (element := cells(l)[0]).casefold() in names_in - {"element", "---"} and not set(element) <= set("-: "):
+                    if lowered.count(element.casefold()) != 1:
+                        errors.append(f"{where}: Element {element} is not in the Shape (Decisions file)" if not lowered.count(element.casefold())
+                                      else f"{where}: {element} is twice in the Shape (Decisions file)")
+            stack, count, paths = [], 0, {}
+            for word, opens, close in re.findall(r"([^(),]+)(\()?|(\))", shape.group(1)):
+                if opens == "(":
+                    count += 1
+                    stack.append(count)
+                elif close:
+                    stack.pop()
+                elif word.strip():
+                    paths.setdefault(word.strip().casefold(), tuple(stack))
+            groups = {}
+            for l in table["body"].splitlines():
+                row = cells(l) if l.strip().startswith("|") else []
+                if len(row) == len(COLUMNS) and row[0].casefold() in paths:
+                    groups.setdefault(row[2], []).append(row[0])
+            for group, members in groups.items():
+                if len(members) < 2 or group == "—":  # items of no group are only ever foreign
+                    continue
+                prefix = os.path.commonprefix([paths[m.casefold()] for m in members])
+                for other, mates in groups.items():
+                    for m in mates if other != group else []:
+                        if paths[m.casefold()][:len(prefix)] == prefix:
+                            errors.append(f"{where}: group {group} shares its primitive with {m} of group {other} (Layout primitives)")
         rows = [cells(l) for l in table["body"].splitlines() if l.strip().startswith("|")]
         if not rows or rows[0] != COLUMNS:
             errors.append(f"{where}: the table must start with | {' | '.join(COLUMNS)} |")
