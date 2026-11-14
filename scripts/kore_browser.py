@@ -386,6 +386,13 @@ async ({touch, zoom, tables}) => {
   for (const [table, rows] of zoom ? [] : tables) {
     for (const root of document.querySelectorAll(`[data-kore="${table}"]`)) {
       const first = element => [...root.querySelectorAll(`[data-kore-element="${element}"]`)].filter(el => el.closest('[data-kore]') === root);
+      const texts = rows.filter(r => r[1]).flatMap(r => first(r[0]).map(el => [r, el, el.getBoundingClientRect()]));
+      const point = texts.find(t => t[0][6]);
+      for (const [row, el, b] of point ? texts : []) {
+        const f = point[2];
+        if (!row[6] && (b.top < f.top - 1 || (b.top <= f.top + 1 && b.left < f.left - 1)))
+          add('✗', 'The One Winner Rule', `${name(el)} comes before the focal point ${name(point[1])}`, el);
+      }
       for (const [element, role, weight, color, space, target] of rows) {
         const found = first(element);
         if (!found.length) add('✗', 'Decisions file', `no data-kore-element="${element}" in ${name(root)}`, root);

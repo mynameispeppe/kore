@@ -75,7 +75,7 @@ def component_names():
             for p in (KORE / "references" / "components").glob("*.md")}
 
 
-def check_values(where, body, roles, colors, spaces, components):
+def check_values(where, body, roles, colors, spaces, components, primary_group=None, shape_items=()):
     """The values of each row against the rules they come from: Roles and
     sizes, From role to style, Typographic levels, the space scale."""
     errors, groups = [], {}
@@ -161,7 +161,7 @@ def check_values(where, body, roles, colors, spaces, components):
         if not primaries[0][2]:
             continue  # the Primary is not text: no size to step down from
         size = roles[primaries[0][2]][0]
-        below = [b for b in bodies if roles[b][0] <= size]
+        below = [b for b in bodies if roles[b][0] < size or (roles[b][0] == size and roles[primaries[0][2]][1] > 400)]
         secondary = next((i[2] for i in items if i[1] == "Secondary" and i[2]), below[0] if below else None)
         for name, level, role, color in items:
             if not role:
@@ -181,23 +181,36 @@ def check_values(where, body, roles, colors, spaces, components):
                                   f"{lower or 'no Body role'}, not {role} (From role to style)")
                 if color != "mute":
                     errors.append(f"{where}, {name}: a Tertiary is mute, not {color} (From role to style)")
+    text_rows = [(r[0], next((w for w in r[4].split() if w in roles), None), r[3]) for r in body]
+    text_rows = [(n, role, lvl) for n, role, lvl in text_rows if role and lvl in ("Primary", "Secondary", "Tertiary")]
+    focal = next((r[0] for r in body if r[3] == "Primary" and r[2] == primary_group), None)
+    focal_role = next((role for n, role, _ in text_rows if n == focal), None)
+    for name, role, _ in text_rows if focal_role else ():
+        if name != focal and (roles[role][0], roles[role][1]) > (roles[focal_role][0], roles[focal_role][1]):
+            errors.append(f"{where}, {name}: {role} outweighs the focal point {focal} in {focal_role} (The One Winner Rule)")
+    typed = {n.casefold(): n for n, _, _ in text_rows}
+    first = next((typed[i.casefold()] for i in shape_items if i.casefold() in typed), None)
+    if focal_role and first and first.casefold() != focal.casefold():
+        errors.append(f"{where}: {first} comes before the focal point {focal} in the Shape (The One Winner Rule)")
     return errors
 
 
 def type_rows(text):
-    """[(table name, [(Element, role, weight, color, space token, target)])] for every row; role, weight and color are None when Style names no type role, token and target when Space is —."""
+    """[(table name, [(Element, role, weight, color, space token, target, focal)])] for every row; role, weight and color are None when Style names no type role, token and target when Space is —, focal True on the Primary of the Primary group."""
     roles, colors, _ = kore_tokens(typology_line(text))
     found = []
     for table in tables(text):
         rows = [cells(l) for l in table["body"].splitlines() if l.strip().startswith("|")][2:]
         typed = []
+        group = re.search(r"(?m)^Primary group:\s*(.+?)\s*$", table["body"])
         for row in (r for r in rows if len(r) == len(COLUMNS)):
             words = row[4].split()
             role = next((w for w in words if w in roles), None)
             link = re.match(r"(space-\d+) to (.+)$", row[5])
             typed.append((row[0], role, next((w for w in words if re.fullmatch(r"[1-9]00", w)), None) if role else None,
                           next((w for w in words if w in colors), None) if role else None,
-                          link and link.group(1), link and link.group(2)))
+                          link and link.group(1), link and link.group(2),
+                          row[3] == "Primary" and bool(group) and row[2] == group.group(1)))
         found.append((table["heading"].split(" · ")[0], typed))
     return found
 
@@ -215,6 +228,7 @@ def validate(text):
         if not table["files"]:
             errors.append(f"{where}: the heading names no file (name · file, file)")
         shape = re.search(r"(?m)^Shape:\s*(.+)$", table["body"])
+        items = re.findall(r"(?:^|[(,])\s*([^(),]+?)\s*(?=[,)]|$)", shape.group(1)) if shape else []  # the text between brackets and commas
         if not shape:
             errors.append(f"{where}: no Shape line")
         else:
@@ -223,6 +237,10 @@ def validate(text):
             if wrong:
                 errors.append(f"{where}: Shape uses {', '.join(sorted(wrong))}, not a Layout primitive "
                               f"({', '.join(sorted(PRIMITIVES))})")
+            names_in = {cells(l)[0].casefold() for l in table["body"].splitlines() if l.strip().startswith("|")}
+            for item in items:
+                if item.casefold() not in names_in:
+                    errors.append(f"{where}: Shape item {item} is no Element of the table (Decisions file)")
         rows = [cells(l) for l in table["body"].splitlines() if l.strip().startswith("|")]
         if not rows or rows[0] != COLUMNS:
             errors.append(f"{where}: the table must start with | {' | '.join(COLUMNS)} |")
@@ -256,5 +274,5 @@ def validate(text):
             errors.append(f"{where}: no Primary group line (Primary group: [group])")
         elif named.group(1) not in {r[2] for r in full}:
             errors.append(f"{where}: Primary group {named.group(1)} is not a group of the table")
-        errors += check_values(where, full, roles, colors, spaces, components)
+        errors += check_values(where, full, roles, colors, spaces, components, named and named.group(1), items)
     return errors

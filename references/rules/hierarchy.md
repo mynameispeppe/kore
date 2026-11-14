@@ -54,17 +54,13 @@
 | Position | Top-left is read first in left-to-right layouts; an element surrounded by space weighs more than the same element in a crowd. |
 | Density | A dense area weighs more but can confuse. Reduce density of secondary areas; an isolated element gains weight from the empty space around it. Never the same density everywhere. |
 
-**The One Winner Rule.** Every screen, and every zone of a screen, has one focal point. It beats everything else on size, weight and color as From role to style sets them, and comes first in the reading order. Two elements with similar weight compete and neither wins.
-
-**Never invert the hierarchy:** metadata (date, author, category) never outweighs the title it belongs to.
+**The One Winner Rule.** Every section of a page and every component has one focal point, the Primary of its Primary group. When the focal point is text, every other text row of its table is smaller, or of the same size and no heavier, metadata (date, author, category) included. The focal point comes first among the text rows of the Shape, and on the page its box sits above every other text element of the section or component, or level with it and to its left. A text row is a row whose Level is Primary, Secondary or Tertiary and whose Style names a type role.
 
 ## Three levels
 
 - **Primary:** one element, the focal point. Caught first.
 - **Secondary:** two or three elements that support it and add context.
 - **Tertiary:** everything else; present, never distracting.
-
-**Three-second test.** If the primary element cannot be named within three seconds of looking at the design, there is no focal point.
 
 **Placement.** To isolate the focal point, surround it with space and place it on a third of the layout (the upper third, or the top-left crossing) rather than at the dead centre.
 
@@ -88,15 +84,15 @@
 
 ## From role to style
 
-**Derived from the Primary.** Step 4 of the Order of decisions. Each level differs from the one above in size, weight and color. The Primary's size comes from Roles and sizes; the others follow from it, never chosen by eye.
+**Derived from the Primary.** Step 4 of the Order of decisions. Each level sits below the one above in size or weight, and differs in color. The Primary's size comes from Roles and sizes; the others follow from it, never chosen by eye.
 
 | Level | Size | Weight | Color |
 |---|---|---|---|
 | **Primary text** | The role Roles and sizes gives its context | The role's own | `ink` |
-| **Secondary text** | The largest Body role not above the Primary: `body-lg` (16) under a Primary of 16 or more, `body-md` (14) under a Primary of 14 | 400 | `body` |
+| **Secondary text** | The largest Body role smaller than the Primary, or of its size under a Primary heavier than 400: `body-lg` (16) under `title-lg`, `body-md` (14) under `body-lg` or `title-sm` | 400 | `body` |
 | **Tertiary text** | The Body role right below the Secondary: `body-md` (14) or `body-sm` (12) | 400 | `mute` |
 
-- **Tertiary below Secondary.** The Tertiary is always smaller than the Secondary. The Secondary may match the Primary's size and differs from it in weight and color. Without a Secondary, the Tertiary is set as if the Secondary were there.
+- **Tertiary below Secondary.** The Tertiary is always smaller than the Secondary. The Secondary matches the Primary's size only under a Primary heavier than 400. Without a Secondary, the Tertiary is set as if the Secondary were there.
 - **Figures.** A figure inside the Secondary takes its Emphasis role (Typography).
 - **Outside this rule:** labels (`label-*`: buttons, tabs, group titles, column headers), which follow their components; the key figure (`display-*`); colored surfaces (Text hierarchy 9) and warnings (Text hierarchy 7).
 - **Weight of groups:** the Primary group comes first in the reading order (Scanning patterns). Groups of one level have titles of the same role; a group's weight comes from its position, never from a larger title.

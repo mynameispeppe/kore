@@ -65,7 +65,7 @@ Rules for the pages of a project in site mode (Start here, question 1). They add
 
 ## Sections
 
-- **Each shape once per page.** A section's shape is its Shape in the Decisions file: the Layout primitive with the kinds of its items (image, text, a component), in either order, so `Sidebar (image, text)` and `Sidebar (text, image)` are one shape. A section on the CTA band is another shape from the same primitive and items on the page's background. The hero counts. A second section with a shape already on the page takes another primitive or other items.
+- **Each shape once per page.** A section's shape is its Shape in the Decisions file: the Layout primitive with the kinds of its items, in either order. An item's kind comes from its row: text when its Style names a type role, an image when its Style gives a ratio, else the component its Style names; so a Sidebar of a portrait and a bio and a Sidebar of an intro and a photo are one shape. A section on the CTA band is another shape from the same primitive and items on the page's background. The hero counts. A second section with a shape already on the page takes another primitive or other items.
 - **At most four items per section** (cards, features, quotes), the number of The Working Memory Rule. The others go on their own page, reached by a "See all" link at the end of the section. The logo wall has no limit. A column of rows under its own title counts as one item. The Blog's two bentos hold five cards, the number their layout needs (Blog).
 - **Quotes** carry the name and the role the user gives (Evidence on Hand). A quote is at most three lines long; when it is longer, ask the user which sentence to keep, never cut it alone.
 - **Profiles on other sites** are Social links.
