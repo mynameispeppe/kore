@@ -456,6 +456,16 @@ async ({touch, zoom, tables}) => {
       else seen.set(text, el);
     }
   }
+  // Code order: screen readers and Tab follow the code, so marked elements follow their order on screen.
+  for (const root of zoom ? [] : document.querySelectorAll('[data-kore]')) {
+    const leaves = [...root.querySelectorAll('[data-kore-element]')].filter(el => el.closest('[data-kore]') === root && !el.querySelector('[data-kore-element]'))
+      .map(el => [el, el.getBoundingClientRect()]).filter(([, r]) => r.width > 0 && r.height > 0);
+    const rtl = style(root).direction === 'rtl';
+    leaves.forEach(([elJ, b], j) => {
+      const before = leaves.slice(0, j).find(([, a]) => (b.left < a.right && a.left < b.right && b.top < a.top - 1) || (b.top < a.bottom && a.top < b.bottom && (rtl ? b.right > a.right + 1 : b.left < a.left - 1)));
+      if (before) add('✗', 'Code order', `${name(elJ)} reads before ${name(before[0])} on screen and comes after it in the code`, elJ);
+    });
+  }
   return out;
 }
 """
