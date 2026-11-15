@@ -42,11 +42,10 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 ## Judge, always
 
 - [ ] Color never alone, semantic colors keep their role, the accent marks one moment, one `primary` per decision (Meaning).
-- [ ] Every string passes Copy; no AI tells the user did not ask for (Copy, AI tells).
-- [ ] Every action answers, destructive actions offer Undo, errors say what, why and how, state lives in the URL (Usability).
-- [ ] Dates, currencies and units in the user's locale, asked when the first one goes on screen (Ask later, when it matters).
+- [ ] Every string passes Copy 1, 2, 4 and 6 to 10; AI tells 1, 2, 6, 7, 9, 11 and 13 appear only when the user asks for them (Copy, AI tells).
+- [ ] State lives in the URL (Usability).
+- [ ] Dates, currencies and units in the user's locale (Ask later, when it matters).
 - [ ] No invented content: numbers, prices, quotes, logos and names come from the user (Product file).
-- [ ] Every choice no rule covered is noted for the report (Behaviour rules).
 
 ## Judge, by context
 
@@ -55,13 +54,13 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 **Container** (Cards, List rows, Table, Tabs, Accordion, Empty state, Charts, Carousel, Footer, Sidebar, Cookie banner)
 - [ ] Card zones in the fixed order; no card inside a card; no rounded block with a background unless it is a clickable unit (Cards).
 - [ ] Inside less than between: title and subtitle `space-1`, header and content `space-6`, rows `space-3`, rows and actions `space-8` (Cards, The Distance Ratio Rule).
-- [ ] No value repeats without a new purpose; roles differ by at least one clear step in size or weight; an element larger or bolder than its peers has a reason the content gives, or it is asked (Semantic weight).
+- [ ] No value repeats without a new purpose; roles differ by at least one clear step in size or weight (Semantic weight).
 - [ ] Repeated instances share one priority and one structure; equal heights only for the same structure (Semantic weight, Cards).
 - [ ] Actions at the end, right-aligned, confirm last (Scanning patterns).
 
 **Control** (Button, Form fields, Select, Checkbox and radio, Switch, Segmented control, Tabs, Password, Combobox, Number stepper, Slider, Date picker, File upload, Chip, Pagination, Steps)
 - [ ] The variant follows the action's role: one `primary` per decision, a `secondary` next to a primary or a destructive (Secondary alone), a destructive action in its own group (Button, The One Primary Rule).
-- [ ] Labels are a verb and an object; labeled buttons carry no icon (Button).
+- [ ] Labels in sentence case, other than "OK", "Yes" or "Submit"; labeled buttons carry no icon (Button).
 - [ ] Limits and formats shown before use, validation when leaving the field, paste never blocked (Usability).
 
 **Link** (text links, links in navigation, Breadcrumb, Footer, Steps, a button that takes the user to another page)
@@ -69,12 +68,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] Text links in `link` with a 1px underline at 4px; focus with the link focus underline (Browser surfaces, States).
 
 **Overlay** (Menu, Popover, Dialog, Sheet, Tooltip, Command palette)
-- [ ] The overlay is the right one: a dialog only for what cannot be undone or truly needs interruption (Dialog).
 - [ ] Focus moves in on open and back to the trigger on close; Escape and a click outside close it (Overlay rules).
-
-**Feedback** (Alert, Toast, Progress, Empty state, form errors)
-- [ ] The right component for the moment: page state an Alert, a passing result a Toast, loading content a skeleton, a wait a bar (Alert, Toast, Progress).
-- [ ] Response times kept: 100ms, 300ms, 1s, 3s (Usability).
 
 **Section of a page** (a hero, an about, features, any part with its own heading)
 - [ ] The heading is an `h2` in `headline-md`, regions inside it `h3` in `headline-sm`, no level skipped (Typographic levels).
@@ -107,6 +101,25 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] Groups are separated with the lightest step of The Separation Ladder that keeps them apart: space first, then background, line, card (Grouping and separation).
 - [ ] The focal point is surrounded by space and sits on a third of the layout, the upper third or the top-left crossing, rather than at the dead centre (Placement).
 - [ ] A group has a title when its user looks for an item by its category (Grouping and separation).
+- [ ] A list of three holds three real items of the content (Copy).
+- [ ] The hero-metric template appears only when the user asks for it: a big number, a small label, supporting stats, an accent (AI tells).
+- [ ] A product screenshot is a real screenshot or a real component (AI tells).
+- [ ] A status dot shows a real state (AI tells).
+- [ ] A strip with a city, the time or the weather appears only when the user asks for it (AI tells).
+- [ ] A photo credit names a real photographer (AI tells).
+- [ ] A page in Site mode compares values with their numbers; a filled track appears only when the user asks for it (AI tells).
+- [ ] Every user action gets a visible response (Usability).
+- [ ] A destructive action runs, then offers Undo (Usability).
+- [ ] An error message says what went wrong, why when useful, and how to fix it (Usability).
+- [ ] The user's locale is asked when the first date, price or measure goes on screen (Ask later, when it matters).
+- [ ] Every choice no rule covered is noted for the report (Behaviour rules).
+- [ ] An element larger or bolder than its peers has a reason the content gives, or the user is asked (Semantic weight).
+- [ ] A button's label is a verb and an object (Button).
+- [ ] A dialog opens only for an action that cannot be undone or that needs interruption (Dialog).
+- [ ] Each moment gets its component: page state an Alert, a passing result a Toast, loading content a skeleton, a wait a bar (Alert, Toast, Progress).
+- [ ] Response times kept: 100ms, 300ms, 1s, 3s (Usability).
+- [ ] Every animation acknowledges an action, makes a state change or a spatial relationship legible, keeps continuity through a change, or directs attention to a meaningful moment (Motion).
+- [ ] The first-time user's path is complete on its own; accelerators for experts sit beside it (Usability).
 
 ## Deliver
 
