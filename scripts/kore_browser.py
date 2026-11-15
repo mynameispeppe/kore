@@ -415,7 +415,7 @@ async ({touch, zoom, tables}) => {
           const nodes = [];
           for (const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); w.nextNode();) if (w.currentNode.data.trim()) nodes.push(w.currentNode);
           const raw = nodes.map(n => n.data).join(''), text = raw.trim();
-          const figure = (text.match(/^[−+-]?\d(?:[\d.,:\/-]*\d)?/) || [''])[0];
+          const figure = (text.match(/^[−+-]?\d(?:[\d.,]*\d)?(?=\s)/) || [''])[0];
           const rest = text.slice(figure.length).trim();
           // a list number ("3. Choose"), a time after a date and a date with its month carry no unit
           if (!figure || !/^\p{L}/u.test(rest) || rest.toLowerCase().split(/\s+/).some(w => months.has(w.replace(/\.$/, '')))) continue;
