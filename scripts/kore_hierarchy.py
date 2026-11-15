@@ -94,8 +94,8 @@ def check_values(where, body, roles, colors, spaces, components, primary_group=N
         if "consequences are never quiet" in rule:
             if level != "—":
                 errors.append(f"{where}, {name}: a consequence has Level —, not {level} (Consequences are never quiet)")
-            if not role or roles[role][1] != 500 or "danger" not in words:
-                errors.append(f"{where}, {name}: a consequence is a 500 role in danger, not {style} (Consequences are never quiet)")
+            if not role or roles[role][1] != 500 or ("danger" not in words and "warning" not in words):
+                errors.append(f"{where}, {name}: a consequence is a 500 role in danger or warning, not {style} (Consequences are never quiet)")
         elif label := next((v for k, v in LABELS.items() if k in rule), None):
             kind, want, cite = label
             if level != "—":

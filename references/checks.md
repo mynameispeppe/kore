@@ -14,7 +14,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Every file of a section or component built is named in the heading of its table in `KORE-DECISIONS.md`; every table holds and names its Primary group and a Shape built only from the Layout primitives, its items the Elements of the table, each once, and the smallest primitive holding a group's items holding only that group; every group has one Primary; elements of one group answer one question, and each question has one group; on the page, each text element marked with `data-kore-element` has the size, weight and color of its row's Style; every Space reads `space-N to [Element]` of another row, and a Space between two groups is at least twice every Space inside them; on the page, every row's element carries `data-kore-element` and sits at its Space from its Element; a Secondary is smaller than its Primary, or of its size under a Primary heavier than 400; every text row is smaller than the focal point, or of its size and no heavier; the focal point comes first among the text rows of the Shape and, on the page, sits above every other text element of its section or component, or level with it and to its left (Order of decisions, Semantic weight, Decisions file, The Relatedness Test, Layout primitives, From role to style, The Distance Ratio Rule, The One Winner Rule).
 - [ ] Each table of `KORE-DECISIONS.md` uses at most three font sizes on its text rows with a Level (Text hierarchy).
 - [ ] When an element's text opens with a figure, the words after it are smaller and in `mute` (Text hierarchy).
-- [ ] A row citing Consequences are never quiet has Level —, a 500 role and `danger` (Text hierarchy).
+- [ ] A row citing Consequences are never quiet has Level —, a 500 role and `danger` or `warning` (Text hierarchy).
 - [ ] A row citing Value labels are a last resort has Level —, `body-md` 400 `mute` and a Space to its value, which is no price, date or email unless another value of its section or component has the same format (Text hierarchy).
 - [ ] A row citing Specs lead with the label has Level —, `body-md` 400 `ink` and a Space to its value, which is `body-md` 400 `body` (Text hierarchy).
 - [ ] Each element of a section or component holds its own text (Copy).
@@ -100,6 +100,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] A list cites Specs lead with the label only when its user scans the labels to find a value (Text hierarchy).
 - [ ] The code builds the Shape as written: each primitive of the Shape is how its items sit on screen (Layout primitives).
 - [ ] Every consequence of an action is a row citing Consequences are never quiet, with an icon only when its words alone do not read as one (Text hierarchy).
+- [ ] A consequence the user cannot undo is in `danger`; one the user must not miss is in `warning` (Text hierarchy).
 - [ ] A value label and its value merge into one phrase whenever the words allow it (Text hierarchy).
 - [ ] Each line adds one new fact: no line says again, in other words, what the title or the line above it says (Copy).
 - [ ] Groups are separated with the lightest step of The Separation Ladder that keeps them apart: space first, then background, line, card (Grouping and separation).
