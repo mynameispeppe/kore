@@ -26,6 +26,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Touch targets 44px, adjacent targets `space-2` apart (Accessibility).
 - [ ] Every interactive element has all its states and the focus of States: corner marks, or the link focus underline on a link (States).
 - [ ] Every control has an accessible name, the role and keyboard use its file sets; decorative icons are hidden (Components, Icons).
+- [ ] `<html>` carries `lang` (Page language).
 - [ ] Only type roles; form text 16px; tabular figures in columns of numbers; paragraphs 45 to 75 characters (Typography rules).
 - [ ] Only `transform` and `opacity` animate, with motion tokens; reduced motion keeps meaning and drops movement (Motion).
 - [ ] Elements told apart by background or shadow have a 1px transparent border (Themes).

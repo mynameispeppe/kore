@@ -117,6 +117,8 @@ async ({touch, zoom, tables}) => {
     return false;
   };
 
+  if (!document.documentElement.lang.trim()) add('✗', 'Page language', '<html> has no lang');
+
   // Horizontal scroll, and what makes it.
   const wide = document.scrollingElement.scrollWidth;
   if (wide > vw + 1) {
@@ -385,6 +387,7 @@ async ({touch, zoom, tables}) => {
   };
   const months = new Set([...['long', 'short']].flatMap(month => Array.from({length: 12}, (_, m) =>
     new Intl.DateTimeFormat(document.documentElement.lang || undefined, {month}).format(new Date(2000, m, 1)).replace(/\.$/, '').toLowerCase())));
+  const currencies = new Set(Intl.supportedValuesOf('currency'));
   for (const [table, rows] of zoom ? [] : tables) {
     for (const root of document.querySelectorAll(`[data-kore="${table}"]`)) {
       const first = element => [...root.querySelectorAll(`[data-kore-element="${element}"]`)].filter(el => el.closest('[data-kore]') === root);
@@ -407,19 +410,26 @@ async ({touch, zoom, tables}) => {
         for (const el of inline ? [] : found) {
           const nodes = [];
           for (const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); w.nextNode();) if (w.currentNode.data.trim()) nodes.push(w.currentNode);
-          const text = nodes.map(n => n.data).join('').trim();
+          const raw = nodes.map(n => n.data).join(''), text = raw.trim();
           const figure = (text.match(/^[−+-]?\d(?:[\d.,:\/-]*\d)?/) || [''])[0];
           const rest = text.slice(figure.length).trim();
           // a list number ("3. Choose"), a time after a date and a date with its month carry no unit
           if (!figure || !/^\p{L}/u.test(rest) || rest.toLowerCase().split(/\s+/).some(w => months.has(w.replace(/\.$/, '')))) continue;
           const size = style(nodes[0].parentElement).fontSize;
-          const after = nodes[0].data.trim() !== figure ? [nodes[0]] : nodes.slice(1);
-          const bad = after.map(n => style(n.parentElement)).find(s => after[0] === nodes[0] /* figure and words in one text node share one style */ || !(parseFloat(s.fontSize) < parseFloat(size) && s.color === probed('color', 'var(--mute)')));
+          // the figure may span several text nodes; the words start at the first node after it
+          let left = raw.length - raw.trimStart().length + figure.length, shared;
+          const after = [];
+          for (const n of nodes) {
+            if (left <= 0) after.push(n);
+            else if (n.data.slice(left).trim()) shared = n;  // figure and words in one text node share one style
+            left -= n.data.length;
+          }
+          const bad = shared ? style(shared.parentElement) : after.map(n => style(n.parentElement)).find(s => !(parseFloat(s.fontSize) < parseFloat(size) && s.color === probed('color', 'var(--mute)')));
           if (bad) add('✗', 'Text hierarchy', `${name(el)}: the words after the figure ${figure} are ${bad.fontSize} ${bad.color}; they are smaller than the figure and in mute`, el);
         }
         // Value labels are a last resort: a value whose format says what it is stands alone.
         const value = label && found.length && first(target || '')[0]?.innerText.trim();
-        if (value && (/[$€£¥]\s*\d|\d\s*[$€£¥]/.test(value) || /^\d{4}-\d{2}-\d{2}/.test(value) || /^\d{1,2}[\/.]\d{1,2}[\/.]\d{2,4}$/.test(value)
+        if (value && (/[$€£¥]\s*\d|\d\s*[$€£¥]/.test(value) || (/\d/.test(value) && value.split(/[\s\d.,]+/).some(w => currencies.has(w))) || /^\d{4}-\d{2}-\d{2}/.test(value) || /^\d{1,2}[\/.]\d{1,2}[\/.]\d{2,4}$/.test(value)
             || (/\d/.test(value) && value.toLowerCase().split(/[\s,]+/).some(w => months.has(w.replace(/\.$/, '')))) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)))
           add('✗', 'Text hierarchy', `${name(found[0])} names the value ${value}, whose format already says what it is: the value stands alone`, found[0]);
         // Space: the gap to the target's box, vertical when one box ends above the other starts, else horizontal.
