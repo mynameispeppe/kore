@@ -445,15 +445,15 @@ async ({touch, zoom, tables}) => {
       }
     }
   }
-  // Copy 3: each element of a section or component holds its own text.
+  // Copy 3: each Element of a section or component holds its own text; copies of one Element hold their data's text.
   for (const root of zoom ? [] : document.querySelectorAll('[data-kore]')) {
     const seen = new Map();
     for (const el of root.querySelectorAll('[data-kore-element]')) {
       if (el.querySelector('[data-kore-element]')) continue;  // a wrapper's text is its inner element's
       const text = el.closest('[data-kore]') === root ? el.innerText.trim().replace(/\s+/g, ' ').toLowerCase() : '';
       if (!text) continue;
-      if (seen.has(text)) add('✗', 'Copy', `${name(el)} repeats the text of ${name(seen.get(text))}: each element holds its own text`, el);
-      else seen.set(text, el);
+      if (seen.has(text) && seen.get(text).dataset.koreElement !== el.dataset.koreElement) add('✗', 'Copy', `${name(el)} repeats the text of ${name(seen.get(text))}: each element holds its own text`, el);
+      else if (!seen.has(text)) seen.set(text, el);
     }
   }
   // Code order: screen readers and Tab follow the code, so marked elements follow their order on screen.

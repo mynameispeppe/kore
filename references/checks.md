@@ -17,7 +17,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] A row citing Consequences are never quiet has Level —, a 500 role and `danger` or `warning` (Text hierarchy).
 - [ ] A row citing Value labels are a last resort has Level —, `body-md` 400 `mute` and a Space to its value, which is no price, date or email unless another value of its section or component has the same format (Text hierarchy).
 - [ ] A row citing Specs lead with the label has Level —, `body-md` 400 `ink` and a Space to its value, which is `body-md` 400 `body` (Text hierarchy).
-- [ ] Each element of a section or component holds its own text (Copy).
+- [ ] Each Element of a section or component holds its own text; copies of one Element hold the text their data gives (Copy).
 - [ ] The innermost elements marked with `data-kore-element` of a section or component follow in the code their order on screen: in a column top to bottom, on a line left to right (Code order).
 - [ ] Every color, space, size, radius, shadow, duration, easing, z-index, breakpoint and opacity comes from a token or from a value a rule computes (Never invent values).
 - [ ] Spacing on the scale, sizes multiples of 8, padding uniform, gaps on the container (Spacing).
