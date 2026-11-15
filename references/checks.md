@@ -12,6 +12,11 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 **Bounded verification** (as impeccable): look at the result through `--shots <folder>`, with the folder outside the project (the agent's temporary folder): the script saves each page, whole, at 375 and 1440px in each theme the token file defines, and lists the files. Read each once; fix everything they show in one batch; take at most one more round, then stop. Never write your own browser scripts, and no automated tests the user did not ask for.
 
 - [ ] Every file of a section or component built is named in the heading of its table in `KORE-DECISIONS.md`; every table holds and names its Primary group and a Shape built only from the Layout primitives, its items the Elements of the table, each once, and the smallest primitive holding a group's items holding only that group; every group has one Primary; elements of one group answer one question, and each question has one group; on the page, each text element marked with `data-kore-element` has the size, weight and color of its row's Style; every Space reads `space-N to [Element]` of another row, and a Space between two groups is at least twice every Space inside them; on the page, every row's element carries `data-kore-element` and sits at its Space from its Element; a Secondary is smaller than its Primary, or of its size under a Primary heavier than 400; every text row is smaller than the focal point, or of its size and no heavier; the focal point comes first among the text rows of the Shape and, on the page, sits above every other text element of its section or component, or level with it and to its left (Order of decisions, Semantic weight, Decisions file, The Relatedness Test, Layout primitives, From role to style, The Distance Ratio Rule, The One Winner Rule).
+- [ ] Each table of `KORE-DECISIONS.md` uses at most three font sizes on its text rows with a Level (Text hierarchy).
+- [ ] When an element's text opens with a figure, the words after it are smaller and in `mute` (Text hierarchy).
+- [ ] A row citing Consequences are never quiet has Level —, a 500 role and `danger` (Text hierarchy).
+- [ ] A row citing Value labels are a last resort has Level —, `body-md` 400 `mute` and a Space to its value, which is no price, date or email (Text hierarchy).
+- [ ] Each element of a section or component holds its own text (Copy).
 - [ ] Every color, space, size, radius, shadow, duration, easing, z-index, breakpoint and opacity comes from a token or from a value a rule computes (Never invent values).
 - [ ] Spacing on the scale, sizes multiples of 8, padding uniform, gaps on the container (Spacing).
 - [ ] Text 4.5:1, large text 3:1, icons, control borders and focus 3:1, on the worst surface, in each theme the token file defines (Contrast).
@@ -32,7 +37,6 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 ## Judge, always
 
-- [ ] Each idea said once, labels only when needed, the number carries the emphasis, warnings never quiet, at most three sizes in a component (Text hierarchy).
 - [ ] Group titles all or none (Grouping and separation).
 - [ ] Color never alone, semantic colors keep their role, the accent marks one moment, one `primary` per decision (Meaning).
 - [ ] Every string passes Copy; no AI tells the user did not ask for (Copy, AI tells).
@@ -92,6 +96,9 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] Each group's Question is the one its user asks: read as that user, it names what they want to know or do there (The reader's question).
 - [ ] Each primitive of a Shape is the one whose Use for fits the items it holds (Layout primitives).
 - [ ] The code builds the Shape as written: each primitive of the Shape is how its items sit on screen (Layout primitives).
+- [ ] Every consequence of an action is a row citing Consequences are never quiet, with an icon only when its words alone do not read as one (Text hierarchy).
+- [ ] A value label and its value merge into one phrase whenever the words allow it (Text hierarchy).
+- [ ] Each line adds one new fact: no line says again, in other words, what the title or the line above it says (Copy).
 - [ ] Groups are separated with the lightest step of The Separation Ladder that keeps them apart: space first, then background, line, card (Grouping and separation).
 - [ ] The focal point is surrounded by space and sits on a third of the layout, the upper third or the top-left crossing, rather than at the dead centre (Placement).
 

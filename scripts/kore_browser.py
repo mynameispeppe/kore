@@ -383,17 +383,19 @@ async ({touch, zoom, tables}) => {
     p.remove();
     return got;
   };
+  const months = new Set([...['long', 'short']].flatMap(month => Array.from({length: 12}, (_, m) =>
+    new Intl.DateTimeFormat(document.documentElement.lang || undefined, {month}).format(new Date(2000, m, 1)).replace(/\.$/, '').toLowerCase())));
   for (const [table, rows] of zoom ? [] : tables) {
     for (const root of document.querySelectorAll(`[data-kore="${table}"]`)) {
       const first = element => [...root.querySelectorAll(`[data-kore-element="${element}"]`)].filter(el => el.closest('[data-kore]') === root);
-      const texts = rows.filter(r => r[1]).flatMap(r => first(r[0]).map(el => [r, el, el.getBoundingClientRect()]));
+      const texts = rows.filter(r => r[1] && r[9]).flatMap(r => first(r[0]).map(el => [r, el, el.getBoundingClientRect()]));
       const point = texts.find(t => t[0][6]);
       for (const [row, el, b] of point ? texts : []) {
         const f = point[2];
         if (!row[6] && (b.top < f.top - 1 || (b.top <= f.top + 1 && b.left < f.left - 1)))
           add('✗', 'The One Winner Rule', `${name(el)} comes before the focal point ${name(point[1])}`, el);
       }
-      for (const [element, role, weight, color, space, target] of rows) {
+      for (const [element, role, weight, color, space, target, , inline, label] of rows) {
         const found = first(element);
         if (!found.length) add('✗', 'Decisions file', `no data-kore-element="${element}" in ${name(root)}`, root);
         for (const el of role ? found : []) {
@@ -401,6 +403,25 @@ async ({touch, zoom, tables}) => {
           if (s.fontSize !== probed('font-size', `var(--${role}-fontSize)`) || s.fontWeight !== weight || s.color !== probed('color', `var(--${color})`))
             add('✗', 'From role to style', `${name(el)} is ${s.fontSize} ${s.fontWeight} ${s.color}, its row says ${role} ${weight} ${color}`, el);
         }
+        // Figure and unit: after a figure that opens the text, the words are smaller than it and in mute.
+        for (const el of inline ? [] : found) {
+          const nodes = [];
+          for (const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); w.nextNode();) if (w.currentNode.data.trim()) nodes.push(w.currentNode);
+          const text = nodes.map(n => n.data).join('').trim();
+          const figure = (text.match(/^[−+-]?\d(?:[\d.,:\/-]*\d)?/) || [''])[0];
+          const rest = text.slice(figure.length).trim();
+          // a list number ("3. Choose"), a time after a date and a date with its month carry no unit
+          if (!figure || !/^\p{L}/u.test(rest) || rest.toLowerCase().split(/\s+/).some(w => months.has(w.replace(/\.$/, '')))) continue;
+          const size = style(nodes[0].parentElement).fontSize;
+          const after = nodes[0].data.trim() !== figure ? [nodes[0]] : nodes.slice(1);
+          const bad = after.map(n => style(n.parentElement)).find(s => after[0] === nodes[0] /* figure and words in one text node share one style */ || !(parseFloat(s.fontSize) < parseFloat(size) && s.color === probed('color', 'var(--mute)')));
+          if (bad) add('✗', 'Text hierarchy', `${name(el)}: the words after the figure ${figure} are ${bad.fontSize} ${bad.color}; they are smaller than the figure and in mute`, el);
+        }
+        // Value labels are a last resort: a value whose format says what it is stands alone.
+        const value = label && found.length && first(target || '')[0]?.innerText.trim();
+        if (value && (/[$€£¥]\s*\d|\d\s*[$€£¥]/.test(value) || /^\d{4}-\d{2}-\d{2}/.test(value) || /^\d{1,2}[\/.]\d{1,2}[\/.]\d{2,4}$/.test(value)
+            || (/\d/.test(value) && value.toLowerCase().split(/[\s,]+/).some(w => months.has(w.replace(/\.$/, '')))) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)))
+          add('✗', 'Text hierarchy', `${name(found[0])} names the value ${value}, whose format already says what it is: the value stands alone`, found[0]);
         // Space: the gap to the target's box, vertical when one box ends above the other starts, else horizontal.
         const other = first(target || '')[0];
         if (!space || !found.length || !other) continue;
@@ -409,6 +430,17 @@ async ({touch, zoom, tables}) => {
         const want = parseFloat(probed('width', `var(--${space})`));
         if (Math.abs(gap - want) > 1) add('✗', 'The Distance Ratio Rule', `${name(found[0])} is ${Math.round(gap)}px from ${target}, its row says ${space} (${want}px)`, found[0]);
       }
+    }
+  }
+  // Copy 3: each element of a section or component holds its own text.
+  for (const root of zoom ? [] : document.querySelectorAll('[data-kore]')) {
+    const seen = new Map();
+    for (const el of root.querySelectorAll('[data-kore-element]')) {
+      if (el.querySelector('[data-kore-element]')) continue;  // a wrapper's text is its inner element's
+      const text = el.closest('[data-kore]') === root ? el.innerText.trim().replace(/\s+/g, ' ').toLowerCase() : '';
+      if (!text) continue;
+      if (seen.has(text)) add('✗', 'Copy', `${name(el)} repeats the text of ${name(seen.get(text))}: each element holds its own text`, el);
+      else seen.set(text, el);
     }
   }
   return out;

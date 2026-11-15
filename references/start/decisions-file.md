@@ -21,7 +21,7 @@
 - **Element:** one visible element as it reads on screen: a text, an image, a control, or a component taken whole (a Button, a Social links).
 - **Question:** the user's question it answers (Order of decisions), in the user's language.
 - **Group:** the name of its group (Affinity Grouping); elements answering the same question share it.
-- **Level:** `Primary`, `Secondary` or `Tertiary` inside its group, one `Primary` per group (Semantic weight); `—` for what follows its own rule (a section heading, a label, a whole component).
+- **Level:** `Primary`, `Secondary` or `Tertiary` inside its group, one `Primary` per group (Semantic weight); `—` for what follows its own rule (a section heading, a `label-*` text, a whole component, a consequence, a value label).
 - **Style:** type role, weight and color token (From role to style, Roles and sizes; a heading, Typographic levels); for a component, its name and variant (its file); for an image, ratio and radius (Images).
 - **Space:** `space-N to [Element]`: the token to the next element, and that element's name as written in its own row (The Distance Ratio Rule, Scale, Grouping and separation); `—` for the last one.
 - **Rule:** the sections or rules each value comes from, separated by commas. A value with no rule behind it is not written: it is a choice the user makes (Ask later, when it matters).

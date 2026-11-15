@@ -85,7 +85,19 @@ def check_values(where, body, roles, colors, spaces, components, primary_group=N
         name, group, level, style, space, rule = row[0], row[2], row[3], row[4], row[5], row[6].lower()
         words = style.split()
         role = next((w for w in words if w in roles), None)
-        if level == "—" and not (re.search(r"\bh[1-6]\b|\b\d+:\d+\b", f"{name} {style}") or (role or "").startswith("label-")
+        if "consequences are never quiet" in rule:
+            if level != "—":
+                errors.append(f"{where}, {name}: a consequence has Level —, not {level} (Consequences are never quiet)")
+            if not role or roles[role][1] != 500 or "danger" not in words:
+                errors.append(f"{where}, {name}: a consequence is a 500 role in danger, not {style} (Consequences are never quiet)")
+        elif "value labels are a last resort" in rule:
+            if level != "—":
+                errors.append(f"{where}, {name}: a value label has Level —, not {level} (Value labels are a last resort)")
+            if words != ["body-md", "400", "mute"]:
+                errors.append(f"{where}, {name}: a value label is body-md 400 mute, not {style} (Value labels are a last resort)")
+            if space.strip() == "—":
+                errors.append(f"{where}, {name}: a value label has a Space to its value, not — (Value labels are a last resort)")
+        elif level == "—" and not (re.search(r"\bh[1-6]\b|\b\d+:\d+\b", f"{name} {style}") or (role or "").startswith("label-")
                                  or any(re.search(rf"\b{re.escape(c)}\b", style.lower()) for c in components)):
             errors.append(f"{where}, {name}: Level — is only for a heading, a label, a whole component or an image; "
                           "this element takes Primary, Secondary or Tertiary (Semantic weight)")
@@ -151,6 +163,10 @@ def check_values(where, body, roles, colors, spaces, components, primary_group=N
         if inside and spaces[token] < 2 * max(inside)[0]:
             errors.append(f"{where}, {name}: {token} to {target} joins groups {a} and {b}; it is at least twice "
                           f"{max(inside)[1]}, their largest inside space (The Distance Ratio Rule)")
+    sizes = sorted({roles[i[2]][0] for items in groups.values() for i in items if i[2]}, reverse=True)
+    if len(sizes) > 3:
+        errors.append(f"{where}: {len(sizes)} font sizes on the text rows with a Level "
+                      f"({', '.join(f'{s:g}px' for s in sizes)}); at most three (Text hierarchy)")
     for group, items in groups.items():
         primaries = [i for i in items if i[1] == "Primary"]
         if len(primaries) > 1:
@@ -197,7 +213,7 @@ def check_values(where, body, roles, colors, spaces, components, primary_group=N
 
 
 def type_rows(text):
-    """[(table name, [(Element, role, weight, color, space token, target, focal)])] for every row; role, weight and color are None when Style names no type role, token and target when Space is —, focal True on the Primary of the Primary group."""
+    """[(table name, [(Element, role, weight, color, space token, target, focal, inline, label, text)])] for every row; role, weight and color are None when Style names no type role, token and target when Space is —, focal True on the Primary of the Primary group, inline True when the Rule column names Inline emphasis, label True when it names Value labels are a last resort, text True on a text row (The One Winner Rule)."""
     roles, colors, _ = kore_tokens(typology_line(text))
     found = []
     for table in tables(text):
@@ -211,7 +227,10 @@ def type_rows(text):
             typed.append((row[0], role, next((w for w in words if re.fullmatch(r"[1-9]00", w)), None) if role else None,
                           next((w for w in words if w in colors), None) if role else None,
                           link and link.group(1), link and link.group(2),
-                          row[3] == "Primary" and bool(group) and row[2] == group.group(1)))
+                          row[3] == "Primary" and bool(group) and row[2] == group.group(1),
+                          "inline emphasis" in row[6].lower(),
+                          "value labels are a last resort" in row[6].lower(),
+                          row[3] in ("Primary", "Secondary", "Tertiary")))
         found.append((table["heading"].split(" · ")[0], typed))
     return found
 

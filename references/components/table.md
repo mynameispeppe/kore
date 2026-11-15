@@ -34,9 +34,9 @@
 - **Row cell:** each td in the body. height `space-12`; vertical-align middle; color `body`; border-bottom `line-thin` solid `hairline`; font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`. A table is read across columns, so the line guides the eye (The Separation Ladder). A row whose cells hold their own links or buttons takes no background on hover; only a row that is one link as a whole does.
 - **Last row:** its cells: border-bottom 0.
 - **Name cell:** the first data column, the item's name. color `ink`; font-family `title-sm`; font-size `title-sm`; font-weight `title-sm`; line-height `title-sm`; letter-spacing `title-sm`.
-- **Value:** a number carries the emphasis (Text hierarchy), alone or before its unit ("**55** min"). color `ink`; font-variant-numeric tabular-nums.
+- **Value:** a figure carries the emphasis (Text hierarchy), alone or before its unit ("**55** min"). color `ink`; font-variant-numeric tabular-nums.
 - **Unit:** after its value, separated by a space. color `mute`; font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`.
-- **Alignment:** text, counts ("6") and numbers with a unit ("55 min") at the start: text-align start. Amounts with their currency ("$1,250.00") at the end, so the digits line up: text-align end. Statuses and buttons centred: text-align center. A header follows its column.
+- **Alignment:** text, counts ("6") and figures with a unit ("55 min") at the start: text-align start. Amounts with their currency ("$1,250.00") at the end, so the digits line up: text-align end. Statuses and buttons centred: text-align center. A header follows its column.
 - **Status:** a status Badge (Badge, Status badge).
 
 **Sort order**

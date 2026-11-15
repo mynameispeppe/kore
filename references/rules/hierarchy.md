@@ -95,7 +95,7 @@
 
 - **Tertiary below Secondary.** The Tertiary is always smaller than the Secondary. The Secondary matches the Primary's size only under a Primary heavier than 400. Without a Secondary, the Tertiary is set as if the Secondary were there.
 - **Figures.** A figure inside the Secondary takes its Emphasis role (Typography).
-- **Outside this rule:** labels (`label-*`: buttons, tabs, group titles, column headers), which follow their components; the key figure (`display-*`); colored surfaces (Text hierarchy 9) and warnings (Text hierarchy 7).
+- **Outside this rule:** labels (`label-*`: buttons, tabs, group titles, column headers), which follow their components; the key figure (`display-*`); colored surfaces (Text hierarchy 9) and consequences (Text hierarchy 7).
 - **Weight of groups:** the Primary group comes first in the reading order (Scanning patterns). Groups of one level have titles of the same role; a group's weight comes from its position, never from a larger title.
 
 ## Typographic levels
@@ -113,13 +113,13 @@
 
 **Order before style.** Inside a component (a card, a popover, a dialog, a row), decide the order before the style.
 
-1. **Order first.** Decide what the user needs now, the action that comes next, and the context that changes the decision. Say each idea once: if the title already says it, the text below adds something new or disappears.
+1. **Order first.** Decide what the user needs now, the action that comes next, and the context that changes the decision. Say each idea once (Copy).
 2. **Emphasize by de-emphasizing.** The primary element stays `ink`; everything else steps down. Take weight away from the secondary text instead of making the primary louder.
-3. **Labels are a last resort.** Drop a label when the format already says what the value is (a price, a date, an email). Merge label and value when possible ("148 g a day", "12 left in stock", not "Stock: 12"). When a label must stay, it is the quieter half: `body-md` in `mute`, with the value in `ink`. Emphasize the label instead only on dense reference pages where people scan for it (a spec sheet). Form fields always keep their visible labels.
-4. **Limits.** At most three sizes and three levels in one component, set by From role to style. Weights: those of the Roles and sizes table, emphasis included, and `strong` where Emphasis allows it; no other weight. Text colors: `ink`, `body`, `mute`, and nothing else for plain text. No gradient text: emphasis comes from weight or size, never decoration.
-5. **Numbers.** The number carries the emphasis; its unit is smaller and in `mute` ("148 g *a day*").
+3. **Value labels are a last resort.** A value whose format says what it is, a price, a date or an email, stands alone. A value label and its value merge into one phrase when the words allow it: 12 left in stock, 148 g a day. A value label that stays is the quieter half: its row in the Decisions file has Level —, `body-md` 400 `mute`, a Space to its value, and cites Value labels are a last resort. Form fields keep their visible labels.
+4. **Limits.** In each section of a page and each component, the text rows with Level Primary, Secondary or Tertiary use at most three font sizes; two roles of one font size, such as `title-md` and `body-lg` at 16px, count once. At most three levels, set by From role to style. Weights: those of the Roles and sizes table, emphasis included, and `strong` where Emphasis allows it; no other weight. Text colors: `ink`, `body`, `mute`, and nothing else for plain text. No gradient text: emphasis comes from weight or size, never decoration.
+5. **Figure and unit.** The figure carries the emphasis. When the text of an element opens with a figure, every word after it is smaller than the figure and in `mute`: **148** g a day, **12** left in stock. A date keeps one style; a figure inside a sentence follows Inline emphasis.
 6. **Balance weight and contrast.** Heavy shapes (filled icons, large glyphs) take a softer color (`mute`); thin text keeps `ink`.
-7. **Warnings are never quiet.** A consequence the user must not miss ("This can't be undone.") sits on its own line, in the emphasis role of its size (Emphasis) and its semantic color, never in `mute`. The words carry the meaning, so no icon is needed; add one only when the text alone does not say it is a warning.
+7. **Consequences are never quiet.** A consequence sits on its own line, in the emphasis role of its size (Emphasis) and in `danger`; its row in the Decisions file has Level — and cites Consequences are never quiet. The words carry the meaning: an icon joins them only when the text alone does not read as a consequence.
 8. **Semantics follow hierarchy.** A destructive action in a list or menu is tertiary or secondary, with red limited to its icon; it becomes a filled `destructive` button only when it is the main action of the moment, as in the confirmation.
 9. **No grey text on colored surfaces.** On a tinted or colored background, secondary text takes a tint of that color, not `mute`.
 10. **Inline emphasis.** In a sentence, the words the user must check stand out in the emphasis role of their size (Emphasis) and `ink`: figures with their unit (a quantity, a price, a date) and the name of the object an action affects ("**Next week's plan** and its **21 meals** will be removed."). At most two per sentence, never color, never whole phrases. It applies to explanations and messages (errors, confirmations); captions, subtitles and help text stay plain.
