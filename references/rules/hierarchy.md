@@ -55,7 +55,7 @@
 | Position | Top-left is read first in left-to-right layouts; an element surrounded by space weighs more than the same element in a crowd. |
 | Density | A dense area weighs more but can confuse. Reduce density of secondary areas; an isolated element gains weight from the empty space around it. Never the same density everywhere. |
 
-**The One Winner Rule.** Every section of a page and every component has one focal point, the Primary of its Primary group. When the focal point is text, every other text row of its table is smaller, or of the same size and no heavier, metadata (date, author, category) included. The focal point comes first among the text rows of the Shape, and on the page its box sits above every other text element of the section or component, or level with it and to its left. A text row is a row whose Level is Primary, Secondary or Tertiary and whose Style names a type role.
+**The One Winner Rule.** Every section of a page and every component has one focal point, the Primary of its Primary group. When the focal point is text, every other text row of its table is smaller, or of the same size and lighter, metadata (date, author, category) included. The focal point comes first among the text rows of the Shape, and on the page its box sits above every other text element of the section or component, or level with it and to its left. A text row is a row whose Level is Primary, Secondary or Tertiary and whose Style names a type role.
 
 ## Three levels
 

@@ -213,8 +213,8 @@ def check_values(where, body, roles, colors, spaces, components, primary_group=N
     focal = next((r[0] for r in body if r[3] == "Primary" and r[2] == primary_group), None)
     focal_role = next((role for n, role, _ in text_rows if n == focal), None)
     for name, role, _ in text_rows if focal_role else ():
-        if name != focal and (roles[role][0], roles[role][1]) > (roles[focal_role][0], roles[focal_role][1]):
-            errors.append(f"{where}, {name}: {role} outweighs the focal point {focal} in {focal_role} (The One Winner Rule)")
+        if name != focal and (roles[role][0], roles[role][1]) >= (roles[focal_role][0], roles[focal_role][1]):
+            errors.append(f"{where}, {name}: {role} competes with the focal point {focal} in {focal_role} (The One Winner Rule)")
     typed = {n.casefold(): n for n, _, _ in text_rows}
     first = next((typed[i.casefold()] for i in shape_items if i.casefold() in typed), None)
     if focal_role and first and first.casefold() != focal.casefold():
