@@ -19,6 +19,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] A row citing Specs lead with the label has Level —, `body-md` 400 `ink` and a Space to its value, which is `body-md` 400 `body` (Text hierarchy).
 - [ ] Each Element of a section or component holds its own text; copies of one Element hold the text their data gives (Copy).
 - [ ] The innermost elements marked with `data-kore-element` of a section or component follow in the code their order on screen: in a column top to bottom, on a line left to right (Code order).
+- [ ] Among the groups that share a parent, every group has a title or none has (Grouping and separation).
 - [ ] Every color, space, size, radius, shadow, duration, easing, z-index, breakpoint and opacity comes from a token or from a value a rule computes (Never invent values).
 - [ ] Spacing on the scale, sizes multiples of 8, padding uniform, gaps on the container (Spacing).
 - [ ] Text 4.5:1, large text 3:1, icons, control borders and focus 3:1, on the worst surface, in each theme the token file defines (Contrast).
@@ -40,7 +41,6 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 ## Judge, always
 
-- [ ] Group titles all or none (Grouping and separation).
 - [ ] Color never alone, semantic colors keep their role, the accent marks one moment, one `primary` per decision (Meaning).
 - [ ] Every string passes Copy; no AI tells the user did not ask for (Copy, AI tells).
 - [ ] Every action answers, destructive actions offer Undo, errors say what, why and how, state lives in the URL (Usability).
@@ -106,6 +106,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] Each line adds one new fact: no line says again, in other words, what the title or the line above it says (Copy).
 - [ ] Groups are separated with the lightest step of The Separation Ladder that keeps them apart: space first, then background, line, card (Grouping and separation).
 - [ ] The focal point is surrounded by space and sits on a third of the layout, the upper third or the top-left crossing, rather than at the dead centre (Placement).
+- [ ] A group has a title when its user looks for an item by its category (Grouping and separation).
 
 ## Deliver
 

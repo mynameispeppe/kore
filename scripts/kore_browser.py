@@ -313,6 +313,20 @@ async ({touch, zoom, tables}) => {
     }
   }
 
+  // All or none: among the groups that share a parent, every group has a visible title or none has.
+  const titled = g => g.localName === 'optgroup' ? !!g.label.trim()
+    : g.localName === 'fieldset' ? [...g.children].some(c => c.localName === 'legend' && shown(c) && c.innerText.trim())
+    : (g.getAttribute('aria-labelledby') || '').split(/\s+/).some(id => { const t = id && document.getElementById(id); return t && shown(t) && t.innerText.trim(); });
+  const siblings = new Map();  // parent → its groups on screen
+  for (const g of document.querySelectorAll('[role=group], fieldset, optgroup')) {
+    if (g.localName !== 'optgroup' && !shown(g)) continue;  // an optgroup draws no box of its own
+    siblings.set(g.parentElement, [...(siblings.get(g.parentElement) || []), g]);
+  }
+  for (const groups of siblings.values()) {
+    const bare = groups.filter(g => !titled(g));
+    if (bare.length && bare.length < groups.length) add('✗', 'Grouping and separation', `${name(bare[0])} has no title, while ${groups.length - bare.length} of the ${groups.length} groups beside it have one`, bare[0]);
+  }
+
   // Titles of cards side by side on the same number of lines: siblings with the same tag and class,
   // starting at the same height, each with a heading.
   // Lines of the text itself: the heading's box may be stretched by its grid row (aligned zones).

@@ -17,7 +17,7 @@
 - **Search placeholder:** color `mute`.
 - **Separator:** under the search. height 0; border-top `line-thin` solid `hairline`.
 - **Results:** a `listbox` holding the Menu's items, group titles and separators; it scrolls past its max-height. position static; padding `space-1` `space-2`; animation 0s; outline 0; border-radius 0 0 `rounded-md` `rounded-md`; max-height calc(`space-48` + `space-32`); min-width 0; width auto.
-- **Group:** a `group` with the group's accessible label. display flex; flex-direction column.
+- **Group:** a `group` with `aria-labelledby` pointing to its title. display flex; flex-direction column.
 - **Group title:** padding-top `space-2`; padding-inline `space-3`; font-family `label-md`; font-size `label-md`; font-weight `label-md`; line-height `label-md`; letter-spacing `label-md`.
 - **Result:** padding 0 `space-3`. One result is highlighted at a time: the first, then the one the arrows or a moving mouse reach. Enter runs it.
 - **Result hover:** a result not highlighted: background none, changed in 0s, so hover adds no second highlight.

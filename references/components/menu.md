@@ -21,7 +21,7 @@
 - **Selected option:** a single choice (`aria-selected="true"`, `aria-checked="true"`), and the current link of a navigation menu (`aria-current`): a check on the right. font-family `title-sm`; font-size `title-sm`; font-weight `title-sm`; line-height `title-sm`; letter-spacing `title-sm`.
 - **Matched text:** the part of a label that matches the typed text, a `mark`. background none; color inherit; font-family `title-sm`; font-size `title-sm`; font-weight `title-sm`; line-height `title-sm`; letter-spacing `title-sm`.
 - **Disabled item:** it stays reachable with the arrows (`aria-disabled`) and a Tooltip says why when it is not obvious. color `stone`; cursor not-allowed; background none, also on hover.
-- **Destructive item:** last, in a group of its own, with `ink` text (red text fails contrast on the active surface in dark). Its icon: color `danger`.
+- **Destructive item:** last, after a separator and outside every `group` (All or none in Hierarchy), with `ink` text (red text fails contrast on the active surface in dark). Its icon: color `danger`.
 - **Item list:** the items of a `listbox` or a group. display flex; flex-direction column.
 - **Separator:** between groups. position relative; height `space-4`; flex none.
 - **Separator line:** the separator's ::before, inset so it lines up with the text. content ""; position absolute; top `space-2`; inset-inline `space-3`; border-top `line-thin` solid `hairline`.
