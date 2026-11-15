@@ -397,8 +397,9 @@ async ({touch, zoom, tables}) => {
       const texts = rows.filter(r => r[1] && r[9]).flatMap(r => first(r[0]).map(el => [r, el, el.getBoundingClientRect()]));
       const point = texts.find(t => t[0][6]);
       for (const [row, el, b] of point ? texts : []) {
-        const f = point[2];
-        if (!row[6] && (b.top < f.top - 1 || (b.top <= f.top + 1 && b.left < f.left - 1)))
+        const f = point[2], rtl = style(root).direction === 'rtl';
+        // language.md: in right-to-left, left and right swap
+        if (!row[6] && (b.top < f.top - 1 || (b.top <= f.top + 1 && (rtl ? b.right > f.right + 1 : b.left < f.left - 1))))
           add('✗', 'The One Winner Rule', `${name(el)} comes before the focal point ${name(point[1])}`, el);
       }
       for (const [element, role, weight, color, space, target, , inline, label] of rows) {
