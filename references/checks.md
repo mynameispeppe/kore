@@ -61,7 +61,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 **Control** (Button, Form fields, Select, Checkbox and radio, Switch, Segmented control, Tabs, Password, Combobox, Number stepper, Slider, Date picker, File upload, Chip, Pagination, Steps)
 - [ ] The variant follows the action's role: one `primary` per decision, a `secondary` next to a primary or a destructive (Secondary alone), a destructive action in its own group (Button, The One Primary Rule).
 - [ ] Labels in sentence case, other than "OK", "Yes" or "Submit"; labeled buttons carry no icon (Button).
-- [ ] Limits and formats shown before use, validation when leaving the field, paste never blocked (Usability).
+- [ ] Paste never blocked (Usability).
 
 **Link** (text links, links in navigation, Breadcrumb, Footer, Steps, a button that takes the user to another page)
 - [ ] A link is an `<a href>`; with the look of a button it follows Button and keeps its label color on focus (Button, States).
@@ -120,6 +120,8 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] Response times kept: 100ms, 300ms, 1s, 3s (Usability).
 - [ ] Every animation acknowledges an action, makes a state change or a spatial relationship legible, keeps continuity through a change, or directs attention to a meaningful moment (Motion).
 - [ ] `danger` marks an error or a destructive action, `success` a success, `warning` a warning, `info` information (Meaning).
+- [ ] A field shows its limits and formats before the user acts (Usability).
+- [ ] A field is validated when the user leaves it (Form fields).
 - [ ] The first-time user's path is complete on its own; accelerators for experts sit beside it (Usability).
 
 ## Deliver
