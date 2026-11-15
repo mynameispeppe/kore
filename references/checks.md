@@ -41,7 +41,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 ## Judge, always
 
-- [ ] Color never alone, semantic colors keep their role, the accent marks one moment, one `primary` per decision (Meaning).
+- [ ] Color never alone, the accent marks one moment, one `primary` per decision (Meaning).
 - [ ] Every string passes Copy 1, 2, 4 and 6 to 10; AI tells 1, 2, 6, 7, 9, 11 and 13 appear only when the user asks for them (Copy, AI tells).
 - [ ] State lives in the URL (Usability).
 - [ ] Dates, currencies and units in the user's locale (Ask later, when it matters).
@@ -119,6 +119,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] Each moment gets its component: page state an Alert, a passing result a Toast, loading content a skeleton, a wait a bar (Alert, Toast, Progress).
 - [ ] Response times kept: 100ms, 300ms, 1s, 3s (Usability).
 - [ ] Every animation acknowledges an action, makes a state change or a spatial relationship legible, keeps continuity through a change, or directs attention to a meaningful moment (Motion).
+- [ ] `danger` marks an error or a destructive action, `success` a success, `warning` a warning, `info` information (Meaning).
 - [ ] The first-time user's path is complete on its own; accelerators for experts sit beside it (Usability).
 
 ## Deliver
