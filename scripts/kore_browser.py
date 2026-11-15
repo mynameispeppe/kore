@@ -388,6 +388,9 @@ async ({touch, zoom, tables}) => {
   const months = new Set([...['long', 'short']].flatMap(month => Array.from({length: 12}, (_, m) =>
     new Intl.DateTimeFormat(document.documentElement.lang || undefined, {month}).format(new Date(2000, m, 1)).replace(/\.$/, '').toLowerCase())));
   const currencies = new Set(Intl.supportedValuesOf('currency'));
+  const format = v => /[$€£¥]\s*\d|\d\s*[$€£¥]/.test(v) || (/\d/.test(v) && v.split(/[\s\d.,]+/).some(w => currencies.has(w))) ? 'price'
+    : /^\d{4}-\d{2}-\d{2}/.test(v) || /^\d{1,2}[\/.]\d{1,2}[\/.]\d{2,4}$/.test(v) || (/\d/.test(v) && v.toLowerCase().split(/[\s,]+/).some(w => months.has(w.replace(/\.$/, '')))) ? 'date'
+    : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? 'email' : '';
   for (const [table, rows] of zoom ? [] : tables) {
     for (const root of document.querySelectorAll(`[data-kore="${table}"]`)) {
       const first = element => [...root.querySelectorAll(`[data-kore-element="${element}"]`)].filter(el => el.closest('[data-kore]') === root);
@@ -427,11 +430,10 @@ async ({touch, zoom, tables}) => {
           const bad = shared ? style(shared.parentElement) : after.map(n => style(n.parentElement)).find(s => !(parseFloat(s.fontSize) < parseFloat(size) && s.color === probed('color', 'var(--mute)')));
           if (bad) add('✗', 'Text hierarchy', `${name(el)}: the words after the figure ${figure} are ${bad.fontSize} ${bad.color}; they are smaller than the figure and in mute`, el);
         }
-        // Value labels are a last resort: a value whose format says what it is stands alone.
-        const value = label && found.length && first(target || '')[0]?.innerText.trim();
-        if (value && (/[$€£¥]\s*\d|\d\s*[$€£¥]/.test(value) || (/\d/.test(value) && value.split(/[\s\d.,]+/).some(w => currencies.has(w))) || /^\d{4}-\d{2}-\d{2}/.test(value) || /^\d{1,2}[\/.]\d{1,2}[\/.]\d{2,4}$/.test(value)
-            || (/\d/.test(value) && value.toLowerCase().split(/[\s,]+/).some(w => months.has(w.replace(/\.$/, '')))) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)))
-          add('✗', 'Text hierarchy', `${name(found[0])} names the value ${value}, whose format already says what it is: the value stands alone`, found[0]);
+        // Value labels are a last resort: a value whose format says what it is stands alone when it is the only one of that format in its root.
+        const value = label && found.length && first(target || '')[0]?.innerText.trim(), kind = value && format(value);
+        if (kind && [...root.querySelectorAll('[data-kore-element]')].filter(el => el.closest('[data-kore]') === root && !el.querySelector('[data-kore-element]') && format(el.innerText.trim()) === kind).length < 2)
+          add('✗', 'Text hierarchy', `${name(found[0])} names the value ${value}, the only ${kind} of ${name(root)}: the value stands alone`, found[0]);
         // Space: the gap to the target's box, vertical when one box ends above the other starts, else horizontal.
         const other = first(target || '')[0];
         if (!space || !found.length || !other) continue;

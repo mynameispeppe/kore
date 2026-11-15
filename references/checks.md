@@ -15,7 +15,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Each table of `KORE-DECISIONS.md` uses at most three font sizes on its text rows with a Level (Text hierarchy).
 - [ ] When an element's text opens with a figure, the words after it are smaller and in `mute` (Text hierarchy).
 - [ ] A row citing Consequences are never quiet has Level —, a 500 role and `danger` (Text hierarchy).
-- [ ] A row citing Value labels are a last resort has Level —, `body-md` 400 `mute` and a Space to its value, which is no price, date or email (Text hierarchy).
+- [ ] A row citing Value labels are a last resort has Level —, `body-md` 400 `mute` and a Space to its value, which is no price, date or email unless another value of its section or component has the same format (Text hierarchy).
 - [ ] Each element of a section or component holds its own text (Copy).
 - [ ] Every color, space, size, radius, shadow, duration, easing, z-index, breakpoint and opacity comes from a token or from a value a rule computes (Never invent values).
 - [ ] Spacing on the scale, sizes multiples of 8, padding uniform, gaps on the container (Spacing).
