@@ -54,7 +54,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 **Container** (Cards, List rows, Table, Tabs, Accordion, Empty state, Charts, Carousel, Footer, Sidebar, Cookie banner)
 - [ ] Card zones in the fixed order; no card inside a card; no rounded block with a background unless it is a clickable unit (Cards).
 - [ ] Inside less than between: title and subtitle `space-1`, header and content `space-6`, rows `space-3`, rows and actions `space-8` (Cards, The Distance Ratio Rule).
-- [ ] No value repeats without a new purpose; roles differ by at least one clear step in size or weight (Semantic weight).
+- [ ] Roles differ by at least one clear step in size or weight (Semantic weight).
 - [ ] Repeated instances share one priority and one structure; equal heights only for the same structure (Semantic weight, Cards).
 - [ ] Actions at the end, right-aligned, confirm last (Scanning patterns).
 
