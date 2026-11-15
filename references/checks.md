@@ -16,6 +16,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] When an element's text opens with a figure, the words after it are smaller and in `mute` (Text hierarchy).
 - [ ] A row citing Consequences are never quiet has Level —, a 500 role and `danger` (Text hierarchy).
 - [ ] A row citing Value labels are a last resort has Level —, `body-md` 400 `mute` and a Space to its value, which is no price, date or email unless another value of its section or component has the same format (Text hierarchy).
+- [ ] A row citing Specs lead with the label has Level —, `body-md` 400 `ink` and a Space to its value, which is `body-md` 400 `body` (Text hierarchy).
 - [ ] Each element of a section or component holds its own text (Copy).
 - [ ] Every color, space, size, radius, shadow, duration, easing, z-index, breakpoint and opacity comes from a token or from a value a rule computes (Never invent values).
 - [ ] Spacing on the scale, sizes multiples of 8, padding uniform, gaps on the container (Spacing).
@@ -96,6 +97,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 
 - [ ] Each group's Question is the one its user asks: read as that user, it names what they want to know or do there (The reader's question).
 - [ ] Each primitive of a Shape is the one whose Use for fits the items it holds (Layout primitives).
+- [ ] A list cites Specs lead with the label only when its user scans the labels to find a value (Text hierarchy).
 - [ ] The code builds the Shape as written: each primitive of the Shape is how its items sit on screen (Layout primitives).
 - [ ] Every consequence of an action is a row citing Consequences are never quiet, with an icon only when its words alone do not read as one (Text hierarchy).
 - [ ] A value label and its value merge into one phrase whenever the words allow it (Text hierarchy).

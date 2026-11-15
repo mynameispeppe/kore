@@ -76,10 +76,16 @@ def component_names():
             for p in (KORE / "references" / "components").glob("*.md")}
 
 
+# Rule cited by a label row: (what it is, its style, the rule's name).
+LABELS = {"value labels are a last resort": ("a value label", "body-md 400 mute", "Value labels are a last resort"),
+          "specs lead with the label": ("a spec label", "body-md 400 ink", "Specs lead with the label")}
+
+
 def check_values(where, body, roles, colors, spaces, components, primary_group=None, shape_items=()):
     """The values of each row against the rules they come from: Roles and
     sizes, From role to style, Typographic levels, the space scale."""
     errors, groups = [], {}
+    styles = {row[0]: row[4] for row in body}
     bodies = sorted((r for r in roles if r.startswith("body-")), key=lambda r: -roles[r][0])
     for row in body:
         name, group, level, style, space, rule = row[0], row[2], row[3], row[4], row[5], row[6].lower()
@@ -90,13 +96,17 @@ def check_values(where, body, roles, colors, spaces, components, primary_group=N
                 errors.append(f"{where}, {name}: a consequence has Level —, not {level} (Consequences are never quiet)")
             if not role or roles[role][1] != 500 or "danger" not in words:
                 errors.append(f"{where}, {name}: a consequence is a 500 role in danger, not {style} (Consequences are never quiet)")
-        elif "value labels are a last resort" in rule:
+        elif label := next((v for k, v in LABELS.items() if k in rule), None):
+            kind, want, cite = label
             if level != "—":
-                errors.append(f"{where}, {name}: a value label has Level —, not {level} (Value labels are a last resort)")
-            if words != ["body-md", "400", "mute"]:
-                errors.append(f"{where}, {name}: a value label is body-md 400 mute, not {style} (Value labels are a last resort)")
+                errors.append(f"{where}, {name}: {kind} has Level —, not {level} ({cite})")
+            if words != want.split():
+                errors.append(f"{where}, {name}: {kind} is {want}, not {style} ({cite})")
             if space.strip() == "—":
-                errors.append(f"{where}, {name}: a value label has a Space to its value, not — (Value labels are a last resort)")
+                errors.append(f"{where}, {name}: {kind} has a Space to its value, not — ({cite})")
+            value = re.match(r"space-\d+ to (.+)$", space.strip())
+            if cite == "Specs lead with the label" and value and styles.get(value.group(1), "body-md 400 body").split() != ["body-md", "400", "body"]:
+                errors.append(f"{where}, {name}: its value {value.group(1)} is body-md 400 body, not {styles[value.group(1)]} ({cite})")
         elif level == "—" and not (re.search(r"\bh[1-6]\b|\b\d+:\d+\b", f"{name} {style}") or (role or "").startswith("label-")
                                  or any(re.search(rf"\b{re.escape(c)}\b", style.lower()) for c in components)):
             errors.append(f"{where}, {name}: Level — is only for a heading, a label, a whole component or an image; "
