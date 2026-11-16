@@ -79,6 +79,7 @@
 
 - **An error message** says **what** went wrong, **why** when useful, and **how** to fix it. Missing one of the three makes it incomplete.
 - **Never show error codes** to users; log them instead.
+- **Script errors.** The page loads and scrolls through with no uncaught exception and no `console.error`: a script logs an error only when something really fails, such as a request with no answer or a refused save.
 - **Neutral, solution-oriented language**; the user is never blamed.
 - **Show the message inline** next to the field that caused it, not in a generic toast at the top.
 - **Network failures.** Content that fails to load is replaced by an error alert with "Try again" ("Couldn't load your orders. Check your connection."), never an endless skeleton. An action that fails (save, send) shows an error toast with "Try again" and keeps what the user typed. While offline (`offline` and `online` events), an alert sits at the top of the main content and goes away when the connection comes back. A request with no answer after 10 seconds counts as failed, except an operation that shows a progress bar.

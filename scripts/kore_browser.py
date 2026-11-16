@@ -14,6 +14,7 @@ a PNG at each width of SHOTS, in each theme, from the same visit.
 """
 import os
 import kore_images
+import kore_usability
 from collections import defaultdict
 from urllib.parse import urlparse
 
@@ -1138,11 +1139,14 @@ def forcer(page):
     return force
 
 
-def load(browser, url, theme, selector, width, touch, reduced="reduce"):
-    """A new context and page, with reduced motion unless reduced is "no-preference"."""
+def load(browser, url, theme, selector, width, touch, reduced="reduce", errors=None):
+    """A new context and page, with reduced motion unless reduced is "no-preference".
+    A list errors gets the script errors of the page, from its load."""
     context = browser.new_context(viewport={"width": width, "height": HEIGHT}, color_scheme=theme,
                                   has_touch=touch, reduced_motion=reduced)
     page = context.new_page()
+    if isinstance(errors, list):
+        kore_usability.listen(page, errors)
     from playwright.sync_api import TimeoutError as PageTimeout
     try:
         page.goto(url, wait_until="networkidle")
@@ -1182,7 +1186,8 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
             for theme, selector in themes.items():
                 for width in WIDTHS:
                     touch = width < TOUCH_BELOW
-                    context, page = load(browser, url, theme, selector, width, touch)
+                    errors = []
+                    context, page = load(browser, url, theme, selector, width, touch, errors=errors if whole else None)
                     marked |= set(page.evaluate("names => names.filter(n => document.querySelector(`[data-kore=\"${CSS.escape(n)}\"]`))",
                                                 [table for table, _ in tables]))
                     for kind, rule, message in page.evaluate(MEASURE, {"touch": touch, "zoom": False, "tables": tables, "mode": mode, "whole": whole}):
@@ -1190,6 +1195,8 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
                     page.evaluate(SCROLL_THROUGH)
                     for kind, rule, message in page.evaluate(IMAGES):
                         seen[(kind, rule, message)].append((width, theme))
+                    for text in errors:
+                        seen[("✗", "Usability", f'the page logs an error: "{text}": fix the script so the page loads and scrolls without errors')].append((width, theme))
                     if shots and width in SHOTS:
                         path = shots / f"{name}-{width}-{theme}.png"
                         page.screenshot(path=str(path), full_page=True)

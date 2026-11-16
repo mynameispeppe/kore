@@ -67,6 +67,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Sibling texts outside an `<ol>` open without 01, 02; on an English page no text reads Scroll or Scroll to explore; a Badge or a Chip sits outside the box of an image; the Hero holds no strip of three words joined by ·; two button-look links of one `data-kore` root with the same `href` carry the same label (AI tells).
 - [ ] No horizontal scroll from 320 to 2560px, nothing cut at 200% zoom, `100dvh` for full height (Extremes).
 - [ ] Images: format, `srcset`, reserved size, loading, `alt`, every file loaded (Images).
+- [ ] The page loads and scrolls through with no uncaught exception and no `console.error` (Usability).
 - [ ] Selection, caret, scrollbars, links and numerals themed (Browser surfaces).
 - [ ] Every line of the component's file, and of the files read through its Uses line, holds (Components).
 
