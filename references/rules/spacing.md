@@ -40,7 +40,7 @@
 - **Alignment confirms the group.** Grouped elements share an axis (left edge, baseline or grid column); proximity without alignment looks accidental.
 - **Density never collapses groups.** When content must be dense, keep the ratio and reduce the elements (fewer, smaller), never the ratio.
 - **Space the siblings from the parent.** Put the gap on the container (flex or grid gap, stack spacing) instead of margins on each child, so gaps never collapse or double.
-- **Grouping actions.** Related actions sit `space-2` apart (`space-3` between 32px buttons, Adjacent targets); different groups at least `space-4`; a destructive action is always its own group. Rare actions go in a "More" menu, grouped by category with space or a label, destructive last.
+- **Grouping actions.** Related actions sit `space-2` apart (`space-3` between 32px buttons, Adjacent targets); different groups at least `space-4`; a destructive action that is not the main action is its own group; as the main action of a confirmation it sits next to Cancel (Dialog). Rare actions go in a "More" menu, grouped by category with space or a label, destructive last.
 
 ## Accessibility
 

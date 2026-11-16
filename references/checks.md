@@ -7,7 +7,7 @@ Read before delivering anything built or changed, reused code included (Building
 
 ## Measure
 
-Measured on the result, never assumed. Run Kore's script on the project, where `<kore>` is the folder that holds Kore's `SKILL.md`: `python3 <kore>/scripts/kore_check.py <project folder> --url <page>`, with one `--url` for each page built or changed: the address the project's server gives, or `file://` for a plain HTML file. With `--url` the script also opens each page in Chrome or Edge, in each theme the token file defines (its `color-scheme`), from 320 to 2560px wide and at 200% text size; it needs Playwright (`python3 -m pip install --user playwright`). When Playwright is missing, ask the user to install it. When nothing can be opened in a browser, or the user declines, run it without `--url` and check by hand the boxes on the rendered page (horizontal scroll, text at 200%, touch targets, contrast), saying so in the report. Fix every ✗, check every ? against the rule it names, and run it again until it exits with 0. A ✗ you can prove false (the script misreads the code) is waived in the code, never by changing the code to please the script: `kore-ignore-next-line <Rule>: <who decided: evidence>` in a comment above the line, or `data-kore-ignore="<Rule>: <reason>"` on the element of a page; the report names every waiver. When unsure, ask the user in one line; then check by hand the boxes it cannot measure. Without a terminal or without Python, check every box by hand and say so in the report.
+Measured on the result, never assumed. Run Kore's script on the project, where `<kore>` is the folder that holds Kore's `SKILL.md`: `python3 <kore>/scripts/kore_check.py <project folder> --url <page>`, with one `--url` for each page built or changed: the address the project's server gives, or `file://` for a plain HTML file. With `--url` the script also opens each page in Chrome or Edge, in each theme the token file defines (its `color-scheme`), from 320 to 2560px wide and at 200% text size; it needs Playwright (`python3 -m pip install --user playwright`). When Playwright is missing, ask the user to install it. When nothing can be opened in a browser, or the user declines, run it without `--url` and check by hand the boxes on the rendered page (horizontal scroll, text at 200%, touch targets, contrast), saying so in the report. Fix every ✗, check every ? against the rule it names, and run it again until it exits with 0. A ✗ you can prove false (the script misreads the code), or a ✗ on what the user asked for, is waived in the code, never by changing the code to please the script: `kore-ignore-next-line <Rule>: <who decided: evidence>` in a comment above the line, or `data-kore-ignore="<Rule>: <reason>"` on the element of a page; the report names every waiver. When unsure, ask the user in one line; then check by hand the boxes it cannot measure. Without a terminal or without Python, check every box by hand and say so in the report.
 
 **Bounded verification** (as impeccable): look at the result through `--shots <folder>`, with the folder outside the project (the agent's temporary folder): the script saves each page, whole, at 375 and 1440px in each theme the token file defines, and lists the files. Read each once; fix everything they show in one batch; take at most one more round, then stop. Never write your own browser scripts, and no automated tests the user did not ask for.
 
@@ -44,7 +44,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Color never alone, the accent marks one moment, one `primary` per decision (Meaning).
 - [ ] Every string passes Copy 1, 2, 4 and 6 to 10; AI tells 1, 2, 6, 7, 9, 11 and 13 appear only when the user asks for them (Copy, AI tells).
 - [ ] State lives in the URL (Usability).
-- [ ] Dates, currencies and units in the user's locale (Ask later, when it matters).
+- [ ] Dates, currencies and units in the page's locale (Page language).
 - [ ] No invented content: numbers, prices, quotes, logos and names come from the user (Product file).
 
 ## Judge, by context
@@ -73,7 +73,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 **Section of a page** (a hero, an about, features, any part with its own heading)
 - [ ] The heading is an `h2` in `headline-md`, regions inside it `h3` in `headline-sm`, no level skipped (Typographic levels).
 - [ ] The section's text, its heading included, comes from the user; when it is missing, ask (Start here).
-- [ ] Prose at the reading measure; an image outside a card has radius `xl` and the ratio of the original (Typography rules, Radius by role, Images).
+- [ ] Prose at the reading measure; an image outside a card has radius `xl` (Typography rules, Radius by role, Images).
 - [ ] Actions at the end of the content they act on, right-aligned (Scanning patterns).
 - [ ] Sections `space-12` apart in App mode, `space-32` / `space-48` in Site mode (Proximity and hierarchy).
 
@@ -85,7 +85,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 
 **Site mode** (`references/site.md`)
 - [ ] The hero holds only title, subtitle and calls to action; the title is the `h1` (Hero).
-- [ ] At most four items per section; quotes at most three lines with the name and role the user gives; profiles on other sites as Social links (Sections).
+- [ ] At most four items per section; quotes at most 25 words with the name and role the user gives; profiles on other sites as Social links (Sections).
 - [ ] One focal moment per page, the hero; each section under it reveals once on scroll (One focal moment per page, Scroll reveal).
 
 ## Closed list

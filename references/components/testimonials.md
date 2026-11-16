@@ -4,7 +4,7 @@
 
 A section of the page (site.md Testimonials): what the product's clients say about it, each quote with its author.
 
-- **Quotes:** from 1 to 4, the words, names and roles the user gives, in the user's order (Never invent values). A quote is at most three lines (site.md Sections).
+- **Quotes:** from 1 to 4, the words, names and roles the user gives, in the user's order (Never invent values). A quote keeps the length of the site's quotes (site.md Sections).
 - **Logo or Avatar:** each quote shows its client's logo or its author's Avatar, never both. The user chooses one form for the whole section; when the user gives only logos or only photos, that one; with neither, the name and the role alone. A quote without the chosen form: without a photo, the Avatar with the author's initials (Avatar); without a logo, no logo, its quote still at the height of the others' quotes (Zones aligned).
 - **Author:** the name in `title-sm` `ink`, the role in `body-md` `mute` `space-1` (4px) under it. The Avatar sits at the start of the name and the role, `space-3` (12px) from them, centred on the two.
 - **Logo:** above the quote, one color in `mute`, `space-8` (32px) tall (Logo wall, Logos).

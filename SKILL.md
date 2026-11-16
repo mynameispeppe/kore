@@ -120,7 +120,7 @@ Everything else starts from a default and is asked only when the work reaches it
 
 | Topic | Default until asked | Ask when |
 |---|---|---|
-| Dates, currencies and units | Those of the user's locale | The first date, price or measure goes on screen |
+| Dates, currencies and units | Those of the page's locale (Page language) | The first date, price or measure goes on screen |
 | Identity | The active values in `references/tokens.yaml` | The user asks to change colors or fonts: offer the palettes, `canvas` and font options in `references/candidates.md`, or apply their palette with the Custom palette method |
 
 ### Behaviour rules

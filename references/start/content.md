@@ -1,6 +1,6 @@
 # Content
 
-**Know the content before building.** Its texts, items, fields and actions come from the request, `PRODUCT.md` or the user: when they are missing, ask for them, one per message. When the user has no content yet and says to go on:
+**Know the content before building.** Its texts, items, fields and actions come from the request, `PRODUCT.md` or the user: when they are missing, ask for them, one per message. Each text the user gave carries `data-kore-user` on its element; `kore_check` runs Copy on every other text. When the user has no content yet and says to go on:
 
 - **Images** become placeholders (Images, Missing image).
 - **Texts:** the agent writes them (titles, descriptions, section texts, button labels), in the interface's language, complete and specific to the request, never placeholder text. When all are written, they go through Copy, humanizer included.
