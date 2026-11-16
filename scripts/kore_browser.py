@@ -22,9 +22,8 @@ HEIGHT = 800
 INSTALL = ("python3 -m pip install --user playwright, then install Google Chrome "
            "or set KORE_BROWSER to a Chromium-based browser")
 
-# Runs in the page. Returns [kind, rule, message] for each finding.
-MEASURE = r"""
-async ({touch, zoom, tables, mode}) => {
+# Opens both page scripts: out, add, doc, vw, style, shown, name.
+HELPERS = r"""
   const out = [];
   // A finding on an element the page waives (data-kore-ignore="<Rule>: <reason>") comes back as ignored.
   const add = (kind, rule, msg, ...els) => {
@@ -38,7 +37,6 @@ async ({touch, zoom, tables, mode}) => {
     }
     out.push([kind, rule, msg]);
   };
-  const where = zoom ? 'Zoom' : 'Extremes';
   const doc = document.documentElement;
   const vw = doc.clientWidth;
   const style = el => getComputedStyle(el);
@@ -50,6 +48,12 @@ async ({touch, zoom, tables, mode}) => {
     const text = (el.getAttribute('aria-label') || el.innerText || el.value || '').trim().replace(/\s+/g, ' ');
     return text ? `${s} "${text.slice(0, 30)}"` : s;
   };
+"""
+
+# Runs in the page. Returns [kind, rule, message] for each finding. whole: the page is measured whole, not one #id.
+MEASURE = r"""
+async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
+  const where = zoom ? 'Zoom' : 'Extremes';
   const scrollTo = el => el.scrollIntoView({block: 'center', inline: 'center', behavior: 'instant'});
   // Measure the end state: scroll the page once so scroll reveals run, then finish every animation
   // and transition that ends (an endless spinner keeps turning).
@@ -457,10 +461,28 @@ async ({touch, zoom, tables, mode}) => {
     const s = style(el), r = el.getBoundingClientRect();
     return r.width <= 1 || r.height <= 1 || s.clip === 'rect(0px, 0px, 0px, 0px)' || /^inset\(50%/.test(s.clipPath);
   };
-  const targets = [...document.querySelectorAll(
+  const focusable = [...document.querySelectorAll(
     'a[href], button, input:not([type=hidden]), select, textarea, summary, [tabindex]:not([tabindex="-1"]), ' +
     '[role=button], [role=link], [role=tab], [role=checkbox], [role=radio], [role=switch], [role=menuitem], [role=option]')]
-    .filter(el => !el.closest('[inert], [aria-hidden=true]') && !el.matches(':disabled') && shown(el) && !sronly(el));
+    .filter(el => !el.closest('[inert], [aria-hidden=true]') && !el.matches(':disabled') && shown(el));
+  const targets = focusable.filter(el => !sronly(el));
+  // Skip link (Accessibility): the first focusable element links to <main>'s id and stays hidden, clipped or above
+  // the page, until focused; its focused place is measured with the focus forced (FOCUSED).
+  const skip = whole && !zoom && focusable[0], main = document.querySelector('main');
+  if (skip && !(main && main.id && skip.matches('a[href]') && skip.getAttribute('href') === '#' + main.id))
+    add('✗', 'Accessibility', `${name(skip)} is the first focusable element: make it a Skip link to the id of <main>`, skip);
+  else if (skip && !sronly(skip) && skip.getBoundingClientRect().bottom > 0)
+    add('✗', 'Accessibility', `${name(skip)} is the Skip link: hide it until it has focus`, skip);
+  else if (skip) skip.setAttribute('data-kore-focus', 'skip');
+  // Focus never covered (Accessibility): a fixed or sticky bar as wide as the screen at the top or bottom edge
+  // leaves <html> a scroll-padding on that edge of at least its height.
+  for (const el of whole && !zoom ? everyShown : []) {
+    const s = style(el), r = el.getBoundingClientRect();
+    if (!['fixed', 'sticky'].includes(s.position) || r.width < vw - 0.5) continue;
+    for (const edge of ['top', 'bottom'])
+      if (s[edge] === '0px' && (parseFloat(style(doc)[`scrollPadding${edge === 'top' ? 'Top' : 'Bottom'}`]) || 0) < r.height - 0.5)
+        add('✗', 'Accessibility', `${name(el)} is ${s.position} at the ${edge} edge: give <html> a scroll-padding-${edge} of at least its height, so it never covers the focus`, el);
+  }
   const owns = (el, hit) => hit && (el.contains(hit) || [...(el.labels || [])].some(l => l.contains(hit)));
   const inList = el => el.localName === 'a' && el.parentElement && el.parentElement.localName === 'li';
   const inText = el => el.localName === 'a' && [...el.parentElement.childNodes]
@@ -810,6 +832,8 @@ async ({touch, zoom, tables, mode}) => {
     const s = style(el);
     return rgba(s.backgroundColor)[3] > 0 || s.boxShadow !== 'none' || sides.some(d => parseFloat(s[`border${d}Width`]) > 0 && rgba(s[`border${d}Color`])[3] > 0);
   });
+  // Button and States: each keeps its label color on focus, measured with the focus forced (FOCUSED).
+  looks.forEach((a, i) => { a.setAttribute('data-kore-focus', `link ${i}`); a.dataset.koreColor = style(a).color; });
   const linked = new Map();  // root -> its button-look links that lead somewhere
   for (const a of looks) {
     const href = a.getAttribute('href').trim();
@@ -836,6 +860,27 @@ async ({touch, zoom, tables, mode}) => {
   return out;
 }
 """
+
+# Runs in the page with focus and focus-visible forced on every element MEASURE marked with data-kore-focus.
+FOCUSED = r"""
+() => {""" + HELPERS + r"""
+  // The first Tab reaches the Skip link at the top of the page; MEASURE leaves the page scrolled.
+  window.scrollTo({top: 0, left: 0, behavior: 'instant'});
+  for (const a of document.getAnimations()) { try { a.finish(); } catch (e) {} }
+  for (const el of document.querySelectorAll('[data-kore-focus]')) {
+    const s = style(el), r = el.getBoundingClientRect();
+    if (el.dataset.koreFocus === 'skip') {
+      const start = s.direction === 'rtl' ? vw - r.right : r.left;
+      if (Math.round(start) !== 8 || Math.round(r.top) !== 8)
+        add('✗', 'Accessibility', `${name(el)} is the Skip link: on focus, show it space-2 (8px) from the top start corner`, el);
+    } else if (s.color !== el.dataset.koreColor || !s.textDecorationLine.includes('underline') || s.textDecorationThickness !== '2px' ||
+               s.textUnderlineOffset !== '4px' || (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0))
+      add('✗', 'States', `${name(el)} is a link with the look of a button: on focus it keeps its label color, takes a 2px underline at a 4px offset and no outline`, el);
+  }
+  return out;
+}
+"""
+
 
 # Runs in the page before and after the root font size doubles: the font
 # size of each element that holds text, in page order.
@@ -912,17 +957,17 @@ def shot_names(urls):
 
 
 def forcer(page):
-    """force(selector, pseudo-class or None): forces hover, focus-visible or active on the first element the selector
-    finds, or clears it. One CDP session for the page: a state another session forced would stay on."""
+    """force(selector, pseudo-class, ...): forces hover, focus, focus-visible or active on the first element the
+    selector finds; with None or nothing, clears it. One CDP session for the page: a state another session forced would stay on."""
     cdp = page.context.new_cdp_session(page)
     cdp.send("DOM.enable")
     cdp.send("CSS.enable")
     doc = cdp.send("DOM.getDocument")["root"]["nodeId"]
 
-    def force(selector, state):
+    def force(selector, *states):
         node = cdp.send("DOM.querySelector", {"nodeId": doc, "selector": selector})["nodeId"]
         if node:  # no match: the caller's measure reports it
-            cdp.send("CSS.forcePseudoState", {"nodeId": node, "forcedPseudoClasses": [state] if state else []})
+            cdp.send("CSS.forcePseudoState", {"nodeId": node, "forcedPseudoClasses": [s for s in states if s]})
     return force
 
 
@@ -966,19 +1011,27 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
             shots.mkdir(parents=True, exist_ok=True)
         for url, name in zip(urls, shot_names(urls)):
             seen = defaultdict(list)  # (kind, rule, message) → where it happens
+            whole = not urlparse(url).fragment
             for theme, selector in themes.items():
                 for width in WIDTHS:
                     touch = width < TOUCH_BELOW
                     context, page = load(browser, url, theme, selector, width, touch)
                     marked |= set(page.evaluate("names => names.filter(n => document.querySelector(`[data-kore=\"${CSS.escape(n)}\"]`))",
                                                 [table for table, _ in tables]))
-                    for kind, rule, message in page.evaluate(MEASURE, {"touch": touch, "zoom": False, "tables": tables, "mode": mode}):
+                    for kind, rule, message in page.evaluate(MEASURE, {"touch": touch, "zoom": False, "tables": tables, "mode": mode, "whole": whole}):
                         seen[(kind, rule, message)].append((width, theme))
                     if shots and width in SHOTS:
                         page.evaluate(SCROLL_THROUGH)
                         path = shots / f"{name}-{width}-{theme}.png"
                         page.screenshot(path=str(path), full_page=True)
                         saved.append(path)
+                    keys = page.evaluate("() => [...document.querySelectorAll('[data-kore-focus]')].map(el => el.dataset.koreFocus)")
+                    if keys:  # after the screenshot, which shows the page without focus
+                        force = forcer(page)
+                        for key in keys:
+                            force(f'[data-kore-focus="{key}"]', "focus", "focus-visible")
+                        for kind, rule, message in page.evaluate(FOCUSED):
+                            seen[(kind, rule, message)].append((width, theme))
                     context.close()
                 context, page = load(browser, url, theme, selector, ZOOM_WIDTH, False)
                 before = page.evaluate(FONT_SIZES)
@@ -988,7 +1041,7 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
                 if fixed:
                     seen[("✗", "Zoom", f"font size in px, does not follow the user's text size: {', '.join(fixed[:5])}")]\
                         .append(("200%", theme))
-                for kind, rule, message in page.evaluate(MEASURE, {"touch": False, "zoom": True, "tables": tables, "mode": mode}):
+                for kind, rule, message in page.evaluate(MEASURE, {"touch": False, "zoom": True, "tables": tables, "mode": mode, "whole": whole}):
                     seen[(kind, rule, message)].append(("200%", theme))
                 context.close()
             for (kind, rule, message), places in seen.items():

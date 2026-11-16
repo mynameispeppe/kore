@@ -50,7 +50,7 @@
 - **Adjacent targets** are at least `space-2` (8px) apart, measured between visible edges, and their 44px hit areas never overlap, so a finger never hits the wrong one: two 32px targets sit `space-3` (12px) apart, larger ones `space-2`.
 - **Never shrink spacing below the scale to fit content.** Change the layout instead: wrap, stack, scroll or cut content.
 - **Zoom.** Layouts must hold at 200% text zoom without overlapping or cutting text.
-- **Focus never covered.** An element fixed or sticky at an edge of the page sets a `scroll-padding` of its height on that edge, so it never covers the focused element (WCAG 2.4.11).
+- **Focus never covered.** An element fixed or sticky at an edge of the page sets a `scroll-padding` of at least its height on that edge, so it never covers the focused element (WCAG 2.4.11).
 - **Drag has an alternative.** Every drag can also be done with a single tap or click (on the target, or with buttons) and with the keyboard (WCAG 2.5.7).
 - **Skip link.** The first focusable element of every page is a "Skip to content" link that moves focus to `<main>`; hidden until focused, it then shows as an `elevated` button at the top start corner, `space-2` from the edges, `zIndex` `toast` (WCAG 2.4.1).
 - **Focus after a route change.** In a single-page app, focus moves to the new page's `<h1>` (`tabindex="-1"`) and the document title changes. A multi-page site does this on its own.

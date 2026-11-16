@@ -29,7 +29,9 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Shadows only on clickable elements; everything else a 1px border: `hairline` on containers, `hairline-medium` on labelled controls, `hairline-strong` on controls known only by their outline (Shadows, Contrast, AI tells).
 - [ ] Layers on the `zIndex` scale, floating layers never clipped (Stacking order).
 - [ ] Touch targets 44px, adjacent targets `space-2` apart (Accessibility).
+- [ ] A whole page opens with a Skip link to the id of `<main>`, hidden until focused, then `space-2` from the top start corner; a fixed or sticky bar as wide as the screen at the top or bottom edge has a `scroll-padding` of at least its height on that edge (Accessibility).
 - [ ] Every interactive element has all its states and the focus of States: corner marks, or the link focus underline on a link (States).
+- [ ] A link with the look of a button keeps its label color on focus and takes the link focus underline, with no outline (Button, States).
 - [ ] Every control has an accessible name, the role and keyboard use its file sets; decorative icons are hidden (Components, Icons).
 - [ ] `<html>` carries `lang` (Page language).
 - [ ] `<html>` carries `lang` with the country when the page shows a date, a price or a measure; dates with a month name, and numeric dates with the year and a day above 12, follow that locale (Page language).
@@ -72,13 +74,13 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 Every context the work touches applies. A link adds Link.
 
 **Link** (text links, links in navigation, Breadcrumb, Footer, Steps, a button that takes the user to another page)
-- [ ] A link with the look of a button follows Button and keeps its label color on focus (Button, States).
+- [ ] A link with the look of a button follows Button (Button).
 
 **Overlay** (Menu, Popover, Dialog, Sheet, Tooltip, Command palette)
 - [ ] Focus moves in on open and back to the trigger on close; Escape and a click outside close it (Overlay rules).
 
 **Screen or page**
-- [ ] Skip link, focus never covered, focus to the `h1` after a route change (Accessibility).
+- [ ] The focused Skip link is an `elevated` button at `zIndex` `toast`; focus moves to the `h1` after a route change (Accessibility).
 
 **Site mode** (`references/site.md`)
 - [ ] Each section under the hero reveals once on scroll (Scroll reveal).
