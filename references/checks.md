@@ -30,6 +30,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Every interactive element has all its states and the focus of States: corner marks, or the link focus underline on a link (States).
 - [ ] Every control has an accessible name, the role and keyboard use its file sets; decorative icons are hidden (Components, Icons).
 - [ ] `<html>` carries `lang` (Page language).
+- [ ] One `h1` per page (Typographic levels).
 - [ ] Fields carry no `onpaste` attribute (Usability).
 - [ ] Every link is an `<a>` with an `href`; `role="link"` sits on an `<a>` alone (Button).
 - [ ] A button's CSS keeps its label in the case it is written in (Button).
@@ -78,7 +79,6 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] Sections `space-12` apart in App mode, `space-32` / `space-48` in Site mode (Proximity and hierarchy).
 
 **Screen or page**
-- [ ] One `h1` per page (Typographic levels).
 - [ ] Page margins `space-4` on phones, `space-8` from `md`; content stops at `max-content` (Breakpoints).
 - [ ] Skip link, focus never covered, focus to the `h1` after a route change (Accessibility).
 

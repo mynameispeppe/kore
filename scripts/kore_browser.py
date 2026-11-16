@@ -118,6 +118,10 @@ async ({touch, zoom, tables}) => {
   };
 
   if (!document.documentElement.lang.trim()) add('✗', 'Page language', '<html> has no lang');
+  // One h1 per page; a URL with #id shows one component, not a page.
+  const h1s = [...document.querySelectorAll('h1')].filter(el => el.checkVisibility());
+  if (!location.hash && h1s.length !== 1)
+    add('✗', 'Typographic levels', h1s.length ? `the page has ${h1s.length} h1: ${h1s.map(name).join(', ')}` : 'the page has no h1', ...h1s);
 
   // Horizontal scroll, and what makes it.
   const wide = document.scrollingElement.scrollWidth;
