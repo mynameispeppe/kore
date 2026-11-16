@@ -24,7 +24,7 @@ HEIGHT = 800
 INSTALL = ("python3 -m pip install --user playwright, then install Google Chrome "
            "or set KORE_BROWSER to a Chromium-based browser")
 
-# Opens both page scripts: out, add, doc, vw, style, shown, name.
+# Opens both page scripts: out, add, doc, vw, style, shown, name, resolve.
 HELPERS = r"""
   const out = [];
   // A finding on an element the page waives (data-kore-ignore="<Rule>: <reason>") comes back as ignored.
@@ -49,6 +49,16 @@ HELPERS = r"""
     if (!el.id && cls) s += '.' + cls;
     const text = (el.getAttribute('aria-label') || el.innerText || el.value || '').trim().replace(/\s+/g, ' ');
     return text ? `${s} "${text.slice(0, 30)}"` : s;
+  };
+  // A token as the browser computes it, through one hidden tint made on first use; '' when the element has no such token.
+  let tint;
+  const resolve = (el, token, prop) => {
+    const v = style(el).getPropertyValue(token).trim();
+    if (!v) return '';
+    if (!tint) { tint = document.body.appendChild(document.createElement('span')); tint.style.display = 'none'; }
+    tint.style[prop] = '';
+    tint.style[prop] = v;
+    return getComputedStyle(tint)[prop];
   };
 """
 
@@ -198,16 +208,6 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
   }
   if (zoom) return out;
 
-  // A token as the browser computes it, through one hidden tint; '' when the element has no such token.
-  const tint = document.body.appendChild(document.createElement('span'));
-  tint.style.display = 'none';
-  const resolve = (el, token, prop) => {
-    const v = style(el).getPropertyValue(token).trim();
-    if (!v) return '';
-    tint.style[prop] = '';
-    tint.style[prop] = v;
-    return getComputedStyle(tint)[prop];
-  };
   const isButton = el => el.matches('button, [role=button], input[type=button], input[type=submit], input[type=reset]');
   const sides = ['Top', 'Right', 'Bottom', 'Left'];
   const everyShown = [...document.body.querySelectorAll('*')].filter(el => el !== tint && shown(el));
@@ -455,7 +455,7 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
     const n = q.innerText.trim().split(/\s+/).filter(Boolean).length;
     if (n > 25) add('✗', 'Sections', `${name(q)} holds ${n} words: a quote holds at most 25`, q);
   }
-  tint.remove();
+  if (tint) tint.remove();
 
   // Touch targets: the area around the centre reaches the target, a rounded corner included.
   // A visually hidden control (a skip link before its focus) is for the keyboard: no target.
@@ -837,6 +837,10 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
   });
   // Button and States: each keeps its label color on focus, measured with the focus forced (FOCUSED).
   // The Skip link, marked before, takes both measures.
+  // Button: at rest, no underline.
+  for (const a of looks)
+    if (style(a).textDecorationLine !== 'none')
+      add('✗', 'Button', `${name(a)} is a link with the look of a button: give it text-decoration none`, a);
   looks.filter(a => !a.dataset.koreFocus).forEach((a, i) => { a.setAttribute('data-kore-focus', `link ${i}`); a.dataset.koreColor = style(a).color; });
   const linked = new Map();  // root -> its button-look links that lead somewhere
   for (const a of looks) {
@@ -877,12 +881,15 @@ FOCUSED = r"""
       const start = s.direction === 'rtl' ? vw - r.right : r.left;
       if (Math.round(start) !== 8 || Math.round(r.top) !== 8)
         add('✗', 'Accessibility', `${name(el)} is the Skip link: on focus, show it space-2 (8px) from the top start corner`, el);
+      if (s.backgroundColor !== resolve(el, '--surface-card', 'backgroundColor') || s.zIndex !== resolve(el, '--zIndex-toast', 'zIndex'))
+        add('✗', 'Accessibility', `${name(el)} is the Skip link: on focus, show it as an elevated button (surface-card) at zIndex toast`, el);
     }
     // A link with the look of a button; the focused Skip link is one (spacing.md, Skip link).
     if (s.color !== el.dataset.koreColor || !s.textDecorationLine.includes('underline') || s.textDecorationThickness !== '2px' ||
         s.textUnderlineOffset !== '4px' || (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0))
       add('✗', 'States', `${name(el)} is a link with the look of a button: on focus it keeps its label color, takes a 2px underline at a 4px offset and no outline`, el);
   }
+  if (tint) tint.remove();
   return out;
 }
 """
