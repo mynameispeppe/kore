@@ -31,6 +31,8 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Every control has an accessible name, the role and keyboard use its file sets; decorative icons are hidden (Components, Icons).
 - [ ] `<html>` carries `lang` (Page language).
 - [ ] Fields carry no `onpaste` attribute (Usability).
+- [ ] Every link is an `<a>` with an `href`; `role="link"` sits on an `<a>` alone (Button).
+- [ ] A button's CSS keeps its label in the case it is written in (Button).
 - [ ] In `KORE-DECISIONS.md`, the heading of a page section is an `h2` in `headline-md`, the heading of a region inside it an `h3` in `headline-sm` (Typographic levels).
 - [ ] Only type roles; form text 16px; tabular figures in columns of numbers; paragraphs 45 to 75 characters (Typography rules).
 - [ ] Only `transform` and `opacity` animate, with motion tokens; reduced motion keeps meaning and drops movement (Motion).
@@ -63,7 +65,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] Labels other than "OK", "Yes", "No" or "Submit", never all caps (Button).
 
 **Link** (text links, links in navigation, Breadcrumb, Footer, Steps, a button that takes the user to another page)
-- [ ] A link is an `<a href>`; with the look of a button it follows Button and keeps its label color on focus (Button, States).
+- [ ] A link with the look of a button follows Button and keeps its label color on focus (Button, States).
 - [ ] Text links in `link` with a 1px underline at 4px; focus with the link focus underline (Browser surfaces, States).
 
 **Overlay** (Menu, Popover, Dialog, Sheet, Tooltip, Command palette)
@@ -83,7 +85,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 **Site mode** (`references/site.md`)
 - [ ] The hero holds only title, subtitle and calls to action; the title is the `h1` (Hero).
 - [ ] At most four items per section; quotes at most 25 words (Sections).
-- [ ] One focal moment per page, the hero; each section under it reveals once on scroll (One focal moment per page, Scroll reveal).
+- [ ] Each section under the hero reveals once on scroll (Scroll reveal).
 
 ## Closed list
 
@@ -147,6 +149,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] F pattern for dense content, Z for sparse (Scanning patterns).
 - [ ] Images, controls and the content of carousels keep the page margins and stop at `max-content` (Breakpoints).
 - [ ] Profiles on other sites are Social links (Sections).
+- [ ] One focal moment per page, the hero's entry (One focal moment per page).
 
 ## Deliver
 

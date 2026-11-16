@@ -447,6 +447,8 @@ def check_declarations(path, rules, colors, lengths, scale, replaced):
                 report("✗", path, line, "Right to left", f"{what} (use logical properties)")
             if re.search(r"(?<![dsl])\b\d+vh\b", value):
                 report("✗", path, line, "Extremes", f"{what} (use dvh, never vh)")
+            if prop == "text-transform" and value == "uppercase" and re.search(r"\bbutton\b|\.btn\b", selector):
+                report("✗", path, line, "Button", f"{what} on {selector} (a label keeps the case it is written in)")
             if prop == "forced-color-adjust" and value == "none":
                 report("✗", path, line, "Themes", f"{what} blocks forced colors")
             if prop == "box-shadow" and casts_shadow(value) and not INTERACTIVE.search(" ".join(chain)) \
@@ -490,6 +492,10 @@ def check_markup(path, text):
         label = re.sub(r"<[^>]+>|\{[^}]*\}", "", read).strip()  # text hidden from screen readers (a tooltip) is no label
         if "<svg" in inner.lower() and label and "spinner" not in inner.lower():
             report("?", path, line_of(text, m.start()), "Button", f"a labeled button with an icon (\"{label[:30]}\")")
+    for m in re.finditer(r"<a(?=[\s>])(?![^>]*(\bhref\b|\{\.\.\.|v-bind|routerLink))[^>]*>", text):
+        report("✗", path, line_of(text, m.start()), "Button", "an <a> without href (a link is an <a href>)")
+    for m in re.finditer(r"<(?!a\b)\w+\b[^>]*\brole\s*=\s*[\"']link[\"']", text, re.I):
+        report("✗", path, line_of(text, m.start()), "Button", 'role="link" on another element (a link is an <a href>)')
     for m in re.finditer(r"<\w+\b[^>]*\bdata-kore-sample\b[^>]*>([^<]*)", text, re.I):
         sample = m.group(1).strip()
         report("?", path, line_of(text, m.start()), "Building anything",
