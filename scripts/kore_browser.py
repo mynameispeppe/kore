@@ -748,6 +748,82 @@ async ({touch, zoom, tables, mode}) => {
       else if (!seen.has(text)) seen.set(text, el);
     }
   }
+  // Copy and AI tells: each rule reads the text an element holds itself (its own text nodes), outside data-kore-user.
+  const own = el => [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.data).join('').replace(/\s+/g, ' ').replace(/’/g, "'").trim();
+  const mine = everyShown.filter(el => !el.closest('[data-kore-user]'));
+  const ownTexts = mine.map(el => [el, own(el)]).filter(([, t]) => t);
+  // Whole words or phrases, case-insensitive; with inflect, the first word also in its -s, -es, -d, -ed and -ing forms (a final e dropped before -ing).
+  const wordRx = (list, inflect) => new RegExp('(?<![\\p{L}\\d])(?:' + list.map(w => {
+    const [v, ...rest] = w.split(' ');
+    const heads = inflect ? [v, v + 's', v + 'es', v + 'd', v + 'ed', v + 'ing', v.replace(/e$/, '') + 'ing'] : [v];
+    return '(?:' + heads.join('|') + ')' + rest.map(r => '\\s+' + r).join('');
+  }).join('|') + ')(?![\\p{L}\\d])', 'iu');
+  const holds = (list, inflect, msg) => {
+    const rx = wordRx(list, inflect);
+    for (const [el, t] of ownTexts) { const m = t.match(rx); if (m) add('✗', 'Copy', msg(el, m[0]), el); }
+  };
+  if (english) {
+    // Copy 1: no filler opening or closing phrase.
+    holds(["Let's get started", "Here's what you need to know", "You're all set", 'Certainly', 'I hope this helps', 'Oops', 'Uh-oh'], false,
+      (el, w) => `${name(el)} holds "${w}": state the point`);
+    // Copy 4: no empty framing phrase.
+    holds(['at its core', 'the real question', 'the language of'], false, (el, w) => `${name(el)} holds "${w}": state the specific claim`);
+    // Copy 7: no AI vocabulary.
+    holds(['actually', 'additionally', 'crucial', 'delve', 'enhance', 'foster', 'pivotal', 'showcase', 'valuable', 'vibrant'], true,
+      (el, w) => `${name(el)} holds "${w}": use a plain word`);
+    // Copy 9: is, has or shows, not serves as or boasts.
+    holds(['serve as', 'boast'], true, (el, w) => `${name(el)} holds "${w}": use is, has or shows`);
+  }
+  // Copy 6: no dash between two words (an em dash, or an en dash or hyphen with a space on each side).
+  for (const [el, t] of ownTexts)
+    if (/[\p{L}\p{N}]\s*—\s*[\p{L}\p{N}]|[\p{L}\p{N}] [–-] [\p{L}\p{N}]/u.test(t))
+      add('✗', 'Copy', `${name(el)} joins two words with a dash: use a period, a comma, a colon or parentheses`, el);
+  // Copy 10: no emoji or arrow in a heading or the label of a control (the outermost one holds the finding).
+  const labelled = mine.filter(el => el.matches('h1, h2, h3, h4, h5, h6, [role=heading], button, [role=button], a[href], label, legend, th, [role=tab], [role=menuitem]') && !(el.localName === 'a' && el.closest('p')));
+  for (const el of labelled)
+    if (!labelled.some(h => h !== el && h.contains(el)) && /(?![©®™])\p{Extended_Pictographic}|[←-⇿➔-➿⬅-⬇⮕]/u.test(el.innerText))
+      add('✗', 'Copy', `${name(el)} holds an emoji or an arrow: let the words carry the emphasis`, el);
+  // AI tell 2: siblings numbered 01, 02 outside an ol (a date does not count).
+  const numbered = new Map();
+  for (const [el, t] of ownTexts) {
+    numericDate.lastIndex = 0;
+    if (/^0\d+\b/.test(t) && !dated(t) && !el.parentElement.closest('ol')) numbered.set(el.parentElement, [...(numbered.get(el.parentElement) || []), el]);
+  }
+  for (const group of numbered.values())
+    if (group.length > 1) for (const el of group) add('✗', 'AI tells', `${name(el)} opens with a section number: use an <ol> when the order is information`, el);
+  // AI tell 6: no scroll cue.
+  for (const [el, t] of english ? ownTexts : [])
+    if (/^scroll( to explore)?$/i.test(t)) add('✗', 'AI tells', `${name(el)} is a scroll cue: let the content invite scrolling`, el);
+  // AI tell 9: a Badge or Chip sits beside its image, not over it.
+  const pictures = everyShown.filter(el => el.matches('img, picture, video') || /url\(/.test(style(el).backgroundImage));
+  for (const b of mine.filter(el => el.matches('[data-kore="Badge"], [data-kore="Chip"]'))) {
+    const q = rect(b);
+    if (pictures.some(m => { const r = rect(m); return !b.contains(m) && Math.min(q.right, r.right) > Math.max(q.left, r.left) && Math.min(q.bottom, r.bottom) > Math.max(q.top, r.top); }))
+      add('✗', 'AI tells', `${name(b)} sits over an image: put the label under the image`, b);
+  }
+  // AI tell 11: no word strip ("A · B · C") in the hero.
+  for (const [el, t] of ownTexts)
+    if (el.closest('[data-kore="Hero"]') && t.split(' · ').length >= 3)
+      add('✗', 'AI tells', `${name(el)} is a word strip in the hero: let the hero hold its h1, subtitle and calls to action`, el);
+  // AI tell 13: two button-look links of one root, one address and two labels, give two calls to action.
+  const looks = mine.filter(el => {
+    if (!el.matches('a[href]') || el.closest('p')) return false;
+    const s = style(el);
+    return rgba(s.backgroundColor)[3] > 0 || s.boxShadow !== 'none' || sides.some(d => parseFloat(s[`border${d}Width`]) > 0 && rgba(s[`border${d}Color`])[3] > 0);
+  });
+  const linked = new Map();  // root -> its button-look links that lead somewhere
+  for (const a of looks) {
+    const href = a.getAttribute('href').trim();
+    if (!href || href === '#' || /^javascript:/i.test(href)) continue;
+    const root = a.closest('[data-kore]');
+    linked.set(root, [...(linked.get(root) || []), a]);
+  }
+  const label = el => el.textContent.replace(/\s+/g, ' ').trim().toLowerCase();
+  for (const group of linked.values())
+    group.forEach((b, j) => {
+      const a = group.slice(0, j).find(o => o.href === b.href && label(o) !== label(b));
+      if (a) add('✗', 'AI tells', `${name(a)} and ${name(b)} lead to the same address with different labels: keep one call to action`, b);
+    });
   // Code order: screen readers and Tab follow the code, so marked elements follow their order on screen.
   for (const root of zoom ? [] : document.querySelectorAll('[data-kore]')) {
     const leaves = [...root.querySelectorAll('[data-kore-element]')].filter(el => el.closest('[data-kore]') === root && !el.querySelector('[data-kore-element]'))

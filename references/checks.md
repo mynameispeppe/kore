@@ -55,6 +55,9 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] In a card, a form or a dialog, the buttons of a row end at its right edge and the filled one comes last (Scanning patterns).
 - [ ] A destructive button sits `space-4` or more from every other button when a `primary` shares its decision (Proximity and hierarchy).
 - [ ] On an English page, a button's label is other than "OK", "Yes", "No" or "Submit"; in every language, it holds at most one word in capitals (Button).
+- [ ] In every text without `data-kore-user`, a period, a comma, a colon or parentheses join two words; headings and the labels of controls carry words, without emoji or arrows (Copy).
+- [ ] On an English page, a text without `data-kore-user` holds none of the phrases Copy 1 and 4 quote and none of: actually, additionally, crucial, delve, enhance, foster, pivotal, showcase, valuable, vibrant, serves as, boasts (Copy).
+- [ ] Sibling texts outside an `<ol>` open without 01, 02; on an English page no text reads Scroll or Scroll to explore; a Badge or a Chip sits outside the box of an image; the Hero holds no strip of three words joined by ·; two button-look links of one `data-kore` root with the same `href` carry the same label (AI tells).
 - [ ] No horizontal scroll from 320 to 2560px, nothing cut at 200% zoom, `100dvh` for full height (Extremes).
 - [ ] Images: format, `srcset`, reserved size, loading, `alt` (Images).
 - [ ] Selection, caret, scrollbars, links and numerals themed (Browser surfaces).
@@ -62,7 +65,6 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 ## Judge, always
 
-- [ ] Every string passes Copy 1, 4, 6, 7, 9 and 10; AI tells 2, 6, 9, 11 and 13 appear only when the user asks for them (Copy, AI tells).
 - [ ] The open tab and the page number live in the URL (Usability).
 
 ## Judge, by context
