@@ -31,6 +31,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Touch targets 44px, adjacent targets `space-2` apart (Accessibility).
 - [ ] A whole page opens with a Skip link to the id of `<main>`, hidden until focused, then `space-2` from the top start corner, an `elevated` button (`surface-card`) at `zIndex` `toast`; a fixed or sticky bar as wide as the screen at the top or bottom edge has a `scroll-padding` of at least its height on that edge (Accessibility).
 - [ ] Clicking a tab or the next page changes the URL, and a reload of that URL shows the same tab or page (Usability).
+- [ ] A trigger with aria-haspopup or a combobox opens on Enter or ↓; focus moves into a popover or a menu and stays on a select or combobox; Escape closes and returns focus to the trigger; a click outside closes (Popover, Menu, Select, Combobox).
 - [ ] Every interactive element has all its states and the focus of States: corner marks, or the link focus underline on a link (States).
 - [ ] A link with the look of a button keeps its label color on focus and takes the link focus underline, with no outline (Button, States).
 - [ ] A link with the look of a button has text-decoration none at rest (Button).
@@ -74,9 +75,6 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 Every context the work touches applies.
 
-**Overlay** (Menu, Popover, Dialog, Sheet, Tooltip, Command palette)
-- [ ] Focus moves in on open and back to the trigger on close; Escape and a click outside close it (Overlay rules).
-
 **Screen or page**
 - [ ] Focus moves to the `h1` after a route change (Accessibility).
 
@@ -85,6 +83,7 @@ Every context the work touches applies.
 
 ## Closed list
 
+- [ ] Dialog, Sheet, Tooltip and Command palette: focus moves in on open and back on close; Escape and a click outside close them (Overlay rules).
 - [ ] Each group's Question is the one its user asks: read as that user, it names what they want to know or do there (The reader's question).
 - [ ] Each primitive of a Shape is the one whose Use for fits the items it holds (Layout primitives).
 - [ ] A list cites Specs lead with the label only when its user scans the labels to find a value (Text hierarchy).

@@ -21,6 +21,7 @@ TOUCH_BELOW = 1024
 ZOOM_WIDTH = 1280
 SHOTS = (375, 1440)  # phone and desktop (references/checks.md, Bounded verification)
 HEIGHT = 800
+SETTLE = 100  # ms a page gets to react to a key or a click
 INSTALL = ("python3 -m pip install --user playwright, then install Google Chrome "
            "or set KORE_BROWSER to a Chromium-based browser")
 
@@ -926,6 +927,54 @@ URL_VERDICT = r"""
 """
 
 
+# Runs in a fresh page. Tags the i-th target with data-kore-overlay and returns its component, or null:
+# every shown element with aria-haspopup ("true" is a menu) and every combobox (a listbox), in page order.
+OVERLAY_PICK = r"""
+(i) => {
+  const kinds = {dialog: 'Popover', menu: 'Menu', true: 'Menu', listbox: 'Select'};
+  const els = [...document.querySelectorAll('[aria-haspopup], [role=combobox]')]
+    .filter(el => el.checkVisibility({opacityProperty: true, visibilityProperty: true}) && kinds[el.getAttribute('aria-haspopup') || 'listbox']);
+  const el = els[i];
+  if (!el) return null;
+  el.dataset.koreOverlay = '';
+  return kinds[el.getAttribute('aria-haspopup') || 'listbox'];
+}
+"""
+
+# Runs in the page after a key or a click. step: "open", "focus", "escape" or "outside".
+# Returns the finding message, or null when the step holds.
+OVERLAY_VERDICT = r"""
+(step) => {""" + HELPERS + r"""
+  const t = document.querySelector('[data-kore-overlay]');
+  const box = document.getElementById(t.getAttribute('aria-controls'));
+  const open = t.getAttribute('aria-expanded') === 'true';
+  const listbox = (t.getAttribute('aria-haspopup') || 'listbox') === 'listbox';
+  if (step === 'open') return open ? null : `${name(t)} opens a menu or popover: Enter or ↓ opens it and sets aria-expanded="true"`;
+  if (step === 'focus') {
+    if (listbox) return document.activeElement === t ? null : `${name(t)}: on open, keep focus on the trigger`;
+    return box && box.contains(document.activeElement) ? null : `${name(t)}: on open, move focus into it`;
+  }
+  if (step === 'escape') return !open && document.activeElement === t ? null : `${name(t)}: Escape closes it and returns focus to the trigger`;
+  return open ? `${name(t)}: a click outside closes it` : null;
+}
+"""
+
+# Runs in the page with the overlay open. The first point of the viewport, scanning a grid of 40px from the top start,
+# that is outside the trigger, the controlled element and every control; null when there is none.
+OVERLAY_POINT = r"""
+() => {
+  const t = document.querySelector('[data-kore-overlay]');
+  const box = document.getElementById(t.getAttribute('aria-controls'));
+  for (let y = 0; y < innerHeight; y += 40)
+    for (let x = 0; x < innerWidth; x += 40) {
+      const el = document.elementFromPoint(x, y);
+      if (el && !t.contains(el) && !(box && box.contains(el)) && !el.closest('a, button, input, select, textarea, label, summary, [tabindex], [role]')) return [x, y];
+    }
+  return null;
+}
+"""
+
+
 # Runs in the page before and after the root font size doubles: the font
 # size of each element that holds text, in page order.
 FONT_SIZES = r"""
@@ -1111,6 +1160,19 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
                     context.close()
                     if not info:
                         break
+            # the Overlay rule, on whole pages and on one #id: keys and clicks per trigger, in the first theme at 1440
+            theme, selector = next(iter(themes.items()))
+            for i in range(99):
+                context, page = load(browser, url, theme, selector, 1440, False)
+                component = page.evaluate(OVERLAY_PICK, i)
+                if component:
+                    try:
+                        overlay(page, component, lambda message: seen[("✗", component, message)].append((1440, theme)))
+                    except PageTimeout:
+                        pass  # a target that cannot be focused is not measured
+                context.close()
+                if not component:
+                    break
             for (kind, rule, message), places in seen.items():
                 report(kind, url, 0, rule, f"{message} ({where(places)})")
         for table, _ in tables:
@@ -1119,6 +1181,33 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
                        "checked: mark the root of the section or component (On the page)")
         browser.close()
     return saved
+
+
+def overlay(page, component, found):
+    """Opens the tagged trigger with Enter or ↓, then checks the focus, Escape and a click outside; found(message) for each failure."""
+    def opened():
+        page.focus("[data-kore-overlay]")
+        for key in ("Enter", "ArrowDown"):
+            page.keyboard.press(key)
+            page.wait_for_timeout(SETTLE)
+            if not page.evaluate(OVERLAY_VERDICT, "open"):
+                return True
+        found(page.evaluate(OVERLAY_VERDICT, "open"))
+    if not opened():
+        return
+    if message := page.evaluate(OVERLAY_VERDICT, "focus"):
+        found(message)
+    page.keyboard.press("Escape")
+    if page.evaluate("() => [...document.querySelectorAll('[role=tooltip]')].some(el => el.checkVisibility())"):
+        page.keyboard.press("Escape")  # the tooltip closes first
+    page.wait_for_timeout(SETTLE)
+    if message := page.evaluate(OVERLAY_VERDICT, "escape"):
+        found(message)
+    if opened() and (point := page.evaluate(OVERLAY_POINT)):
+        page.mouse.click(*point)
+        page.wait_for_timeout(SETTLE)
+        if message := page.evaluate(OVERLAY_VERDICT, "outside"):
+            found(message)
 
 
 def where(places):
