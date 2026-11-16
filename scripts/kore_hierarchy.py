@@ -223,7 +223,7 @@ def check_values(where, body, roles, colors, spaces, components, primary_group=N
 
 
 def type_rows(text):
-    """[(table name, [(Element, role, weight, color, space token, target, focal, inline, label, text)])] for every row; role, weight and color are None when Style names no type role, token and target when Space is —, focal True on the Primary of the Primary group, inline True when the Rule column names Inline emphasis, label True when it names Value labels are a last resort, text True on a text row (The One Winner Rule)."""
+    """[(table name, [(Element, role, weight, color, space token, target, focal, inline, label, text, heading)])] for every row; role, weight and color are None when Style names no type role, token and target when Space is —, focal True on the Primary of the Primary group, inline True when the Rule column names Inline emphasis, label True when it names Value labels are a last resort, text True on a text row (The One Winner Rule), heading the h2 or h3 the row names, or "" (Typographic levels)."""
     roles, colors, _ = kore_tokens(typology_line(text))
     found = []
     for table in tables(text):
@@ -240,7 +240,8 @@ def type_rows(text):
                           row[3] == "Primary" and bool(group) and row[2] == group.group(1),
                           "inline emphasis" in row[6].lower(),
                           "value labels are a last resort" in row[6].lower(),
-                          row[3] in ("Primary", "Secondary", "Tertiary")))
+                          row[3] in ("Primary", "Secondary", "Tertiary"),
+                          next(iter(re.findall(r"\bh[23]\b", f"{row[0]} {row[4]}")), "")))
         found.append((table["heading"].split(" · ")[0], typed))
     return found
 

@@ -122,6 +122,16 @@ async ({touch, zoom, tables}) => {
   const h1s = [...document.querySelectorAll('h1')].filter(el => el.checkVisibility());
   if (!location.hash && h1s.length !== 1)
     add('✗', 'Typographic levels', h1s.length ? `the page has ${h1s.length} h1: ${h1s.map(name).join(', ')}` : 'the page has no h1', ...h1s);
+  for (const hero of location.hash ? [] : document.querySelectorAll('[data-kore="Hero"]'))
+    if (!h1s.some(h => hero.contains(h))) add('✗', 'Typographic levels', `${name(hero)} holds no h1: the hero's title is the page's h1`, hero);
+  // Heading levels follow each other; role=heading without aria-level is level 2 (ARIA).
+  const heads = [...document.querySelectorAll('h1, h2, h3, h4, h5, h6, [role=heading]')].filter(el => el.checkVisibility());
+  const level = el => +(el.getAttribute('aria-level') || el.localName.slice(1)) || 2;
+  let prev = location.hash && heads.length ? level(heads[0]) - 1 : 0;
+  for (const el of heads) {
+    if (level(el) > prev + 1) add('✗', 'Typographic levels', `${name(el)} is an h${level(el)} after an h${prev}: heading levels follow each other`, el);
+    prev = level(el);
+  }
 
   // Horizontal scroll, and what makes it.
   const wide = document.scrollingElement.scrollWidth;
@@ -420,8 +430,13 @@ async ({touch, zoom, tables}) => {
         if (!row[6] && (b.top < f.top - 1 || (b.top <= f.top + 1 && (rtl ? b.right > f.right + 1 : b.left < f.left - 1))))
           add('✗', 'The One Winner Rule', `${name(el)} comes before the focal point ${name(point[1])}`, el);
       }
-      for (const [element, role, weight, color, space, target, , inline, label] of rows) {
+      for (const [element, role, weight, color, space, target, , inline, label, , heading] of rows) {
         const found = first(element);
+        for (const el of found) {
+          const tag = /^h[1-6]$/.test(el.localName) ? el.localName : '';
+          if ((tag === 'h2' || tag === 'h3' || heading) && tag !== heading)
+            add('✗', 'Typographic levels', `${name(el)} is ${tag ? 'an ' + tag : 'no heading'}, its row says ${heading || 'no h2 or h3'}`, el);
+        }
         if (!found.length) add('✗', 'Decisions file', `no data-kore-element="${element}" in ${name(root)}`, root);
         for (const el of role ? found : []) {
           const s = style(el);
