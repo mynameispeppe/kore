@@ -52,7 +52,7 @@ from kore_readers import Tailwind, line_of, read_attributes, read_css, read_obje
 
 KORE = Path(__file__).resolve().parent.parent
 SKIP_DIRS = {"node_modules", "dist", "build", "out", "coverage", "vendor", "target", "__pycache__"}
-SOURCE_DOT_DIRS = {".storybook", ".vitepress", ".vuepress"}  # hidden folders that hold source, as in impeccable
+SOURCE_DOT_DIRS = {".storybook", ".vitepress", ".vuepress"}  # hidden folders that hold source
 
 
 def skipped(folder):
@@ -71,8 +71,7 @@ def report(kind, path, line, rule, message):
     findings.append((kind, str(path), line, rule, message))
 
 
-# A finding the author waives in the code, with the reason (as impeccable's
-# impeccable-disable-line): `kore-ignore <Rule>: <reason>` on the line, or
+# A finding the author waives in the code, with the reason: `kore-ignore <Rule>: <reason>` on the line, or
 # `kore-ignore-next-line <Rule>: <reason>` on the line above, in any comment.
 # Several rules are separated by commas; without a reason nothing is waived.
 WAIVER = re.compile(r"kore-ignore(-next-line)?\s+([^:\n]+?)\s*:\s*(.+?)\s*(?:\*/|-->|\}|$)")

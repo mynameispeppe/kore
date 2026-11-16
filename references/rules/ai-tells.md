@@ -15,5 +15,3 @@
 11. **Decorative word strip.** A strip of decorative words at the bottom of the hero ("DESIGN · BUILD · SHIP").
 12. **Score bars** with a filled track to compare values on a page in site mode: show the number.
 13. **Duplicate calls to action.** Two calls to action with the same intent and different labels ("Contact us", "Let's talk"): keep one.
-
-**Sources:** impeccable (1–3), taste (4–13).

@@ -2,7 +2,7 @@
 """Kore hook for Claude Code, called by hooks/hooks.json with the hook's
 JSON on stdin. Exit code 2 sends stderr to Claude; every other case exits 0
 and stays silent, or adds a note to Claude's context (additionalContext).
-Like impeccable on Claude Code, the hook never blocks a write.
+The hook never blocks a write.
 
 PostToolUse on Edit, Write and MultiEdit:
 - KORE-DECISIONS.md: checks its form (heading with files, Shape, the seven
@@ -11,13 +11,13 @@ PostToolUse on Edit, Write and MultiEdit:
   Values are checked against the tokens of its Typology: line (minimalism without one).
 - an interface file: runs kore_check on the project's changed files and
   shows Claude the ✗ of the files just written and of the whole project,
-  each finding once per session (as impeccable: older code, such as a
+  each finding once per session (older code, such as a
   framework's template, is not this edit's work). Silent for another kind of file, a project without
   Kore's token file, only ? findings, or kore_check itself failing. In a
   Kore project the edit also leaves a mark for the session, and a file no
   table of KORE-DECISIONS.md names, or whose table the user has not seen
   yet, gets a note once per session; plain script files (.js, .ts) stay
-  quiet unless kore_check finds something, as in impeccable. The token
+  quiet unless kore_check finds something. The token
   file never gets the note (question 2).
 
 PostToolUse on Bash: the files the command changed (newer than the hook's
@@ -121,7 +121,7 @@ def save_state(event, state):
 def decisions_note(event, project, edited):
     """A reminder, once per file and session, when an interface file's table in
     KORE-DECISIONS.md is not yet seen by the user or has errors.
-    It never blocks: like impeccable on Claude Code, the edit stays."""
+    It never blocks: the edit stays."""
     try:
         rel = edited.resolve().relative_to(Path(project).resolve()).as_posix()
         text = edited.read_text(encoding="utf-8", errors="ignore")
@@ -216,7 +216,7 @@ def after_interface(event, project, edited):
     mark(event).parent.mkdir(parents=True, exist_ok=True)
     mark(event).touch()
     notes = [n for n in (decisions_note(event, project, path) for path in edited) if n]
-    # Like impeccable: only what this write is responsible for (the files just written and the
+    # Only what this write is responsible for (the files just written and the
     # whole-project checks), and never a finding already shown in the session.
     files = set()
     for path in edited:
