@@ -13,6 +13,7 @@ emulated below 1024px. With a shots folder, the whole page is also saved as
 a PNG at each width of SHOTS, in each theme, from the same visit.
 """
 import os
+import kore_images
 from collections import defaultdict
 from urllib.parse import urlparse
 
@@ -1099,6 +1100,13 @@ async () => {
 }
 """
 
+# Runs in the page after SCROLL_THROUGH, so lazy images have tried their file. Returns [kind, rule, message].
+IMAGES = r"""
+() => {""" + HELPERS + kore_images.MISSING + r"""
+  return out;
+}
+"""
+
 
 def shot_names(urls):
     """One name per page: the last part of its address without the extension,
@@ -1179,8 +1187,10 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
                                                 [table for table, _ in tables]))
                     for kind, rule, message in page.evaluate(MEASURE, {"touch": touch, "zoom": False, "tables": tables, "mode": mode, "whole": whole}):
                         seen[(kind, rule, message)].append((width, theme))
+                    page.evaluate(SCROLL_THROUGH)
+                    for kind, rule, message in page.evaluate(IMAGES):
+                        seen[(kind, rule, message)].append((width, theme))
                     if shots and width in SHOTS:
-                        page.evaluate(SCROLL_THROUGH)
                         path = shots / f"{name}-{width}-{theme}.png"
                         page.screenshot(path=str(path), full_page=True)
                         saved.append(path)

@@ -6,7 +6,7 @@
 - **Crop:** `<picture>` with `media` only when another framing reads better on phones.
 - **Reserved space:** the `<img>` always has `width` and `height` (the original's size), plus a fixed `aspect-ratio`, `max-width: 100%` and `height: auto`. An image never exceeds its container.
 - **Loading:** the main image is the largest one on the first screen (the navigation + the first section), one per page: `fetchpriority="high"`, never lazy. The other images on the first screen are never lazy. Every other image has `loading="lazy"` and `decoding="async"`.
-- **Missing image:** a placeholder at the ratio of the expected image, reserving its space like the real one (Reserved space), chosen in this order:
+- **Missing image:** every `<img>` loads its file. An `<img>` with no `src`, an empty `src`, `src="#"` or a file that fails to load is a missing image: it takes a placeholder at the ratio of the expected image, reserving its space like the real one (Reserved space), chosen in this order:
   1. **An image generation tool, when the environment has one:** one image per placeholder, at its ratio, showing the subject the section needs (a book cover, a portrait, a landscape).
   2. **Otherwise the placeholder file:** copy `references/images/placeholder.svg` once into the project's images folder; every placeholder, screenshots included, points to that copy. It fills any ratio, with or without `object-fit`.
 

@@ -66,7 +66,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] On an English page, a text without `data-kore-user` holds none of the phrases Copy 1 and 4 quote and none of: actually, additionally, crucial, delve, enhance, foster, pivotal, showcase, valuable, vibrant, serves as, boasts (Copy).
 - [ ] Sibling texts outside an `<ol>` open without 01, 02; on an English page no text reads Scroll or Scroll to explore; a Badge or a Chip sits outside the box of an image; the Hero holds no strip of three words joined by ·; two button-look links of one `data-kore` root with the same `href` carry the same label (AI tells).
 - [ ] No horizontal scroll from 320 to 2560px, nothing cut at 200% zoom, `100dvh` for full height (Extremes).
-- [ ] Images: format, `srcset`, reserved size, loading, `alt` (Images).
+- [ ] Images: format, `srcset`, reserved size, loading, `alt`, every file loaded (Images).
 - [ ] Selection, caret, scrollbars, links and numerals themed (Browser surfaces).
 - [ ] Every line of the component's file, and of the files read through its Uses line, holds (Components).
 
