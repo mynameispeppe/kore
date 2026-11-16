@@ -43,6 +43,11 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Elements told apart by background or shadow have a 1px transparent border (Themes).
 - [ ] Titles of cards side by side on the same number of lines (Cards).
 - [ ] Cards in one row end at the same height, each filled down to its padding (Cards).
+- [ ] In a card, the media sits above the title and no text sits under the actions; no card sits inside a card; a rounded block with a background and marked text inside a card is or holds a link, a button or a label (Cards).
+- [ ] In a card, title and subtitle sit `space-1` apart, the header and what follows `space-6`, the body rows `space-3` or `space-6`, the body and the actions `space-8` (Cards, The Distance Ratio Rule).
+- [ ] In a card, a form or a dialog, the buttons of a row end at its right edge and the filled one comes last (Scanning patterns).
+- [ ] A destructive button sits `space-4` or more from every other button when a `primary` shares its decision (Proximity and hierarchy).
+- [ ] On an English page, a button's label is other than "OK", "Yes", "No" or "Submit"; in every language, it holds at most one word in capitals (Button).
 - [ ] No horizontal scroll from 320 to 2560px, nothing cut at 200% zoom, `100dvh` for full height (Extremes).
 - [ ] Images: format, `srcset`, reserved size, loading, `alt` (Images).
 - [ ] Selection, caret, scrollbars, links and numerals themed (Browser surfaces).
@@ -56,16 +61,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 ## Judge, by context
 
-Every context the work touches applies. A button adds Control; a link adds Link.
-
-**Container** (Cards, List rows, Table, Tabs, Accordion, Empty state, Charts, Carousel, Footer, Sidebar, Cookie banner)
-- [ ] Card zones in the fixed order; no card inside a card; no rounded block with a background unless it is a clickable unit (Cards).
-- [ ] Inside less than between: title and subtitle `space-1`, header and content `space-6`, rows `space-3`, rows and actions `space-8` (Cards, The Distance Ratio Rule).
-- [ ] Actions at the end, right-aligned, confirm last (Scanning patterns).
-
-**Control** (Button, Form fields, Select, Checkbox and radio, Switch, Segmented control, Tabs, Password, Combobox, Number stepper, Slider, Date picker, File upload, Chip, Pagination, Steps)
-- [ ] The variant follows the action's role: one `primary` per decision, a destructive action that is not the main action in its own group (Button, The One Primary Rule).
-- [ ] Labels other than "OK", "Yes", "No" or "Submit", never all caps (Button).
+Every context the work touches applies. A link adds Link.
 
 **Link** (text links, links in navigation, Breadcrumb, Footer, Steps, a button that takes the user to another page)
 - [ ] A link with the look of a button follows Button and keeps its label color on focus (Button, States).
@@ -76,7 +72,6 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 
 **Section of a page** (a hero, an about, features, any part with its own heading)
 - [ ] Prose at the reading measure; an image outside a card has radius `xl` (Typography rules, Radius by role, Images).
-- [ ] Actions at the end of the content they act on, right-aligned (Scanning patterns).
 - [ ] Sections `space-12` apart in App mode, `space-32` / `space-48` in Site mode (Proximity and hierarchy).
 
 **Screen or page**
@@ -151,6 +146,7 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] Images, controls and the content of carousels keep the page margins and stop at `max-content` (Breakpoints).
 - [ ] Profiles on other sites are Social links (Sections).
 - [ ] One focal moment per page, the hero's entry (One focal moment per page).
+- [ ] In a page section, the actions sit under the text they act on, aligned with it, the main action first (Scanning patterns).
 
 ## Deliver
 

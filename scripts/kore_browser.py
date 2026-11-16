@@ -240,6 +240,102 @@ async ({touch, zoom, tables}) => {
   }
   for (const group of decisions.values())
     if (group.length > 1) add('✗', 'The One Primary Rule', `${group.length} primary buttons in one decision: ${group.map(name).join(', ')}`, ...group);
+
+  // Cards (cards.md): a shown element with the surface-card background and the rounded-xl radius.
+  const cards = new Set(everyShown.filter(el => {
+    const bg = resolve(el, '--surface-card', 'backgroundColor'), radius = resolve(el, '--rounded-xl', 'borderTopLeftRadius');
+    return bg && radius && style(el).backgroundColor === bg && Math.abs(parseFloat(style(el).borderTopLeftRadius) - parseFloat(radius)) <= 1;
+  }));
+  const upCard = el => { for (let p = el.parentElement; p; p = p.parentElement) if (cards.has(p)) return p; };
+  const owned = new Map();  // card -> the elements whose nearest card is it
+  for (const el of everyShown) { const c = upCard(el); if (c) owned.set(c, [...(owned.get(c) || []), el]); }
+  const px = (el, token) => parseFloat(resolve(el, token, 'width'));
+  const rect = el => el.getBoundingClientRect();
+  const byTop = (a, b) => rect(a).top - rect(b).top;
+  const clickable = 'a[href], button, label, [role=button], [role=link]';
+  // A rounded block: background, radius and marked text; inside a card it is a row, never an action.
+  const block = el => {
+    const s = style(el);
+    if (el.hasAttribute('data-kore') || s.backgroundColor === 'rgba(0, 0, 0, 0)' || !(parseFloat(s.borderTopLeftRadius) > 0)) return false;
+    return [el, ...el.querySelectorAll('[data-kore-element]')].some(n => n.matches('[data-kore-element]') && n.innerText.trim());
+  };
+  for (const c of cards) if (upCard(c)) add('✗', 'Cards', `card inside a card: ${name(c)}`, c);
+  for (const [c, els] of owned) {
+    // A rounded block with a background is for a clickable row: a unit of its own.
+    for (const el of els)
+      if (block(el) && !el.matches(clickable) && !el.querySelector(clickable))
+        add('✗', 'Cards', `rounded block with a background inside a card is not clickable: ${name(el)}`, el);
+    const title = els.find(el => el.matches('h1, h2, h3, h4, h5, h6, [role=heading]'));
+    if (!title) continue;
+    const header = title.parentElement === c ? title : title.parentElement, hb = rect(header);
+    const actions = els.filter(el => (isButton(el) || (el.matches('a[href]') && !el.closest('p'))) && !block(el) && rect(el).top >= hb.bottom - 1).sort(byTop);
+    const first = actions[0];
+    const room = c.clientWidth - parseFloat(style(c).paddingLeft) - parseFloat(style(c).paddingRight) - 2 * px(c, '--space-2');
+    for (const m of els.filter(el => el.matches('img, video, picture, canvas') && rect(el).width >= room && rect(el).top >= rect(title).bottom - 1))
+      add('✗', 'Cards', `media under the title of a card: ${name(m)}`, m);
+    const items = els.filter(el => texts.has(el) && !header.contains(el) && !actions.some(a => a.contains(el)) && rect(el).top >= hb.bottom - 1).sort(byTop);
+    const late = first ? items.filter(el => rect(el).top >= rect(first).top + 1) : [];
+    for (const el of late) add('✗', 'Cards', `text under the actions of a card: ${name(el)}`, el);
+    // Body rows: an item starts a new row when it begins at or below the bottom of the items before it.
+    const bands = [];
+    for (const el of items.filter(el => !late.includes(el))) {
+      const q = rect(el), band = bands[bands.length - 1];
+      if (!band || q.top >= band.bottom - 1) bands.push({first: el, low: el, top: q.top, bottom: q.bottom});
+      else if (q.bottom > band.bottom) { band.bottom = q.bottom; band.low = el; }
+    }
+    // The gap between two boxes against the tokens the rule gives.
+    const space = (above, below, gap, ...tokens) => {
+      const want = tokens.map(t => px(c, `--${t}`));
+      if (want.some(w => !(w >= 0)) || want.some(w => Math.abs(gap - w) <= 1)) return;
+      add('✗', 'Cards', `${Math.round(gap)}px between ${name(above)} and ${name(below)} in a card, the rule gives ${tokens.map((t, i) => `${t} (${want[i]}px)`).join(' or ')}`, below);
+    };
+    if (header !== title) {
+      const sibs = [...header.children].filter(shown), next = sibs[sibs.indexOf(title) + 1];
+      if (next) space(title, next, rect(next).top - rect(title).bottom, 'space-1');
+    }
+    const start = [bands[0] && bands[0].first, first].filter(Boolean).sort(byTop)[0];
+    if (start) space(header, start, rect(start).top - hb.bottom, start === first ? 'space-8' : 'space-6');
+    bands.forEach((b, i) => { if (i) space(bands[i - 1].low, b.first, b.top - bands[i - 1].bottom, 'space-3', 'space-6'); });
+    if (bands.length && first) space(bands[bands.length - 1].low, first, rect(first).top - bands[bands.length - 1].bottom, 'space-8');
+  }
+
+  // Actions: order and end edge (hierarchy.md Scanning patterns), the destructive one apart (spacing.md Grouping actions), labels (button.md Button).
+  const acts = everyShown.filter(el => (isButton(el) || (el.matches('a[href]') && !el.closest('p'))) && !(block(el) && upCard(el)));
+  const filled = el => [resolve(el, '--primary', 'color'), resolve(el, '--danger', 'color')].includes(style(el).backgroundColor);
+  const compOf = el => { for (let p = el.parentElement; p; p = p.parentElement) if (cards.has(p) || p.matches('form, dialog, [role=dialog]')) return p; };
+  const groups = new Map();  // parent -> its actions, when inside a component
+  for (const el of acts) if (compOf(el)) groups.set(el.parentElement, [...(groups.get(el.parentElement) || []), el]);
+  for (const [parent, group] of groups) {
+    const fills = group.filter(filled);
+    if (group.length < 2 || !fills.length) continue;
+    const rtl = style(parent).direction === 'rtl', end = el => rtl ? -rect(el).left : rect(el).right;
+    const f = fills[fills.length - 1], comp = compOf(f);
+    if (group.some(o => o !== f && (rect(o).top > rect(f).top + 1 || (Math.abs(rect(o).top - rect(f).top) <= 1 && end(o) > end(f) + 1))))
+      add('✗', 'Scanning patterns', `${name(f)} is not the last action of its group: the confirming action ends the row`, f);
+    const last = [...group].sort((a, b) => rect(a).top - rect(b).top || end(a) - end(b)).pop();
+    const q = rect(comp), s = style(comp);
+    const edge = rtl ? -(q.left + parseFloat(s.borderLeftWidth) + parseFloat(s.paddingLeft)) : q.right - parseFloat(s.borderRightWidth) - parseFloat(s.paddingRight);
+    if (end(last) < edge - 1) add('✗', 'Scanning patterns', `the actions of ${name(comp)} end before its right edge`, last);
+  }
+  const decided = new Map();  // decision -> its actions
+  for (const el of acts) { const g = el.closest('form, dialog, [role=dialog], [data-kore]'); decided.set(g, [...(decided.get(g) || []), el]); }
+  for (const group of decided.values()) {
+    if (!group.some(el => style(el).backgroundColor === resolve(el, '--primary', 'color'))) continue;
+    for (const d of group.filter(el => style(el).backgroundColor === resolve(el, '--danger', 'color'))) {
+      const want = px(d, '--space-4'), a = rect(d);
+      const gaps = group.filter(o => o !== d).map(o => { const b = rect(o); return [Math.max(0, a.left - b.right, b.left - a.right, a.top - b.bottom, b.top - a.bottom), o]; });
+      if (!(want >= 0) || !gaps.length) continue;
+      const [gap, other] = gaps.reduce((m, x) => x[0] < m[0] ? x : m);
+      if (gap < want - 1) add('✗', 'Grouping actions', `${name(d)} is ${Math.round(gap)}px from ${name(other)}: a destructive action that is not the main one sits space-4 (${want}px) or more from the others`, d);
+    }
+  }
+  const english = doc.lang.trim().toLowerCase().startsWith('en');
+  for (const el of acts) {
+    if (el.closest('[data-kore-user]')) continue;
+    const label = el.innerText.trim().replace(/\s+/g, ' ');
+    if (english && ['ok', 'yes', 'no', 'submit'].includes(label.toLowerCase())) add('✗', 'Button', `${name(el)}: name the action with a verb and an object`, el);
+    if (label.split(' ').filter(w => /^\p{Lu}{2,}$/u.test(w)).length >= 2) add('✗', 'Button', `${name(el)}: the label is written in capitals`, el);
+  }
   tint.remove();
 
   // Touch targets: the area around the centre reaches the target, a rounded corner included.
