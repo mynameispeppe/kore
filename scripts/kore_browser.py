@@ -927,6 +927,29 @@ URL_VERDICT = r"""
 """
 
 
+# Runs in a fresh page. Marks window and returns the title and the first nav link to another path of the same origin, tagged data-kore-route, or null.
+ROUTE_PICK = r"""
+() => {
+  const a = [...document.querySelectorAll('nav a[href]')].find(a => a.origin === location.origin && a.pathname !== location.pathname);
+  if (!a) return null;
+  a.dataset.koreRoute = '';
+  window.koreRoute = true;
+  return document.title;
+}
+"""
+# Runs in the page after the click. title: the title before it. Returns the finding messages; none when the page reloaded or the path did not change.
+ROUTE_VERDICT = r"""
+({title, path}) => {""" + HELPERS + r"""
+  if (!window.koreRoute || location.pathname === path) return [];
+  const a = document.querySelector('[data-kore-route]') || document.body, h = document.activeElement, found = [];
+  const to = `${name(a)} changes the route: `;
+  if (!(h.localName === 'h1' && h.getAttribute('tabindex') === '-1')) found.push(to + `move focus to the new page's h1 (tabindex="-1")`);
+  if (document.title === title) found.push(to + 'change the document title');
+  return found;
+}
+"""
+
+
 # Runs in a fresh page. Tags the i-th target with data-kore-overlay and returns its component, or null:
 # every shown element with aria-haspopup ("true" is a menu) and every combobox (a listbox), in page order.
 OVERLAY_PICK = r"""
@@ -1160,6 +1183,23 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
                     context.close()
                     if not info:
                         break
+            if whole:  # the route rule: one click on a nav link to another path, in the first theme at 1440
+                theme, selector = next(iter(themes.items()))
+                context, page = load(browser, url, theme, selector, 1440, False)
+                title = page.evaluate(ROUTE_PICK)
+                if title is not None:
+                    path = page.evaluate("location.pathname")
+                    try:
+                        page.click("[data-kore-route]", timeout=2000)
+                        try:
+                            page.wait_for_load_state("networkidle")
+                        except PageTimeout:
+                            pass
+                        for message in page.evaluate(ROUTE_VERDICT, {"title": title, "path": path}):
+                            seen[("✗", "Accessibility", message)].append((1440, theme))
+                    except PageTimeout:
+                        pass  # a link that cannot be clicked is not measured
+                context.close()
             # the Overlay rule, on whole pages and on one #id: keys and clicks per trigger, in the first theme at 1440
             theme, selector = next(iter(themes.items()))
             for i in range(99):
