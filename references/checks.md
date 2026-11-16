@@ -23,6 +23,8 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Every color, space, size, radius, shadow, duration, easing, z-index, breakpoint and opacity comes from a token or from a value a rule computes (Never invent values).
 - [ ] Spacing on the scale, sizes multiples of 8, padding uniform, gaps on the container (Spacing).
 - [ ] Text 4.5:1, large text 3:1, icons, control borders and focus 3:1, on the worst surface, in each theme the token file defines (Contrast).
+- [ ] Buttons take `primary`; a background in `accent` sits only in the Hero's visual; text in `accent` is `display-sm` or larger; a page holds at most 4 elements in `accent`, the Hero's backgrounds in `accent` counted as one (Meaning).
+- [ ] At most one button with a `primary` background per form, dialog or `data-kore` root, and per page outside them (The One Primary Rule).
 - [ ] Horizontal padding equals the radius; nested radii are concentric (The Radius-Padding Rule, The Concentric Rule).
 - [ ] Shadows only on clickable elements; everything else a 1px border: `hairline` on containers, `hairline-medium` on labelled controls, `hairline-strong` on controls known only by their outline (Shadows, Contrast, AI tells).
 - [ ] Layers on the `zIndex` scale, floating layers never clipped (Stacking order).
@@ -48,7 +50,6 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 ## Judge, always
 
-- [ ] The accent marks one moment, one `primary` per decision (Meaning).
 - [ ] Every string passes Copy 1, 4, 6, 7, 9 and 10; AI tells 2, 6, 9, 11 and 13 appear only when the user asks for them (Copy, AI tells).
 - [ ] The open tab and the page number live in the URL (Usability).
 - [ ] Dates, currencies and units in the page's locale (Page language).

@@ -193,6 +193,55 @@ async ({touch, zoom, tables}) => {
   }
   if (zoom) return out;
 
+  // A token as the browser computes it, through one hidden tint; '' when the element has no such token.
+  const tint = document.body.appendChild(document.createElement('span'));
+  tint.style.display = 'none';
+  const resolve = (el, token, prop) => {
+    const v = style(el).getPropertyValue(token).trim();
+    if (!v) return '';
+    tint.style[prop] = '';
+    tint.style[prop] = v;
+    return getComputedStyle(tint)[prop];
+  };
+  const isButton = el => el.matches('button, [role=button], input[type=button], input[type=submit], input[type=reset]');
+  const sides = ['Top', 'Right', 'Bottom', 'Left'];
+  const everyShown = [...document.body.querySelectorAll('*')].filter(el => el !== tint && shown(el));
+  // Meaning: no button in accent, a background in accent only in the Hero's visual, text in accent from display-sm, at most 4 per page.
+  const counted = new Map();  // key (element, or its Hero) -> first element
+  for (const el of everyShown) {
+    const accent = resolve(el, '--accent', 'color');
+    if (!accent) continue;
+    const s = style(el);
+    const bg = s.backgroundColor === accent || s.backgroundImage.includes(accent);
+    const inAccent = bg || [s.color, s.fill, s.stroke].includes(accent) ||
+      sides.some(d => parseFloat(s[`border${d}Width`]) > 0 && s[`border${d}Color`] === accent);
+    if (!inAccent) continue;
+    const hero = el.closest('[data-kore="Hero"]');
+    const key = hero && bg ? hero : el;
+    if (!counted.has(key)) counted.set(key, el);
+    if (isButton(el)) { add('✗', 'Meaning', `${name(el)} is in accent: buttons take primary`, el); continue; }
+    if (bg && !hero) add('✗', 'Meaning', `${name(el)} has a background in accent outside the Hero's visual`, el);
+    const limit = resolve(el, '--display-sm-fontSize', 'fontSize');
+    if (s.color === accent && texts.has(el) && limit && parseFloat(s.fontSize) < parseFloat(limit))
+      add('✗', 'Meaning', `${name(el)} is ${parseFloat(s.fontSize)}px text in accent, below display-sm`, el);
+  }
+  if (!location.hash && counted.size > 4) {
+    const els = [...counted.values()];
+    add('✗', 'Meaning', `${els.length} elements in accent on the page, at most 4: ${els.map(name).join(', ')}`, ...els);
+  }
+
+  // The One Primary Rule: one primary button per decision (form, dialog or component).
+  const decisions = new Map();
+  for (const el of everyShown) {
+    const primary = isButton(el) && resolve(el, '--primary', 'color');
+    if (!primary || style(el).backgroundColor !== primary) continue;
+    const g = el.closest('form, dialog, [role=dialog], [data-kore]');
+    decisions.set(g, [...(decisions.get(g) || []), el]);
+  }
+  for (const group of decisions.values())
+    if (group.length > 1) add('✗', 'The One Primary Rule', `${group.length} primary buttons in one decision: ${group.map(name).join(', ')}`, ...group);
+  tint.remove();
+
   // Touch targets: the area around the centre reaches the target, a rounded corner included.
   // A visually hidden control (a skip link before its focus) is for the keyboard: no target.
   const sronly = el => {
