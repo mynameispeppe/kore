@@ -51,7 +51,13 @@ from check_references import replaced_ids, tokens_for, walk
 from kore_readers import Tailwind, line_of, read_attributes, read_css, read_objects, read_templates, tailwind_config
 
 KORE = Path(__file__).resolve().parent.parent
-SKIP_DIRS = {"node_modules", ".git", "dist", "build", ".next", ".astro", ".svelte-kit", "out", "coverage"}
+SKIP_DIRS = {"node_modules", "dist", "build", "out", "coverage", "vendor", "target", "__pycache__"}
+SOURCE_DOT_DIRS = {".storybook", ".vitepress", ".vuepress"}  # hidden folders that hold source, as in impeccable
+
+
+def skipped(folder):
+    """Whether a folder of the project is never read: build output, dependencies, hidden folders (.git, .venv)."""
+    return folder in SKIP_DIRS or (folder.startswith(".") and folder not in SOURCE_DOT_DIRS)
 STYLE_FILES = {".css": "css", ".pcss": "css", ".postcss": "css", ".scss": "scss", ".less": "less"}
 UNCHECKED_STYLES = {".sass", ".styl"}  # indented syntaxes, no braces to parse
 MARKUP_FILES = {".html", ".htm", ".astro", ".vue", ".svelte"}
@@ -124,7 +130,7 @@ NOT_CHECKED = "Sass or Stylus syntax not checked: measure by hand"
 def project_files(root, skip=()):
     inside = []
     for path in sorted(root.rglob("*")):
-        if any(part in SKIP_DIRS for part in path.parts) or not path.is_file():
+        if any(skipped(part) for part in path.relative_to(root).parts[:-1]) or not path.is_file():
             continue
         if ".min." in path.name or path.name.endswith(".d.ts") or relative(path, root) in skip:
             continue
@@ -473,13 +479,17 @@ def check_globals(all_css, has_interactive):
 
 # ---------------------------------------------------------------- markup
 
-def check_markup(path, text):
+def check_markup(path, text, insets):
+    """insets: whether the project uses env(safe-area-inset-*), which reads 0 without viewport-fit=cover (Safe areas)."""
     for m in re.finditer(r"<meta[^>]+name=[\"']viewport[\"'][^>]*>", text, re.I):
         tag = m.group(0)
         if re.search(r"user-scalable\s*=\s*(no|0)|maximum-scale\s*=\s*1(\.0)?\b", tag):
             report("✗", path, line_of(text, m.start()), "Typography rules", "the viewport blocks zoom")
-        if "viewport-fit=cover" not in tag:
+        if insets and "viewport-fit=cover" not in tag:
             report("✗", path, line_of(text, m.start()), "Safe areas", "the viewport has no viewport-fit=cover")
+        if not insets and "viewport-fit=cover" in tag:
+            report("✗", path, line_of(text, m.start()), "Safe areas",
+                   "viewport-fit=cover without env(safe-area-inset-*): content runs under the notch")
     for m in re.finditer(r"<img\b[^>]*>", text, re.I):
         tag, line = m.group(0), line_of(text, m.start())
         if not re.search(r"\balt\s*=", tag):
@@ -613,6 +623,7 @@ def main():
             space[px_of(float(m.group(1)), m.group(2))] = name
     tailwind = Tailwind(theme_names, space) if uses_tailwind else None
     colors, lengths = token_colors(light, dark), token_lengths(light)
+    insets = any("safe-area-inset" in text for _, _, text, _, _ in sources)
     for path, rel, text, rules, clean in sources:
         if tailwind:
             rules = tailwind.expand_apply(rules)
@@ -623,7 +634,7 @@ def main():
         if path.suffix.lower() in MARKUP_FILES | {".jsx", ".tsx"}:
             if re.search(r"<(button|a|input|select|textarea)\b", text, re.I):
                 has_interactive = True
-            check_markup(rel, text)
+            check_markup(rel, text, insets)
     if token_path:
         check_contrast(relative(token_path, root), light, dark, themes)
     else:

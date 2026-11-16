@@ -184,8 +184,7 @@ async ({touch, zoom, tables, mode}) => {
     for (let j = i + 1; j < inView.length; j++) {
       const [a, p] = inView[i], [b, q] = inView[j];
       if (a.contains(b) || b.contains(a) || reported.has(a) || reported.has(b)) continue;
-      if (pinned(a) !== pinned(b)) continue;
-      if (Math.min(p.r, q.r) - Math.max(p.l, q.l) > 2 && Math.min(p.b, q.b) - Math.max(p.t, q.t) > 2) {
+      if (Math.min(p.r, q.r) - Math.max(p.l, q.l) > 2 && Math.min(p.b, q.b) - Math.max(p.t, q.t) > 2 && pinned(a) === pinned(b)) {
         add('✗', where, `text over text: ${name(a)} and ${name(b)}`, a, b);
         reported.add(a); reported.add(b);
       }
@@ -679,8 +678,8 @@ async ({touch, zoom, tables, mode}) => {
     : /^\d{4}-\d{2}-\d{2}/.test(v) || /^\d{1,2}[\/.]\d{1,2}[\/.]\d{2,4}$/.test(v) || (/\d/.test(v) && v.toLowerCase().split(/[\s,]+/).some(w => months.has(w.replace(/\.$/, '')))) ? 'date'
     : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? 'email' : '';
   for (const [table, rows] of zoom ? [] : tables) {
-    for (const root of document.querySelectorAll(`[data-kore="${table}"]`)) {
-      const first = element => [...root.querySelectorAll(`[data-kore-element="${element}"]`)].filter(el => el.closest('[data-kore]') === root);
+    for (const root of document.querySelectorAll(`[data-kore="${CSS.escape(table)}"]`)) {
+      const first = element => [...root.querySelectorAll(`[data-kore-element="${CSS.escape(element)}"]`)].filter(el => el.closest('[data-kore]') === root);
       const texts = rows.filter(r => r[1] && r[9]).flatMap(r => first(r[0]).map(el => [r, el, el.getBoundingClientRect()]));
       const point = texts.find(t => t[0][6]);
       for (const [row, el, b] of point ? texts : []) {
@@ -774,9 +773,9 @@ async ({touch, zoom, tables, mode}) => {
     // Copy 9: is, has or shows, not serves as or boasts.
     holds(['serve as', 'boast'], true, (el, w) => `${name(el)} holds "${w}": use is, has or shows`);
   }
-  // Copy 6: no dash between two words (an em dash, or an en dash or hyphen with a space on each side).
+  // Copy 6: no dash between two words (an em dash, or an en dash or hyphen with a space on each side); a range of two numbers joins no words.
   for (const [el, t] of ownTexts)
-    if (/[\p{L}\p{N}]\s*—\s*[\p{L}\p{N}]|[\p{L}\p{N}] [–-] [\p{L}\p{N}]/u.test(t))
+    if ([...t.matchAll(/([\p{L}\p{N}])(?:\s*—\s*| [–-] )(?=([\p{L}\p{N}]))/gu)].some(m => !(/\p{N}/u.test(m[1]) && /\p{N}/u.test(m[2]))))
       add('✗', 'Copy', `${name(el)} joins two words with a dash: use a period, a comma, a colon or parentheses`, el);
   // Copy 10: no emoji or arrow in a heading or the label of a control (the outermost one holds the finding).
   const labelled = mine.filter(el => el.matches('h1, h2, h3, h4, h5, h6, [role=heading], button, [role=button], a[href], label, legend, th, [role=tab], [role=menuitem]') && !(el.localName === 'a' && el.closest('p')));
@@ -927,11 +926,10 @@ def forcer(page):
     return force
 
 
-def load(browser, url, theme, selector, width, touch, motion="reduce", state=None):
-    """A new context and page; state, a (CSS selector, pseudo-class) pair, forces that state on the selector's first
-    match and ends the transitions it starts."""
+def load(browser, url, theme, selector, width, touch):
+    """A new context and page, with reduced motion."""
     context = browser.new_context(viewport={"width": width, "height": HEIGHT}, color_scheme=theme,
-                                  has_touch=touch, reduced_motion=motion)
+                                  has_touch=touch, reduced_motion="reduce")
     page = context.new_page()
     from playwright.sync_api import TimeoutError as PageTimeout
     try:
@@ -944,9 +942,6 @@ def load(browser, url, theme, selector, width, touch, motion="reduce", state=Non
     if fragment and not page.evaluate(ONLY, fragment):
         raise SystemExit(f"kore_check --url: no element with id={fragment} in {url}")
     page.evaluate("document.fonts.ready.then(() => 0)")
-    if state:
-        forcer(page)(*state)
-        page.evaluate("document.getAnimations().forEach(a => a.effect?.getComputedTiming().iterations !== Infinity && a.finish())")
     return context, page
 
 
@@ -975,7 +970,7 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
                 for width in WIDTHS:
                     touch = width < TOUCH_BELOW
                     context, page = load(browser, url, theme, selector, width, touch)
-                    marked |= set(page.evaluate("names => names.filter(n => document.querySelector(`[data-kore=\"${n}\"]`))",
+                    marked |= set(page.evaluate("names => names.filter(n => document.querySelector(`[data-kore=\"${CSS.escape(n)}\"]`))",
                                                 [table for table, _ in tables]))
                     for kind, rule, message in page.evaluate(MEASURE, {"touch": touch, "zoom": False, "tables": tables, "mode": mode}):
                         seen[(kind, rule, message)].append((width, theme))

@@ -46,7 +46,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from kore_check import (MARKUP_FILES, SCRIPT_FILES, SKIP_DIRS, STYLE_FILES, UNCHECKED_STYLES)
+from kore_check import (MARKUP_FILES, SCRIPT_FILES, STYLE_FILES, UNCHECKED_STYLES, skipped)
 from kore_hierarchy import needs_table, tables, validate
 
 UI_FILES = {*STYLE_FILES, *UNCHECKED_STYLES, *MARKUP_FILES, *SCRIPT_FILES}
@@ -195,7 +195,7 @@ def changed_since(event, project):
         return []
     since, found = stamp(event).stat().st_mtime, []
     for folder, dirs, files in os.walk(project):
-        dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
+        dirs[:] = [d for d in dirs if not skipped(d)]
         for name in files:
             path = Path(folder) / name
             try:

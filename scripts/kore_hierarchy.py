@@ -278,15 +278,18 @@ def validate(text):
                     if lowered.count(element.casefold()) != 1:
                         errors.append(f"{where}: Element {element} is not in the Shape (Decisions file)" if not lowered.count(element.casefold())
                                       else f"{where}: {element} is twice in the Shape (Decisions file)")
-            stack, count, paths = [], 0, {}
+            stack, count, paths, balanced = [], 0, {}, True
             for word, opens, close in re.findall(r"([^(),]+)(\()?|(\))", shape.group(1)):
                 if opens == "(":
                     count += 1
                     stack.append(count)
                 elif close:
-                    stack.pop()
+                    balanced = balanced and bool(stack)
+                    stack = stack[:-1]
                 elif word.strip():
                     paths.setdefault(word.strip().casefold(), tuple(stack))
+            if stack or not balanced:
+                errors.append(f"{where}: Shape opens and closes a different number of brackets (Decisions file)")
             groups = {}
             for l in table["body"].splitlines():
                 row = cells(l) if l.strip().startswith("|") else []
