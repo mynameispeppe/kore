@@ -30,6 +30,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Layers on the `zIndex` scale, floating layers never clipped (Stacking order).
 - [ ] Touch targets 44px, adjacent targets `space-2` apart (Accessibility).
 - [ ] A whole page opens with a Skip link to the id of `<main>`, hidden until focused, then `space-2` from the top start corner, an `elevated` button (`surface-card`) at `zIndex` `toast`; a fixed or sticky bar as wide as the screen at the top or bottom edge has a `scroll-padding` of at least its height on that edge (Accessibility).
+- [ ] Clicking a tab or the next page changes the URL, and a reload of that URL shows the same tab or page (Usability).
 - [ ] Every interactive element has all its states and the focus of States: corner marks, or the link focus underline on a link (States).
 - [ ] A link with the look of a button keeps its label color on focus and takes the link focus underline, with no outline (Button, States).
 - [ ] A link with the look of a button has text-decoration none at rest (Button).
@@ -68,7 +69,6 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 ## Judge, always
 
-- [ ] The open tab and the page number live in the URL (Usability).
 
 ## Judge, by context
 

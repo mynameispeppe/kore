@@ -894,6 +894,37 @@ FOCUSED = r"""
 }
 """
 
+# Runs in a fresh page, in two steps. PICK tags the i-th target with data-kore-url and describes it, or returns null:
+# the first unselected tab of each tablist, then the last enabled button of each Pagination root.
+URL_PICK = r"""
+(i) => {
+  const tabs = [...document.querySelectorAll('[role=tablist]')]
+    .map((list, group) => [group, [...list.querySelectorAll('[role=tab]')].findIndex(t => t.getAttribute('aria-selected') !== 'true')])
+    .filter(([, index]) => index >= 0).map(([group, index]) => ({kind: 'tab', group, index}));
+  const pages = [...document.querySelectorAll('[data-kore="Pagination"]')]
+    .map((root, group) => ({kind: 'page', group, index: [...root.querySelectorAll('button')].findLastIndex(b => !b.disabled)}))
+    .filter(({index}) => index >= 0);
+  const info = [...tabs, ...pages][i];
+  if (!info) return null;
+  const root = info.kind === 'tab' ? document.querySelectorAll('[role=tablist]')[info.group] : document.querySelectorAll('[data-kore="Pagination"]')[info.group];
+  root.querySelectorAll(info.kind === 'tab' ? '[role=tab]' : 'button')[info.index].dataset.koreUrl = '';
+  return info;
+}
+"""
+
+# Runs in the page after the click, and again after the new URL is opened. root: the Pagination text right after the click.
+# Returns the finding message, or null when the URL changed and the new page shows the same tab or page.
+URL_VERDICT = r"""
+({kind, group, index, moved, root}) => {""" + HELPERS + r"""
+  const tab = kind === 'tab';
+  const box = document.querySelectorAll(tab ? '[role=tablist]' : '[data-kore="Pagination"]')[group];
+  const el = box.querySelectorAll(tab ? '[role=tab]' : 'button')[index];
+  if (moved && (tab ? el.getAttribute('aria-selected') === 'true' : box.innerText === root)) return null;
+  return tab ? `${name(el)} is a tab: put the open tab in the URL, so a reload opens it again`
+             : `${name(el)} is the next page: put the page number in the URL, so a reload shows the same page`;
+}
+"""
+
 
 # Runs in the page before and after the root font size doubles: the font
 # size of each element that holds text, in page order.
@@ -1010,7 +1041,7 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
     PRODUCT.md, and saves the screenshots in the folder shots.
     Returns the screenshot paths, or None when the browser cannot run."""
     try:
-        from playwright.sync_api import sync_playwright
+        from playwright.sync_api import sync_playwright, TimeoutError as PageTimeout
     except ImportError:
         print(f"kore_check --url needs Playwright: {INSTALL}.")
         return None
@@ -1057,6 +1088,29 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
                 for kind, rule, message in page.evaluate(MEASURE, {"touch": False, "zoom": True, "tables": tables, "mode": mode, "whole": whole}):
                     seen[(kind, rule, message)].append(("200%", theme))
                 context.close()
+            if whole:  # the URL rule: a click per target, in the first theme at 1440
+                theme, selector = next(iter(themes.items()))
+                for i in range(99):
+                    context, page = load(browser, url, theme, selector, 1440, False)
+                    info = page.evaluate(URL_PICK, i)
+                    if info:
+                        before = page.url
+                        try:
+                            page.click("[data-kore-url]", timeout=2000)
+                            page.wait_for_load_state()
+                            if info["kind"] == "page":
+                                info["root"] = page.evaluate("g => document.querySelectorAll('[data-kore=Pagination]')[g].innerText", info["group"])
+                            info["moved"] = page.url != before
+                            if info["moved"]:
+                                page.goto(page.url, wait_until="load")
+                            message = page.evaluate(URL_VERDICT, info)
+                            if message:
+                                seen[("✗", "Usability", message)].append((1440, theme))
+                        except PageTimeout:
+                            pass  # a target that cannot be clicked is not measured
+                    context.close()
+                    if not info:
+                        break
             for (kind, rule, message), places in seen.items():
                 report(kind, url, 0, rule, f"{message} ({where(places)})")
         for table, _ in tables:
