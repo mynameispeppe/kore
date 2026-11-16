@@ -41,11 +41,10 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 ## Judge, always
 
-- [ ] Color never alone, the accent marks one moment, one `primary` per decision (Meaning).
-- [ ] Every string passes Copy 1, 2, 4 and 6 to 10; AI tells 1, 2, 6, 7, 9, 11 and 13 appear only when the user asks for them (Copy, AI tells).
-- [ ] State lives in the URL (Usability).
+- [ ] The accent marks one moment, one `primary` per decision (Meaning).
+- [ ] Every string passes Copy 1, 4, 6, 7, 9 and 10; AI tells 1, 2, 6, 9, 11 and 13 appear only when the user asks for them (Copy, AI tells).
+- [ ] The open tab and the page number live in the URL (Usability).
 - [ ] Dates, currencies and units in the page's locale (Page language).
-- [ ] No invented content: numbers, prices, quotes, logos and names come from the user (Product file).
 
 ## Judge, by context
 
@@ -55,13 +54,13 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] Card zones in the fixed order; no card inside a card; no rounded block with a background unless it is a clickable unit (Cards).
 - [ ] Inside less than between: title and subtitle `space-1`, header and content `space-6`, rows `space-3`, rows and actions `space-8` (Cards, The Distance Ratio Rule).
 - [ ] Roles differ by at least one clear step in size or weight (Semantic weight).
-- [ ] Repeated instances share one priority and one structure; equal heights only for the same structure (Semantic weight, Cards).
+- [ ] Equal heights only for the same structure (Cards).
 - [ ] Actions at the end, right-aligned, confirm last (Scanning patterns).
 
 **Control** (Button, Form fields, Select, Checkbox and radio, Switch, Segmented control, Tabs, Password, Combobox, Number stepper, Slider, Date picker, File upload, Chip, Pagination, Steps)
-- [ ] The variant follows the action's role: one `primary` per decision, a `secondary` next to a primary or a destructive (Secondary alone), a destructive action in its own group (Button, The One Primary Rule).
-- [ ] Labels in sentence case, other than "OK", "Yes" or "Submit"; labeled buttons carry no icon (Button).
-- [ ] Paste never blocked (Usability).
+- [ ] The variant follows the action's role: one `primary` per decision, a destructive action that is not the main action in its own group (Button, The One Primary Rule).
+- [ ] Labels other than "OK", "Yes", "No" or "Submit", never all caps (Button).
+- [ ] Fields carry no `onpaste` attribute (Usability).
 
 **Link** (text links, links in navigation, Breadcrumb, Footer, Steps, a button that takes the user to another page)
 - [ ] A link is an `<a href>`; with the look of a button it follows Button and keeps its label color on focus (Button, States).
@@ -72,20 +71,18 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 
 **Section of a page** (a hero, an about, features, any part with its own heading)
 - [ ] The heading is an `h2` in `headline-md`, regions inside it `h3` in `headline-sm`, no level skipped (Typographic levels).
-- [ ] The section's text, its heading included, comes from the user; when it is missing, ask (Start here).
 - [ ] Prose at the reading measure; an image outside a card has radius `xl` (Typography rules, Radius by role, Images).
 - [ ] Actions at the end of the content they act on, right-aligned (Scanning patterns).
 - [ ] Sections `space-12` apart in App mode, `space-32` / `space-48` in Site mode (Proximity and hierarchy).
 
 **Screen or page**
-- [ ] The eye knows where to look first within three seconds; one `h1`; three or four type levels (Three levels, Typographic levels).
-- [ ] F pattern for dense content, Z for sparse (Scanning patterns).
+- [ ] The eye knows where to look first within three seconds; one `h1` (Three levels, Typographic levels).
 - [ ] Page margins `space-4` on phones, `space-8` from `md`; content stops at `max-content` (Breakpoints).
 - [ ] Skip link, focus never covered, focus to the `h1` after a route change (Accessibility).
 
 **Site mode** (`references/site.md`)
 - [ ] The hero holds only title, subtitle and calls to action; the title is the `h1` (Hero).
-- [ ] At most four items per section; quotes at most 25 words with the name and role the user gives; profiles on other sites as Social links (Sections).
+- [ ] At most four items per section; quotes at most 25 words (Sections).
 - [ ] One focal moment per page, the hero; each section under it reveals once on scroll (One focal moment per page, Scroll reveal).
 
 ## Closed list
@@ -123,6 +120,33 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] A field shows its limits and formats before the user acts (Usability).
 - [ ] A field is validated when the user leaves it (Form fields).
 - [ ] The first-time user's path is complete on its own; accelerators for experts sit beside it (Usability).
+- [ ] Error, success, warning and info carry a text label or an icon with their color (Meaning).
+- [ ] A screen with a floating action button holds one `primary` (The One Primary Rule).
+- [ ] Every string passes Copy 1, 4, 7 and 9 beyond the phrases the script lists, in every language (Copy).
+- [ ] A contrast corrects something the user really believes (Copy).
+- [ ] Each text says what the thing is or does (Copy).
+- [ ] Section numbers appear only when the order is information the user needs (AI tells).
+- [ ] The page invites scrolling with its content alone: no arrow, no mouse-wheel icon, no scroll cue in a language other than English (AI tells).
+- [ ] A version label appears only when the product is in preview (AI tells).
+- [ ] A text label over an image is one its component places there (AI tells, Cards).
+- [ ] One intent has one call to action in a section (AI tells).
+- [ ] Filters, sorting and search live in the URL (Usability).
+- [ ] Dates the format leaves ambiguous, currencies and units follow the page's locale (Page language).
+- [ ] Every text marked `data-kore-user`, every number, price, quote, logo and name comes from the user (Product file, Start here).
+- [ ] Inside a card, a component with a background and a radius is its own unit (Cards).
+- [ ] Repeated instances share one priority and one structure (Semantic weight).
+- [ ] In a group with no filled action, the confirming action is last (Scanning patterns).
+- [ ] A `secondary` stands next to a primary or a destructive; alone only in a decision with no main action (Secondary alone).
+- [ ] In a language other than English, a button's label is other than the translation of "OK", "Yes", "No" or "Submit" (Button).
+- [ ] Labels in sentence case (Button).
+- [ ] A Button with a label shows only text (Button).
+- [ ] Paste works in every field (Usability).
+- [ ] An overlay whose trigger has no `aria-haspopup` follows Overlay rules (Overlay rules).
+- [ ] A line of prose holds at least 45 characters (Typography rules).
+- [ ] Three or four type levels on one screen (Typographic levels).
+- [ ] F pattern for dense content, Z for sparse (Scanning patterns).
+- [ ] Images, controls and the content of carousels keep the page margins and stop at `max-content` (Breakpoints).
+- [ ] Profiles on other sites are Social links (Sections).
 
 ## Deliver
 
