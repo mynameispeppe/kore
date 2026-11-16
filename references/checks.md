@@ -33,6 +33,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Clicking a tab or the next page changes the URL, and a reload of that URL shows the same tab or page (Usability).
 - [ ] A trigger with aria-haspopup or a combobox opens on Enter or ↓; focus moves into a popover or a menu and stays on a select or combobox; Escape closes and returns focus to the trigger; a click outside closes (Popover, Menu, Select, Combobox).
 - [ ] In a single-page app, a link that changes the path moves focus to the new page's `h1` (`tabindex="-1"`) and changes the document title (Accessibility).
+- [ ] In Site mode, each section under the hero keeps its text hidden until its top passes 70% of the viewport, then reveals it once (Scroll reveal).
 - [ ] Every interactive element has all its states and the focus of States: corner marks, or the link focus underline on a link (States).
 - [ ] A link with the look of a button keeps its label color on focus and takes the link focus underline, with no outline (Button, States).
 - [ ] A link with the look of a button has text-decoration none at rest (Button).
@@ -68,16 +69,6 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Images: format, `srcset`, reserved size, loading, `alt` (Images).
 - [ ] Selection, caret, scrollbars, links and numerals themed (Browser surfaces).
 - [ ] Every line of the component's file, and of the files read through its Uses line, holds (Components).
-
-## Judge, always
-
-
-## Judge, by context
-
-Every context the work touches applies.
-
-**Site mode** (`references/site.md`)
-- [ ] Each section under the hero reveals once on scroll (Scroll reveal).
 
 ## Closed list
 

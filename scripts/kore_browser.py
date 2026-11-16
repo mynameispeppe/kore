@@ -870,6 +870,49 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
 }
 """
 
+# Runs in a fresh page with motion on, in Site mode: each section under the first Hero keeps its text hidden until its top
+# passes 70% of the viewport height, reveals it there, and keeps it once the page scrolls back. One finding per section, the first phase that fails.
+REVEAL = r"""
+async () => {""" + HELPERS + r"""
+  const hero = document.querySelector('[data-kore=Hero]');
+  const line = innerHeight * 0.7;
+  const sections = !hero ? [] : [...document.querySelectorAll('section')].filter(s =>
+    !s.matches('[data-kore=Hero]') && s.checkVisibility({visibilityProperty: true}) &&
+    s.getBoundingClientRect().top > hero.getBoundingClientRect().bottom && s.getBoundingClientRect().top >= line);
+  // The first descendant with its own text, and its opacity as seen: the product up to the section.
+  const text = s => [...s.querySelectorAll('*')].find(e => [...e.childNodes].some(n => n.nodeType === 3 && n.data.trim()));
+  const opacity = s => { let o = 1; for (let e = text(s); ; e = e.parentElement) { o *= +style(e).opacity; if (e === s) return o; } };
+  const frame = () => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const settle = async () => {
+    await frame();
+    await Promise.race([Promise.all(document.getAnimations().map(a => a.finished.catch(() => 0))), new Promise(r => setTimeout(r, 3000))]);
+  };
+  const place = (s, share) => window.scrollTo({top: s.getBoundingClientRect().top + scrollY - innerHeight * share, behavior: 'instant'});
+  const live = sections.filter(s => text(s));
+  const phase1 = live.filter(s => {
+    if (opacity(s) <= 0) return true;
+    add('✗', 'Scroll reveal', `${name(s)} is a section under the hero: keep its text hidden until its top passes 70% of the viewport`, s);
+  });
+  const phase2 = [];
+  for (const s of phase1) {
+    place(s, 0.5);
+    await settle();
+    // shortcut: a last section shorter than 30% of the viewport never passes the line and is not measured, until motion.md says how it shows.
+    if (s.getBoundingClientRect().top >= line) continue;
+    if (opacity(s) < 1) add('✗', 'Scroll reveal', `${name(s)}: reveal its text when its top passes 70% of the viewport`, s);
+    else phase2.push(s);
+  }
+  window.scrollTo({top: 0, behavior: 'instant'});
+  await settle();
+  for (const s of phase2) {
+    place(s, 0.9);
+    await settle();
+    if (opacity(s) < 1) add('✗', 'Scroll reveal', `${name(s)}: reveal it once; it stays shown when the page scrolls back`, s);
+  }
+  return out;
+}
+"""
+
 # Runs in the page with focus and focus-visible forced on every element MEASURE marked with data-kore-focus.
 FOCUSED = r"""
 () => {""" + HELPERS + r"""
@@ -956,7 +999,7 @@ OVERLAY_PICK = r"""
 (i) => {
   const kinds = {dialog: 'Popover', menu: 'Menu', true: 'Menu', listbox: 'Select'};
   const els = [...document.querySelectorAll('[aria-haspopup], [role=combobox]')]
-    .filter(el => el.checkVisibility({opacityProperty: true, visibilityProperty: true}) && kinds[el.getAttribute('aria-haspopup') || 'listbox']);
+    .filter(el => !el.matches(':disabled, [aria-disabled=true]') && el.checkVisibility({opacityProperty: true, visibilityProperty: true}) && kinds[el.getAttribute('aria-haspopup') || 'listbox']);
   const el = els[i];
   if (!el) return null;
   el.dataset.koreOverlay = '';
@@ -1087,10 +1130,10 @@ def forcer(page):
     return force
 
 
-def load(browser, url, theme, selector, width, touch):
-    """A new context and page, with reduced motion."""
+def load(browser, url, theme, selector, width, touch, reduced="reduce"):
+    """A new context and page, with reduced motion unless reduced is "no-preference"."""
     context = browser.new_context(viewport={"width": width, "height": HEIGHT}, color_scheme=theme,
-                                  has_touch=touch, reduced_motion="reduce")
+                                  has_touch=touch, reduced_motion=reduced)
     page = context.new_page()
     from playwright.sync_api import TimeoutError as PageTimeout
     try:
@@ -1174,7 +1217,7 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
                                 info["root"] = page.evaluate("g => document.querySelectorAll('[data-kore=Pagination]')[g].innerText", info["group"])
                             info["moved"] = page.url != before
                             if info["moved"]:
-                                page.goto(page.url, wait_until="load")
+                                page.reload(wait_until="load")  # goto to a URL that differs only in its # keeps the document
                             message = page.evaluate(URL_VERDICT, info)
                             if message:
                                 seen[("✗", "Usability", message)].append((1440, theme))
@@ -1199,6 +1242,12 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
                             seen[("✗", "Accessibility", message)].append((1440, theme))
                     except PageTimeout:
                         pass  # a link that cannot be clicked is not measured
+                context.close()
+            if whole and mode == "site":  # the Scroll reveal rule: scrolls the page, in the first theme at 1440 with motion on
+                theme, selector = next(iter(themes.items()))
+                context, page = load(browser, url, theme, selector, 1440, False, "no-preference")
+                for kind, rule, message in page.evaluate(REVEAL):
+                    seen[(kind, rule, message)].append((1440, theme))
                 context.close()
             # the Overlay rule, on whole pages and on one #id: keys and clicks per trigger, in the first theme at 1440
             theme, selector = next(iter(themes.items()))
