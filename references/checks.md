@@ -24,16 +24,19 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Spacing on the scale, sizes multiples of 8, padding uniform, gaps on the container (Spacing).
 - [ ] Text 4.5:1, large text 3:1, icons, control borders and focus 3:1, on the worst surface, in each theme the token file defines (Contrast).
 - [ ] Horizontal padding equals the radius; nested radii are concentric (The Radius-Padding Rule, The Concentric Rule).
-- [ ] Shadows only on clickable elements; everything else a 1px border: `hairline` on containers, `hairline-medium` on labelled controls, `hairline-strong` on controls known only by their outline (Shadows, Contrast).
+- [ ] Shadows only on clickable elements; everything else a 1px border: `hairline` on containers, `hairline-medium` on labelled controls, `hairline-strong` on controls known only by their outline (Shadows, Contrast, AI tells).
 - [ ] Layers on the `zIndex` scale, floating layers never clipped (Stacking order).
 - [ ] Touch targets 44px, adjacent targets `space-2` apart (Accessibility).
 - [ ] Every interactive element has all its states and the focus of States: corner marks, or the link focus underline on a link (States).
 - [ ] Every control has an accessible name, the role and keyboard use its file sets; decorative icons are hidden (Components, Icons).
 - [ ] `<html>` carries `lang` (Page language).
+- [ ] Fields carry no `onpaste` attribute (Usability).
+- [ ] In `KORE-DECISIONS.md`, the heading of a page section is an `h2` in `headline-md`, the heading of a region inside it an `h3` in `headline-sm` (Typographic levels).
 - [ ] Only type roles; form text 16px; tabular figures in columns of numbers; paragraphs 45 to 75 characters (Typography rules).
 - [ ] Only `transform` and `opacity` animate, with motion tokens; reduced motion keeps meaning and drops movement (Motion).
 - [ ] Elements told apart by background or shadow have a 1px transparent border (Themes).
 - [ ] Titles of cards side by side on the same number of lines (Cards).
+- [ ] Cards in one row end at the same height, each filled down to its padding (Cards).
 - [ ] No horizontal scroll from 320 to 2560px, nothing cut at 200% zoom, `100dvh` for full height (Extremes).
 - [ ] Images: format, `srcset`, reserved size, loading, `alt` (Images).
 - [ ] Selection, caret, scrollbars, links and numerals themed (Browser surfaces).
@@ -42,7 +45,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 ## Judge, always
 
 - [ ] The accent marks one moment, one `primary` per decision (Meaning).
-- [ ] Every string passes Copy 1, 4, 6, 7, 9 and 10; AI tells 1, 2, 6, 9, 11 and 13 appear only when the user asks for them (Copy, AI tells).
+- [ ] Every string passes Copy 1, 4, 6, 7, 9 and 10; AI tells 2, 6, 9, 11 and 13 appear only when the user asks for them (Copy, AI tells).
 - [ ] The open tab and the page number live in the URL (Usability).
 - [ ] Dates, currencies and units in the page's locale (Page language).
 
@@ -53,14 +56,11 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 **Container** (Cards, List rows, Table, Tabs, Accordion, Empty state, Charts, Carousel, Footer, Sidebar, Cookie banner)
 - [ ] Card zones in the fixed order; no card inside a card; no rounded block with a background unless it is a clickable unit (Cards).
 - [ ] Inside less than between: title and subtitle `space-1`, header and content `space-6`, rows `space-3`, rows and actions `space-8` (Cards, The Distance Ratio Rule).
-- [ ] Roles differ by at least one clear step in size or weight (Semantic weight).
-- [ ] Equal heights only for the same structure (Cards).
 - [ ] Actions at the end, right-aligned, confirm last (Scanning patterns).
 
 **Control** (Button, Form fields, Select, Checkbox and radio, Switch, Segmented control, Tabs, Password, Combobox, Number stepper, Slider, Date picker, File upload, Chip, Pagination, Steps)
 - [ ] The variant follows the action's role: one `primary` per decision, a destructive action that is not the main action in its own group (Button, The One Primary Rule).
 - [ ] Labels other than "OK", "Yes", "No" or "Submit", never all caps (Button).
-- [ ] Fields carry no `onpaste` attribute (Usability).
 
 **Link** (text links, links in navigation, Breadcrumb, Footer, Steps, a button that takes the user to another page)
 - [ ] A link is an `<a href>`; with the look of a button it follows Button and keeps its label color on focus (Button, States).
@@ -70,13 +70,13 @@ Every context the work touches applies. A button adds Control; a link adds Link.
 - [ ] Focus moves in on open and back to the trigger on close; Escape and a click outside close it (Overlay rules).
 
 **Section of a page** (a hero, an about, features, any part with its own heading)
-- [ ] The heading is an `h2` in `headline-md`, regions inside it `h3` in `headline-sm`, no level skipped (Typographic levels).
+- [ ] Heading levels follow each other: `h2` under `h1`, `h3` under `h2` (Typographic levels).
 - [ ] Prose at the reading measure; an image outside a card has radius `xl` (Typography rules, Radius by role, Images).
 - [ ] Actions at the end of the content they act on, right-aligned (Scanning patterns).
 - [ ] Sections `space-12` apart in App mode, `space-32` / `space-48` in Site mode (Proximity and hierarchy).
 
 **Screen or page**
-- [ ] The eye knows where to look first within three seconds; one `h1` (Three levels, Typographic levels).
+- [ ] One `h1` per page (Typographic levels).
 - [ ] Page margins `space-4` on phones, `space-8` from `md`; content stops at `max-content` (Breakpoints).
 - [ ] Skip link, focus never covered, focus to the `h1` after a route change (Accessibility).
 
