@@ -6,7 +6,9 @@ Needs Playwright for Python and a Chromium browser already installed
 no browser is downloaded. kore_check imports this module only for --url.
 
 Every page is opened in each theme the token file defines at each width of
-WIDTHS, then at 1280px with the root font size at 200% (Zoom). Touch is
+WIDTHS, then at 1280px with the root font size at 200% (Zoom). At each width,
+after the screenshot, focus is forced on the Skip link and on links with the
+look of a button to measure their focus. Touch is
 emulated below 1024px. With a shots folder, the whole page is also saved as
 a PNG at each width of SHOTS, in each theme, from the same visit.
 """
@@ -473,14 +475,15 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
     add('✗', 'Accessibility', `${name(skip)} is the first focusable element: make it a Skip link to the id of <main>`, skip);
   else if (skip && !sronly(skip) && skip.getBoundingClientRect().bottom > 0)
     add('✗', 'Accessibility', `${name(skip)} is the Skip link: hide it until it has focus`, skip);
-  else if (skip) skip.setAttribute('data-kore-focus', 'skip');
+  else if (skip) { skip.setAttribute('data-kore-focus', 'skip'); skip.dataset.koreColor = style(skip).color; }
   // Focus never covered (Accessibility): a fixed or sticky bar as wide as the screen at the top or bottom edge
-  // leaves <html> a scroll-padding on that edge of at least its height.
+  // leaves <html> a scroll-padding on that edge of at least its height. A layer at both edges is no bar.
   for (const el of whole && !zoom ? everyShown : []) {
     const s = style(el), r = el.getBoundingClientRect();
     if (!['fixed', 'sticky'].includes(s.position) || r.width < vw - 0.5) continue;
-    for (const edge of ['top', 'bottom'])
-      if (s[edge] === '0px' && (parseFloat(style(doc)[`scrollPadding${edge === 'top' ? 'Top' : 'Bottom'}`]) || 0) < r.height - 0.5)
+    const edges = ['top', 'bottom'].filter(edge => s[edge] === '0px');
+    for (const edge of edges.length === 1 ? edges : [])
+      if ( (parseFloat(style(doc)[`scrollPadding${edge === 'top' ? 'Top' : 'Bottom'}`]) || 0) < r.height - 0.5)
         add('✗', 'Accessibility', `${name(el)} is ${s.position} at the ${edge} edge: give <html> a scroll-padding-${edge} of at least its height, so it never covers the focus`, el);
   }
   const owns = (el, hit) => hit && (el.contains(hit) || [...(el.labels || [])].some(l => l.contains(hit)));
@@ -833,7 +836,8 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
     return rgba(s.backgroundColor)[3] > 0 || s.boxShadow !== 'none' || sides.some(d => parseFloat(s[`border${d}Width`]) > 0 && rgba(s[`border${d}Color`])[3] > 0);
   });
   // Button and States: each keeps its label color on focus, measured with the focus forced (FOCUSED).
-  looks.forEach((a, i) => { a.setAttribute('data-kore-focus', `link ${i}`); a.dataset.koreColor = style(a).color; });
+  // The Skip link, marked before, takes both measures.
+  looks.filter(a => !a.dataset.koreFocus).forEach((a, i) => { a.setAttribute('data-kore-focus', `link ${i}`); a.dataset.koreColor = style(a).color; });
   const linked = new Map();  // root -> its button-look links that lead somewhere
   for (const a of looks) {
     const href = a.getAttribute('href').trim();
@@ -873,8 +877,10 @@ FOCUSED = r"""
       const start = s.direction === 'rtl' ? vw - r.right : r.left;
       if (Math.round(start) !== 8 || Math.round(r.top) !== 8)
         add('✗', 'Accessibility', `${name(el)} is the Skip link: on focus, show it space-2 (8px) from the top start corner`, el);
-    } else if (s.color !== el.dataset.koreColor || !s.textDecorationLine.includes('underline') || s.textDecorationThickness !== '2px' ||
-               s.textUnderlineOffset !== '4px' || (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0))
+    }
+    // A link with the look of a button; the focused Skip link is one (spacing.md, Skip link).
+    if (s.color !== el.dataset.koreColor || !s.textDecorationLine.includes('underline') || s.textDecorationThickness !== '2px' ||
+        s.textUnderlineOffset !== '4px' || (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0))
       add('✗', 'States', `${name(el)} is a link with the look of a button: on focus it keeps its label color, takes a 2px underline at a 4px offset and no outline`, el);
   }
   return out;
