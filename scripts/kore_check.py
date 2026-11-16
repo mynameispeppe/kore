@@ -632,8 +632,11 @@ def main():
     browser_ran, saved = True, []
     if args.url:
         import kore_browser
+        product = root / "PRODUCT.md"  # its Mode: Site or App (references/start/product-file.md)
+        site = re.search(r"\bMode:\s*(Site|App)\b", product.read_text(encoding="utf-8"), re.I) if product.is_file() else None
         saved = kore_browser.check(args.url, report, themes, args.shots,
-                                   type_rows(decisions.read_text(encoding="utf-8") if decisions.is_file() else ""))
+                                   type_rows(decisions.read_text(encoding="utf-8") if decisions.is_file() else ""),
+                                   site and site.group(1).lower())
         browser_ran = saved is not None
 
     shown = findings

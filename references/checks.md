@@ -32,13 +32,20 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Every interactive element has all its states and the focus of States: corner marks, or the link focus underline on a link (States).
 - [ ] Every control has an accessible name, the role and keyboard use its file sets; decorative icons are hidden (Components, Icons).
 - [ ] `<html>` carries `lang` (Page language).
+- [ ] `<html>` carries `lang` with the country when the page shows a date, a price or a measure; dates with a month name, and numeric dates with the year and a day above 12, follow that locale (Page language).
+- [ ] An `<a href>` inside a paragraph is in `link`, with a 1px underline at a 4px offset (Browser surfaces).
+- [ ] An image outside a card and narrower than the page has radius `xl`; round images, SVG files and images in a header, a footer or the Logo wall follow their own component (Radius by role).
+- [ ] With the Mode in `PRODUCT.md`, each `<section>` sits `space-12` from the next in App mode, `space-32` or `space-48` in Site mode (Proximity and hierarchy).
+- [ ] Text sits `space-4` or more from the screen's sides on phones, `space-8` from `md`, inside a centred `max-content` column; text in a box that scrolls sideways or in a fixed layer follows its box (Breakpoints).
+- [ ] In the Hero, the smallest box holding the `h1` and the calls to action holds only the `h1`, one subtitle, the calls to action and a form (Hero).
+- [ ] In Site mode, a `<section>` holds at most four copies of an item with a heading or a quote, the Logo wall and the Blog aside; a quote holds at most 25 words (Sections).
 - [ ] One `h1` per page, inside the Hero when the page has one (Typographic levels, Hero).
 - [ ] Heading levels follow each other: `h2` under `h1`, `h3` under `h2` (Typographic levels).
 - [ ] Fields carry no `onpaste` attribute (Usability).
 - [ ] Every link is an `<a>` with an `href`; `role="link"` sits on an `<a>` alone (Button).
 - [ ] A button's CSS keeps its label in the case it is written in (Button).
 - [ ] In `KORE-DECISIONS.md`, the heading of a page section is an `h2` in `headline-md`, the heading of a region inside it an `h3` in `headline-sm`; on the page, an element of a row is the `h2` or `h3` its row names, and only then (Typographic levels).
-- [ ] Only type roles; form text 16px; tabular figures in columns of numbers; paragraphs 45 to 75 characters (Typography rules).
+- [ ] Only type roles; form text 16px; tabular figures in columns of numbers; each line of a paragraph at most 75 characters (Typography rules).
 - [ ] Only `transform` and `opacity` animate, with motion tokens; reduced motion keeps meaning and drops movement (Motion).
 - [ ] Elements told apart by background or shadow have a 1px transparent border (Themes).
 - [ ] Titles of cards side by side on the same number of lines (Cards).
@@ -57,7 +64,6 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 - [ ] Every string passes Copy 1, 4, 6, 7, 9 and 10; AI tells 2, 6, 9, 11 and 13 appear only when the user asks for them (Copy, AI tells).
 - [ ] The open tab and the page number live in the URL (Usability).
-- [ ] Dates, currencies and units in the page's locale (Page language).
 
 ## Judge, by context
 
@@ -65,22 +71,14 @@ Every context the work touches applies. A link adds Link.
 
 **Link** (text links, links in navigation, Breadcrumb, Footer, Steps, a button that takes the user to another page)
 - [ ] A link with the look of a button follows Button and keeps its label color on focus (Button, States).
-- [ ] Text links in `link` with a 1px underline at 4px; focus with the link focus underline (Browser surfaces, States).
 
 **Overlay** (Menu, Popover, Dialog, Sheet, Tooltip, Command palette)
 - [ ] Focus moves in on open and back to the trigger on close; Escape and a click outside close it (Overlay rules).
 
-**Section of a page** (a hero, an about, features, any part with its own heading)
-- [ ] Prose at the reading measure; an image outside a card has radius `xl` (Typography rules, Radius by role, Images).
-- [ ] Sections `space-12` apart in App mode, `space-32` / `space-48` in Site mode (Proximity and hierarchy).
-
 **Screen or page**
-- [ ] Page margins `space-4` on phones, `space-8` from `md`; content stops at `max-content` (Breakpoints).
 - [ ] Skip link, focus never covered, focus to the `h1` after a route change (Accessibility).
 
 **Site mode** (`references/site.md`)
-- [ ] The hero holds only title, subtitle and calls to action (Hero).
-- [ ] At most four items per section; quotes at most 25 words (Sections).
 - [ ] Each section under the hero reveals once on scroll (Scroll reveal).
 
 ## Closed list

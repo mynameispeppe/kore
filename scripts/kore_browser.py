@@ -24,7 +24,7 @@ INSTALL = ("python3 -m pip install --user playwright, then install Google Chrome
 
 # Runs in the page. Returns [kind, rule, message] for each finding.
 MEASURE = r"""
-async ({touch, zoom, tables}) => {
+async ({touch, zoom, tables, mode}) => {
   const out = [];
   // A finding on an element the page waives (data-kore-ignore="<Rule>: <reason>") comes back as ignored.
   const add = (kind, rule, msg, ...els) => {
@@ -335,6 +335,120 @@ async ({touch, zoom, tables}) => {
     const label = el.innerText.trim().replace(/\s+/g, ' ');
     if (english && ['ok', 'yes', 'no', 'submit'].includes(label.toLowerCase())) add('✗', 'Button', `${name(el)}: name the action with a verb and an object`, el);
     if (label.split(' ').filter(w => /^\p{Lu}{2,}$/u.test(w)).length >= 2) add('✗', 'Button', `${name(el)}: the label is written in capitals`, el);
+  }
+
+  // Page language: a date, a price or a measure needs the country in lang; month names and numeric dates follow its locale.
+  const lang = doc.lang.trim(), locale = lang || undefined;
+  const monthNames = (locales, styles) => locales.flatMap(l => styles.flatMap(month => Array.from({length: 12}, (_, m) =>
+    new Intl.DateTimeFormat(l, {month}).format(new Date(2000, m, 1)).replace(/\.$/, '').toLowerCase())));
+  const ownMonths = new Set(monthNames([locale], ['long', 'short']));
+  const otherMonths = new Set(monthNames(['en', 'it', 'fr', 'de', 'es', 'pt', 'nl'], ['long']).filter(w => !ownMonths.has(w)));
+  const dayFirst = new Intl.DateTimeFormat(locale).formatToParts(new Date(2000, 11, 31)).find(p => p.type === 'day' || p.type === 'month').type === 'day';
+  const codes = new Set(Intl.supportedValuesOf('currency'));
+  const numericDate = /(?<![\d\/.])(\d{1,2})[\/.](\d{1,2})[\/.]\d{4}(?![\d\/.])/g;
+  const monthNear = (t, set) => { const w = t.toLowerCase().split(/[\s,]+/).map(x => x.replace(/\.$/, '')); return w.find((x, i) => set.has(x) && [w[i - 1], w[i + 1]].some(n => /^\d{1,4}$/.test(n || ''))); };
+  const dated = t => numericDate.test(t) || !!monthNear(t, ownMonths) || !!monthNear(t, otherMonths) || /[$€£¥]\s*\d|\d\s*[$€£¥]/.test(t) ||
+    (/\d/.test(t) && t.split(/[\s\d.,]+/).some(w => codes.has(w))) || /\d\s?(km|cm|mm|kg|mg|ml|mi|lb|lbs|oz|ft|m²|m³|°C|°F|mph)(?!\p{L})/u.test(t);
+  const words = el => el.textContent.replace(/\s+/g, ' ').trim();
+  const showsDate = el => { numericDate.lastIndex = 0; return dated(words(el)); };
+  const dates = everyShown.filter(el => showsDate(el) && ![...el.children].some(showsDate));  // the innermost elements that show one
+  if (lang && dates.length && !/-([a-z]{2}|\d{3})(-|$)/i.test(lang))
+    add('✗', 'Page language', `${name(dates[0])} shows a date, a price or a measure: lang "${lang}" names no country`, dates[0]);
+  for (const el of dates) {
+    for (const [d, a, b] of words(el).matchAll(numericDate))
+      if (+(dayFirst ? b : a) > 12) add('✗', 'Page language', `${name(el)}: ${d} is not a date in the format of lang "${lang}"`, el);
+    const month = monthNear(words(el), otherMonths);
+    if (month) add('✗', 'Page language', `${name(el)}: "${month}" is not a month name of lang "${lang}"`, el);
+  }
+
+  // Links in running text (browser-surfaces.md): link color, a 1px underline at a 4px offset.
+  for (const a of everyShown.filter(el => el.matches('p a[href]'))) {
+    const s = style(a), want = resolve(a, '--link', 'color');
+    if ((want && s.color !== want) || !s.textDecorationLine.includes('underline') || s.textDecorationThickness !== '1px' || s.textUnderlineOffset !== '4px')
+      add('✗', 'Browser surfaces', `${name(a)} is a link in running text: link color, a 1px underline at a 4px offset`, a);
+  }
+
+  // Measure (typography.md): each line of a paragraph holds at most 75 characters.
+  for (const p of everyShown.filter(el => el.localName === 'p')) {
+    let n = 0, most = 0, bottom = -Infinity;
+    const range = document.createRange();
+    for (const w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT); w.nextNode();) {
+      for (let i = 0; i < w.currentNode.data.length; i++) {
+        range.setStart(w.currentNode, i); range.setEnd(w.currentNode, i + 1);
+        const q = range.getBoundingClientRect();
+        if (!q.width) continue;  // collapsed white space
+        if (q.top >= bottom - 1) { n = 0; bottom = q.bottom; } else bottom = Math.max(bottom, q.bottom);
+        most = Math.max(most, ++n);
+      }
+    }
+    if (most > 75) add('✗', 'Typography rules', `${name(p)} has lines longer than 75 characters`, p);
+  }
+
+  // Radius by role: an image outside a card, narrower than the page, has radius xl, on itself or on a box of its size that clips it.
+  // Round images (Avatar), SVG files and images in a header, a footer or the Logo wall follow their own component.
+  for (const img of everyShown.filter(el => el.localName === 'img' && !upCard(el) && !el.closest('header, footer, [data-kore="Logo wall"]'))) {
+    const q = rect(img), want = parseFloat(resolve(img, '--rounded-xl', 'borderTopLeftRadius'));
+    if (q.width >= vw - 1 || !(want >= 0) || /\.svg([?#]|$)|^data:image\/svg/i.test(img.currentSrc || img.src)) continue;
+    let ok = false;
+    for (let a = img; a && !ok; a = a.parentElement) {
+      const b = rect(a), r = style(a).borderTopLeftRadius;
+      if (a !== img && (Math.abs(b.width - q.width) > 1 || Math.abs(b.height - q.height) > 1 || style(a).overflow === 'visible')) break;
+      ok = r.endsWith('%') ? parseFloat(r) >= 50 : parseFloat(r) >= Math.min(b.width, b.height) / 2 - 1 || Math.abs(parseFloat(r) - want) <= 1;
+    }
+    if (!ok) add('✗', 'Radius by role', `${name(img)} is an image outside a card without radius xl`, img);
+  }
+
+  // Breakpoints: text sits space-4 from the screen's sides on phones, space-8 from md, inside a centred max-content column (responsive.md).
+  // Text in a box that scrolls sideways or in a fixed layer follows its box; a box that hides overflow trims the text it holds.
+  const side = px(document.body, vw >= 768 ? '--space-8' : '--space-4'), lo = Math.max(side, (vw - 1200) / 2);
+  for (const [el, nodes] of side >= 0 ? texts : []) {
+    let t = shown(el) && textBox(nodes);
+    for (let a = el; t && a && a !== document.body; a = a.parentElement) {
+      const q = a.getBoundingClientRect(), c = clipBox(a, 'x');
+      if (style(a).position === 'fixed' || q.width <= 1 || q.height <= 1 || (c && c.scrolls)) t = null;
+      else if (c) t = {l: Math.max(t.l, c.l), r: Math.min(t.r, c.r)};
+    }
+    if (t && t.r - t.l > 1 && (t.l < lo - 1 || t.r > vw - lo + 1))
+      add('✗', 'Breakpoints', `${name(el)} sits outside the page margin or the max-content column`, el);
+  }
+
+  // Hero: the smallest box holding the h1 and the calls to action holds only the h1, one subtitle, the calls to action and a form.
+  const calls = 'button, a[href], [role=button], form';
+  for (const hero of document.querySelectorAll('[data-kore="Hero"]')) {
+    const h1 = hero.querySelector('h1');
+    if (!h1 || !shown(h1)) continue;
+    let box = h1.parentElement;
+    while (box !== hero && !box.querySelector(calls)) box = box.parentElement;
+    const extra = [...texts.keys()].filter(el => box.contains(el) && shown(el) && !h1.contains(el) && !el.closest(calls));
+    let sub = extra.find(el => h1.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING);
+    while (sub && sub.parentElement !== box && !sub.parentElement.contains(h1) && !sub.parentElement.querySelector(calls)) sub = sub.parentElement;
+    for (const el of extra.filter(el => !(sub && sub.contains(el))))
+      add('✗', 'Hero', `${name(el)} is in the hero: it holds only the title, the subtitle and the calls to action`, el);
+  }
+
+  // Sections, with the Mode of PRODUCT.md: space between sections (spacing.md), four items and quotes of 25 words in Site mode (site.md).
+  const sections = everyShown.filter(el => el.localName === 'section');
+  const apart = mode === 'site' ? ['space-32', 'space-48'] : mode === 'app' ? ['space-12'] : [];
+  for (const s of apart.length ? sections : []) {
+    const next = s.nextElementSibling, want = apart.map(t => px(s, `--${t}`));
+    if (!next || !sections.includes(next) || want.some(w => !(w >= 0))) continue;
+    if (!want.some(w => Math.abs(rect(next).top - rect(s).bottom - w) <= 1))
+      add('✗', 'Proximity and hierarchy', `${name(next)} is not ${apart.join(' or ')} from the section above it`, next);
+  }
+  for (const s of mode === 'site' ? sections : []) {
+    if (s.matches('[data-kore="Logo wall"], [data-kore="Blog"]') || s.querySelector('[data-kore="Logo wall"], [data-kore="Blog"]')) continue;
+    const copies = new Map();  // parent and kind -> how many items: copies with a heading or a quote
+    for (const el of everyShown) {
+      if (el === s || el.closest('section') !== s || !(el.matches('blockquote') || el.querySelector('h1, h2, h3, h4, h5, h6, [role=heading], blockquote'))) continue;
+      const k = el.parentElement, kinds = copies.get(k) || new Map(), what = el.localName + '.' + (typeof el.className === 'string' ? el.className.trim() : '');
+      copies.set(k, kinds.set(what, (kinds.get(what) || 0) + 1));
+    }
+    const most = Math.max(0, ...[...copies.values()].flatMap(k => [...k.values()]));
+    if (most > 4) add('✗', 'Sections', `${name(s)} holds ${most} items: at most four per section`, s);
+  }
+  for (const q of mode === 'site' ? everyShown.filter(el => el.localName === 'blockquote') : []) {
+    const n = q.innerText.trim().split(/\s+/).filter(Boolean).length;
+    if (n > 25) add('✗', 'Sections', `${name(q)} holds ${n} words: a quote holds at most 25`, q);
   }
   tint.remove();
 
@@ -760,10 +874,11 @@ def load(browser, url, theme, selector, width, touch, motion="reduce", state=Non
     return context, page
 
 
-def check(urls, report, themes, shots=None, tables=()):
+def check(urls, report, themes, shots=None, tables=(), mode=None):
     """Reports the findings of every page, in each theme of themes ({"light" |
     "dark": selector to set on <html>, or None}), through report(kind, path,
-    line, rule, message), tables being type_rows of KORE-DECISIONS.md, and saves the screenshots in the folder shots.
+    line, rule, message), tables being type_rows of KORE-DECISIONS.md and mode "site", "app" or None the Mode of
+    PRODUCT.md, and saves the screenshots in the folder shots.
     Returns the screenshot paths, or None when the browser cannot run."""
     try:
         from playwright.sync_api import sync_playwright
@@ -786,7 +901,7 @@ def check(urls, report, themes, shots=None, tables=()):
                     context, page = load(browser, url, theme, selector, width, touch)
                     marked |= set(page.evaluate("names => names.filter(n => document.querySelector(`[data-kore=\"${n}\"]`))",
                                                 [table for table, _ in tables]))
-                    for kind, rule, message in page.evaluate(MEASURE, {"touch": touch, "zoom": False, "tables": tables}):
+                    for kind, rule, message in page.evaluate(MEASURE, {"touch": touch, "zoom": False, "tables": tables, "mode": mode}):
                         seen[(kind, rule, message)].append((width, theme))
                     if shots and width in SHOTS:
                         page.evaluate(SCROLL_THROUGH)
@@ -802,7 +917,7 @@ def check(urls, report, themes, shots=None, tables=()):
                 if fixed:
                     seen[("✗", "Zoom", f"font size in px, does not follow the user's text size: {', '.join(fixed[:5])}")]\
                         .append(("200%", theme))
-                for kind, rule, message in page.evaluate(MEASURE, {"touch": False, "zoom": True, "tables": tables}):
+                for kind, rule, message in page.evaluate(MEASURE, {"touch": False, "zoom": True, "tables": tables, "mode": mode}):
                     seen[(kind, rule, message)].append(("200%", theme))
                 context.close()
             for (kind, rule, message), places in seen.items():
