@@ -145,7 +145,7 @@ Everything else starts from a default and is asked only when the work reaches it
   3. **In both cases,** list in the delivery report the choices no rule covered and how they were resolved.
 - **Binding rules are never broken, not even on an explicit request.**
   - **Identity:** the rules in `references/rules/identity.md`.
-  - **Accessibility:** contrast minimums, visible focus, 44px touch targets, reduced motion. The full rules live in Color rules (contrast, focus, meaning), Spacing (touch targets, zoom), Motion (reduced motion), Icons (accessible labels) and Responsive (input, safe areas).
+  - **Accessibility:** contrast minimums and color never alone (Color rules); visible focus, a focus never covered, the Skip link and focus after a route change (Spacing); every control reached and opened from the keyboard, a link is an `<a href>` (Spacing, Button); 44px touch targets and 8px between adjacent targets (Spacing); 200% text zoom, with zoom allowed (Spacing, Typography rules); reduced motion (Motion); accessible labels and alternative text (Icons, Images); the page language (Page language); heading levels in order (Typographic levels); a code order equal to the reading order (Code order); forced colors kept (Themes); input and safe areas (Responsive).
 
   When a request breaks one:
   1. do not apply it;

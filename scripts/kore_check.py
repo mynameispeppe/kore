@@ -22,7 +22,9 @@ template literals (styled-components, emotion, Lit, Angular); style objects
 (React style and MUI sx, Vue :style, Angular [ngStyle]); Tailwind classes,
 @apply and theme. Sass indented syntax and Stylus are reported as not
 checked. Prints one line per finding:
-  ✗ a rule is broken: fix it;
+  ✗ <where> · <Rule> · <severity> · <message>: a rule is broken, fix it. The severity is
+    blocking, broken, visible or hidden (GLOSSARY.md, Severity); the ✗ lines come
+    sorted by severity in that order, then by path and line;
   ? a rule may be broken: check it against the rule named;
   – a finding the code waives, with its reason: `kore-ignore <Rule>: <reason>`
     on the line or `kore-ignore-next-line <Rule>: <reason>` above it, in any
@@ -69,6 +71,46 @@ findings = []
 
 def report(kind, path, line, rule, message):
     findings.append((kind, str(path), line, rule, message))
+
+
+SEVERITY_RANK = {"blocking": 0, "broken": 1, "visible": 2, "hidden": 3}  # GLOSSARY.md, Severity
+SEVERITY = {
+    **dict.fromkeys(
+        ["Contrast", "Accessibility", "Touch targets", "Adjacent targets", "Page language", "Typographic levels",
+         "Code order", "Zoom", "Themes", "Safe areas", "Popover", "Menu", "Select"], "blocking"),
+    "Decisions file": "hidden",
+    **dict.fromkeys(
+        ["Never invent values", "Token file", "Motion", "Typography rules", "Images", "Browser surfaces", "States",
+         "Stacking order", "Spacing", "Right to left", "Extremes", "Button", "Borders inside the edge", "Usability",
+         "Cards", "AI tells", "Meaning", "Copy", "Sections", "Scroll reveal", "Text hierarchy", "Scanning patterns",
+         "Top bar", "The One Winner Rule", "The One Primary Rule", "The Distance Ratio Rule", "Radius by role",
+         "Proximity and hierarchy", "One rest per page", "Hero", "Grouping and separation", "Grouping actions",
+         "From role to style", "Equal side margins", "Content", "Breakpoints", "Blank stretches"], "visible"),
+}
+
+
+def severity(rule, message):
+    """The severity of a ✗ (GLOSSARY.md, Severity): a message check first, then the rule's level. An unmapped rule raises KeyError."""
+    if (message.startswith("the page is ") and " wide on a " in message) or message.startswith(("text cut:", "text over text:")):
+        return "broken"
+    # in, not endswith: the browser appends " (320 light)" to the message
+    if rule == "Images" and "shows no image: point it to its file or to the placeholder" in message:
+        return "broken"
+    if rule == "Usability" and message.startswith("the page logs an error"):
+        return "broken"
+    if (rule, message) in {("Images", "an <img> without alt"),
+                           ("Button", "an <a> without href (a link is an <a href>)"),
+                           ("Button", 'role="link" on another element (a link is an <a href>)'),
+                           ("Typography rules", "the viewport blocks zoom"),
+                           ("Motion", "animations without a prefers-reduced-motion block")}:
+        return "blocking"
+    if rule == "States" and "is a link with the look of a button: on focus" in message:
+        return "blocking"
+    if rule == "Never invent values" and "(the value of " in message:
+        return "hidden"
+    if rule == "Token file" and ("copies a value" in message or message == "no token file defining --canvas"):
+        return "hidden"
+    return SEVERITY[rule]
 
 
 # A finding the author waives in the code, with the reason: `kore-ignore <Rule>: <reason>` on the line, or
@@ -664,9 +706,11 @@ def main():
         if reason:
             waived.append((f, reason))
     shown = [f for f in shown if f not in {w[0] for w in waived}]
-    for kind, path, line, rule, message in sorted(shown, key=lambda f: (f[0] != "✗", f[1], f[2])):
+    levels = {id(f): severity(f[3], f[4]) if f[0] == "✗" else None for f in shown}
+    for f in sorted(shown, key=lambda f: (f[0] != "✗", SEVERITY_RANK.get(levels[id(f)], 0), f[1], f[2])):
+        kind, path, line, rule, message = f
         where = f"{path}:{line}" if line else path
-        print(f"{kind} {where} · {rule} · {message}")
+        print(f"{kind} {where} · {rule} · " + (f"{levels[id(f)]} · " if kind == "✗" else "") + message)
     for (kind, path, line, rule, message), reason in waived:
         where = f"{path}:{line}" if line else path
         print(f"– {where} · {rule} · ignored: {reason}")

@@ -146,7 +146,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 
 - [ ] The report in two lines: what was built, what was fixed, every choice no rule covered; then the last `kore_check` command, run after the last edit, and its summary line (Building anything).
 - [ ] `kore_check` exited with 0, or the report says it could not run and every Measure box was checked by hand (Measure).
-- [ ] The report tells the user what only they can check: when the work has animations, 60fps and CLS 0 while they run (Motion); always, real iPhone and Android phones (Responsive, Testing).
+- [ ] The report tells the user what only they can check: when the work has animations, 60fps and CLS 0 while they run (Motion); always, real iPhone and Android phones (Responsive, Testing), a pass with a screen reader such as VoiceOver or NVDA, and LCP under 2.5s and INP under 200ms (Lighthouse).
 - [ ] The semantic weight default stated in one line (Semantic weight).
 - [ ] Missing content and images listed (Product file).
 - [ ] Wait for the user (Start here).
