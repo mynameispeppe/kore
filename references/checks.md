@@ -53,6 +53,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] A button's CSS keeps its label in the case it is written in (Button).
 - [ ] In `KORE-DECISIONS.md`, the heading of a page section is an `h2` in `headline-md`, the heading of a region inside it an `h3` in `headline-sm`; on the page, an element of a row is the `h2` or `h3` its row names, and only then (Typographic levels).
 - [ ] Only type roles; form text 16px; tabular figures in columns of numbers; each line of a paragraph at most 75 characters (Typography rules).
+- [ ] At every width, the `h1` and each heading of a page section hold at most two lines, outside `data-kore-user` (Typography rules).
 - [ ] Only `transform` and `opacity` animate, with motion tokens; reduced motion keeps meaning and drops movement (Motion).
 - [ ] Elements told apart by background or shadow have a 1px transparent border (Themes).
 - [ ] Titles of cards side by side on the same number of lines (Cards).

@@ -7,6 +7,7 @@
 - **Measure.** Paragraphs stay between 45 and 75 characters per line; cap text containers with a `ch` max-width.
 - **Heading spacing.** More space above a heading than below it, so the heading belongs to the text it introduces.
 - **Balanced lines.** Headings have `text-wrap: balance`, so their lines have similar lengths; paragraphs have `text-wrap: pretty`, so their last line never holds one word alone.
+- **Two-line headings.** The `h1` and the heading of every page section (Section headings) hold at most two lines at every width; a longer one gets fewer words. A heading the user gave, with `data-kore-user`, stays as given.
 - **Smoothing.** The body has `-webkit-font-smoothing: antialiased`, so on macOS each weight is drawn at its own thickness, never heavier.
 - **Paragraph rhythm.** Separate paragraphs with space or with a first-line indent, never both.
 - **Numbers.** Columns of numbers use tabular figures (`font-variant-numeric: tabular-nums`) so digits line up.

@@ -633,10 +633,14 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
   const lines = h => {
     const range = document.createRange();
     range.selectNodeContents(h);
-    // a smaller span on the same line (a period after a title) overlaps it, so it is not a new line
+    // a box joins the line it overlaps by half its own height: a smaller span on the line (a period after a title) does,
+    // the next line does not even when the text is taller than the line-height (display-lg 57/64), so lines overlap a little
     const rs = [...range.getClientRects()].filter(r => r.width > 0).sort((a, b) => a.top - b.top);
-    let n = 0, bottom = -Infinity;
-    for (const r of rs) { if (r.top >= bottom - 1) n++; bottom = Math.max(bottom, r.bottom); }
+    let n = 0, top = Infinity, bottom = -Infinity;
+    for (const r of rs) {
+      if (Math.min(r.bottom, bottom) - Math.max(r.top, top) >= r.height / 2) { top = Math.min(top, r.top); bottom = Math.max(bottom, r.bottom); }
+      else { n++; top = r.top; bottom = r.bottom; }
+    }
     return n;
   };
   const kind = el => el.localName + '.' + (typeof el.className === 'string' ? el.className.trim() : '');
@@ -661,6 +665,10 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
     if (counts.size < 2) continue;
     const shortest = titles.reduce((a, b) => b[1] < a[1] ? b : a)[0];
     add('✗', 'Cards', `titles of cards side by side on ${[...counts].sort().join(' and ')} lines: ${name(shortest)}`, ...row.keys());
+  }
+  for (const h of document.querySelectorAll('h1, h2')) {
+    if (!shown(h) || h.closest('dialog, [role=dialog], [role=alertdialog], [data-kore-user]')) continue;
+    if (lines(h) > 2) add('✗', 'Typography rules', `${name(h)} runs over two lines: the h1 and a page section's heading hold at most two`, h);
   }
   // Boxes side by side in a grid or flex row end at the same height, and none has empty space under its content.
   const inFlow = el => shown(el) && style(el).position !== 'absolute' && style(el).position !== 'fixed';
