@@ -14,6 +14,7 @@ a PNG at each width of SHOTS, in each theme, from the same visit.
 """
 import os
 import kore_images
+import kore_spacing
 import kore_usability
 from collections import defaultdict
 from urllib.parse import urlparse
@@ -1121,9 +1122,9 @@ async () => {
 }
 """
 
-# Runs in the page after SCROLL_THROUGH, so lazy images have tried their file. Returns [kind, rule, message].
-IMAGES = r"""
-() => {""" + HELPERS + kore_images.MISSING + r"""
+# Runs in the page after SCROLL_THROUGH: the checks that need the page scrolled through (images, blank stretches, rests). Returns [kind, rule, message].
+SCROLLED = r"""
+() => {""" + HELPERS + kore_images.MISSING + kore_spacing.BLANK + kore_spacing.REST + r"""
   return out;
 }
 """
@@ -1213,7 +1214,7 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
                     for kind, rule, message in page.evaluate(MEASURE, {"touch": touch, "zoom": False, "tables": tables, "mode": mode, "whole": whole}):
                         seen[(kind, rule, message)].append((width, theme))
                     page.evaluate(SCROLL_THROUGH)
-                    for kind, rule, message in page.evaluate(IMAGES):
+                    for kind, rule, message in page.evaluate(SCROLLED):
                         seen[(kind, rule, message)].append((width, theme))
                     for text in errors:
                         seen[("✗", "Usability", f'the page logs an error: "{text}": fix the script so the page loads and scrolls without errors')].append((width, theme))

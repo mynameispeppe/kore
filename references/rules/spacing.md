@@ -41,6 +41,8 @@
 - **Density never collapses groups.** When content must be dense, keep the ratio and reduce the elements (fewer, smaller), never the ratio.
 - **Space the siblings from the parent.** Put the gap on the container (flex or grid gap, stack spacing) instead of margins on each child, so gaps never collapse or double.
 - **Grouping actions.** Related actions sit `space-2` apart (`space-3` between 32px buttons, Adjacent targets); different groups at least `space-4`; a destructive action that is not the main action is its own group; as the main action of a confirmation it sits next to Cancel (Dialog). Rare actions go in a "More" menu, grouped by category with space or a label, destructive last.
+- **Blank stretches.** At every width, the blank space between two painted things, above the first and below the last, is at most half the window tall. Painted means shown, wider and taller than 1px: a line of text; an image, video, `svg` or `canvas`; a box whose background differs from the color behind it, or with a shadow, over its whole height; a border, over its own width. Positions are read with the page scrolled to the top.
+- **One rest per page.** Cut the page from the top into slices one window tall, whole slices only. A rest is a slice holding something painted and at most one line of text or one image, video, `svg` or `canvas`. A page holds at most one rest; fill another near-empty slice by making its main element bigger, or cut it.
 
 ## Accessibility
 

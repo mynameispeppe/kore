@@ -22,6 +22,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Among the groups that share a parent, every group has a title or none has (Grouping and separation).
 - [ ] Every color, space, size, radius, shadow, duration, easing, z-index, breakpoint and opacity comes from a token or from a value a rule computes (Never invent values).
 - [ ] Spacing on the scale, sizes multiples of 8, padding uniform, gaps on the container (Spacing).
+- [ ] At every width, blank space is at most half the window tall, and the page holds at most one rest (Blank stretches, One rest per page).
 - [ ] Text 4.5:1, large text 3:1, icons, control borders and focus 3:1, on the worst surface, in each theme the token file defines (Contrast).
 - [ ] Buttons take `primary`; a background in `accent` sits only in the Hero's visual; text in `accent` is `display-sm` or larger; a page holds at most 4 elements in `accent`, the Hero's backgrounds in `accent` counted as one (Meaning).
 - [ ] At most one button with a `primary` background per form, dialog or `data-kore` root, and per page outside them (The One Primary Rule).
