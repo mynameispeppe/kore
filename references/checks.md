@@ -45,6 +45,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] An image outside a card and narrower than the page has radius `xl`; round images, SVG files and images in a header, a footer or the Logo wall follow their own component (Radius by role).
 - [ ] With the Mode in `PRODUCT.md`, each `<section>` sits `space-12` from the next in App mode, `space-32` or `space-48` in Site mode (Proximity and hierarchy).
 - [ ] Text sits `space-4` or more from the screen's sides on phones, `space-8` from `md`, and no wider than `max-content`; text in a box that scrolls sideways or in a fixed layer follows its box (Breakpoints).
+- [ ] In Site mode, text sits max(the side margin, (screen width − `max-content`) / 2) or more from each side of the screen (Equal side margins).
 - [ ] In the Hero, the smallest box holding the `h1` and the calls to action holds only the `h1`, one subtitle, the calls to action and a form (Hero).
 - [ ] In Site mode, a `<section>` holds at most four copies of an item with a heading or a quote, the Logo wall and the Blog aside; a quote holds at most 25 words (Sections).
 - [ ] In Site mode, the first visible text of each outermost `<section>` sits in its `h1` or `h2`, at every width; a section with no visible text fails (Sections).

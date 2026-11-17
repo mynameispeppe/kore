@@ -14,6 +14,7 @@ a PNG at each width of SHOTS, in each theme, from the same visit.
 """
 import os
 import kore_images
+import kore_responsive
 import kore_spacing
 import kore_usability
 from collections import defaultdict
@@ -407,19 +408,7 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
     if (!ok) add('✗', 'Radius by role', `${name(img)} is an image outside a card without radius xl`, img);
   }
 
-  // Breakpoints: text sits space-4 from the screen's sides on phones, space-8 from md, and no wider than max-content, 1200px (responsive.md).
-  // Text in a box that scrolls sideways or in a fixed layer follows its box; a box that hides overflow trims the text it holds.
-  const side = px(document.body, vw >= 768 ? '--space-8' : '--space-4');
-  for (const [el, nodes] of side >= 0 ? texts : []) {
-    let t = shown(el) && textBox(nodes);
-    for (let a = el; t && a && a !== document.body; a = a.parentElement) {
-      const q = a.getBoundingClientRect(), c = clipBox(a, 'x');
-      if (style(a).position === 'fixed' || q.width <= 1 || q.height <= 1 || (c && c.scrolls)) t = null;
-      else if (c) t = {l: Math.max(t.l, c.l), r: Math.min(t.r, c.r)};
-    }
-    if (t && t.r - t.l > 1 && (t.l < side - 1 || t.r > vw - side + 1 || t.r - t.l > 1200 + 1))
-      add('✗', 'Breakpoints', `${name(el)} sits outside the page margin or is wider than max-content`, el);
-  }
+""" + kore_responsive.BREAKPOINTS + r"""
 
   // Hero: the smallest box holding the h1 and the calls to action holds only the h1, one subtitle, the calls to action and a form.
   const calls = 'button, a[href], [role=button], form';
