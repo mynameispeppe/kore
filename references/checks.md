@@ -64,6 +64,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] On an English page, a button's label is other than "OK", "Yes", "No" or "Submit"; in every language, it holds at most one word in capitals (Button).
 - [ ] In every text without `data-kore-user`, a period, a comma, a colon or parentheses join two words, and a dash joins only the two numbers of a range (9 – 18); headings and the labels of controls carry words, without emoji or arrows (Copy).
 - [ ] On an English page, a text without `data-kore-user` holds none of the phrases Copy 1 and 4 quote and none of: actually, additionally, crucial, delve, enhance, foster, pivotal, showcase, valuable, vibrant, serves as, boasts (Copy).
+- [ ] In every language, a text without `data-kore-user` holds no "lorem" (Content).
 - [ ] Sibling texts outside an `<ol>` open without 01, 02; on an English page no text reads Scroll or Scroll to explore; a Badge or a Chip sits outside the box of an image; the Hero holds no strip of three words joined by ·; two button-look links of one `data-kore` root with the same `href` carry the same label (AI tells).
 - [ ] No horizontal scroll from 320 to 2560px, nothing cut at 200% zoom, `100dvh` for full height (Extremes).
 - [ ] Images: format, `srcset`, reserved size, loading, `alt`, every file loaded (Images).

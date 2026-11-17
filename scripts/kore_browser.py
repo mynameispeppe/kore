@@ -801,6 +801,8 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
     // Copy 9: is, has or shows, not serves as or boasts.
     holds(['serve as', 'boast'], true, (el, w) => `${name(el)} holds "${w}": use is, has or shows`);
   }
+  // Content: never placeholder text; lorem ipsum is the same in every language.
+  for (const [el, t] of ownTexts) { const m = t.match(wordRx(['lorem'], false)); if (m) add('✗', 'Content', `${name(el)} holds "${m[0]}": write the real text`, el); }
   // Copy 6: no dash between two words (an em dash, or an en dash or hyphen with a space on each side); a range of two numbers joins no words.
   for (const [el, t] of ownTexts)
     if ([...t.matchAll(/([\p{L}\p{N}])(?:\s*—\s*| [–-] )(?=([\p{L}\p{N}]))/gu)].some(m => !(/\p{N}/u.test(m[1]) && /\p{N}/u.test(m[2]))))
