@@ -631,11 +631,16 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
   // starting at the same height, each with a heading.
   // Lines of the text itself: the heading's box may be stretched by its grid row (aligned zones).
   const lines = h => {
-    const range = document.createRange();
-    range.selectNodeContents(h);
+    // only text counts: an icon centred beside two lines would sit between them
+    const rs = [];
+    for (const walk = document.createTreeWalker(h, NodeFilter.SHOW_TEXT); walk.nextNode();) {
+      const range = document.createRange();
+      range.selectNodeContents(walk.currentNode);
+      rs.push(...[...range.getClientRects()].filter(r => r.width > 0));
+    }
+    rs.sort((a, b) => a.top - b.top);
     // a box joins the line it overlaps by half its own height: a smaller span on the line (a period after a title) does,
-    // the next line does not even when the text is taller than the line-height (display-lg 57/64), so lines overlap a little
-    const rs = [...range.getClientRects()].filter(r => r.width > 0).sort((a, b) => a.top - b.top);
+    // the next line does not even when the text is taller than the line-height (display-sm 36/44 sets 45px), so lines overlap a little
     let n = 0, top = Infinity, bottom = -Infinity;
     for (const r of rs) {
       if (Math.min(r.bottom, bottom) - Math.max(r.top, top) >= r.height / 2) { top = Math.min(top, r.top); bottom = Math.max(bottom, r.bottom); }
