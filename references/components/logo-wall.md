@@ -16,5 +16,5 @@ A section of the page (site.md Logo wall): the logos of clients, partners, press
 
 **Variants**
 
-1. **Logos only:** One line in `body-md` `mute` above the row, when the user gives it.
+1. **Logos only:** the title in `headline-md` `ink` (Section headings), with no text under it.
 2. **Title and text:** The title in `headline-md` `ink`, the text in `body-lg` `body` `space-1` under it, at most 60ch of `body-lg` wide.

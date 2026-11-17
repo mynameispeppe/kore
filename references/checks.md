@@ -46,6 +46,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] Text sits `space-4` or more from the screen's sides on phones, `space-8` from `md`, and no wider than `max-content`; text in a box that scrolls sideways or in a fixed layer follows its box (Breakpoints).
 - [ ] In the Hero, the smallest box holding the `h1` and the calls to action holds only the `h1`, one subtitle, the calls to action and a form (Hero).
 - [ ] In Site mode, a `<section>` holds at most four copies of an item with a heading or a quote, the Logo wall and the Blog aside; a quote holds at most 25 words (Sections).
+- [ ] In Site mode, the first visible text of each outermost `<section>` sits in its `h1` or `h2`, at every width; a section with no visible text fails (Sections).
 - [ ] One `h1` per page, inside the Hero when the page has one (Typographic levels, Hero).
 - [ ] Heading levels follow each other: `h2` under `h1`, `h3` under `h2` (Typographic levels).
 - [ ] Fields carry no `onpaste` attribute (Usability).

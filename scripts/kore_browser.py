@@ -444,6 +444,11 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
       add('✗', 'Proximity and hierarchy', `${name(next)} is not ${apart.join(' or ')} from the section above it`, next);
   }
   for (const s of mode === 'site' ? sections : []) {
+    // A section opens with its heading: the first shown text sits in an h1 or h2 of the section, with a box over 1px.
+    const outer = !s.parentElement.closest('section'), first = outer && [...texts.keys()].find(el => s.contains(el) && shown(el));
+    const head = first && first.closest('h1, h2'), box = head && head.getBoundingClientRect();
+    if (outer && !(head && s.contains(head) && box.width > 1 && box.height > 1))
+      add('✗', 'Sections', `${name(s)} ${first ? 'opens with ' + name(first) : 'has no visible text'}: a section opens with its heading, a visible h1 or h2`, s);
     if (s.matches('[data-kore="Logo wall"], [data-kore="Blog"]') || s.querySelector('[data-kore="Logo wall"], [data-kore="Blog"]')) continue;
     const copies = new Map();  // parent and kind -> how many items: copies with a heading or a quote
     for (const el of everyShown) {
