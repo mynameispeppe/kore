@@ -527,6 +527,174 @@ GLASS_MINIMUM = {**dict.fromkeys(["ink", "body", "mute", "link", "danger", "warn
                  **dict.fromkeys(["accent", "hairline-strong", "focus-ring"], 3)}
 
 
+# ---------------------------------------------------------------- Huecode
+# Ported to Python from Huecode, TypeScript:
+# https://github.com/larisabarabas/huecode, commit 68b88c9
+# (src/lib/color.ts, paletteBuilder.ts, previewTheme.ts, types.ts); only the fixed path
+# of buildPaletteFromBase (no rng) and the hex vars of paletteToCssVars (no --ring, no --shadow-*).
+#
+# MIT License
+#
+# Copyright (c) 2026 Stefania Barabas
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+HUECODE_STEPS = (50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950)
+HUECODE_ROLES = ("primary", "secondary", "accent", "neutral", "success", "warning", "error", "info")
+HUECODE_LIGHT_SIDE = {50: 0, 100: 0.067, 200: 0.244, 300: 0.467, 400: 0.733, 500: 1}
+HUECODE_DARK_SIDE = {500: 0, 600: 0.2, 700: 0.4, 800: 0.6, 900: 0.8, 950: 1}
+HUECODE_ANCHORS = {"success": (142, 65, 42), "warning": (38, 92, 50), "error": (4, 78, 52), "info": (217, 80, 52)}
+HUECODE_SEMANTIC = {"ok": "success", "warn": "warning", "err": "error", "info": "info"}
+
+
+def huecode_hsl_to_hex(h, s, l):
+    sat, light, hue = clamp(s, 0, 100) / 100, clamp(l, 0, 100) / 100, (h % 360 + 360) % 360
+    a = sat * min(light, 1 - light)
+
+    def f(n):
+        k = (n + hue / 30) % 12
+        return light - a * max(-1, min(k - 3, min(9 - k, 1)))
+
+    return "#" + "".join(f"{int(js_round(f(n) * 255)):02x}" for n in (0, 8, 4))
+
+
+def huecode_hex_to_rgb(hexa):
+    clean = hexa.replace("#", "")
+    num = int(clean, 16)
+    return (num >> 16) & 255, (num >> 8) & 255, num & 255
+
+
+def huecode_hex_to_hsl(hexa):
+    r, g, b = (c / 255 for c in huecode_hex_to_rgb(hexa))
+    top, low = max(r, g, b), min(r, g, b)
+    l = (top + low) / 2
+    if top == low:
+        return 0, 0, l * 100
+    d = top - low
+    s = d / (2 - top - low) if l > 0.5 else d / (top + low)
+    if top == r:
+        h = (g - b) / d + (6 if g < b else 0)
+    elif top == g:
+        h = (b - r) / d + 2
+    else:
+        h = (r - g) / d + 4
+    return h * 60, s * 100, l * 100
+
+
+def huecode_shade_scale(h, s, l):
+    mid = clamp(l, 15, 90)
+    scale = {}
+    for step in HUECODE_STEPS:
+        light_side = step <= 500
+        span = 97 - mid if light_side else mid - 12
+        fraction = (HUECODE_LIGHT_SIDE if light_side else HUECODE_DARK_SIDE)[step]
+        target = 97 - fraction * span if light_side else mid - fraction * span
+        distance = 0 if span == 0 else abs(target - mid) / span
+        scale[str(step)] = huecode_hsl_to_hex(h, clamp(s * (1 - distance * 0.28), 0, 100), target)
+    return scale
+
+
+def huecode_luminance(hexa):
+    return sum(w * (c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4)
+               for w, c in zip((0.2126, 0.7152, 0.0722), (v / 255 for v in huecode_hex_to_rgb(hexa))))
+
+
+def huecode_contrast(a, b):
+    la, lb = huecode_luminance(a), huecode_luminance(b)
+    return (max(la, lb) + 0.05) / (min(la, lb) + 0.05)
+
+
+def huecode_readable(background):
+    return "#000000" if huecode_contrast(background, "#000000") >= huecode_contrast(background, "#ffffff") else "#ffffff"
+
+
+def huecode_mix_hue(h1, h2, weight):
+    return (h1 + ((h2 - h1 + 540) % 360 - 180) * weight + 360) % 360
+
+
+def huecode_semantic(anchor, primary):
+    shift = clamp((primary[0] - anchor[0] + 540) % 360 - 180, -28, 28)
+    return ((anchor[0] + shift + 360) % 360, clamp(anchor[1] * 0.65 + primary[1] * 0.35, 0, 100),
+            clamp(anchor[2] * 0.8 + primary[2] * 0.2, 0, 100))
+
+
+def huecode_pick_contrast(scale, background, candidates, minimum):
+    for step in candidates:
+        if huecode_contrast(scale[str(step)], background) >= minimum:
+            return scale[str(step)]
+    return scale[str(candidates[-1])]
+
+
+def huecode_pick_lightness(scale, candidates, target):
+    best, best_distance = scale[str(candidates[0])], math.inf
+    for step in candidates:
+        distance = abs(huecode_hex_to_hsl(scale[str(step)])[2] - target)
+        if distance < best_distance:
+            best, best_distance = scale[str(step)], distance
+    return best
+
+
+def huecode_css_vars(palette, dark):
+    neutral, primary, v = palette["neutral"], palette["primary"], {}
+    if dark:
+        v.update({"--bg": neutral["900"], "--surface": neutral["800"], "--surface-2": neutral["700"],
+                  "--surface-3": neutral["600"], "--border": neutral["600"], "--border-strong": neutral["500"]})
+        v["--text"] = huecode_pick_contrast(neutral, v["--bg"], [50, 100], 7)
+        v["--text-2"] = huecode_pick_contrast(neutral, v["--bg"], [100, 200, 300], 4.5)
+        v["--text-3"] = huecode_pick_contrast(neutral, v["--bg"], [200, 300, 400], 4.5)
+    else:
+        v.update({"--surface": "#ffffff", "--bg": neutral["50"], "--surface-2": neutral["50"],
+                  "--surface-3": neutral["200"], "--border": neutral["200"], "--border-strong": neutral["300"]})
+        v["--text"] = huecode_pick_contrast(neutral, v["--bg"], [900, 950], 7)
+        v["--text-2"] = huecode_pick_contrast(neutral, v["--bg"], [600, 700, 800], 4.5)
+        v["--text-3"] = huecode_pick_contrast(neutral, v["--bg"], [500, 600, 700], 4.5)
+    candidates, target = ([300, 400, 500], 65) if dark else ([500, 600, 700], 50)
+    accent = huecode_pick_lightness(primary, candidates, target)
+    soft = primary["900"] if dark else primary["50"]
+    v["--accent"] = accent
+    v["--accent-hover"] = huecode_pick_lightness(primary, candidates, target + (12 if dark else -12))
+    v["--accent-fg"] = huecode_readable(accent)
+    v["--accent-soft"] = soft
+    v["--accent-soft-fg"] = huecode_pick_contrast(primary, soft, [100, 200, 300] if dark else [700, 800, 900], 4.5)
+    for prefix, role in HUECODE_SEMANTIC.items():
+        scale = palette[role]
+        base = scale["400"] if dark else scale["600"]
+        v[f"--{prefix}"] = base
+        v[f"--{prefix}-soft"] = scale["900"] if dark else scale["50"]
+        v[f"--{prefix}-fg"] = huecode_readable(base)
+    return v
+
+
+def huecode(primary_hex):
+    """Huecode's palette of one primary hex: its 8 shade scales and its light and dark CSS vars."""
+    base = huecode_hex_to_hsl(primary_hex)
+    roles = {
+        "primary": base,
+        "secondary": (huecode_mix_hue(base[0], base[0] - 30, 1), clamp(base[1] * 0.85, 0, 100), base[2]),
+        "accent": (huecode_mix_hue(base[0], base[0] + 180, 1), clamp(base[1] * 1.1, 0, 100), base[2]),
+        "neutral": (base[0], min(base[1] * 0.15, 12), clamp(50, 38, 46)),
+        **{role: huecode_semantic(anchor, base) for role, anchor in HUECODE_ANCHORS.items()},
+    }
+    scales = {role: huecode_shade_scale(*roles[role]) for role in HUECODE_ROLES}
+    return {"scales": scales, "light": huecode_css_vars(scales, False), "dark": huecode_css_vars(scales, True)}
+
+
 def hct(color):
     return hct_from_argb(argb_from_rgb(*(int(round(v)) for v in color[:3])))
 
