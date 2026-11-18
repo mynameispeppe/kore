@@ -9,7 +9,7 @@
 - **Add-on files:** read only the file of each add-on that the part being built or checked contains: Shortcuts `references/components/command-palette/shortcuts.md`.
 - **Opening:** ⌘K on Mac, Ctrl+K elsewhere, and a button that says so, showing only the current platform's keys. The same keys close it again.
 - **Opening hint:** beside the opening button, "or press" and the keys in a key. font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`; color `mute`.
-- **Palette:** a modal `<dialog>` with an accessible label. position fixed; inset `space-12` 0 auto 0; margin 0 auto; width min(`dialog`, 100vw − `space-8`); padding 0; border 0; border-radius `rounded-md`; background `surface-float`; outline `line-thin` solid `hairline`; outline-offset −`line-thin`; color `ink`.
+- **Palette:** a modal `<dialog>` with an accessible label. position fixed; inset `space-12` 0 auto 0; margin 0 auto; width min(`dialog`, 100vw − `space-8`); padding 0; border 0; border-radius `rounded-md`; background `surface-float`; outline `line-thin` solid `hairline`; outline-offset −`line-thin`; color `ink`. (replaced in: glassmorphism)
 - **Scrim:** the palette's ::backdrop: background `scrim`.
 - **Palette below sm:** below `sm`: top `space-4`.
 - **Search:** display flex; align-items center; gap `space-2`; height calc(`space-12` + `space-2`); padding 0 `space-5`; color `mute`. The icon starts `space-5` from the palette's edge and the text `space-5` + `icon-sm` + `space-2`, the same as the results' icons and labels.

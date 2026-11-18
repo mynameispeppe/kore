@@ -1,34 +1,34 @@
 # Elevation
 
-**Depth.** Static layers separate with a surface step and a 1px `hairline`; only interactive elements cast a shadow (the inset bevel of `gradient-raised` and `shadow-raised-sm` is not one). In dark, a layer that sits higher is lighter, never darker: without a shadow, the surface step is what separates it. (replaced in: minimalism)
+**Depth.** Static layers separate with a surface step and a 1px `hairline`; only interactive elements cast a shadow (the inset bevel of `gradient-raised` and `shadow-raised-sm` is not one). In dark, a layer that sits higher is lighter, never darker: without a shadow, the surface step is what separates it. (replaced in: glassmorphism, minimalism)
 
 ## Levels
 
 | Level | Recipe | Use |
 |---|---|---|
-| 0 · flat | `canvas`, no border, no shadow | Page background, full-width sections |
-| glow | a `*-glow` wash | Atmosphere: the default behind text alone on a wide area (Glows), elsewhere only on request; never on dense task screens (replaced in: minimalism) |
-| 1 · surface | `surface-card` + `hairline` | Static cards and panels |
+| 0 · flat | `canvas`, no border, no shadow | Page background, full-width sections (replaced in: glassmorphism) |
+| glow | a `*-glow` wash | Atmosphere: the default behind text alone on a wide area (Glows), elsewhere only on request; never on dense task screens (replaced in: glassmorphism, minimalism) |
+| 1 · surface | `surface-card` + `hairline` | Static cards and panels (replaced in: glassmorphism) |
 | 2 · inset | `surface-elevated` + `hairline` | Rows and icon wells inside a card; never a card inside a card |
-| 3 · floating | `surface-float` + `hairline` | Popovers, menus; active items use `surface-float-active` |
+| 3 · floating | `surface-float` + `hairline` | Popovers, menus; active items use `surface-float-active` (replaced in: glassmorphism) |
 | 3 · inverted | `ink` with `canvas` text, no border, no shadow | Only where a component's file prescribes it |
-| 4 · overlay | `surface-float` + `hairline` over a `scrim` | Dialogs and sheets |
-| interactive | its surface + `shadow-rest`, `shadow-hover` on hover; filled and elevated Buttons: `shadow-raised`, `shadow-raised-hover` on hover (Button) | Buttons and clickable cards only (replaced in: minimalism) |
+| 4 · overlay | `surface-float` + `hairline` over a `scrim` | Dialogs and sheets (replaced in: glassmorphism) |
+| interactive | its surface + `shadow-rest`, `shadow-hover` on hover; filled and elevated Buttons: `shadow-raised`, `shadow-raised-hover` on hover (Button) | Buttons and clickable cards only (replaced in: glassmorphism, minimalism) |
 
 **Level and layer.** The level sets the surface; the layer (`zIndex`, Stacking order) sets what sits above what.
 
 ## Shadows
 
-**The Hairline Rule.** Shadows only on interactive elements: things the user clicks or taps. Everything else, including containers of clickable items such as popovers, menus and sheets, uses a 1px `hairline` border and no shadow. (replaced in: minimalism)
+**The Hairline Rule.** Shadows only on interactive elements: things the user clicks or taps. Everything else, including containers of clickable items such as popovers, menus and sheets, uses a 1px `hairline` border and no shadow. (replaced in: glassmorphism, minimalism)
 
-- **Barely perceptible.** `shadow-rest` is a hint that the element is clickable; `shadow-hover` suggests a lift, nothing more. Never stack several shadows or raise the opacity to make a point; the stacked shadows are only the `shadow-raised` tokens, on filled and elevated Buttons (Button).
+- **Barely perceptible.** `shadow-rest` is a hint that the element is clickable; `shadow-hover` suggests a lift, nothing more. Never stack several shadows or raise the opacity to make a point; the stacked shadows are only the `shadow-raised` tokens, on filled and elevated Buttons (Button). (replaced in: glassmorphism)
 - **Offset and blur.** A shadow always has a vertical offset and a soft blur. A zero-offset colored halo is decoration; a hard shadow with no blur (`4px 4px 0`) is a costume.
-- **Dark theme shadows** are denser (black at 24–32%).
-- **Glass.** Glass and blur are never decoration: they are used only where a component's file prescribes them.
+- **Dark theme shadows** are denser (black at 24–32%). (replaced in: glassmorphism)
+- **Glass.** Glass and blur are never decoration: they are used only where a component's file prescribes them. (replaced in: glassmorphism)
 
 ## Interaction
 
-- **Hover** on a clickable element: `shadow-rest` → `shadow-hover` (`shadow-raised` → `shadow-raised-hover` on filled and elevated Buttons) and a lift of `space-1` (4px), with `duration-fast` and `ease-out`. **Pressed:** back to rest in `duration-instant`. (replaced in: minimalism)
+- **Hover** on a clickable element: `shadow-rest` → `shadow-hover` (`shadow-raised` → `shadow-raised-hover` on filled and elevated Buttons) and a lift of `space-1` (4px), with `duration-fast` and `ease-out`. **Pressed:** back to rest in `duration-instant`. (replaced in: glassmorphism, minimalism)
 - **Reduced motion:** no lift; only the shadow changes, without animation. (replaced in: minimalism)
 
 ## Stacking order

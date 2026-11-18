@@ -85,7 +85,7 @@ Read the project first: request, `PRODUCT.md` (Product file), dependencies, exis
     - **Neobrutalism:** high contrast, blocks, bold colors, thick borders.
     - **Maximalism:** bold colors, clashing textures and patterns, several fonts, every space filled.
     - **Bento grid:** content in tiles of different sizes on a grid, edges aligned, no gaps.
-    - **Glassmorphism:** translucent layers over a blurred background, vivid colors, a thin light border.
+    - **Glassmorphism:** frosted-glass panels with a thin light border float above vivid colors and blur them; only the surfaces that float are glass.
     - **Liquid glass:** a translucent material that refracts and reflects what is around it and reacts to touch and pointer.
     - **Neumorphism:** elements of the same material as the background, raised from it or pressed into it; soft and low in contrast.
 
