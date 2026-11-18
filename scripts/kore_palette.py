@@ -10,7 +10,7 @@ C is one hex, for the theme --given names (light by default), or
 light=#hex,dark=#hex. A role not given follows Missing colors; canvas or
 primary must be given. Prints one table per theme: token, value, lowest
 contrast and the surface where it is lowest, source.
-With --typology glassmorphism, each theme's table ends with glass-fill and glass-fill-strong (typologies/glassmorphism/SKILL.md, Glass fill).
+With --typology glassmorphism, each theme's table ends with glass-fill, glass-fill-strong and page-background (typologies/glassmorphism/SKILL.md, Glass fill).
 Exit code 0 when every token can be used, 1 when one cannot, 2 on bad input.
 
 Example: python3 kore_palette.py --canvas '#F8FAFB' --primary 'light=#212121,dark=#fcfdff'
@@ -521,6 +521,7 @@ WHITE, BLACK = (255, 255, 255, 1.0), (0, 0, 0, 1.0)
 # typologies/glassmorphism/SKILL.md, Glass fill and Page background
 GLASS_GLOW = 0.60  # the core of the two glows: accent and primary at 60% over canvas
 GLASS_SATURATE = 1.40  # glass-saturate
+PAGE_TONE = {"light": 63, "dark": 38}  # page background: the tone of its colors
 GLASS_TINT = {"light": (255, 255, 255), "dark": (32, 32, 32)}
 GLASS_MINIMUM = {**dict.fromkeys(["ink", "body", "mute", "link", "danger", "warning", "success", "info"], 4.5),
                  **dict.fromkeys(["accent", "hairline-strong", "focus-ring"], 3)}
@@ -593,6 +594,29 @@ def glass(theme, colors):
         alpha = next((a / 100 for a in range(101) if not failing(a / 100)), None)
         result[name] = (GLASS_TINT[theme] + (alpha,), []) if alpha is not None else (None, failing(1))
     return result
+
+SHAPES = {
+    "linear": "linear-gradient(135deg, {0}, {1})",
+    "radial": "radial-gradient(circle at 30% 30%, {0}, transparent 60%), radial-gradient(circle at 75% 75%, {1}, transparent 60%)",
+    "mesh": ("radial-gradient(at 0% 0%, {0}, transparent 50%), radial-gradient(at 100% 0%, {1}, transparent 50%), "
+             "radial-gradient(at 100% 100%, {0}, transparent 50%), radial-gradient(at 0% 100%, {1}, transparent 50%)"),
+}
+
+
+def page_background(base):
+    """Page background: {theme: background-image} behind the glass, from the light theme's primary and accent."""
+    primary, accent = base["primary"], base["accent"]
+    gray = [hct(c)[1] < GRAY for c in (primary, accent)]
+
+    def cell(other):
+        return parse_color(harmony(other, ACCENT_CELL[0])[0][ACCENT_CELL[1]][ACCENT_CELL[2]])
+    if all(gray):
+        return None
+    primary, accent = cell(accent) if gray[0] else primary, cell(primary) if gray[1] else accent
+    hues = [hct(c)[0] for c in (primary, accent)]
+    colors = {t: [fmt(at(h, 200, tone)) for h in hues] for t, tone in PAGE_TONE.items()}
+    shape = ("linear", "radial", "mesh")[int(hues[0] // 120)]
+    return {t: SHAPES[shape].format(*c) for t, c in colors.items()}
 
 
 def kore_colors(root=ROOT):
@@ -860,6 +884,9 @@ def main(argv=None):
     kore = kore_colors()
     themes = [t for t in THEMES if t in names]
     tables, notes, problems = palette(given, themes, kore)
+    if args.typology:
+        base = tables.get("light") or next(iter(tables.values()))  # the theme's own table when light is not shipped
+        page = page_background({k: base[k][0] for k in ("primary", "accent")})
     for theme, tokens in tables.items():
         print(f"{theme}\n{'token':<22} {'value':<26} {'lowest':<8} {'on':<42} source")
         for name in (n for n in kore[theme] if n in tokens):  # in the order of tokens.yaml
@@ -870,6 +897,8 @@ def main(argv=None):
                 print(f"{name:<22} {fmt(fill) if fill else '—':<26} {'—':<8} {'—':<42} Glass fill")
                 problems += [f"{theme}: {name} cannot reach {m}:1 for {token} on the glass over {where}, even at alpha 1 "
                              "(Glass fill): ask for another color." for token, m, where in failed]
+            print(f"{'page-background':<22} {page[theme]}" if page else
+                  f"{'page-background':<22} — (primary and accent are gray: canvas only)")
         print()
     for line in notes + problems + propose(given, themes, kore, read_candidates()):
         print(line)
