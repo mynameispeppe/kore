@@ -4,11 +4,13 @@
 
 Usage: python3 kore_palette.py [--themes light,dark] [--given light|dark]
                                [--canvas C] [--primary C] [--accent C]
+                               [--typology glassmorphism]
 
 C is one hex, for the theme --given names (light by default), or
 light=#hex,dark=#hex. A role not given follows Missing colors; canvas or
 primary must be given. Prints one table per theme: token, value, lowest
 contrast and the surface where it is lowest, source.
+With --typology glassmorphism, each theme's table ends with glass-fill and glass-fill-strong (typologies/glassmorphism/SKILL.md, Glass fill).
 Exit code 0 when every token can be used, 1 when one cannot, 2 on bad input.
 
 Example: python3 kore_palette.py --canvas '#F8FAFB' --primary 'light=#212121,dark=#fcfdff'
@@ -516,6 +518,12 @@ UNMEASURED = ["scrim", "veil-photo", "veil-cover", "on-photo", "on-photo-mute"]
 CHARTS = [f"chart-{n}" for n in range(1, 9)]
 FILLS = {"primary-pressed", "danger-pressed", "on-vivid"}  # measured on a fill, not on the surfaces
 WHITE, BLACK = (255, 255, 255, 1.0), (0, 0, 0, 1.0)
+# typologies/glassmorphism/SKILL.md, Glass fill and Page background
+GLASS_GLOW = 0.60  # the core of the two glows: accent and primary at 60% over canvas
+GLASS_SATURATE = 1.40  # glass-saturate
+GLASS_TINT = {"light": (255, 255, 255), "dark": (32, 32, 32)}
+GLASS_MINIMUM = {**dict.fromkeys(["ink", "body", "mute", "link", "danger", "warning", "success", "info"], 4.5),
+                 **dict.fromkeys(["accent", "hairline-strong", "focus-ring"], 3)}
 
 
 def hct(color):
@@ -560,6 +568,31 @@ def last_passing(hue, chroma, tone, step, measure, minimum):
 def mix_black(color):
     """The *-edge tokens: the fill mixed in sRGB, 80% with 20% black."""
     return tuple(int(v * 0.8 + 0.5) for v in color[:3]) + (1.0,)
+
+
+def saturate(color, amount):
+    """CSS saturate(): the feColorMatrix saturate matrix on the sRGB values, clamped; alpha 1.0."""
+    s, (r, g, b) = amount, color[:3]
+    return (clamp((0.213 + 0.787 * s) * r + (0.715 - 0.715 * s) * g + (0.072 - 0.072 * s) * b, 0, 255),
+            clamp((0.213 - 0.213 * s) * r + (0.715 + 0.285 * s) * g + (0.072 - 0.072 * s) * b, 0, 255),
+            clamp((0.213 - 0.213 * s) * r + (0.715 - 0.715 * s) * g + (0.072 + 0.928 * s) * b, 0, 255), 1.0)
+
+
+def glass(theme, colors):
+    """Glass fill: {name: (fill, failed)}; the lowest alpha at which every token of GLASS_MINIMUM meets its
+    minimum on the worst point behind the glass; fill None and failed [(token, minimum, where)] when none does."""
+    behind = {"canvas": colors["canvas"], **{f"{k} glow": over(colors[k][:3] + (GLASS_GLOW,), colors["canvas"])
+                                             for k in ("accent", "primary")}}
+    result = {}
+    for name, extra in (("glass-fill", {}), ("glass-fill-strong", {"black": BLACK} if theme == "light" else {"white": WHITE})):
+        points = {n: saturate(c, GLASS_SATURATE) for n, c in {**behind, **extra}.items()}
+
+        def failing(alpha):
+            glass_points = {n: over(GLASS_TINT[theme] + (alpha,), p) for n, p in points.items()}
+            return [(t, m, w) for t, m in GLASS_MINIMUM.items() for r, w in [lowest(colors[t], glass_points)] if r < m]
+        alpha = next((a / 100 for a in range(101) if not failing(a / 100)), None)
+        result[name] = (GLASS_TINT[theme] + (alpha,), []) if alpha is not None else (None, failing(1))
+    return result
 
 
 def kore_colors(root=ROOT):
@@ -797,7 +830,8 @@ def show(ratio_where):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(
-        usage="python3 kore_palette.py [--themes light,dark] [--given light|dark] [--canvas C] [--primary C] [--accent C]",
+        usage="python3 kore_palette.py [--themes light,dark] [--given light|dark] [--canvas C] [--primary C] [--accent C] "
+              "[--typology glassmorphism]",
         description="Derives the color tokens from the base colors (references/rules/custom-palette.md) "
                     "and measures them. C is one hex, for the theme --given names, or light=#hex,dark=#hex. "
                     "Then proposes the candidate of references/candidates.md for the first missing role "
@@ -807,6 +841,7 @@ def main(argv=None):
     parser.add_argument("--given", choices=THEMES, default="light", help="the theme a single hex is given for (default light)")
     for role in ROLES:
         parser.add_argument(f"--{role}", metavar="C")
+    parser.add_argument("--typology", choices=["glassmorphism"], help="also print the glass fills of this typology (Glass fill)")
     args = parser.parse_args(argv)
     names = args.themes.split(",")
     if not names or any(t not in THEMES for t in names) or len(set(names)) < len(names):
@@ -830,6 +865,11 @@ def main(argv=None):
         for name in (n for n in kore[theme] if n in tokens):  # in the order of tokens.yaml
             color, source, measured = tokens[name]
             print(f"{name:<22} {fmt(color):<26} {show(measured)[0]:<8} {show(measured)[1]:<42} {source}")
+        if args.typology:
+            for name, (fill, failed) in glass(theme, {n: v[0] for n, v in tokens.items()}).items():
+                print(f"{name:<22} {fmt(fill) if fill else '—':<26} {'—':<8} {'—':<42} Glass fill")
+                problems += [f"{theme}: {name} cannot reach {m}:1 for {token} on the glass over {where}, even at alpha 1 "
+                             "(Glass fill): ask for another color." for token, m, where in failed]
         print()
     for line in notes + problems + propose(given, themes, kore, read_candidates()):
         print(line)
