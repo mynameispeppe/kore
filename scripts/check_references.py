@@ -15,7 +15,7 @@ Checks:
 6. Every reference in parentheses to a section, rule or component exists.
 7. Every rule line has a name, and no id is at two rules of its group.
 8. No line of a new file (references/start/, references/rules/, typologies/) is a rule line of another file.
-9. Every id a typology replaces is the id of a default rule.
+9. Every id a typology replaces is the id of a default rule, and of none in FIXED.
 10. Every "replaced in" of a default rule lists the typologies that replace it, and only them.
 11. Every typologies/ folder has the files and folders of typologies/_template.
 12. Every typologies/ path, router table included, exists.
@@ -83,6 +83,33 @@ EXTERNAL = {
 }
 
 REPLACES = re.compile(r"Replaces: ((?:`[\w.-]+`(?:, )?)+)")
+
+# The rules no typology replaces: the fixed line of identity.md and the Accessibility rules (SKILL.md, Behaviour rules).
+# shortcut: a new Accessibility rule is added here by hand; dev/tests checks that every id still names a rule.
+FIXED = {
+    "identity.the-same-in-every-typology",
+    # the rules it names
+    "spacing.no-random-values", "spacing.the-distance-ratio-rule-binding", "button.no-icons-on-labeled-buttons",
+    # contrast minimums and color never alone
+    "color.body-text-placeholders-labels", "color.large-text-24px-or-19px-bold",
+    "color.icons-control-borders-focus-indicators-chart-marks",
+    "color.stone-on-disabled-elements-and-where-a-component-s-file-declares-it-exempt",
+    "color.worst-surface", "color.translucent-text", "color.control-borders", "color.contrast-ratio",
+    "color.never-color-alone",
+    # visible focus
+    "color.focus-one-style-everywhere", "button.focus", "button.link-button-focus",
+    # Accessibility of spacing.md
+    "spacing.priority", "spacing.touch-targets", "spacing.adjacent-targets",
+    "spacing.never-shrink-spacing-below-the-scale-to-fit-content", "spacing.zoom", "spacing.focus-never-covered",
+    "spacing.drag-has-an-alternative", "spacing.skip-link", "spacing.focus-after-a-route-change",
+    # a link is an <a href>, 200% zoom, reduced motion, labels and alternative text
+    "button.link-button", "typography.zoom-and-user-settings", "motion.reduced-motion",
+    "icons.accessibility", "images.alternative-text",
+    # page language, heading levels, code order, forced colors, input and safe areas
+    "language.page-language", "hierarchy.one-h1-per-page", "hierarchy.code-order", "color.forced-colors",
+    "responsive.detect-the-input", "responsive.hover-is-an-enhancement-only",
+    "responsive.fixed-bars-and-full-bleed-content",
+}
 
 
 def replaced_ids(text):
@@ -336,6 +363,9 @@ def main(root=ROOT):
             continue
         for n, line in enumerate(texts[path].splitlines(), 1):
             for rid in replaced_ids(line):
+                if rid in FIXED:  # one report here; check 10 would point to adding "replaced in"
+                    report(path, n, f"Replaces: {rid}, the same in every typology")
+                    continue
                 if t:
                     replaced_in[rid].add(t)
                 if rid not in default_ids:

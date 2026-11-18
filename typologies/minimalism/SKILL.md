@@ -20,7 +20,7 @@ Kore aims for a screen that feels quiet and reads at a glance. Its forms are rou
 ### Material
 
 - **Depth:** Replaces: `elevation.depth`. Static layers separate with a surface step and a 1px `hairline`; no element casts a shadow or carries the inset bevel of `gradient-raised`. In dark, a layer that sits higher is lighter, never darker.
-- **Identity:** Replaces: `identity.identity`. The 8-point grid, The Hairline Rule (no shadow anywhere, a 1px border on static containers), The Radius-Padding Rule, The Concentric Rule, The Distance Ratio Rule, no icons on labeled buttons.
+- **Identity:** Replaces: `identity.identity`. The Hairline Rule (no shadow anywhere, a 1px border on static containers), The Radius-Padding Rule, The Concentric Rule.
 - **The Hairline Rule:** Replaces: `elevation.the-hairline-rule`. No element casts a shadow, clickable or not. Static containers, including containers of clickable items such as popovers, menus and sheets, use a 1px `hairline` border. A ring with no offset and no blur (`0 0 0 1px`) is a border, not a shadow, and stays.
 - **Interactive level:** Replaces: `elevation.interactive`. Buttons and clickable cards: their surface, no shadow, no `gradient-raised`; on hover, the background of Hover.
 
