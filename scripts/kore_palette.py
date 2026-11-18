@@ -427,25 +427,7 @@ def solve_to_int(hue_degrees, chroma, lstar):
 
 # ---------------------------------------------------------------- end of the port
 
-# ---------------------------------------------------------------- harmony (CIE LCh, D50)
-# Palette method of palettable.dev, rewritten here; color math as the colord npm
-# package does it (lch plugin), rounding included, so the hex match cell by cell.
-
-WHITE_POINT_D50 = [96.422, 100.0, 82.521]
-D65_TO_D50 = [[1.0478112, 0.0228866, -0.050127], [0.0295424, 0.9904844, -0.0170491], [-0.0092345, 0.0150436, 0.7521316]]
-D50_TO_D65 = [[0.9555766, -0.0230393, 0.0631636], [-0.0282895, 1.0099416, 0.0210077], [0.0122982, -0.020483, 1.3299098]]
-SRGB_TO_XYZ = [[0.4124564, 0.3575761, 0.1804375], [0.2126729, 0.7151522, 0.072175], [0.0193339, 0.119192, 0.9503041]]
-XYZ_TO_SRGB = [[0.032404542, -0.015371385, -0.004985314], [-0.00969266, 0.018760108, 0.00041556],
-               [0.000556434, -0.002040259, 0.010572252]]
-HARMONY_OFFSETS = {
-    "vibrant": [y * 20 for y in range(-4, 5)],
-    "monochrome": [y * 2 for y in range(-4, 5)],
-    "analogous": [y * 8 for y in range(-4, 5)],
-    "tetradic": [-180, -120, -60, -30, 0, 30, 60, 120, 180],
-    "quadratic": [-180, -135, -90, -45, 0, 45, 90, 135, 180],
-}
-FEATURED = [(2, 4), (0, 2), (1, 3), (3, 6), (0, 7)]
-
+# ---------------------------------------------------------------- helpers
 
 def js_round(value, decimals=0):
     scale = 10 ** decimals
@@ -456,45 +438,6 @@ def clamp(value, low, high):
     return min(max(value, low), high)
 
 
-def lch_from_rgb(rgb):
-    """(l, c, h) of an sRGB triple (0..255, not rounded), rounded to 2 decimals as colord does."""
-    lin = [v / 12.92 if v < 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in (c / 255 for c in rgb)]
-    xyz = matrix_multiply([100 * v for v in matrix_multiply(lin, SRGB_TO_XYZ)], D65_TO_D50)
-    fx, fy, fz = (lab_f(clamp(v, 0, white) / white) for v, white in zip(xyz, WHITE_POINT_D50))
-    a, b = js_round(500 * (fx - fy), 3), js_round(200 * (fy - fz), 3)
-    hue = math.degrees(math.atan2(b, a))
-    return js_round(116 * fy - 16, 2), js_round(math.hypot(a, b), 2), js_round(hue + 360 if hue < 0 else hue, 2) % 360
-
-
-def rgb_from_lch(l, c, h):
-    """Unrounded sRGB triple (0..255) of an LCh color, each channel clamped as colord does."""
-    l, h = clamp(l, 0, 100), h % 360
-    a, b = c * math.cos(math.radians(h)), c * math.sin(math.radians(h))
-    fy = (l + 16) / 116
-    xyz = [lab_invf(fy + a / 500) * WHITE_POINT_D50[0], lab_invf(fy) * WHITE_POINT_D50[1],
-           lab_invf(fy - b / 200) * WHITE_POINT_D50[2]]
-    lin = matrix_multiply(matrix_multiply(xyz, D50_TO_D65), XYZ_TO_SRGB)
-    return [clamp(255 * (1.055 * v ** (1 / 2.4) - 0.055 if v > 0.0031308 else 12.92 * v), 0, 255) for v in lin]
-
-
-def harmony(color, mode):
-    """4x9 matrix of uppercase hex and the 5 featured cells: color is (r, g, b[, a]), mode a key of HARMONY_OFFSETS."""
-    l, c, h = lch_from_rgb(color[:3])
-    mids = []
-    for m, offset in enumerate(HARMONY_OFFSETS[mode]):
-        y = m - 4
-        mids.append(rgb_from_lch(clamp(l - y * 6, 0, 100), clamp(c + y * 5, 0, 100), (h + offset + 360) % 360))
-    rows = [[], [], [], []]
-    for rgb in mids:
-        cl, cc, ch = lch_from_rgb(rgb)
-        rows[0].append(rgb_from_lch(clamp(cl + 25, 0, 100), clamp(cc - 15, 0, 100), (ch - 5 + 360) % 360))
-        rows[1].append(rgb_from_lch(clamp(cl + 5, 0, 100), clamp(cc - 25, 0, 100), ch))
-        rows[2].append(rgb)
-        rows[3].append(rgb_from_lch(clamp(cl - 25, 0, 100), clamp(cc + 10, 0, 100), (ch + 5) % 360))
-    matrix = [["#%02X%02X%02X" % tuple(int(js_round(v)) for v in rgb) for rgb in row] for row in rows]
-    return matrix, [matrix[r][k] for r, k in FEATURED]
-
-
 # ---------------------------------------------------------------- palette (custom-palette.md)
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -502,8 +445,7 @@ THEMES = ("light", "dark")
 ROLES = ("canvas", "primary", "accent")
 HEX = re.compile(r"#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})")
 BASE_TONE = {"canvas": (98, 3), "primary": (40, 80), "accent": (40, 80)}  # Themes, light and dark
-MISSING = {"canvas": ("primary", 0, 6), "primary": ("canvas", 0, 36), "accent": ("primary", None, None)}  # from, hue +, chroma
-ACCENT_CELL = ("analogous", 0, 8)  # Missing colors: the accent is this harmony cell of primary
+MISSING = {"primary": ("canvas", 0, 36)}  # from, hue +, chroma
 GRAY = 5  # below this HCT chroma a color has no hue (score.ts)
 NEUTRAL_CHROMA = 6
 CANVAS_STEPS = {  # Derived tokens: canvas tone +, light and dark
@@ -560,6 +502,7 @@ HUECODE_ROLES = ("primary", "secondary", "accent", "neutral", "success", "warnin
 HUECODE_LIGHT_SIDE = {50: 0, 100: 0.067, 200: 0.244, 300: 0.467, 400: 0.733, 500: 1}
 HUECODE_DARK_SIDE = {500: 0, 600: 0.2, 700: 0.4, 800: 0.6, 900: 0.8, 950: 1}
 HUECODE_ANCHORS = {"success": (142, 65, 42), "warning": (38, 92, 50), "error": (4, 78, 52), "info": (217, 80, 52)}
+HUECODE_TARGET = {"light": ((500, 600, 700), 50), "dark": ((300, 400, 500), 65)}  # pick: candidate steps, HSL lightness
 HUECODE_SEMANTIC = {"ok": "success", "warn": "warning", "err": "error", "info": "info"}
 
 
@@ -664,7 +607,7 @@ def huecode_css_vars(palette, dark):
         v["--text"] = huecode_pick_contrast(neutral, v["--bg"], [900, 950], 7)
         v["--text-2"] = huecode_pick_contrast(neutral, v["--bg"], [600, 700, 800], 4.5)
         v["--text-3"] = huecode_pick_contrast(neutral, v["--bg"], [500, 600, 700], 4.5)
-    candidates, target = ([300, 400, 500], 65) if dark else ([500, 600, 700], 50)
+    candidates, target = HUECODE_TARGET["dark" if dark else "light"]
     accent = huecode_pick_lightness(primary, candidates, target)
     soft = primary["900"] if dark else primary["50"]
     v["--accent"] = accent
@@ -776,11 +719,12 @@ def page_background(base):
     primary, accent = base["primary"], base["accent"]
     gray = [hct(c)[1] < GRAY for c in (primary, accent)]
 
-    def cell(other):
-        return parse_color(harmony(other, ACCENT_CELL[0])[0][ACCENT_CELL[1]][ACCENT_CELL[2]])
+    def opposite(other):  # Huecode's accent of the other color, rule B at the light target
+        scale = huecode(fmt(other))["scales"]["accent"]
+        return parse_color(huecode_pick_lightness(scale, HUECODE_STEPS, HUECODE_TARGET["light"][1]))
     if all(gray):
         return None
-    primary, accent = cell(accent) if gray[0] else primary, cell(primary) if gray[1] else accent
+    primary, accent = opposite(accent) if gray[0] else primary, opposite(primary) if gray[1] else accent
     hues = [hct(c)[0] for c in (primary, accent)]
     colors = {t: [fmt(at(h, 200, tone)) for h in hues] for t, tone in PAGE_TONE.items()}
     shape = ("linear", "radial", "mesh")[int(hues[0] // 120)]
@@ -796,33 +740,38 @@ def kore_colors(root=ROOT):
 def base_colors(given, themes, kore):
     """Method step 1: {theme: {role: (color, source)}}, and the notes to tell the user."""
     base, notes = {}, []
-    order = ROLES if "canvas" in given else ("primary", "canvas", "accent")  # a missing canvas comes from primary
     for theme in themes:
         i, base[theme] = THEMES.index(theme), {}
-        for role in order:
+        steps, target = HUECODE_TARGET[theme]
+        for role in ("primary", "canvas", "accent"):  # canvas and accent come from the primary
             own = given.get(role, {})
+            if role != "primary":  # Huecode's base: the given primary (the light one first), else this theme's
+                mine = given.get("primary", {})
+                root = fmt(mine.get("light") or next(iter(mine.values()))) if mine else fmt(base[theme]["primary"][0])
             if theme in own:
                 color, source = own[theme], "given"
-            elif own:  # Themes: the other theme's hue and chroma, this theme's tone
-                hue, chroma, _ = hct(next(iter(own.values())))
-                if role == "canvas":
-                    chroma = min(chroma, NEUTRAL_CHROMA)
-                color, source = at(hue, chroma, BASE_TONE[role][i]), "derived"
+            elif role == "primary" and own:  # Huecode pick on the given primary's scale
+                scale = huecode(fmt(next(iter(own.values()))))["scales"]["primary"]
+                color, source = parse_color(huecode_pick_lightness(scale, steps, target)), "derived"
+            elif role == "accent" and own:  # rule B on the scale of the given accent
+                scale = huecode_shade_scale(*huecode_hex_to_hsl(fmt(next(iter(own.values())))))
+                color, source = parse_color(huecode_pick_lightness(scale, HUECODE_STEPS, target)), "derived"
             elif not {"canvas", "primary"} & set(given):  # only an accent given: Kore's canvas and primary (How many colors)
                 color, source = kore[theme][role], "Kore's value"
-            else:  # Missing colors, step 3: the derived value
-                from_role, shift, chroma = MISSING[role]
-                mine = given.get(from_role, {})  # the given color: a derived one at tone 3 has lost its hue
-                start = mine.get(theme) or next(iter(mine.values()), None) or base[theme][from_role][0]
-                hue, from_chroma, _ = hct(start)
-                if from_chroma < GRAY or (not mine and base[theme][from_role][1] == "Kore's value"):  # Kore's pair stays whole
+            elif role == "canvas":
+                color, source = parse_color(huecode(root)[theme]["--bg"]), "derived"
+            elif role == "accent":
+                if hct(parse_color(root))[1] < GRAY or (not mine and base[theme]["primary"][1] == "Kore's value"):  # Kore's pair stays whole
                     color, source = kore[theme][role], "Kore's value"
-                elif role == "accent":
-                    mode, row, col = ACCENT_CELL
-                    color, source = parse_color(harmony(start, mode)[0][row][col]), "derived"
-                    if mine and theme not in mine:  # Themes: the other theme's hue and chroma, this theme's tone
-                        hue, chroma, _ = hct(color)
-                        color = at(hue, chroma, BASE_TONE[role][i])
+                else:
+                    scale = huecode(root)["scales"]["accent"]
+                    color, source = parse_color(huecode_pick_lightness(scale, HUECODE_STEPS, target)), "derived"
+            else:  # Missing colors, step 3: the primary from the given canvas
+                from_role, shift, chroma = MISSING["primary"]
+                start = given[from_role].get(theme) or next(iter(given[from_role].values()))
+                hue, from_chroma, _ = hct(start)
+                if from_chroma < GRAY:
+                    color, source = kore[theme][role], "Kore's value"
                 else:
                     color, source = at(hue + shift, chroma, BASE_TONE[role][i]), "derived"
             hue, chroma, tone = hct(color)
@@ -992,7 +941,8 @@ def propose(given, themes, kore, candidates):
         return palette({**given, "accent": {theme: color}}, [theme], kore)[0][theme]["accent"][1] == "given"
 
     def order(row):  # by hue distance to the derived value; gray candidates last; a gray or Kore's target keeps file order
-        target, source = base[row[1]][role]
+        # Huecode's canvas is primary's hue at chroma ~3, below GRAY: a canvas is ordered by primary's hue
+        target, source = base[row[1]]["primary" if role == "canvas" else role]
         t_hue, t_chroma, _ = hct(target)
         hue, chroma, _ = hct(row[2][role])
         if source == "Kore's value" or t_chroma < GRAY:
