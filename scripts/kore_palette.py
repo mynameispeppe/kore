@@ -447,13 +447,25 @@ HEX = re.compile(r"#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})")
 BASE_TONE = {"canvas": (98, 3), "primary": (40, 80), "accent": (40, 80)}  # Themes, light and dark
 MISSING = {"primary": ("canvas", 0, 36)}  # from, hue +, chroma
 GRAY = 5  # below this HCT chroma a color has no hue (score.ts)
-NEUTRAL_CHROMA = 6
-CANVAS_STEPS = {  # Derived tokens: canvas tone +, light and dark
-    "surface-card": (1, 3), "surface-elevated": (-1.5, 9), "surface-deep": (1, -1), "surface-float": (1, 8),
-    "surface-float-active": (-1.5, 8 + 7),  # dark: surface-float tone +7
-    "surface-hover": (-3.5, 9.5), "surface-pressed": (-6, 12),
+SURFACES = ["canvas", "surface-card", "surface-elevated", "surface-deep", "surface-float", "surface-float-active",
+            "surface-hover", "surface-pressed"]
+# Derived tokens: token -> (light source, dark source, the Huecode scale it moves along to pass Contrast, or None).
+# A source is a CSS var of huecode() ("--surface") or "role step" of its scales ("neutral 100").
+HUECODE_MAP = {
+    "surface-card": ("--surface", "--surface", None),
+    "surface-elevated": ("--surface-2", "--surface-2", None),
+    "surface-deep": ("--surface", "neutral 950", None),
+    "surface-float": ("--surface", "--surface-2", None),
+    "surface-float-active": ("--surface-2", "--surface-2", None),
+    "surface-hover": ("--surface-2", "--surface-2", None),
+    "surface-pressed": ("neutral 100", "--surface-2", None),  # Huecode's surface-3 (neutral 200 / 600) leaves no text step above 4.5:1
+    "hairline-medium": ("--border", "--border", None),
+    "hairline-strong": ("--border-strong", "--border-strong", "neutral"),
+    "ink": ("--text", "--text", "neutral"),
+    "stone": ("neutral 400", "neutral 500", None),
+    "primary-on": ("--accent-fg", "--accent-fg", None),
+    "primary-pressed": ("--accent-hover", "--accent-hover", "primary"),
 }
-SURFACES = ["canvas", *CANVAS_STEPS]
 KINDS = ["danger", "warning", "success", "info"]
 GLOWS = ["accent", "warning", "info", "success", "danger"]
 UNMEASURED = ["scrim", "veil-photo", "veil-cover", "on-photo", "on-photo-mute"]
@@ -638,6 +650,11 @@ def huecode(primary_hex):
     return {"scales": scales, "light": huecode_css_vars(scales, False), "dark": huecode_css_vars(scales, True)}
 
 
+def huecode_root(mine, theme_primary):
+    """Huecode's base: the given primary (the light one first), else this theme's primary."""
+    return fmt(mine.get("light") or next(iter(mine.values()))) if mine else fmt(theme_primary)
+
+
 def hct(color):
     return hct_from_argb(argb_from_rgb(*(int(round(v)) for v in color[:3])))
 
@@ -668,13 +685,6 @@ def move(color, measure, minimum, step, hue_chroma=None):
         tone = min(100, max(0, tone + step))
         color = at(hue, chroma, tone, color[3])
     return color
-
-
-def last_passing(hue, chroma, tone, step, measure, minimum):
-    """mute, hairline-strong: from a passing tone, one tone at a time, the last tone that still passes."""
-    while 0 <= tone + step <= 100 and measure(at(hue, chroma, tone + step))[0] >= minimum:
-        tone += step
-    return at(hue, chroma, tone)
 
 
 def mix_black(color):
@@ -745,9 +755,9 @@ def base_colors(given, themes, kore):
         steps, target = HUECODE_TARGET[theme]
         for role in ("primary", "canvas", "accent"):  # canvas and accent come from the primary
             own = given.get(role, {})
-            if role != "primary":  # Huecode's base: the given primary (the light one first), else this theme's
+            if role != "primary":
                 mine = given.get("primary", {})
-                root = fmt(mine.get("light") or next(iter(mine.values()))) if mine else fmt(base[theme]["primary"][0])
+                root = huecode_root(mine, base[theme]["primary"][0])
             if theme in own:
                 color, source = own[theme], "given"
             elif role == "primary" and own:  # Huecode pick on the given primary's scale
@@ -783,17 +793,24 @@ def base_colors(given, themes, kore):
     return base, notes
 
 
-def derive(theme, base, on_vivid, kore, dark=None):
+def derive(theme, base, h, on_vivid, kore, dark=None):
     """Method steps 2 and 3 for one theme: {token: [color, source, (ratio, where) or None]},
-    the tokens that cannot be used as (token, minimum, where), and the notes. dark: the dark
-    theme's tokens as derive gives them, for on-vivid."""
+    the tokens that cannot be used as (token, minimum, where), and the notes. h: huecode() of the
+    theme's Huecode base (huecode_root), the source of HUECODE_MAP. dark: the dark theme's tokens
+    as derive gives them, for on-vivid."""
     i = THEMES.index(theme)
     away = -1 if theme == "light" else 1  # Method step 3: down in light, up in dark
     tokens, failed, notes = {}, [], []
 
-    def put(name, color, source="derived", measure=None, minimum=None, step=away, keep=False):
+    def put(name, color, source="derived", measure=None, minimum=None, step=away, keep=False, scale=None):
         if minimum and not keep and measure(color)[0] < minimum:
-            moved = move(color, measure, minimum, step)
+            if scale:  # the next steps of the scale toward more contrast, the first that passes
+                hexes = list(scale.values())
+                at_step = hexes.index(fmt(color))
+                nearer = hexes[at_step + 1:] if step < 0 else hexes[:at_step][::-1]
+                moved = next((c for c in map(parse_color, nearer) if measure(c)[0] >= minimum), None)
+            else:
+                moved = move(color, measure, minimum, step)
             if moved is None:
                 failed.append((name, minimum, measure(color)[1]))
             else:
@@ -801,37 +818,41 @@ def derive(theme, base, on_vivid, kore, dark=None):
         tokens[name] = [color, source, measure(color) if measure else None]
         return color
 
-    canvas = put("canvas", *base["canvas"])
-    hue, chroma, tone = hct(canvas)
-    chroma = min(chroma, NEUTRAL_CHROMA)  # Neutral tokens: canvas hue and chroma, at most 6
-    for name, steps in CANVAS_STEPS.items():
-        put(name, at(hue, chroma, tone + steps[i]))
+    def mapped(name, measure=None, minimum=None, step=away):
+        source, role = HUECODE_MAP[name][i], HUECODE_MAP[name][2]
+        hexa = h[theme][source] if source.startswith("--") else h["scales"][source.split()[0]][source.split()[1]]
+        return put(name, parse_color(hexa), "derived", measure, minimum, step, scale=h["scales"][role] if role else None)
+
+    put("canvas", *base["canvas"])
+    for name in SURFACES[1:]:
+        mapped(name)
     surfaces = {name: tokens[name][0] for name in SURFACES}
 
     def on_surfaces(color):
         return lowest(color, surfaces)
 
-    put("hairline-medium", at(hue, chroma, tone + (-9.5, 16.5)[i]), measure=on_surfaces)
-    ink = move(at(hue, chroma, (17, 96)[i]), on_surfaces, 4.5, away, (hue, chroma))
-    if ink is None:
-        failed.append(("ink", 4.5, on_surfaces(at(hue, chroma, (0, 100)[i]))[1]))
-        return tokens, failed, notes
-    put("ink", ink, measure=on_surfaces)
+    mapped("hairline-medium", on_surfaces)
+    ink = mapped("ink", on_surfaces, 4.5)
     body = ink[:3] + (0.86,)
     r, where = on_surfaces(body)
     if r < 4.5:  # Translucent text (Contrast): a solid color for that pair, then moved as Method step 3
         body = tuple(round(v) for v in over(body, surfaces[where]))
         notes.append(f"{theme}: body is solid in this palette: ink at 86% fails 4.5:1 on {where} (Translucent text).")
     body = put("body", body, "moved to pass Contrast" if r < 4.5 else "derived", on_surfaces, 4.5)
-    ink_tone = hct(ink)[2]
-    mute = put("mute", last_passing(hue, chroma, ink_tone, -away, on_surfaces, 4.5), measure=on_surfaces)
-    strong = put("hairline-strong", last_passing(hue, chroma, ink_tone, -away, on_surfaces, 3), measure=on_surfaces)
-    put("stone", at(hue, chroma, (tone + hct(mute)[2]) / 2), measure=on_surfaces)
+    # mute: the neutral step nearest the canvas that reaches 4.5:1 on every surface (Huecode's text-3 passes only on --bg)
+    steps = list(h["scales"]["neutral"].values())
+    mute = next((c for c in map(parse_color, steps if theme == "light" else steps[::-1]) if on_surfaces(c)[0] >= 4.5), None)
+    if mute is None:
+        failed.append(("mute", 4.5, on_surfaces(ink)[1]))
+    else:
+        put("mute", mute, measure=on_surfaces)
+    strong = mapped("hairline-strong", on_surfaces, 3)
+    mapped("stone", on_surfaces)
     put("hairline", ink[:3] + (0.06,), measure=on_surfaces)
     put("focus-ring", strong, measure=on_surfaces, minimum=3)
     put("surface-card-edge", mix_black(surfaces["surface-card"]), measure=on_surfaces)
 
-    danger = put("danger", kore[theme]["danger"], "Kore's value", on_surfaces, 4.5)  # danger text
+    danger = put("danger", kore[theme]["danger"], "Kore's value", on_surfaces, 4.5)  # the kinds stay Kore's (user, 2026-11-18)
     for kind, color in (("primary", base["primary"][0]), ("danger", danger)):
         # whichever of white and black contrasts more reaches at least 4.58:1 (1.05 / sqrt(0.0525)) on any solid fill
         on = max((WHITE, BLACK), key=lambda c: ratio(c, color))
@@ -841,10 +862,14 @@ def derive(theme, base, on_vivid, kore, dark=None):
         if kind == "primary":  # keeps its given value; danger is measured as text above
             put(kind, *base[kind], on_fill)
         step = -1 if on == WHITE else 1  # a fill moves away from its on-color
-        f_hue, f_chroma, f_tone = hct(color)
-        pressed = put(f"{kind}-pressed", at(f_hue, f_chroma, f_tone + (6 if tone > f_tone else -6)),
-                      "derived", on_fill, 4.5, step)
-        put(f"{kind}-on", on, measure=lambda c, b={kind: color, f"{kind}-pressed": pressed}: lowest(c, b))
+        if kind == "primary":
+            pressed = mapped("primary-pressed", on_fill, 4.5, step)
+            mapped("primary-on", lambda c, b={kind: color, "primary-pressed": pressed}: lowest(c, b))
+        else:
+            f_hue, f_chroma, f_tone = hct(color)
+            pressed = put("danger-pressed", at(f_hue, f_chroma, f_tone + (6 if hct(tokens["canvas"][0])[2] > f_tone else -6)),
+                          "derived", on_fill, 4.5, step)
+            put("danger-on", on, measure=lambda c, b={kind: color, "danger-pressed": pressed}: lowest(c, b))
         put(f"{kind}-edge", mix_black(color), measure=on_surfaces)
 
     for kind in ("warning", "success", "info"):
@@ -893,11 +918,14 @@ def palette(given, themes, kore):
         on_vivid = at(hue, chroma, 3)
     tables, problems = {}, []
     # dark first: on-vivid is measured in both themes on the dark kinds as derived
-    dark = derive("dark", base["dark"], on_vivid, kore) if "dark" in base else ({}, [], [])
+    def derived(theme, *args):
+        return derive(theme, base[theme], huecode(huecode_root(given.get("primary", {}), base[theme]["primary"][0])),
+                      on_vivid, kore, *args)
+    dark = derived("dark") if "dark" in base else ({}, [], [])
     for theme in themes:
-        tables[theme], failed, theme_notes = dark if theme == "dark" else derive(theme, base[theme], on_vivid, kore, dark[0])
+        tables[theme], failed, theme_notes = dark if theme == "dark" else derived(theme, dark[0])
         notes += theme_notes
-        problems += [f"{theme}: {name} cannot reach {m}:1 on {where}, even at tone 0 or 100 (Method step 3): "
+        problems += [f"{theme}: {name} cannot reach {m}:1 on {where}, even at the end of its scale or at tone 0 or 100 (Method step 3): "
                      "ask for another color." for name, m, where in failed]
         if any(name not in FILLS for name, _, _ in failed):
             hue, chroma, _ = hct(base[theme]["canvas"][0])
