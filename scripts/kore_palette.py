@@ -29,8 +29,9 @@ from kore_check import over, parse_color, ratio
 # Ported to Python from Material Color Utilities, TypeScript:
 # https://github.com/material-foundation/material-color-utilities/tree/main/typescript
 # (hct/hct.ts, hct/cam16.ts, hct/viewing_conditions.ts, hct/hct_solver.ts,
-# utils/color_utils.ts, utils/math_utils.ts); only ARGB -> HCT and HCT -> ARGB
-# (the solver), in the default viewing conditions.
+# utils/color_utils.ts, utils/math_utils.ts): ARGB -> HCT and HCT -> ARGB
+# (the solver), in the default viewing conditions; and SchemeFidelity, spec 2021,
+# contrastLevel 0 (mcu(), files listed above it).
 #
 # Copyright 2021 Google LLC
 #
@@ -424,6 +425,208 @@ def solve_to_int(hue_degrees, chroma, lstar):
     if exact != 0:
         return exact
     return argb_from_linrgb(bisect_to_limit(y, hue_radians))
+
+
+# SchemeFidelity, spec 2021, contrastLevel 0: the roles MCU_ROLES of one source color.
+# (scheme/scheme_fidelity.ts, dynamiccolor/dynamic_scheme.ts, dynamiccolor/color_spec_2021.ts,
+# dynamiccolor/dynamic_color.ts, palettes/tonal_palette.ts, temperature/temperature_cache.ts,
+# dislike/dislike_analyzer.ts, contrast/contrast.ts), at commit f242efc. An Hct is (hue, chroma, tone, argb).
+
+SRGB_TO_XYZ = [[0.41233895, 0.35762064, 0.18051042], [0.2126, 0.7152, 0.0722], [0.01932141, 0.11916382, 0.95034478]]
+
+
+def lstar_from_y(y):
+    return lab_f(y / 100.0) * 116.0 - 16.0
+
+
+def hct_of_argb(argb):
+    return (*hct_from_argb(argb), argb)
+
+
+def hct_from(hue, chroma, tone):
+    """Hct.from: solved to an in-gamut ARGB, then read back."""
+    return hct_of_argb(solve_to_int(hue, chroma, tone))
+
+
+def raw_temperature(argb):
+    x, y, z = (sum(m * linearized(argb >> s & 255) for m, s in zip(row, (16, 8, 0))) for row in SRGB_TO_XYZ)
+    fx, fy, fz = lab_f(x / WHITE_POINT_D65[0]), lab_f(y / WHITE_POINT_D65[1]), lab_f(z / WHITE_POINT_D65[2])
+    a, b = 500.0 * (fx - fy), 200.0 * (fy - fz)
+    hue = sanitize_degrees(math.atan2(b, a) * 180.0 / math.pi)
+    return -0.5 + 0.02 * math.hypot(a, b) ** 1.07 * math.cos(sanitize_degrees(hue - 50.0) * math.pi / 180.0)
+
+
+def is_between(angle, a, b):
+    return a <= angle <= b if a < b else a <= angle or angle <= b
+
+
+def complement(source):
+    """TemperatureCache.complement."""
+    by_hue = [hct_from(hue, source[1], source[2]) for hue in range(361)]
+    temps = [raw_temperature(h[3]) for h in by_hue + [source]]  # index 361 is the input, as in tempsByHct
+    by_temp = sorted(range(362), key=temps.__getitem__)  # stable, as JS sort
+    coldest, warmest = by_temp[0], by_temp[-1]
+    cold_temp, rng = temps[coldest], temps[warmest] - temps[coldest]
+    cold_hue, warm_hue = (by_hue + [source])[coldest][0], (by_hue + [source])[warmest][0]
+    input_relative = 0.5 if rng == 0 else (temps[361] - cold_temp) / rng
+    start, end = (warm_hue, cold_hue) if is_between(source[0], cold_hue, warm_hue) else (cold_hue, warm_hue)
+    smallest, answer = 1000.0, by_hue[int(js_round(source[0]))]
+    for addend in range(361):
+        hue = sanitize_degrees(start + addend)
+        if not is_between(hue, start, end):
+            continue
+        index = int(js_round(hue))
+        error = abs(1.0 - input_relative - (temps[index] - cold_temp) / rng)
+        if error < smallest:
+            smallest, answer = error, by_hue[index]
+    return answer
+
+
+def fix_if_disliked(h):
+    """DislikeAnalyzer.fixIfDisliked: dark yellow-greens move to tone 70."""
+    if 90 <= js_round(h[0]) <= 111 and js_round(h[1]) > 16 and js_round(h[2]) < 65:
+        return hct_from(h[0], h[1], 70.0)
+    return h
+
+
+def palette_tone(palette, tone):
+    """TonalPalette.tone, as ARGB."""
+    hue, chroma = palette
+    if tone == 99 and 105 <= hue < 125:  # Hct.isYellow: the mean of tones 98 and 100
+        a, b = palette_tone(palette, 98), palette_tone(palette, 100)
+        return argb_from_rgb(*(int(js_round(((a >> s & 255) + (b >> s & 255)) / 2)) for s in (16, 8, 0)))
+    return solve_to_int(hue, chroma, tone)
+
+
+def ratio_of_tones(a, b):
+    ya, yb = y_from_lstar(clamp(a, 0.0, 100.0)), y_from_lstar(clamp(b, 0.0, 100.0))
+    return (max(ya, yb) + 5.0) / (min(ya, yb) + 5.0)
+
+
+def contrast_lighter(tone, wanted):
+    if not 0.0 <= tone <= 100.0:
+        return -1.0
+    dark_y = y_from_lstar(tone)
+    light_y = wanted * (dark_y + 5.0) - 5.0
+    real = (max(light_y, dark_y) + 5.0) / (min(light_y, dark_y) + 5.0)
+    if real < wanted and abs(real - wanted) > 0.04:
+        return -1.0
+    value = lstar_from_y(light_y) + 0.4
+    return -1.0 if value < 0 or value > 100 else value
+
+
+def contrast_darker(tone, wanted):
+    if not 0.0 <= tone <= 100.0:
+        return -1.0
+    light_y = y_from_lstar(tone)
+    dark_y = (light_y + 5.0) / wanted - 5.0
+    real = (max(light_y, dark_y) + 5.0) / (min(light_y, dark_y) + 5.0)
+    if real < wanted and abs(real - wanted) > 0.04:
+        return -1.0
+    value = lstar_from_y(dark_y) - 0.4
+    return -1.0 if value < 0 or value > 100 else value
+
+
+def foreground_tone(bg, wanted):
+    """DynamicColor.foregroundTone."""
+    lighter = contrast_lighter(bg, wanted)
+    lighter = 100.0 if lighter < 0 else lighter
+    darker = contrast_darker(bg, wanted)
+    darker = 0.0 if darker < 0 else darker
+    light_ratio, dark_ratio = ratio_of_tones(lighter, bg), ratio_of_tones(darker, bg)
+    if js_round(bg) < 60:  # tonePrefersLightForeground
+        negligible = abs(light_ratio - dark_ratio) < 0.1 and light_ratio < wanted and dark_ratio < wanted
+        return lighter if light_ratio >= wanted or light_ratio >= dark_ratio or negligible else darker
+    return darker if dark_ratio >= wanted or dark_ratio >= light_ratio else lighter
+
+
+# role: (palette, raw tone (light, dark) or a function of the scheme, isBackground, background, contrast at level 0, tone-delta pair (nearer, farther))
+HIGHEST = "highestSurface"  # surfaceDim in light, surfaceBright in dark
+MCU_SPEC = {
+    "surface": ("neutral", (98, 6), True, None, None, None),
+    "surfaceDim": ("neutral", (87, 6), True, None, None, None),
+    "surfaceBright": ("neutral", (98, 24), True, None, None, None),
+    "surfaceContainerLowest": ("neutral", (100, 4), True, None, None, None),
+    "surfaceContainerLow": ("neutral", (96, 10), True, None, None, None),
+    "surfaceContainer": ("neutral", (94, 12), True, None, None, None),
+    "surfaceContainerHigh": ("neutral", (92, 17), True, None, None, None),
+    "surfaceContainerHighest": ("neutral", (90, 22), True, None, None, None),
+    "onSurface": ("neutral", (10, 90), False, HIGHEST, 4.5, None),
+    "onSurfaceVariant": ("neutralVariant", (30, 80), False, HIGHEST, 3, None),
+    "outline": ("neutralVariant", (50, 60), False, HIGHEST, 1.5, None),
+    "outlineVariant": ("neutralVariant", (80, 30), False, HIGHEST, 1, None),
+    "primary": ("primary", (40, 80), True, HIGHEST, 3, ("primaryContainer", "primary")),
+    "primaryContainer": ("primary", lambda s: s["source"][2], True, HIGHEST, 1, ("primaryContainer", "primary")),
+    "onPrimaryContainer": ("primary", lambda s: foreground_tone(raw_tone(s, "primaryContainer"), 4.5), False,
+                           "primaryContainer", 4.5, None),
+    "tertiary": ("tertiary", (40, 80), True, HIGHEST, 3, ("tertiaryContainer", "tertiary")),
+    "tertiaryContainer": ("tertiary", lambda s: fix_if_disliked(hct_of_argb(palette_tone(s["tertiary"], s["source"][2])))[2],
+                          True, HIGHEST, 1, ("tertiaryContainer", "tertiary")),
+}
+MCU_ROLES = ["surface", "onSurface", "primaryContainer", "tertiaryContainer", "onPrimaryContainer",
+             "surfaceContainerLowest", "surfaceContainerLow", "surfaceContainer", "surfaceContainerHigh",
+             "surfaceContainerHighest", "onSurfaceVariant", "outline", "outlineVariant"]
+
+
+def raw_tone(s, role):
+    tone = MCU_SPEC[role][1]
+    return tone(s) if callable(tone) else tone[s["dark"]]
+
+
+def background_of(s, role):
+    bg = MCU_SPEC[role][3]
+    return ("surfaceBright" if s["dark"] else "surfaceDim") if bg == HIGHEST else bg
+
+
+def get_tone(s, role):
+    """ColorCalculationDelegateImpl2021.getTone, contrastLevel 0."""
+    _, _, is_background, _, wanted, pair = MCU_SPEC[role]
+    bg = background_of(s, role)
+    if pair:
+        nearer, farther = pair
+        delta, expansion = 10, 1 if s["dark"] else -1
+        n_tone, f_tone = raw_tone(s, nearer), raw_tone(s, farther)
+        if bg:
+            bg_tone = get_tone(s, bg)
+            n_wanted, f_wanted = MCU_SPEC[nearer][4], MCU_SPEC[farther][4]
+            if ratio_of_tones(bg_tone, n_tone) < n_wanted:
+                n_tone = foreground_tone(bg_tone, n_wanted)
+            if ratio_of_tones(bg_tone, f_tone) < f_wanted:
+                f_tone = foreground_tone(bg_tone, f_wanted)
+        if (f_tone - n_tone) * expansion < delta:
+            f_tone = clamp(n_tone + delta * expansion, 0, 100)
+            if (f_tone - n_tone) * expansion < delta:
+                n_tone = clamp(f_tone - delta * expansion, 0, 100)
+        if 50 <= n_tone < 60:
+            n_tone = 60 if expansion > 0 else 49
+            f_tone = max(f_tone, n_tone + delta) if expansion > 0 else min(f_tone, n_tone - delta)
+        elif 50 <= f_tone < 60:  # stayTogether is false for every pair here
+            f_tone = 60 if expansion > 0 else 49
+        return n_tone if role == nearer else f_tone
+    answer = raw_tone(s, role)
+    if not bg:
+        return answer
+    bg_tone = get_tone(s, bg)
+    if ratio_of_tones(bg_tone, answer) < wanted:
+        answer = foreground_tone(bg_tone, wanted)
+    if is_background and 50 <= answer < 60:
+        answer = 49 if ratio_of_tones(49, bg_tone) >= wanted else 60
+    return answer
+
+
+def mcu(color):
+    """SchemeFidelity on one color: {"light": {role: hex}, "dark": {role: hex}} for MCU_ROLES."""
+    source = hct_of_argb(int(fmt(parse_color(color))[1:], 16) | 0xFF000000)
+    hue, chroma = source[:2]
+    tertiary = fix_if_disliked(complement(source))
+    palettes = {"primary": (hue, chroma), "tertiary": tertiary[:2], "neutral": (hue, chroma / 8.0),
+                "neutralVariant": (hue, chroma / 8.0 + 4.0)}
+    result = {}
+    for theme in THEMES:
+        s = {**palettes, "source": source, "dark": theme == "dark"}
+        result[theme] = {role: "#%06x" % (palette_tone(s[MCU_SPEC[role][0]], get_tone(s, role)) & 0xFFFFFF)
+                         for role in MCU_ROLES}
+    return result
 
 # ---------------------------------------------------------------- end of the port
 
