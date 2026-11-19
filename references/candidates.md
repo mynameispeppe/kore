@@ -31,8 +31,6 @@ Theme is the theme the colors are given for.
 |---|---|---|---|---|---|---|
 | 1 | Sage and Lemon | light | `#F0FFF7` | `#017E44` | `#E7C104` | `#01321B` |
 | 1 | Sage and Lemon | dark | `#000F07` | `#7EFEC2` | `#FCD615` | `#CDFEE7` |
-| 2 | Honey and Emerald | light | `#F9FCE3` | `#7F870D` | `#15E565` | `#161802` |
-| 2 | Honey and Emerald | dark | `#1A1D03` | `#E9F277` | `#19E967` | `#FBFDE7` |
 | 3 | Cobalt and Saffron | light | `#EAECF6` | `#2C3C68` | `#ADAB48` | `#0B0C19` |
 | 3 | Cobalt and Saffron | dark | `#0A0C17` | `#97A7D3` | `#B7B554` | `#E5E7F4` |
 | 4 | Lagoon and Flame | light | `#ECF9F4` | `#266D55` | `#B95741` | `#0C2219` |
@@ -51,8 +49,6 @@ Theme is the theme the colors are given for.
 | 10 | Midnight Blue and Hot Pink | dark | `#0F0C1A` | `#A79BD0` | `#BA6E86` | `#E3E0F0` |
 | 11 | Ice and Ultramarine | light | `#F6FBFD` | `#1B536F` | `#4E32CD` | `#07141D` |
 | 11 | Ice and Ultramarine | dark | `#02070A` | `#8EC7E4` | `#4E32CD` | `#E1EFF8` |
-| 12 | Pistachio and Sky | light | `#FAFFF0` | `#5A8C03` | `#04A6DC` | `#1E2D01` |
-| 12 | Pistachio and Sky | dark | `#0A0F00` | `#C9FC71` | `#23C6FA` | `#EEFED0` |
 | 13 | Sky and Electric | light | `#F8FBFC` | `#2F596A` | `#3B92B5` | `#0D1416` |
 | 13 | Sky and Electric | dark | `#040708` | `#95C0D1` | `#4BA3C5` | `#E7EEF1` |
 | 14 | Amethyst and Violet | light | `#F8F6F9` | `#56355F` | `#9D3DB8` | `#0D0C0E` |
@@ -77,8 +73,6 @@ Theme is the theme the colors are given for.
 | 25 | Copper and Electric Blue | dark | `#0A0401` | `#F1A579` | `#454AEC` | `#FBE8DD` |
 | 26 | Cobalt and Sunflower | light | `#D7E0FE` | `#05248A` | `#DFB007` | `#01071E` |
 | 26 | Cobalt and Sunflower | dark | `#010926` | `#7494FA` | `#F8CA22` | `#E2E8FE` |
-| 27 | Meadow and Sea | light | `#E4FDDD` | `#1E8F0A` | `#0DD394` | `#092B03` |
-| 27 | Meadow and Sea | dark | `#082102` | `#85F571` | `#2BF1B1` | `#DCFCD6` |
 | 28 | Ocean and Sky | light | `#ECF0F3` | `#344C60` | `#47769E` | `#12171C` |
 | 28 | Ocean and Sky | dark | `#0B0F12` | `#9FB7CB` | `#608FB8` | `#E2E7EC` |
 | 29 | Garnet and Cobalt | light | `#FBF5F4` | `#652925` | `#4268B3` | `#160A08` |
@@ -113,8 +107,6 @@ Theme is the theme the colors are given for.
 | 48 | Sage and Ultramarine | dark | `#02160B` | `#88F5B9` | `#2762ED` | `#DBFCE8` |
 | 49 | Emerald and Lake | light | `#F5FCF2` | `#307218` | `#25A796` | `#0C1D06` |
 | 49 | Emerald and Lake | dark | `#060E03` | `#A6E78F` | `#57DAC9` | `#E9F9E3` |
-| 51 | Jade and Pumpkin | light | `#EDFDFB` | `#0D8770` | `#D16015` | `#042520` |
-| 51 | Jade and Pumpkin | dark | `#021311` | `#79F2DB` | `#EA782C` | `#D9FBF6` |
 | 52 | Dove and Acid Lime | light | `#F1F0F4` | `#3D3649` | `#7A7F5C` | `#110F15` |
 | 52 | Dove and Acid Lime | dark | `#0C0B0F` | `#BBB4C8` | `#9EA380` | `#EBE9EF` |
 | 53 | Forest and Electric Blue | light | `#EDFEE7` | `#298109` | `#0D13C9` | `#0A2202` |
@@ -175,8 +167,6 @@ Theme is the theme the colors are given for.
 | 93 | Dove and Electric | dark | `#131410` | `#C2C5B8` | `#7D9395` | `#F1F2EF` |
 | 94 | Mint and Scarlet | light | `#E7FDFD` | `#097D86` | `#C8210E` | `#021C1D` |
 | 94 | Mint and Scarlet | dark | `#021818` | `#7BEDF6` | `#F14A36` | `#E1FCFD` |
-| 95 | Meadow and Glacier | light | `#D8FDEF` | `#068950` | `#099CCE` | `#022214` |
-| 95 | Meadow and Glacier | dark | `#022618` | `#77F9C0` | `#32C5F6` | `#DBFDEE` |
 | 96 | Indigo and Orange | light | `#F4F2F8` | `#41305A` | `#8C614A` | `#0E0B14` |
 | 96 | Indigo and Orange | dark | `#09070D` | `#B5A4CF` | `#B68B74` | `#EEEBF4` |
 | 97 | Cedar and Sun | light | `#F7F5F2` | `#6E5C2B` | `#D19F15` | `#131210` |
