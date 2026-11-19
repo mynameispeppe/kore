@@ -27,3 +27,9 @@ glass:
     glass-blur-bar: 12px
     glass-blur-float: 30px
     glass-saturate: 140%
+# glass-gradient: the candidate background behind the glass; Page background keeps its two glows until a rule adopts it (#6).
+gradients:
+  light:
+    glass-gradient: "linear-gradient(to right top, #3b2f5c, #713063, #a03056, #be4538, #c16c00)"
+  dark:
+    glass-gradient: "linear-gradient(to right top, #cebef5, #f2b3e3, #ffabc3, #ffac9c, #ffb779)"

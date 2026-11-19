@@ -11,7 +11,7 @@ derives the rest. A palette (Kore's or a candidate): its four colors, each C one
 hex for the theme --given names (light by default) or light=#hex,dark=#hex, in
 every theme shipped. Prints one table per theme: token, value, lowest
 contrast and the surface where it is lowest, source.
-With --typology glassmorphism, each theme's table ends with glass-fill, glass-fill-strong and page-background (typologies/glassmorphism/SKILL.md, Glass fill).
+With --typology glassmorphism, each theme's table ends with glass-fill and glass-fill-strong, plus page-background for one color only (typologies/glassmorphism/SKILL.md, Glass fill).
 Exit code 0 when every token can be used, 1 when one cannot, 2 on bad input.
 
 Example: python3 kore_palette.py --primary '#017e44'
@@ -650,7 +650,6 @@ THEMES = ("light", "dark")
 ROLES = ("canvas", "primary", "accent", "ink")  # a palette's four colors (ways 1 and 2)
 HEX = re.compile(r"#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})")
 BASE_TONE = {"canvas": (98, 3)}  # Pure white or black canvas, light and dark
-GRAY = 5  # below this HCT chroma a color has no hue (score.ts)
 SURFACES = ["canvas", "surface-card", "surface-elevated", "surface-deep", "surface-float", "surface-float-active",
             "surface-hover", "surface-pressed"]
 # Issue #14, step 1. One color (way 3): the base colors are these MCU roles.
@@ -679,7 +678,6 @@ WHITE, BLACK = (255, 255, 255, 1.0), (0, 0, 0, 1.0)
 # typologies/glassmorphism/SKILL.md, Glass fill and Page background
 GLASS_GLOW = 0.60  # the core of the two glows: accent and primary at 60% over canvas
 GLASS_SATURATE = 1.40  # glass-saturate
-PAGE_TONE = {"light": 63, "dark": 38}  # page background: the tone of its colors
 GLASS_TINT = {"light": (255, 255, 255), "dark": (32, 32, 32)}
 GLASS_MINIMUM = {**dict.fromkeys(["ink", "body", "mute", "link", "danger", "warning", "success", "info"], 4.5),
                  **dict.fromkeys(["accent", "hairline-strong", "focus-ring"], 3)}
@@ -746,28 +744,37 @@ def glass(theme, colors):
         result[name] = (GLASS_TINT[theme] + (alpha,), []) if alpha is not None else (None, failing(1))
     return result
 
-SHAPES = {
-    "linear": "linear-gradient(135deg, {0}, {1})",
-    "radial": "radial-gradient(circle at 30% 30%, {0}, transparent 60%), radial-gradient(circle at 75% 75%, {1}, transparent 60%)",
-    "mesh": ("radial-gradient(at 0% 0%, {0}, transparent 50%), radial-gradient(at 100% 0%, {1}, transparent 50%), "
-             "radial-gradient(at 100% 100%, {0}, transparent 50%), radial-gradient(at 0% 100%, {1}, transparent 50%)"),
-}
+# mycolor.space/gradient: sRGB <-> CIE LCH, the XYZ matrices at 4 decimals (not MCU's)
+D65 = (0.95047, 1.0, 1.08883)
+TO_XYZ = ((0.4124, 0.3576, 0.1805), (0.2126, 0.7152, 0.0722), (0.0193, 0.1192, 0.9505))
+FROM_XYZ = ((3.2406, -1.5372, -0.4986), (-0.9689, 1.8758, 0.0415), (0.0557, -0.2040, 1.0570))
 
 
-def page_background(base):
-    """Page background: {theme: background-image} behind the glass, from the light theme's primary and accent."""
-    primary, accent = base["primary"], base["accent"]
-    gray = [hct(c)[1] < GRAY for c in (primary, accent)]
+def lch(color):
+    lin = [c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4 for c in (v / 255 for v in color[:3])]
+    f = [lab_f(sum(m * c for m, c in zip(row, lin)) / w) for row, w in zip(TO_XYZ, D65)]
+    a, b = 500 * (f[0] - f[1]), 200 * (f[1] - f[2])
+    return 116 * f[1] - 16, math.hypot(a, b), math.degrees(math.atan2(b, a)) % 360
 
-    def opposite(other):  # MCU's complement of the other color: its light tertiaryContainer
-        return parse_color(mcu(fmt(other))["light"]["tertiaryContainer"])
-    if all(gray):
-        return None
-    primary, accent = opposite(accent) if gray[0] else primary, opposite(primary) if gray[1] else accent
-    hues = [hct(c)[0] for c in (primary, accent)]
-    colors = {t: [fmt(at(h, 200, tone)) for h in hues] for t, tone in PAGE_TONE.items()}
-    shape = ("linear", "radial", "mesh")[int(hues[0] // 120)]
-    return {t: SHAPES[shape].format(*c) for t, c in colors.items()}
+
+def hex_from_lch(l, c, h):
+    fy = (l + 16) / 116
+    fa, fb = fy + c * math.cos(math.radians(h)) / 500, fy - c * math.sin(math.radians(h)) / 200
+    xyz = [lab_invf(f) * w for f, w in zip((fa, fy, fb), D65)]
+    lin = [sum(m * v for m, v in zip(row, xyz)) for row in FROM_XYZ]
+    rgb = [12.92 * v if v <= 0.0031308 else 1.055 * v ** (1 / 2.4) - 0.055 for v in lin]
+    return "#" + "".join(f"{int(clamp(js_round(v * 255), 0, 255)):02x}" for v in rgb)
+
+
+def page_background(colors):
+    """Page background {theme: gradient} behind the glass: primary to accent in CIE LCH, 5 stops (mycolor.space/gradient)."""
+    result = {}
+    for theme, pair in colors.items():
+        (l0, c0, h0), (l1, c1, h1) = lch(pair["primary"]), lch(pair["accent"])
+        dh = (h1 - h0 + 180) % 360 - 180
+        stops = [hex_from_lch(l0 + (l1 - l0) * t, c0 + (c1 - c0) * t, h0 + dh * t) for t in (0, 0.25, 0.5, 0.75, 1)]
+        result[theme] = f"linear-gradient(to right top, {', '.join(stops)})"
+    return result
 
 
 def kore_colors(root=ROOT):
@@ -973,9 +980,8 @@ def main(argv=None):
                      f"in every theme shipped: {','.join(themes)})")
     kore = kore_colors()
     tables, notes, problems = palette(given, themes, kore)
-    if args.typology:
-        base = tables.get("light") or next(iter(tables.values()))  # the theme's own table when light is not shipped
-        page = page_background({k: base[k][0] for k in ("primary", "accent")})
+    page = page_background({t: {k: tab[k][0] for k in ("primary", "accent")} for t, tab in tables.items()}) \
+        if args.typology and one else None  # a palette's gradient is stored in candidates.md and tokens.yaml
     for theme, tokens in tables.items():
         print(f"{theme}\n{'token':<22} {'value':<26} {'lowest':<8} {'on':<42} source")
         for name in (n for n in kore[theme] if n in tokens):  # in the order of tokens.yaml
@@ -986,8 +992,8 @@ def main(argv=None):
                 print(f"{name:<22} {fmt(fill) if fill else '—':<26} {'—':<8} {'—':<42} Glass fill")
                 problems += [f"{theme}: {name} cannot reach {m}:1 for {token} on the glass over {where}, even at alpha 1 "
                              "(Glass fill): ask for another color." for token, m, where in failed]
-            print(f"{'page-background':<22} {page[theme]}" if page else
-                  f"{'page-background':<22} — (primary and accent are gray: canvas only)")
+            if page:
+                print(f"{'page-background':<22} {page[theme]}")
         print()
     for line in notes + problems:
         print(line)
