@@ -819,7 +819,7 @@ def derive(theme, base, m, on_vivid, kore, dark=None):
 
     def mapped(name, measure=None, minimum=None, step=away):
         role, pal = MCU_MAP[name][i], MCU_MAP[name][2]
-        return put(name, parse_color(m[theme][role]), "derived", measure, minimum, step, m["palettes"][pal] if pal else None)
+        return put(name, parse_color(m[theme][role]), "derived", measure, minimum, step, hue_chroma=m["palettes"][pal] if pal else None)
 
     def state(name, colors, measure=None, minimum=None, step=away):
         under, top, alpha = STATE[name]
