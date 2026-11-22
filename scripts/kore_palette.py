@@ -679,6 +679,8 @@ WHITE, BLACK = (255, 255, 255, 1.0), (0, 0, 0, 1.0)
 GLASS_SATURATE = {"light": 1.2, "dark": 1.5}  # glass-backdrop saturate
 GLASS_TINT = {"light": 0.14, "dark": 0.16}  # mix-tint of tokens.yaml, per theme
 GLASS_BADGE_TINT = {"light": 0.30, "dark": 0.20}  # glass-badge-tint of typologies/glassmorphism tokens.yaml, per theme
+GLASS_PAGE_DIM = {"light": 0.0, "dark": 0.35}  # glass-page-dim of typologies/glassmorphism tokens.yaml
+GLASS_BUTTON_FILL = 0.90  # glass-button-fill of typologies/glassmorphism tokens.yaml
 GLASS_MINIMUM = {**dict.fromkeys(["ink", "body", "mute", "link", "danger", "warning", "success", "info"], 4.5),
                  **dict.fromkeys(["accent", "hairline-strong", "focus-ring"], 3)}
 
@@ -740,8 +742,9 @@ def glass_points(theme, colors, stops):
 
 def glass(theme, colors, stops):
     """Text on glass: {token: (moved color, [])} for each token of GLASS_MINIMUM below its minimum on the glass over
-    the points of glass_points; (None, [(token, minimum, where)]) when tone 0 or 100 fails."""
-    points = glass_points(theme, colors, stops)
+    the points of glass_points plus the bare page stops under glass-page-dim; (None, [(token, minimum, where)]) when tone 0 or 100 fails."""
+    points = {**glass_points(theme, colors, stops),
+              **{f"page stop {i}": over((0, 0, 0, GLASS_PAGE_DIM[theme]), parse_color(h)) for i, h in enumerate(stops, 1)}}
     result = {}
     for token, minimum in GLASS_MINIMUM.items():
         ratio_where = lowest(colors[token], points)
@@ -777,6 +780,22 @@ def glass_badge(theme, colors, stops):
             badges[f"{kind} badge in the inner glass over {name}"] = over(tint, over(inner, point))
     moved = move(colors["ink"], lambda c: lowest(c, badges), 4.5, -1 if theme == "light" else 1)
     return {"glass-badge-ink": (moved, []) if moved else (None, [("glass-badge-ink", 4.5, lowest(colors["ink"], badges)[1])])}
+
+
+def glass_button(theme, colors, stops):
+    """Button text: [(text, 4.5, where)] for each of primary-on and danger-on below 4.5:1 on its fill at glass-button-fill over the glass and over the inner glass, at the worst of glass_points."""
+    inner = (WHITE if theme == "light" else colors["surface-card"])[:3] + (0.31,)
+    failed = []
+    for fill, text in (("primary", "primary-on"), ("danger", "danger-on")):
+        button = colors[fill][:3] + (GLASS_BUTTON_FILL,)
+        buttons = {}
+        for name, point in glass_points(theme, colors, stops).items():
+            buttons[f"{fill} button over {name}"] = over(button, point)
+            buttons[f"{fill} button in the inner glass over {name}"] = over(button, over(inner, point))
+        ratio_where = lowest(colors[text], buttons)
+        if ratio_where[0] < 4.5:
+            failed.append((text, 4.5, ratio_where[1]))
+    return failed
 
 
 # mycolor.space/gradient: sRGB <-> CIE LCH, the XYZ matrices at 4 decimals (not MCU's)
@@ -1041,6 +1060,9 @@ def main(argv=None):
                     print(f"{name:<22} {fmt(color) if color else '—':<26} {'—':<8} {'—':<42} Status badge")
                     problems += [f"{theme}: {token} cannot reach {m}:1 on the status badge over {where}, even at tone 0 or 100 "
                                  "(Status badge): ask for another color." for token, m, where in failed]
+                problems += [f"{theme}: {token} cannot reach {m}:1 on the glass button over {where} "
+                             "(Glass button): ask for another color."
+                             for token, m, where in glass_button(theme, {n: v[0] for n, v in tokens.items()}, stops)]
             if page:
                 print(f"{'page-background':<22} {page[theme]}")
         print()

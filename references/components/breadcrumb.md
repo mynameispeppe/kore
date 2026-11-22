@@ -9,7 +9,7 @@
 - **Add-on files:** read only the file of each add-on that the part being built or checked contains: Long trails `references/components/breadcrumb/long-trails.md`.
 - **Depth:** only where the structure is at least three levels deep.
 - **Markup:** a `<nav aria-label="Breadcrumb">` holding an ordered list.
-- **Breadcrumb:** font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`.
+- **Breadcrumb:** font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`. (replaced in: glassmorphism)
 - **List:** list-style none; margin 0; padding 0; display flex; flex-wrap wrap; align-items center; gap `space-6` `space-2`.
 - **Item:** display flex; align-items center; gap `space-2`.
 - **Link:** position relative; color `mute`; text-decoration none; transition 0s.

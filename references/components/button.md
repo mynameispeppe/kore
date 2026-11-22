@@ -17,27 +17,27 @@
 - **Icon button hit area:** inset −`space-1`, on the ::before of default icon buttons and of the FAB.
 - **Large button hit area:** inset 0.
 - **Small button hit area:** content ""; position absolute; width max(100%, `button-lg`); height `button-lg`; no inset: the button's flex centres it.
-- **Primary:** the main action of its decision (The One Primary Rule). background `primary`; color `primary-on`; the edge color `primary-edge`.
-- **Destructive:** delete and other destructive actions, at most one per decision. background `danger`; color `danger-on`; the edge color `danger-edge`.
-- **Elevated:** instead of secondary when the background is complex, colored or an image, where a transparent button would lose emphasis. background `surface-card`; color `ink`; the edge color `surface-card-edge`.
-- **Filled:** primary, destructive and elevated: background-image `gradient-raised`; box-shadow `shadow-raised-sm`, inset 0 0 0 `line-thin` the variant's edge color. (replaced in: minimalism)
-- **Secondary:** box-shadow inset 0 0 0 `line-thin` `hairline-medium`. The supporting action next to a primary or a destructive (Secondary alone).
+- **Primary:** the main action of its decision (The One Primary Rule). background `primary`; color `primary-on`; the edge color `primary-edge`. (replaced in: glassmorphism)
+- **Destructive:** delete and other destructive actions, at most one per decision. background `danger`; color `danger-on`; the edge color `danger-edge`. (replaced in: glassmorphism)
+- **Elevated:** instead of secondary when the background is complex, colored or an image, where a transparent button would lose emphasis. background `surface-card`; color `ink`; the edge color `surface-card-edge`. (replaced in: glassmorphism)
+- **Filled:** primary, destructive and elevated: background-image `gradient-raised`; box-shadow `shadow-raised-sm`, inset 0 0 0 `line-thin` the variant's edge color. (replaced in: minimalism, glassmorphism)
+- **Secondary:** box-shadow inset 0 0 0 `line-thin` `hairline-medium`. The supporting action next to a primary or a destructive (Secondary alone). (replaced in: glassmorphism)
 - **Tertiary:** low-priority actions and secondary options; the cancel action in a dialog; any number per decision. No background, no ring and no shadow at rest.
-- **Shadows:** only on filled buttons (primary, destructive) and on elevated; secondary and tertiary take `shadow-raised-sm` only in hover, with the background change.
+- **Shadows:** only on filled buttons (primary, destructive) and on elevated; secondary and tertiary take `shadow-raised-sm` only in hover, with the background change. (replaced in: glassmorphism)
 - **Borders:** box-shadow rings, so they never change the button's size: inside the edge (inset) on every variant, so buttons side by side look the same size.
 - **Filled hover:** on mouse hover (hover: hover), primary, destructive and elevated: transform translateY(−`space-1`). (replaced in: minimalism)
-- **Secondary and tertiary hover:** background-color `surface-hover`; background-image `gradient-raised`; box-shadow `shadow-raised-sm`.
-- **Secondary hover:** box-shadow `shadow-raised-sm`, inset 0 0 0 `line-thin` `hairline-medium`. (replaced in: minimalism)
-- **Pressed:** transform none; box-shadow `shadow-rest`; transition-duration `duration-instant`. (replaced in: minimalism)
-- **Primary pressed:** background-color `primary-pressed`.
-- **Destructive pressed:** background-color `danger-pressed`.
-- **Elevated pressed:** background-color `surface-elevated`.
-- **Filled pressed:** box-shadow `shadow-raised-pressed`, inset 0 0 0 `line-thin` the variant's edge color. (replaced in: minimalism)
-- **Secondary and tertiary pressed:** background `surface-pressed`; box-shadow none.
-- **Secondary pressed:** box-shadow inset 0 0 0 `line-thin` `hairline-medium`.
-- **On an overlay:** secondary and tertiary inside an overlay take `surface-float-active` in hover and when pressed.
-- **Disabled:** background `surface-elevated`; color `stone`; box-shadow none; cursor not-allowed; transform none. Explain why it is disabled when it is not obvious.
-- **Secondary disabled:** background none; box-shadow inset 0 0 0 `line-thin` `hairline`, its own container as in Material 3.
+- **Secondary and tertiary hover:** background-color `surface-hover`; background-image `gradient-raised`; box-shadow `shadow-raised-sm`. (replaced in: glassmorphism)
+- **Secondary hover:** box-shadow `shadow-raised-sm`, inset 0 0 0 `line-thin` `hairline-medium`. (replaced in: minimalism, glassmorphism)
+- **Pressed:** transform none; box-shadow `shadow-rest`; transition-duration `duration-instant`. (replaced in: minimalism, glassmorphism)
+- **Primary pressed:** background-color `primary-pressed`. (replaced in: glassmorphism)
+- **Destructive pressed:** background-color `danger-pressed`. (replaced in: glassmorphism)
+- **Elevated pressed:** background-color `surface-elevated`. (replaced in: glassmorphism)
+- **Filled pressed:** box-shadow `shadow-raised-pressed`, inset 0 0 0 `line-thin` the variant's edge color. (replaced in: minimalism, glassmorphism)
+- **Secondary and tertiary pressed:** background `surface-pressed`; box-shadow none. (replaced in: glassmorphism)
+- **Secondary pressed:** box-shadow inset 0 0 0 `line-thin` `hairline-medium`. (replaced in: glassmorphism)
+- **On an overlay:** secondary and tertiary inside an overlay take `surface-float-active` in hover and when pressed. (replaced in: glassmorphism)
+- **Disabled:** background `surface-elevated`; color `stone`; box-shadow none; cursor not-allowed; transform none. Explain why it is disabled when it is not obvious. (replaced in: glassmorphism)
+- **Secondary disabled:** background none; box-shadow inset 0 0 0 `line-thin` `hairline`, its own container as in Material 3. (replaced in: glassmorphism)
 - **Tertiary disabled:** background none.
 - **Focus:** see States: on :focus-visible outline none, and the corner marks are an ::after drawn only on :focus-visible.
 - **Link button:** a button that takes the user to another page is a link (`<a href>`) with the look of a button: text-decoration none.

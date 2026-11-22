@@ -1,0 +1,24 @@
+# Button
+
+- **Primary:** Replaces: `button.primary`. The Glass recipe under a layer of `primary`: background linear-gradient(color-mix(in srgb, `primary` `glass-button-fill`, transparent)), `glass-background`; backdrop-filter `glass-backdrop`; box-shadow `glass-shadow`; color `primary-on`.
+- **Destructive:** Replaces: `button.destructive`. As Primary, with the layer in `glass-button-danger`; color `danger-on`.
+- **Destructive fill:** `glass-button-danger` is the palette's `danger` before Text on glass moves it: the moved `danger` is a text color.
+- **Button text:** `glass-button-fill` is 90% in both themes, so `primary-on` and `danger-on` reach 4.5:1 over the glass and over the inner glass, at the worst point behind the glass, the points of Text on glass. `typologies/glassmorphism/references/tokens.yaml` holds the values for Kore's palette; a Custom palette checks its own with `kore_palette.py --typology glassmorphism`.
+- **Elevated:** Replaces: `button.elevated`. The Glass recipe; color `ink`.
+- **Filled:** Replaces: `button.filled`. Primary, Destructive and Elevated above hold the whole look.
+- **Glass edge:** box-shadow inset 0 1px 0 `glass-edge-top`, inset 0 0 0 `line-thin` `glass-edge`: the top line and the ring of `glass-shadow`.
+- **Secondary:** Replaces: `button.secondary`. On the page: background `glass-inner-background`; box-shadow `glass-inner-shadow`, the Glass edge. Its `ink` label reaches 4.5:1 over the Page background at its worst stop. Inside a glass surface: background none; box-shadow the Glass edge.
+- **Shadows:** Replaces: `button.shadows`. Primary, destructive and elevated take `glass-shadow`; secondary takes `glass-inner-shadow` on the page; tertiary takes `glass-inner-shadow` in hover and pressed.
+- **Secondary and tertiary hover:** Replaces: `button.secondary-and-tertiary-hover`. On mouse hover (hover: hover): background `glass-inner-background`; box-shadow `glass-inner-shadow`.
+- **Secondary hover:** Replaces: `button.secondary-hover`. background linear-gradient(color-mix(in srgb, `ink` `mix-hover`, transparent)), `glass-inner-background`; box-shadow `glass-inner-shadow`.
+- **Pressed:** Replaces: `button.pressed`. transform none; transition-duration `duration-instant`; primary, destructive and elevated keep `glass-shadow`.
+- **Primary pressed:** Replaces: `button.primary-pressed`. As Primary, with the layer in `primary-pressed`.
+- **Destructive pressed:** Replaces: `button.destructive-pressed`. As Destructive, with the layer in `danger-pressed`.
+- **Elevated pressed:** Replaces: `button.elevated-pressed`. The Glass recipe.
+- **Filled pressed:** Replaces: `button.filled-pressed`. As Pressed.
+- **Secondary and tertiary pressed:** Replaces: `button.secondary-and-tertiary-pressed`. background linear-gradient(color-mix(in srgb, `ink` `mix-pressed`, transparent)), `glass-inner-background`; box-shadow `glass-inner-shadow`.
+- **Secondary pressed:** Replaces: `button.secondary-pressed`. As Secondary and tertiary pressed.
+- **On an overlay:** Replaces: `button.on-an-overlay`. Secondary and tertiary inside an overlay take the hover and pressed values above.
+- **Button inside a glass surface:** Glass inside glass: the layer of primary and destructive lies over `glass-inner-background`; elevated takes `glass-inner-background`; backdrop-filter none; box-shadow `glass-inner-shadow`, at rest, in hover and pressed. The Breadcrumb's panel is a glass surface.
+- **Disabled:** Replaces: `button.disabled`. background `glass-inner-background`; backdrop-filter none; box-shadow `glass-inner-shadow`; color color-mix(in srgb, `ink` `glass-disabled-mix`, transparent): the 38% of `stone`, laid over the glass instead of the canvas; cursor not-allowed; transform none. Explain why it is disabled when it is not obvious.
+- **Secondary disabled:** Replaces: `button.secondary-disabled`. background none; box-shadow the Glass edge.

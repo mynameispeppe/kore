@@ -580,23 +580,36 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
     }
     let alpha = 1;
     for (let p = el; p; p = p.parentElement) alpha *= +style(p).opacity;
+    // A layer is the list of colors it may show: a background-color is one, a gradient is its stops.
+    // backdrop-filter is ignored: kore_palette.py measures text on glass with the saturate.
     const layers = [];
     let image = false;
     for (const n of under) {
       const s = style(n);
-      if (['img', 'video', 'canvas', 'picture', 'iframe'].includes(n.localName) || s.backgroundImage !== 'none') { image = true; break; }
-      const c = rgba(s.backgroundColor);
-      if (c[3]) layers.push(c);
-      if (c[3] === 1) break;
+      if (['img', 'video', 'canvas', 'picture', 'iframe'].includes(n.localName) || s.backgroundImage.includes('url(')) { image = true; break; }
+      const grads = [];  // split at the top-level commas, the first listed is painted on top
+      let depth = 0, from = 0;
+      [...s.backgroundImage].forEach((ch, k, all) => {
+        depth += ch === '(' ? 1 : ch === ')' ? -1 : 0;
+        if ((ch === ',' && !depth) || k === all.length - 1) grads.push(s.backgroundImage.slice(from, k + 1)), from = k + 1;
+      });
+      // any color function the computed style keeps (color-mix() computes to color(srgb …)); rgba() paints it
+      const found = [...grads.map(g => (g.match(/(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\([^)]*\)/g) || []).map(rgba)), [rgba(s.backgroundColor)]];
+      if (found.slice(0, -1).some((l, k) => !l.length && grads[k].trim() !== 'none')) { image = true; break; }  // a gradient whose stops cannot be read
+      const opaque = found.find(l => l.length && l.every(c => c[3] === 1));
+      layers.push(...found.slice(0, opaque ? found.indexOf(opaque) + 1 : found.length).filter(l => l.some(c => c[3])));
+      if (opaque) break;
     }
     const size = parseFloat(style(el).fontSize), min = size >= 24 ? 3 : 4.5;
-    if (image) { add('?', 'Contrast', `${name(el)} sits on an image or a gradient: check ${min}:1`, el); continue; }
-    let bg = canvas;
-    for (const c of layers.reverse()) bg = over(c, bg);
+    if (image) { add('?', 'Contrast', `${name(el)} sits on an image: check ${min}:1`, el); continue; }
+    let bgs = [canvas];  // every combination of the layers' colors, bottom-up; the lowest ratio is kept
+    for (const l of layers.reverse()) bgs = bgs.flatMap(b => l.map(c => over(c, b)));
     const fg = rgba(style(el).color);
-    const ink = over([fg[0], fg[1], fg[2], fg[3] * alpha], bg);
-    const [hi, lo] = [lum(ink), lum(bg)].sort((x, y) => y - x);
-    const r = (hi + 0.05) / (lo + 0.05);
+    const r = Math.min(...bgs.map(bg => {
+      const ink = over([fg[0], fg[1], fg[2], fg[3] * alpha], bg);
+      const [hi, lo] = [lum(ink), lum(bg)].sort((x, y) => y - x);
+      return (hi + 0.05) / (lo + 0.05);
+    }));
     if (r < min - 0.005) add('✗', 'Contrast', `${name(el)} is ${r.toFixed(2)}:1, below ${min}:1`, el);
   }
 

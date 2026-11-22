@@ -1,13 +1,14 @@
 colors:
   light:
-    mute: "#56595a"
-    link: "#305e78"
-    info: "#305e78"
-    danger: "#ad1c21"
-    success: "#006548"
-    accent: "#af6100"
-    hairline-strong: "#717475"
-    focus-ring: "#717475"
+    mute: "#4d5051"
+    link: "#25546e"
+    info: "#25546e"
+    danger: "#9f0f19"
+    warning: "#863704"
+    success: "#005a40"
+    accent: "#9d5700"
+    hairline-strong: "#676a6b"
+    focus-ring: "#676a6b"
   dark:
     mute: "#ddd5d5"
     link: "#aaddff"
@@ -17,9 +18,10 @@ colors:
     success: "#74edbc"
     hairline-strong: "#b6afb0"
     focus-ring: "#b6afb0"
-# The Glass recipe and the inner glass (Glass inside glass, from 21st.dev Adjustable Glass Dashboard's .gw-panel); glass-icon-*: Glass icon color of the Alert; glass-edge-*: Image avatar of the Avatar; glass-badge-*: Status badge of the Badge; dark glass-background: surface-card at 50% under a diagonal sheen.
+# The Glass recipe and the inner glass (Glass inside glass, from 21st.dev Adjustable Glass Dashboard's .gw-panel); glass-icon-*: Glass icon color of the Alert; glass-edge-*: Image avatar of the Avatar; glass-badge-*: Status badge of the Badge; glass-button-fill, glass-button-danger: fill of the filled Buttons; glass-disabled-mix: disabled text on glass, stone's 38%; glass-page-dim: Apple HIG dark dimming layer over the Page background; dark glass-background: surface-card at 50% under a diagonal sheen.
 glass:
   light:
+    glass-page-dim: "rgba(0, 0, 0, 0)"
     glass-background: "rgba(255, 255, 255, 0.30)"
     glass-backdrop: "blur(22px) saturate(1.2)"
     glass-shadow: "inset 0 1px 0 rgba(255, 255, 255, 0.60), inset 0 0 0 1px rgba(255, 255, 255, 0.204), 0 20px 52px -25px rgba(10, 10, 10, 0.18)"
@@ -29,11 +31,15 @@ glass:
     glass-edge: "rgba(255, 255, 255, 0.204)"
     glass-badge-tint: 30%
     glass-badge-ink: "#272a2c"
+    glass-button-fill: 90%
+    glass-button-danger: "#c22d2e"
+    glass-disabled-mix: 38%
     glass-icon-danger: "#ce3637"
     glass-icon-warning: "#9e7500"
     glass-icon-success: "#008d67"
     glass-icon-info: "#3d7799"
   dark:
+    glass-page-dim: "rgba(0, 0, 0, 0.35)"
     glass-background: "linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.015) 55%), rgba(21, 18, 19, 0.50)"
     glass-backdrop: "blur(18px) saturate(1.5)"
     glass-shadow: "inset 0 1px 0 rgba(255, 255, 255, 0.38), inset 0 0 0 1px rgba(255, 255, 255, 0.06)"
@@ -43,6 +49,9 @@ glass:
     glass-edge: "rgba(255, 255, 255, 0.06)"
     glass-badge-tint: 20%
     glass-badge-ink: "#fffaff"
+    glass-button-fill: 90%
+    glass-button-danger: "#ff5a56"
+    glass-disabled-mix: 38%
     glass-icon-danger: "#ff8078"
     glass-icon-warning: "#ffc53d"
     glass-icon-success: "#6ee7b7"
