@@ -677,6 +677,7 @@ FILLS = {"primary-on", "primary-pressed", "danger-pressed", "on-vivid"}  # measu
 WHITE, BLACK = (255, 255, 255, 1.0), (0, 0, 0, 1.0)
 # typologies/glassmorphism/SKILL.md, Text on glass and Page background
 GLASS_SATURATE = {"light": 1.2, "dark": 1.5}  # glass-backdrop saturate
+GLASS_TINT = {"light": 0.14, "dark": 0.16}  # mix-tint of tokens.yaml, per theme
 GLASS_MINIMUM = {**dict.fromkeys(["ink", "body", "mute", "link", "danger", "warning", "success", "info"], 4.5),
                  **dict.fromkeys(["accent", "hairline-strong", "focus-ring"], 3)}
 
@@ -726,22 +727,40 @@ def saturate(color, amount):
             clamp((0.213 - 0.213 * s) * r + (0.715 - 0.715 * s) * g + (0.072 + 0.928 * s) * b, 0, 255), 1.0)
 
 
-def glass(theme, colors, stops):
-    """Text on glass: {token: (moved color, [])} for each token of GLASS_MINIMUM below its minimum on the glass over
-    the canvas and the 5 hex stops of this theme's Page background; (None, [(token, minimum, where)]) when tone 0 or 100 fails."""
+def glass_points(theme, colors, stops):
+    """The worst-case points behind the glass: the canvas and the 5 hex stops of this theme's Page background, saturated, under the glass."""
     saturated = {"canvas": saturate(colors["canvas"], GLASS_SATURATE[theme]),
                  **{f"stop {i}": saturate(parse_color(h), GLASS_SATURATE[theme]) for i, h in enumerate(stops, 1)}}
     if theme == "light":
-        points = {n: over(WHITE[:3] + (0.30,), p) for n, p in saturated.items()}
-    else:
-        card = {n: over(colors["surface-card"][:3] + (0.50,), p) for n, p in saturated.items()}
-        points = {**card, **{f"{n} sheen": over(WHITE[:3] + (0.09,), p) for n, p in card.items()}}
+        return {n: over(WHITE[:3] + (0.30,), p) for n, p in saturated.items()}
+    card = {n: over(colors["surface-card"][:3] + (0.50,), p) for n, p in saturated.items()}
+    return {**card, **{f"{n} sheen": over(WHITE[:3] + (0.09,), p) for n, p in card.items()}}
+
+
+def glass(theme, colors, stops):
+    """Text on glass: {token: (moved color, [])} for each token of GLASS_MINIMUM below its minimum on the glass over
+    the points of glass_points; (None, [(token, minimum, where)]) when tone 0 or 100 fails."""
+    points = glass_points(theme, colors, stops)
     result = {}
     for token, minimum in GLASS_MINIMUM.items():
         ratio_where = lowest(colors[token], points)
         if ratio_where[0] < minimum:
             moved = move(colors[token], lambda c: lowest(c, points), minimum, -1 if theme == "light" else 1)
             result[token] = (moved, []) if moved else (None, [(token, minimum, ratio_where[1])])
+    return result
+
+
+def glass_icons(theme, colors, stops):
+    """Glass icon color: {glass-icon-kind: (moved vivid-kind, [])} until 3:1 on the icon circle (glass, panel tint, inner glass,
+    circle tint) at the worst of glass_points; (None, [(token, 3, where)]) when tone 0 or 100 fails."""
+    inner = (WHITE if theme == "light" else colors["surface-card"])[:3] + (0.31,)
+    points, result = glass_points(theme, colors, stops), {}
+    for kind in KINDS:
+        vivid, token = colors[f"vivid-{kind}"], f"glass-icon-{kind}"
+        tint = vivid[:3] + (GLASS_TINT[theme],)
+        circle = {n: over(tint, over(inner, over(tint, p))) for n, p in points.items()}
+        moved = move(vivid, lambda c: lowest(c, circle), 3, -1 if theme == "light" else 1)
+        result[token] = (moved, []) if moved else (None, [(token, 3, lowest(vivid, circle)[1])])
     return result
 
 
@@ -999,6 +1018,10 @@ def main(argv=None):
                     print(f"{name:<22} {fmt(color) if color else '—':<26} {'—':<8} {'—':<42} Text on glass")
                     problems += [f"{theme}: {token} cannot reach {m}:1 on the glass over {where}, even at tone 0 or 100 "
                                  "(Text on glass): ask for another color." for token, m, where in failed]
+                for name, (color, failed) in glass_icons(theme, {n: v[0] for n, v in tokens.items()}, stops).items():
+                    print(f"{name:<22} {fmt(color) if color else '—':<26} {'—':<8} {'—':<42} Glass icon color")
+                    problems += [f"{theme}: {token} cannot reach {m}:1 on the icon circle over {where}, even at tone 0 or 100 "
+                                 "(Glass icon color): ask for another color." for token, m, where in failed]
             if page:
                 print(f"{'page-background':<22} {page[theme]}")
         print()

@@ -1,0 +1,7 @@
+# Alert
+
+- **Container:** Replaces: `alert.container`. The Glass recipe (1 · surface) under a layer of the kind's vivid color: background linear-gradient(color-mix(in srgb, the kind's vivid color `mix-tint`, transparent)), `glass-background`; backdrop-filter `glass-backdrop`; box-shadow `glass-shadow`.
+- **Icon circle:** Replaces: `alert.icon-circle`. border-radius `rounded-full`; corner-shape round; the inner glass of Glass inside glass under the same layer of the kind's vivid color: background linear-gradient(color-mix(in srgb, the kind's vivid color `mix-tint`, transparent)), `glass-inner-background`; box-shadow `glass-inner-shadow`; color the kind's glass icon color: `glass-icon-info`, `glass-icon-success`, `glass-icon-warning`, `glass-icon-danger`.
+- **Glass icon color:** each `glass-icon-*` is the kind's vivid color moved one tone at a time, as in Custom palette step 3, until it reaches 3:1 on the icon circle at the worst point behind the glass, the points of Text on glass. `typologies/glassmorphism/references/tokens.yaml` holds the result for Kore's palette; a Custom palette computes its own with `kore_palette.py --typology glassmorphism`.
+- **Action hover:** Replaces: `alert.action-hover`. The action and the close, on mouse hover (hover: hover): background `glass-inner-background`; box-shadow `glass-inner-shadow`; transition as in the default.
+- **Action pressed:** Replaces: `alert.action-pressed`. background linear-gradient(color-mix(in srgb, `ink` `mix-pressed`, transparent)), `glass-inner-background`; box-shadow `glass-inner-shadow`.
