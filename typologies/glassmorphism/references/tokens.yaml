@@ -17,7 +17,7 @@ colors:
     success: "#74edbc"
     hairline-strong: "#b6afb0"
     focus-ring: "#b6afb0"
-# The Glass recipe and the inner glass (Glass inside glass, from 21st.dev Adjustable Glass Dashboard's .gw-panel); glass-icon-*: Glass icon color of the Alert; glass-edge-*: Image avatar of the Avatar; dark glass-background: surface-card at 50% under a diagonal sheen.
+# The Glass recipe and the inner glass (Glass inside glass, from 21st.dev Adjustable Glass Dashboard's .gw-panel); glass-icon-*: Glass icon color of the Alert; glass-edge-*: Image avatar of the Avatar; glass-badge-*: Status badge of the Badge; dark glass-background: surface-card at 50% under a diagonal sheen.
 glass:
   light:
     glass-background: "rgba(255, 255, 255, 0.30)"
@@ -27,6 +27,8 @@ glass:
     glass-inner-shadow: "inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 8px 22px -20px rgba(39, 42, 44, 0.16)"
     glass-edge-top: "rgba(255, 255, 255, 0.60)"
     glass-edge: "rgba(255, 255, 255, 0.204)"
+    glass-badge-tint: 30%
+    glass-badge-ink: "#272a2c"
     glass-icon-danger: "#ce3637"
     glass-icon-warning: "#9e7500"
     glass-icon-success: "#008d67"
@@ -39,6 +41,8 @@ glass:
     glass-inner-shadow: "inset 0 1px 0 rgba(255, 255, 255, 0.285), 0 8px 22px -20px rgba(0, 0, 0, 0.16)"
     glass-edge-top: "rgba(255, 255, 255, 0.38)"
     glass-edge: "rgba(255, 255, 255, 0.06)"
+    glass-badge-tint: 20%
+    glass-badge-ink: "#fffaff"
     glass-icon-danger: "#ff8078"
     glass-icon-warning: "#ffc53d"
     glass-icon-success: "#6ee7b7"

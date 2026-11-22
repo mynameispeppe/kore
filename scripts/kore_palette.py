@@ -678,6 +678,7 @@ WHITE, BLACK = (255, 255, 255, 1.0), (0, 0, 0, 1.0)
 # typologies/glassmorphism/SKILL.md, Text on glass and Page background
 GLASS_SATURATE = {"light": 1.2, "dark": 1.5}  # glass-backdrop saturate
 GLASS_TINT = {"light": 0.14, "dark": 0.16}  # mix-tint of tokens.yaml, per theme
+GLASS_BADGE_TINT = {"light": 0.30, "dark": 0.20}  # glass-badge-tint of typologies/glassmorphism tokens.yaml, per theme
 GLASS_MINIMUM = {**dict.fromkeys(["ink", "body", "mute", "link", "danger", "warning", "success", "info"], 4.5),
                  **dict.fromkeys(["accent", "hairline-strong", "focus-ring"], 3)}
 
@@ -762,6 +763,20 @@ def glass_icons(theme, colors, stops):
         moved = move(vivid, lambda c: lowest(c, circle), 3, -1 if theme == "light" else 1)
         result[token] = (moved, []) if moved else (None, [(token, 3, lowest(vivid, circle)[1])])
     return result
+
+
+def glass_badge(theme, colors, stops):
+    """Status badge text: {"glass-badge-ink": (ink moved one tone at a time, [])} until 4.5:1 on each kind's
+    glass-badge-tint over the glass and over the inner glass, at the worst of glass_points; (None, [(token, 4.5, where)]) when tone 0 or 100 fails."""
+    inner = (WHITE if theme == "light" else colors["surface-card"])[:3] + (0.31,)
+    badges = {}
+    for kind in KINDS:
+        tint = colors[f"vivid-{kind}"][:3] + (GLASS_BADGE_TINT[theme],)
+        for name, point in glass_points(theme, colors, stops).items():
+            badges[f"{kind} badge over {name}"] = over(tint, point)
+            badges[f"{kind} badge in the inner glass over {name}"] = over(tint, over(inner, point))
+    moved = move(colors["ink"], lambda c: lowest(c, badges), 4.5, -1 if theme == "light" else 1)
+    return {"glass-badge-ink": (moved, []) if moved else (None, [("glass-badge-ink", 4.5, lowest(colors["ink"], badges)[1])])}
 
 
 # mycolor.space/gradient: sRGB <-> CIE LCH, the XYZ matrices at 4 decimals (not MCU's)
@@ -1022,6 +1037,10 @@ def main(argv=None):
                     print(f"{name:<22} {fmt(color) if color else '—':<26} {'—':<8} {'—':<42} Glass icon color")
                     problems += [f"{theme}: {token} cannot reach {m}:1 on the icon circle over {where}, even at tone 0 or 100 "
                                  "(Glass icon color): ask for another color." for token, m, where in failed]
+                for name, (color, failed) in glass_badge(theme, {n: v[0] for n, v in tokens.items()}, stops).items():
+                    print(f"{name:<22} {fmt(color) if color else '—':<26} {'—':<8} {'—':<42} Status badge")
+                    problems += [f"{theme}: {token} cannot reach {m}:1 on the status badge over {where}, even at tone 0 or 100 "
+                                 "(Status badge): ask for another color." for token, m, where in failed]
             if page:
                 print(f"{'page-background':<22} {page[theme]}")
         print()
