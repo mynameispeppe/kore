@@ -11,7 +11,7 @@ derives the rest. A palette (Kore's or a candidate): its four colors, each C one
 hex for the theme --given names (light by default) or light=#hex,dark=#hex, in
 every theme shipped. Prints one table per theme: token, value, lowest
 contrast and the surface where it is lowest, source.
-With --typology glassmorphism, each theme's table ends with glass-fill and glass-fill-strong, plus page-background for one color only (typologies/glassmorphism/SKILL.md, Glass fill).
+With --typology glassmorphism, each theme's table ends with the text tokens moved on the glass (Text on glass), plus page-background for one color only.
 Exit code 0 when every token can be used, 1 when one cannot, 2 on bad input.
 
 Example: python3 kore_palette.py --primary '#017e44'
@@ -675,10 +675,8 @@ UNMEASURED = ["scrim", "veil-photo", "veil-cover", "on-photo", "on-photo-mute"]
 CHARTS = [f"chart-{n}" for n in range(1, 9)]
 FILLS = {"primary-on", "primary-pressed", "danger-pressed", "on-vivid"}  # measured on a fill, not on the surfaces
 WHITE, BLACK = (255, 255, 255, 1.0), (0, 0, 0, 1.0)
-# typologies/glassmorphism/SKILL.md, Glass fill and Page background
-GLASS_GLOW = 0.60  # the core of the two glows: accent and primary at 60% over canvas
-GLASS_SATURATE = 1.40  # glass-saturate
-GLASS_TINT = {"light": (255, 255, 255), "dark": (32, 32, 32)}
+# typologies/glassmorphism/SKILL.md, Text on glass and Page background
+GLASS_SATURATE = {"light": 1.2, "dark": 1.5}  # glass-backdrop saturate
 GLASS_MINIMUM = {**dict.fromkeys(["ink", "body", "mute", "link", "danger", "warning", "success", "info"], 4.5),
                  **dict.fromkeys(["accent", "hairline-strong", "focus-ring"], 3)}
 
@@ -728,21 +726,24 @@ def saturate(color, amount):
             clamp((0.213 - 0.213 * s) * r + (0.715 - 0.715 * s) * g + (0.072 + 0.928 * s) * b, 0, 255), 1.0)
 
 
-def glass(theme, colors):
-    """Glass fill: {name: (fill, failed)}; the lowest alpha at which every token of GLASS_MINIMUM meets its
-    minimum on the worst point behind the glass; fill None and failed [(token, minimum, where)] when none does."""
-    behind = {"canvas": colors["canvas"], **{f"{k} glow": over(colors[k][:3] + (GLASS_GLOW,), colors["canvas"])
-                                             for k in ("accent", "primary")}}
+def glass(theme, colors, stops):
+    """Text on glass: {token: (moved color, [])} for each token of GLASS_MINIMUM below its minimum on the glass over
+    the canvas and the 5 hex stops of this theme's Page background; (None, [(token, minimum, where)]) when tone 0 or 100 fails."""
+    saturated = {"canvas": saturate(colors["canvas"], GLASS_SATURATE[theme]),
+                 **{f"stop {i}": saturate(parse_color(h), GLASS_SATURATE[theme]) for i, h in enumerate(stops, 1)}}
+    if theme == "light":
+        points = {n: over(WHITE[:3] + (0.30,), p) for n, p in saturated.items()}
+    else:
+        card = {n: over(colors["surface-card"][:3] + (0.50,), p) for n, p in saturated.items()}
+        points = {**card, **{f"{n} sheen": over(WHITE[:3] + (0.09,), p) for n, p in card.items()}}
     result = {}
-    for name, extra in (("glass-fill", {}), ("glass-fill-strong", {"black": BLACK} if theme == "light" else {"white": WHITE})):
-        points = {n: saturate(c, GLASS_SATURATE) for n, c in {**behind, **extra}.items()}
-
-        def failing(alpha):
-            glass_points = {n: over(GLASS_TINT[theme] + (alpha,), p) for n, p in points.items()}
-            return [(t, m, w) for t, m in GLASS_MINIMUM.items() for r, w in [lowest(colors[t], glass_points)] if r < m]
-        alpha = next((a / 100 for a in range(101) if not failing(a / 100)), None)
-        result[name] = (GLASS_TINT[theme] + (alpha,), []) if alpha is not None else (None, failing(1))
+    for token, minimum in GLASS_MINIMUM.items():
+        ratio_where = lowest(colors[token], points)
+        if ratio_where[0] < minimum:
+            moved = move(colors[token], lambda c: lowest(c, points), minimum, -1 if theme == "light" else 1)
+            result[token] = (moved, []) if moved else (None, [(token, minimum, ratio_where[1])])
     return result
+
 
 # mycolor.space/gradient: sRGB <-> CIE LCH, the XYZ matrices at 4 decimals (not MCU's)
 D65 = (0.95047, 1.0, 1.08883)
@@ -957,7 +958,7 @@ def main(argv=None):
     parser.add_argument("--given", choices=THEMES, default="light", help="the theme a single hex is given for (default light)")
     for role in ROLES:
         parser.add_argument(f"--{role}", metavar="C")
-    parser.add_argument("--typology", choices=["glassmorphism"], help="also print the glass fills of this typology (Glass fill)")
+    parser.add_argument("--typology", choices=["glassmorphism"], help="also print the text tokens this typology moves (Text on glass)")
     args = parser.parse_args(argv)
     names = args.themes.split(",")
     if not names or any(t not in THEMES for t in names) or len(set(names)) < len(names):
@@ -982,16 +983,22 @@ def main(argv=None):
     tables, notes, problems = palette(given, themes, kore)
     page = page_background({t: {k: tab[k][0] for k in ("primary", "accent")} for t, tab in tables.items()}) \
         if args.typology and one else None  # a palette's gradient is stored in candidates.md and tokens.yaml
+    gradients = page_background({t: {k: tab[k][0] for k in ("primary", "accent")} for t, tab in tables.items()})
     for theme, tokens in tables.items():
         print(f"{theme}\n{'token':<22} {'value':<26} {'lowest':<8} {'on':<42} source")
         for name in (n for n in kore[theme] if n in tokens):  # in the order of tokens.yaml
             color, source, measured = tokens[name]
             print(f"{name:<22} {fmt(color):<26} {show(measured)[0]:<8} {show(measured)[1]:<42} {source}")
         if args.typology:
-            for name, (fill, failed) in glass(theme, {n: v[0] for n, v in tokens.items()}).items():
-                print(f"{name:<22} {fmt(fill) if fill else '—':<26} {'—':<8} {'—':<42} Glass fill")
-                problems += [f"{theme}: {name} cannot reach {m}:1 for {token} on the glass over {where}, even at alpha 1 "
-                             "(Glass fill): ask for another color." for token, m, where in failed]
+            other = THEMES[1 - THEMES.index(theme)]
+            if other not in gradients:
+                problems.append(f"{theme}: glassmorphism needs the other theme's primary and accent for Page background: ship both themes.")
+            else:
+                stops = re.findall(r"#[0-9a-f]{6}", gradients[other])
+                for name, (color, failed) in glass(theme, {n: v[0] for n, v in tokens.items()}, stops).items():
+                    print(f"{name:<22} {fmt(color) if color else '—':<26} {'—':<8} {'—':<42} Text on glass")
+                    problems += [f"{theme}: {token} cannot reach {m}:1 on the glass over {where}, even at tone 0 or 100 "
+                                 "(Text on glass): ask for another color." for token, m, where in failed]
             if page:
                 print(f"{'page-background':<22} {page[theme]}")
         print()

@@ -1,33 +1,36 @@
 colors:
   light:
-    glass-fill: "rgba(255, 255, 255, 0.82)"
-    glass-fill-strong: "rgba(255, 255, 255, 0.92)"
-    glass-border: "rgba(255, 255, 255, 0.40)"
-    glass-bar-border: "rgba(0, 0, 0, 0.05)"
+    mute: "#56595a"
+    link: "#305e78"
+    info: "#305e78"
+    danger: "#ad1c21"
+    success: "#006548"
+    accent: "#af6100"
+    hairline-strong: "#717475"
+    focus-ring: "#717475"
   dark:
-    glass-fill: "rgba(32, 32, 32, 0.87)"
-    glass-fill-strong: "rgba(32, 32, 32, 0.95)"
-    glass-border: "rgba(255, 255, 255, 0.20)"
-    glass-bar-border: "rgba(255, 255, 255, 0.20)"
-shadows:
-  light:
-    shadow-glass: "0 20px 50px -12px rgba(59, 47, 92, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.50)"
-    shadow-glass-layered: "0 1px 2px rgba(59, 47, 92, 0.14), 0 4px 8px rgba(59, 47, 92, 0.12), 0 16px 32px -4px rgba(59, 47, 92, 0.20), 0 36px 70px -14px rgba(59, 47, 92, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.50)"
-  dark:
-    shadow-glass: "0 20px 50px -12px rgba(206, 190, 245, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.50)"
-    shadow-glass-layered: "0 1px 2px rgba(206, 190, 245, 0.14), 0 4px 8px rgba(206, 190, 245, 0.12), 0 16px 32px -4px rgba(206, 190, 245, 0.20), 0 36px 70px -14px rgba(206, 190, 245, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.50)"
+    mute: "#ddd5d5"
+    link: "#aaddff"
+    info: "#aaddff"
+    danger: "#ffcbc6"
+    warning: "#ffd06c"
+    success: "#74edbc"
+    hairline-strong: "#b6afb0"
+    focus-ring: "#b6afb0"
+# The Glass recipe and the inner glass (Glass inside glass, from 21st.dev Adjustable Glass Dashboard's .gw-panel); dark glass-background: surface-card at 50% under a diagonal sheen.
 glass:
   light:
-    glass-blur-card: 20px
-    glass-blur-bar: 12px
-    glass-blur-float: 30px
-    glass-saturate: 140%
+    glass-background: "rgba(255, 255, 255, 0.30)"
+    glass-backdrop: "blur(22px) saturate(1.2)"
+    glass-shadow: "inset 0 1px 0 rgba(255, 255, 255, 0.60), inset 0 0 0 1px rgba(255, 255, 255, 0.204), 0 20px 52px -25px rgba(10, 10, 10, 0.18)"
+    glass-inner-background: "rgba(255, 255, 255, 0.31)"
+    glass-inner-shadow: "inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 8px 22px -20px rgba(39, 42, 44, 0.16)"
   dark:
-    glass-blur-card: 24px
-    glass-blur-bar: 12px
-    glass-blur-float: 30px
-    glass-saturate: 140%
-# glass-gradient: the candidate background behind the glass; Page background keeps its two glows until a rule adopts it (#6).
+    glass-background: "linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.015) 55%), rgba(21, 18, 19, 0.50)"
+    glass-backdrop: "blur(18px) saturate(1.5)"
+    glass-shadow: "inset 0 1px 0 rgba(255, 255, 255, 0.38), inset 0 0 0 1px rgba(255, 255, 255, 0.06)"
+    glass-inner-background: "rgba(21, 18, 19, 0.31)"
+    glass-inner-shadow: "inset 0 1px 0 rgba(255, 255, 255, 0.285), 0 8px 22px -20px rgba(0, 0, 0, 0.16)"
 gradients:
   light:
     glass-gradient: "linear-gradient(to right top, #cebef5, #f2b3e3, #ffabc3, #ffac9c, #ffb779)"

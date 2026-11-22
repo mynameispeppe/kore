@@ -4,10 +4,10 @@
 
 - **Hierarchy:** in each item the heading comes first, then the answer; in the heading, the label, then the chevron. The label is the focal point (The One Winner Rule): `title-md` in `ink`, read before the chevron (`mute`) and the answer (`body-lg` in `body`). Every item keeps the same order and weight (Semantic weight 2).
 - **Elements:** all the Accordion's own, no other component: list, item, heading, heading-button, label, chevron (the icon `ArrowDown01`, `icon-md`), answer, answer-inner.
-- **List:** display flex; flex-direction column; background-color transparent; box-shadow none.
-- **Item:** border-bottom none.
+- **List:** display flex; flex-direction column; background-color transparent; box-shadow none. (replaced in: glassmorphism)
+- **Item:** border-bottom none. (replaced in: glassmorphism)
 - **First item:** border-top none.
-- **Item after the first:** border-top `line-thin` solid `hairline`.
+- **Item after the first:** border-top `line-thin` solid `hairline`. (replaced in: glassmorphism)
 - **Heading:** margin 0.
 - **Heading button:** display flex; align-items center; justify-content space-between; gap `space-4`; width 100%; min-height `accordion-row`; padding `space-3` 0; text-align start; font-family `title-md`; font-size `title-md`; font-weight `title-md`; line-height `title-md`; letter-spacing `title-md`; color `ink`; transition outline 0s, text-decoration 0s, text-underline-offset 0s.
 - **Heading button focus:** outline none; text-decoration underline `line-thick`; text-underline-offset `space-1`.
