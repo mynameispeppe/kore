@@ -680,6 +680,7 @@ GLASS_SATURATE = {"light": 1.2, "dark": 1.5}  # glass-backdrop saturate
 GLASS_TINT = {"light": 0.14, "dark": 0.16}  # mix-tint of tokens.yaml, per theme
 GLASS_BADGE_TINT = {"light": 0.30, "dark": 0.20}  # glass-badge-tint of typologies/glassmorphism tokens.yaml, per theme
 GLASS_PAGE_DIM = {"light": 0.0, "dark": 0.35}  # glass-page-dim of typologies/glassmorphism tokens.yaml
+GLASS_FILL = {"light": 0.30, "dark": 0.50}  # glass-background of typologies/glassmorphism tokens.yaml: white in light, surface-card in dark
 GLASS_BUTTON_FILL = 0.90  # glass-button-fill of typologies/glassmorphism tokens.yaml
 GLASS_MINIMUM = {**dict.fromkeys(["ink", "body", "mute", "link", "danger", "warning", "success", "info"], 4.5),
                  **dict.fromkeys(["accent", "hairline-strong", "focus-ring"], 3)}
@@ -730,13 +731,15 @@ def saturate(color, amount):
             clamp((0.213 - 0.213 * s) * r + (0.715 - 0.715 * s) * g + (0.072 + 0.928 * s) * b, 0, 255), 1.0)
 
 
-def glass_points(theme, colors, stops):
-    """The worst-case points behind the glass: the canvas and the 5 hex stops of this theme's Page background, saturated, under the glass."""
+def glass_points(theme, colors, stops, fill=None):
+    """The worst-case points behind the glass: the canvas and the 5 hex stops of this theme's Page background, saturated, under the glass
+    (glass-background, or the same glass at fill)."""
+    fill = fill or GLASS_FILL[theme]
     saturated = {"canvas": saturate(colors["canvas"], GLASS_SATURATE[theme]),
                  **{f"stop {i}": saturate(parse_color(h), GLASS_SATURATE[theme]) for i, h in enumerate(stops, 1)}}
     if theme == "light":
-        return {n: over(WHITE[:3] + (0.30,), p) for n, p in saturated.items()}
-    card = {n: over(colors["surface-card"][:3] + (0.50,), p) for n, p in saturated.items()}
+        return {n: over(WHITE[:3] + (fill,), p) for n, p in saturated.items()}
+    card = {n: over(colors["surface-card"][:3] + (fill,), p) for n, p in saturated.items()}
     return {**card, **{f"{n} sheen": over(WHITE[:3] + (0.09,), p) for n, p in card.items()}}
 
 
@@ -752,6 +755,18 @@ def glass(theme, colors, stops):
             moved = move(colors[token], lambda c: lowest(c, points), minimum, -1 if theme == "light" else 1)
             result[token] = (moved, []) if moved else (None, [(token, minimum, ratio_where[1])])
     return result
+
+
+def glass_scrim(theme, colors, stops):
+    """Glass over a scrim (glass-scrim-background): the lowest fill, from glass-background's up in 1% steps, at which every token of
+    GLASS_MINIMUM passes on the glass over the canvas and the stops under the scrim; None when 100% fails. colors carry the moved text tokens."""
+    scrim = lambda color: over(colors["scrim"], color)
+    dimmed, dimmed_stops = {**colors, "canvas": scrim(colors["canvas"])}, [fmt(scrim(parse_color(h))) for h in stops]
+    for percent in range(round(GLASS_FILL[theme] * 100), 101):
+        points = glass_points(theme, dimmed, dimmed_stops, percent / 100)
+        if all(lowest(colors[token], points)[0] >= minimum for token, minimum in GLASS_MINIMUM.items()):
+            return percent / 100
+    return None
 
 
 def glass_icons(theme, colors, stops):
@@ -1048,10 +1063,15 @@ def main(argv=None):
                 problems.append(f"{theme}: glassmorphism needs the other theme's primary and accent for Page background: ship both themes.")
             else:
                 stops = re.findall(r"#[0-9a-f]{6}", gradients[other])
-                for name, (color, failed) in glass(theme, {n: v[0] for n, v in tokens.items()}, stops).items():
+                text = glass(theme, {n: v[0] for n, v in tokens.items()}, stops)
+                for name, (color, failed) in text.items():
                     print(f"{name:<22} {fmt(color) if color else '—':<26} {'—':<8} {'—':<42} Text on glass")
                     problems += [f"{theme}: {token} cannot reach {m}:1 on the glass over {where}, even at tone 0 or 100 "
                                  "(Text on glass): ask for another color." for token, m, where in failed]
+                fill = glass_scrim(theme, {**{n: v[0] for n, v in tokens.items()}, **{n: c for n, (c, _) in text.items() if c}}, stops)
+                print(f"{'glass-scrim-background':<22} {f'{fill:.0%}' if fill else '—':<26} {'—':<8} {'—':<42} Glass over a scrim")
+                if fill is None:
+                    problems.append(f"{theme}: the text tokens cannot pass on the glass over the scrim, even at 100% (Glass over a scrim): ask for another color.")
                 for name, (color, failed) in glass_icons(theme, {n: v[0] for n, v in tokens.items()}, stops).items():
                     print(f"{name:<22} {fmt(color) if color else '—':<26} {'—':<8} {'—':<42} Glass icon color")
                     problems += [f"{theme}: {token} cannot reach {m}:1 on the icon circle over {where}, even at tone 0 or 100 "
