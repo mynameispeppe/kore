@@ -21,7 +21,7 @@
 - **Hit area:** the box's ::before, so the field's hit area reaches the Touch targets height. content ""; position absolute; inset calc(−`line-thick`) 0.
 - **Input:** above the hit area, so it takes the click; centred by the box. position relative; flex 1; min-width 0; height `button-lg`; border 0; background none; outline none; padding 0 `space-3`; color `ink`; font-family `body-lg`; font-size `body-lg`; font-weight `body-lg`; line-height `body-lg`; letter-spacing `body-lg`.
 - **Input disabled:** color `stone`; cursor not-allowed.
-- **Disabled label and help:** color `stone`.
+- **Disabled label:** color `stone`. The help keeps `mute`: it says why the field is disabled.
 - **Placeholder:** only as an example, never as the label. color `mute`; opacity 1.
 - **Help:** margin-top calc(`space-1` − `space-2`); color `mute`; font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`. Under the field's edge.
 - **Error:** margin-top calc(`space-1` − `space-2`); color `danger`; font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`. In place of the help, linked to the input (`aria-invalid`, `aria-describedby`); an icon only when the message alone would not read as an error (Text hierarchy #7).
