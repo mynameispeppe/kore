@@ -11,7 +11,7 @@
 - **Scrolling:** on touch, the native scroll snapping to the start of a card; with a mouse the row is dragged, at 30% of the pointer past the first and the last card, and the spring settles on a card. A drag that moved does not open the card's link.
 - **Card slide:** position relative; isolation isolate; overflow-wrap anywhere; scroll-snap-align start; translate var(--ox, 0) 0, where --ox is the drag's offset set by the script; display grid; grid-row span 5; grid-template-rows subgrid; row-gap 0. Its focus marks follow `rounded-xl`.
 - **Offer slide:** the slide of an offer has no look of its own: background none; outline 0.
-- **Offer link:** the whole card is one link (Cards: Clickable card), as tall as its content. display grid; grid-row span 5; grid-template-rows subgrid; overflow-wrap anywhere.
+- **Offer link:** the whole card is one link (Cards: Clickable card), as tall as its content. display grid; grid-row span 5; grid-template-rows subgrid; overflow-wrap anywhere. (replaced in: glassmorphism)
 - **Offer photo:** 16:9, optional, a Media slot (Cards). grid-row 1.
 - **Offer text:** grid-row 2 / span 3; display grid; grid-template-rows subgrid; padding-inline `space-6`.
 - **Label row:** optional, the Hugeicons `Tag01` before the label: `icon-sm`, in `mute`; grid-row 1; display flex; align-items center; gap `space-2`; margin-block `space-6` `space-2`; font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`; color `mute`.

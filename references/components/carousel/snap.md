@@ -1,7 +1,7 @@
 **Snap variant**
 
 - **Snap track:** one card in view, as wide as a card with a paragraph (Cards, Width), or the row when it is narrower; no other card shows. column-gap `space-4`; max-width calc(`measure` + 2 × `space-6` + 2 × `space-1`); grid-template-rows auto; grid-auto-columns 100%.
-- **Snap card:** a standard card (Cards). grid-row auto; grid-template-rows 1fr auto; row-gap `space-4`; justify-items center; text-align center; scroll-snap-stop always; scale `scale-enter`; transition scale `duration-slow` `ease-in-out`. On touch each swipe moves one card.
+- **Snap card:** a standard card (Cards). grid-row auto; grid-template-rows 1fr auto; row-gap `space-4`; justify-items center; text-align center; scroll-snap-stop always; scale `scale-enter`; transition scale `duration-slow` `ease-in-out`. On touch each swipe moves one card. (replaced in: glassmorphism)
 - **Snap card in view:** scale 1.
 - **Snap card reduced motion:** scale 1; transition 0s.
 - **Snap header:** align-self center; align-items center.

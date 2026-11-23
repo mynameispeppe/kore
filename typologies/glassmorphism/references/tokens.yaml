@@ -18,7 +18,7 @@ colors:
     success: "#74edbc"
     hairline-strong: "#b6afb0"
     focus-ring: "#b6afb0"
-# The Glass recipe and the inner glass (Glass inside glass, from 21st.dev Adjustable Glass Dashboard's .gw-panel); glass-icon-*: Glass icon color of the Alert; glass-edge-*: Image avatar of the Avatar; glass-badge-*: Status badge of the Badge; glass-button-fill, glass-button-danger: fill of the filled Buttons; glass-disabled-mix: disabled text on glass, stone's 38%; glass-page-dim: Apple HIG dark dimming layer over the Page background; dark glass-background: surface-card at 50% under a diagonal sheen.
+# The Glass recipe and the inner glass (Glass inside glass, from 21st.dev Adjustable Glass Dashboard's .gw-panel); glass-icon-*: Glass icon color of the Alert; glass-edge-*: Image avatar of the Avatar, the slides of the Carousel; glass-badge-*: Status badge of the Badge; glass-button-fill, glass-button-danger: fill of the filled Buttons; glass-disabled-mix: disabled text on glass, stone's 38%; glass-page-dim: Apple HIG dark dimming layer over the Page background; dark glass-background: surface-card at 50% under a diagonal sheen.
 glass:
   light:
     glass-page-dim: "rgba(0, 0, 0, 0)"
