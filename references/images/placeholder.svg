@@ -1,8 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-  <rect width="100%" height="100%" fill="#1e1e1e"/>
-  <svg viewBox="0 0 100 100" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="25" y="29" width="50" height="37" rx="2"/>
-    <circle cx="48" cy="40" r="5"/>
-    <path d="M26 64 38 51a3 3 0 0 1 4 0l18 15M52 56l8-9a3 3 0 0 1 4 0l10 11"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%">
+  <!-- Kore's dark glass-gradient (glassmorphism tokens.yaml), to right top, as the sky -->
+  <linearGradient id="bg" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0" stop-color="#3b2f5c"/><stop offset=".25" stop-color="#713063"/><stop offset=".5" stop-color="#a03056"/><stop offset=".75" stop-color="#be4538"/><stop offset="1" stop-color="#c16c00"/>
+  </linearGradient>
+  <rect width="100%" height="100%" fill="url(#bg)"/>
+  <!-- A flat landscape in the gradient's hues, 2:1 with the main peak in the middle, never stretched: any ratio crops it around the centre -->
+  <svg width="100%" height="100%" viewBox="0 0 600 300" preserveAspectRatio="xMidYMid slice">
+    <!-- Fir: four tiers of drooping branches that widen downward, a short trunk, the right half a touch lighter -->
+    <symbol id="pine" viewBox="0 0 40 120"><path d="M20 0C22 8 25 14 28 21L23 19C27 28 31 35 34 42L28 40C31 50 35 58 38 67L30 65C33 76 37 85 40 94Q30 97 22 94V112H18V94Q10 97 0 94C3 85 7 76 10 65L2 67C5 58 9 50 12 40L6 42C9 35 13 28 17 19L12 21C15 14 18 8 20 0Z"/><path d="M20 0C22 8 25 14 28 21L23 19C27 28 31 35 34 42L28 40C31 50 35 58 38 67L30 65C33 76 37 85 40 94Q30 97 20 94Z" fill="#fff" fill-opacity=".07"/></symbol>
+    <g fill="#fff" opacity=".28">
+      <circle cx="134" cy="68" r="13"/><circle cx="152" cy="60" r="17"/><circle cx="172" cy="70" r="10"/><rect x="120" y="68" width="62" height="12" rx="6"/>
+      <circle cx="382" cy="52" r="10"/><circle cx="398" cy="46" r="13"/><circle cx="414" cy="54" r="8"/><rect x="372" y="52" width="50" height="10" rx="5"/>
+      <circle cx="520" cy="84" r="9"/><circle cx="534" cy="78" r="12"/><circle cx="548" cy="86" r="7"/><rect x="511" y="84" width="44" height="9" rx="4.5"/>
+    </g>
+    <path d="M0 168L30 140L58 150L96 116L130 152L158 142L180 154L210 148L230 150L248 160H338L370 124L392 136L416 104L442 130L466 120L500 146L530 118L562 138L600 122V300H0Z" fill="#8a3a69"/>
+    <g transform="translate(90 0)">
+      <path d="M86 262L168 112L188 102L210 58L234 86L250 80L332 204L362 262Z" fill="#682a5b"/>
+      <path d="M210 58L234 86L250 80L332 204L296 228L270 186L246 166L240 140L226 120L222 92Z" fill="#b04d70"/>
+      <path d="M210 58L198 98L180 146L200 136L206 108Z" fill="#4a2049"/>
+      <path d="M168 112L188 102L174 150L150 196L132 206Z" fill="#7c325f"/>
+      <path d="M250 252L312 116L330 130L410 212V262Z" fill="#7a3260"/>
+      <path d="M312 116L330 130L410 212L380 222L338 166L322 140Z" fill="#c45d6a"/>
+      <path d="M-60 252L4 136L22 146L90 240Z" fill="#7a3260"/>
+      <path d="M4 136L22 146L90 240L62 244L26 172Z" fill="#a9476d"/>
+    </g>
+    <path d="M0 226C70 212 150 230 250 218S420 204 520 214S580 220 600 216V300H0Z" fill="#4a2a55"/>
+    <g fill="#33213f">
+      <use xlink:href="#pine" x="206" y="182" width="14" height="42"/><use xlink:href="#pine" x="222" y="194" width="12" height="34"/>
+      <use xlink:href="#pine" x="316" y="186" width="14" height="42"/><use xlink:href="#pine" x="334" y="198" width="11" height="32"/><use xlink:href="#pine" x="356" y="192" width="13" height="38"/>
+      <use xlink:href="#pine" x="60" y="180" width="14" height="42"/><use xlink:href="#pine" x="506" y="176" width="14" height="42"/><use xlink:href="#pine" x="524" y="188" width="12" height="34"/>
+    </g>
+    <path d="M0 256C100 240 200 258 300 246S480 238 600 252V300H0Z" fill="#30203c"/>
+    <g fill="#1d1529">
+      <use xlink:href="#pine" x="126" y="140" width="64" height="192"/><use xlink:href="#pine" x="184" y="210" width="32" height="96"/>
+      <use xlink:href="#pine" x="420" y="122" width="70" height="210"/><use xlink:href="#pine" x="392" y="214" width="30" height="90"/>
+      <use xlink:href="#pine" x="0" y="180" width="46" height="138"/><use xlink:href="#pine" x="548" y="170" width="50" height="150"/>
+    </g>
   </svg>
 </svg>
