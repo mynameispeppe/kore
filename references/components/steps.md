@@ -23,7 +23,5 @@
 - **Step content:** under the row or the bar, with its actions. display flex; flex-direction column; gap `space-6`. Its first element takes focus (`tabindex="-1"`) once it enters: outline none. What the user typed stays when they go back.
 - **Step change:** on every step change the content and its actions move with the Segmented control's View motion, forward to a later step and back to an earlier one, while the row or the bar stays still.
 - **Actions:** a secondary Button "Back" at the start (not on the first step) and the primary Button at the end: "Continue" on the middle steps, on the last a verb and its object ("Place order"). The primary: margin-inline-start auto.
-- **Sticky actions:** they stick to the bottom of the screen while the step's content scrolls, on a band in the colour of the surface below. position sticky; bottom 0; z-index `zIndex-raised`; justify-content flex-end; background `canvas`; margin-block calc(`space-4` × −1); padding-block `space-4` calc(`space-4` + the bottom safe area).
-- **Covering actions:** only while the band covers the content: box-shadow 0 calc(`line-thin` × −1) 0 `hairline`.
 - **Continue:** checks the step's fields as a submit does (Form fields) and moves on only when they are valid.
 - **Last step:** the primary shows its spinner (Button, Loading), then a success toast.

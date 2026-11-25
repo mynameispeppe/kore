@@ -23,6 +23,7 @@
 
 - **Toolbar:** a row above the card, `space-4` away, never inside it. display flex; flex-wrap wrap; justify-content space-between; gap `space-2`. The Columns button at the start; the end group at the end, on a line of its own when the row is too narrow for both.
 - **End group:** export, then the add button last. display flex; gap `space-2`; margin-inline-start auto.
+- **Narrow toolbar:** while the Columns button and the end group do not fit on one line with their labels, Columns and Export are secondary icon buttons (Button, Icon button): Columns with `LayoutThreeColumn`, Export with `Download04`; each keeps its label as its accessible name and its tooltip. The add button keeps its label.
 - **Menu wrapper:** each menu trigger sits with its menu in it. position relative; display inline-flex.
 - **Columns:** a secondary Button "Columns" opens a Menu with one `menuitemcheckbox` per data column, its 16px check as the trailing element. Picking an item leaves the menu open. The last visible column cannot be hidden: its item has `aria-disabled="true"`. A hidden column has visibility hidden, so it keeps its place and width and the other columns never move; its filter empties, the table returns to the first page, and if the table was sorted by it, the sort moves to the first visible sortable column.
 - **Checked column item:** the check shows the state; the text stays as in a normal item: font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`.
