@@ -13,7 +13,7 @@
 | 3 · floating | `surface-float` + `hairline` | Popovers, menus; active items use `surface-float-active` (replaced in: glassmorphism) |
 | 3 · inverted | `ink` with `canvas` text, no border, no shadow | Only where a component's file prescribes it |
 | 4 · overlay | `surface-float` + `hairline` over a `scrim` | Dialogs and sheets (replaced in: glassmorphism) |
-| interactive | its surface + `shadow-rest`, `shadow-hover` on hover; filled and elevated Buttons: `shadow-raised`, `shadow-raised-hover` on hover (Button) | Buttons and clickable cards only (replaced in: glassmorphism, minimalism) |
+| interactive | its surface + `shadow-rest`, `shadow-hover` on hover; Buttons follow Button | Buttons and clickable cards only (replaced in: glassmorphism, minimalism) |
 
 **Level and layer.** The level sets the surface; the layer (`zIndex`, Stacking order) sets what sits above what.
 
@@ -21,14 +21,14 @@
 
 **The Hairline Rule.** Shadows only on interactive elements: things the user clicks or taps. Everything else, including containers of clickable items such as popovers, menus and sheets, uses a 1px `hairline` border and no shadow. (replaced in: glassmorphism, minimalism)
 
-- **Barely perceptible.** `shadow-rest` is a hint that the element is clickable; `shadow-hover` suggests a lift, nothing more. Never stack several shadows or raise the opacity to make a point; the stacked shadows are only the `shadow-raised` tokens, on filled and elevated Buttons (Button). (replaced in: glassmorphism)
+- **Barely perceptible.** `shadow-rest` is a hint that the element is clickable; `shadow-hover` suggests a lift, nothing more: one shadow token per element, at its token's opacity. (replaced in: glassmorphism)
 - **Offset and blur.** A shadow always has a vertical offset and a soft blur. A zero-offset colored halo is decoration; a hard shadow with no blur (`4px 4px 0`) is a costume.
 - **Dark theme shadows** are denser (black at 24–32%). (replaced in: glassmorphism)
 - **Glass.** Glass and blur are never decoration: they are used only where a component's file prescribes them. (replaced in: glassmorphism)
 
 ## Interaction
 
-- **Hover** on a clickable element: `shadow-rest` → `shadow-hover` (`shadow-raised` → `shadow-raised-hover` on filled and elevated Buttons) and a lift of `space-1` (4px), with `duration-fast` and `ease-out`. **Pressed:** back to rest in `duration-instant`. (replaced in: glassmorphism, minimalism)
+- **Hover** on a clickable element: `shadow-rest` → `shadow-hover` and a lift of `space-1` (4px), with `duration-fast` and `ease-out`. **Pressed:** back to rest in `duration-instant`. Buttons follow Button. (replaced in: glassmorphism, minimalism)
 - **Reduced motion:** no lift; only the shadow changes, without animation. (replaced in: minimalism)
 
 ## Stacking order

@@ -35,7 +35,7 @@ Four traits define it: translucent panels that blur what lies behind them, sever
 - **Interactive level:** Replaces: `elevation.interactive`. Buttons and every clickable element other than a card as the default. A clickable card: as Hover.
 - **The Hairline Rule:** Replaces: `elevation.the-hairline-rule`. Glass surfaces take `glass-shadow`, clickable or not. On solid surfaces only interactive elements cast a shadow; every other solid element, containers of clickable items included, uses only a 1px `hairline` border.
 - **Identity:** Replaces: `identity.identity`. The Hairline Rule of this typology (The Hairline Rule), The Radius-Padding Rule, The Concentric Rule.
-- **Barely perceptible:** Replaces: `elevation.barely-perceptible`. On solid surfaces, `shadow-rest` hints that an element is clickable and `shadow-hover` suggests a lift; the only stacked solid shadows are the `shadow-raised` tokens, on filled and elevated Buttons (Button). `glass-shadow` draws the glass edge: a white line along the top, a 1px white ring and, in light, a soft drop shadow in black.
+- **Barely perceptible:** Replaces: `elevation.barely-perceptible`. On solid surfaces, `shadow-rest` hints that an element is clickable and `shadow-hover` suggests a lift. `glass-shadow` draws the glass edge: a white line along the top, a 1px white ring and, in light, a soft drop shadow in black.
 
 ### Color
 

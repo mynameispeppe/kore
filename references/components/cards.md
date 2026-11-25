@@ -18,7 +18,7 @@
 - **Header:** title and subtitle, read as one block. display flex; flex-direction column; gap `space-1`.
 - **Title:** font-family `title-md`; font-size `title-md`; font-weight `title-md`; line-height `title-md`; letter-spacing `title-md`; color `ink`.
 - **Subtitle:** font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`; color `mute`. A description of one sentence; more sentences make a paragraph.
-- **Paragraph:** margin-top `space-6`; font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`; color `body` (From role to style).
+- **Paragraph:** margin-top `space-6`; font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`; color `mute` (From role to style).
 - **Body:** the content and data under the header, `space-6` below it; its rows separated by space only, `space-3` apart; Affinity Grouping decides its groups, `space-6` apart.
 - **Height:** each card is as tall as its content. Cards in one row of a layout grid share one height; a group of cards in one cell (a grid inside the cell) counts as one cell: the group sets the row's height, and its cards keep their own; the space left goes to the card's last zone: its actions move to the bottom, a chart grows.
 - **Width:** max-width calc(`measure` + 2 × `space-6`) on a card with a paragraph: a `measure` paragraph plus its padding, so its lines stay within 75 characters (Typography rules), as in Carousel.
