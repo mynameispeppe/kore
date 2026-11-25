@@ -12,6 +12,7 @@ look of a button to measure their focus. Touch is
 emulated below 1024px. With a shots folder, the whole page is also saved as
 a PNG at each width of SHOTS, in each theme, from the same visit.
 """
+import base64
 import os
 import kore_images
 import kore_responsive
@@ -29,7 +30,7 @@ SETTLE = 100  # ms a page gets to react to a key or a click
 INSTALL = ("python3 -m pip install --user playwright, then install Google Chrome "
            "or set KORE_BROWSER to a Chromium-based browser")
 
-# Opens both page scripts: out, add, doc, vw, style, shown, name, resolve.
+# Opens the page scripts: out, add, doc, vw, style, shown, name, resolve, over, lum.
 HELPERS = r"""
   const out = [];
   // A finding on an element the page waives (data-kore-ignore="<Rule>: <reason>") comes back as ignored.
@@ -65,6 +66,11 @@ HELPERS = r"""
     tint.style[prop] = v;
     return getComputedStyle(tint)[prop];
   };
+  const over = (f, b) => [0, 1, 2].map(k => f[k] * f[3] + b[k] * (1 - f[3])).concat(1);
+  const lum = c => {
+    const ch = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+    return 0.2126 * ch(c[0]) + 0.7152 * ch(c[1]) + 0.0722 * ch(c[2]);
+  };
 """
 
 # Runs in the page. Returns [kind, rule, message] for each finding. whole: the page is measured whole, not one #id.
@@ -91,11 +97,6 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
     paint.fillRect(0, 0, 1, 1);
     const [r, g, b, a] = paint.getImageData(0, 0, 1, 1).data;
     return [r, g, b, a / 255];
-  };
-  const over = (f, b) => [0, 1, 2].map(k => f[k] * f[3] + b[k] * (1 - f[3])).concat(1);
-  const lum = c => {
-    const ch = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
-    return 0.2126 * ch(c[0]) + 0.7152 * ch(c[1]) + 0.0722 * ch(c[2]);
   };
 
   // Elements that hold text of their own, and the box of that text.
@@ -606,7 +607,11 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
       if (opaque) break;
     }
     const size = parseFloat(style(el).fontSize), min = size >= 24 ? 3 : 4.5;
-    if (image) { add('?', 'Contrast', `${name(el)} sits on an image: check ${min}:1`, el); continue; }
+    if (image) {  // measured on the pixels under the text by PHOTO
+      const R = el.getBoundingClientRect(), c = rgba(style(el).color);
+      el.dataset.korePhoto = JSON.stringify({min, fg: [c[0], c[1], c[2], c[3] * alpha], box: [t.l - R.left, t.t - R.top, t.r - R.left, t.b - R.top]});
+      continue;
+    }
     let bgs = [canvas];  // every combination of the layers' colors, bottom-up; the lowest ratio is kept
     for (const l of layers.reverse()) bgs = bgs.flatMap(b => l.map(c => over(c, b)));
     const fg = rgba(style(el).color);
@@ -968,6 +973,32 @@ FOCUSED = r"""
 }
 """
 
+# Runs in the page with one PNG per [data-kore-photo] element, the screenshot of its text box with the text hidden.
+PHOTO = r"""
+async (pngs) => {""" + HELPERS + r"""
+  const els = document.querySelectorAll('[data-kore-photo]');
+  for (const [i, el] of [...els].entries()) {
+    const {min, fg} = JSON.parse(el.dataset.korePhoto);
+    const img = new Image();
+    img.src = 'data:image/png;base64,' + pngs[i];
+    await img.decode();
+    const cv = document.createElement('canvas');
+    cv.width = img.width; cv.height = img.height;
+    const g = cv.getContext('2d');
+    g.drawImage(img, 0, 0);
+    const px = g.getImageData(0, 0, cv.width, cv.height).data;
+    let r = Infinity;
+    for (let k = 0; k < px.length; k += 4) {
+      const bg = [px[k], px[k + 1], px[k + 2], 1];
+      const [hi, lo] = [lum(over(fg, bg)), lum(bg)].sort((x, y) => y - x);
+      r = Math.min(r, (hi + 0.05) / (lo + 0.05));
+    }
+    if (r < min - 0.005) add('✗', 'Contrast', `${name(el)} is ${r.toFixed(2)}:1 on the image under it, below ${min}:1: ask the user for another photo, darker under the text`, el);
+  }
+  return out;
+}
+"""
+
 # Runs in a fresh page, in two steps. PICK tags the i-th target with data-kore-url and describes it, or returns null:
 # the first unselected tab of each tablist, then the last enabled button of each Pagination root.
 URL_PICK = r"""
@@ -1078,6 +1109,23 @@ FONT_SIZES = r"""
   .filter(el => [...el.childNodes].some(n => n.nodeType === 3 && n.data.trim()) && !el.closest('script, style, svg'))
   .map(el => [el.localName + (el.id ? '#' + el.id : ''), parseFloat(getComputedStyle(el).fontSize)])
 """
+
+
+def photo_findings(page):
+    """PHOTO's findings: each marked text box is screenshot with every text hidden, so only the image under it shows."""
+    # transition: none, so a color transition cannot leave the text half visible in the screenshot
+    hide = page.add_style_tag(content="*, *::before, *::after { color: transparent !important; transition: none !important; "
+                                      "-webkit-text-fill-color: transparent !important; text-shadow: none !important; }")
+    pngs = []
+    for el in page.query_selector_all("[data-kore-photo]"):
+        el.evaluate("el => el.scrollIntoView({block: 'center', inline: 'center', behavior: 'instant'})")
+        x0, y0, x1, y1 = el.evaluate("el => { const R = el.getBoundingClientRect(), b = JSON.parse(el.dataset.korePhoto).box;"
+                                     " return [R.left + b[0], R.top + b[1], R.left + b[2], R.top + b[3]]; }")
+        # shortcut: a text box taller than the window is measured on its visible part, upgrade if a page has one
+        pngs.append(base64.b64encode(page.screenshot(clip={"x": x0, "y": y0, "width": x1 - x0, "height": y1 - y0})).decode())
+    found = page.evaluate(PHOTO, pngs)
+    hide.evaluate("el => el.remove()")
+    return found
 
 
 def launch(playwright):
@@ -1220,6 +1268,9 @@ def check(urls, report, themes, shots=None, tables=(), mode=None):
                                                 [table for table, _ in tables]))
                     for kind, rule, message in page.evaluate(MEASURE, {"touch": touch, "zoom": False, "tables": tables, "mode": mode, "whole": whole}):
                         seen[(kind, rule, message)].append((width, theme))
+                    if page.query_selector("[data-kore-photo]"):
+                        for kind, rule, message in photo_findings(page):
+                            seen[(kind, rule, message)].append((width, theme))
                     page.evaluate(SCROLL_THROUGH)
                     for kind, rule, message in page.evaluate(SCROLLED):
                         seen[(kind, rule, message)].append((width, theme))

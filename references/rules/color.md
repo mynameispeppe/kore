@@ -13,6 +13,7 @@
 
 - **Worst surface.** Measure every text, border and icon token on its worst surface, the one where its ratio is lowest: `surface-pressed` in light, `surface-float-active` in dark. A token that passes there passes on every surface. A token that fails there moves its tone until it passes, as Method step 3 says (Custom palette). A state with its own fill (primary, danger, pressed) is measured as its on-color against that fill.
 - **Translucent text.** The translucent text token (`body`) changes contrast with the surface below. Re-check it on every new surface; if it fails, use a solid color for that pair.
+- **Text on a photo.** Text over a photo, a video or a background image is measured on the pixels under it, the lowest ratio deciding (Worst surface); `kore_check` measures it. When it fails, ask the user for another photo, darker under the text, and keep the veil and the text color.
 - **Control borders.** A control that is recognised only by its outline (checkbox, radio, switch track, slider track) uses `hairline-strong`, which reaches 3:1 on every surface. Labelled controls (form fields, number stepper, secondary buttons, chips) use `hairline-medium`, below 3:1 by choice, because their label identifies them. `hairline` is for static containers only.
 
 **Contrast ratio** = (L1 + 0.05) / (L2 + 0.05), where L1 and L2 are the WCAG relative luminance of the lighter and the darker color. Composite translucent colors over the surface before measuring. Never round up: 4.49 fails 4.5.
