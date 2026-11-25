@@ -14,7 +14,7 @@
 - **Story title:** margin-top `space-2`; font-family `display-sm`; font-size `display-sm`; font-weight `display-sm`; line-height `display-sm`; letter-spacing `display-sm`.
 - **Place:** margin-top `space-1`; font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`; color `mute`.
 - **Paragraph:** margin-top `space-4`; max-width `measure`; font-family `body-lg`; font-size `body-lg`; font-weight `body-lg`; line-height `body-lg`; letter-spacing `body-lg`; color `body`.
-- **Story arrows:** secondary buttons, shown on every device. display flex; gap `space-2`; margin-top `space-6`.
+- **Story arrows:** small tertiary buttons, shown on every device. display flex; gap `space-2`; margin-top `space-6`.
 - **Story list:** one tab per story (`role="tablist"`), `space-8` under the editorial grid. display grid; grid-auto-flow column; grid-auto-columns minmax(0, 1fr); gap `space-4`. ← and → move and select, Home and End go to the first and the last.
 - **Story tab:** position relative; display block; min-height `button-lg`; padding-top `space-2`; border-top `line-thin` solid `hairline`; text-align start; color `mute`; font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`.
 - **Story tab focus:** its focus marks follow `rounded-sm`.

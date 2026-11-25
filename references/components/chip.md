@@ -10,8 +10,8 @@
 - **Chip hover:** with a mouse (hover: hover), a chip not disabled: background `surface-hover`.
 - **Chip pressed:** selected or not, a chip not disabled: background `surface-pressed`.
 - **Chip focus:** on :focus-visible: outline none, changed in 0s; the corner marks of States, following `rounded-sm`.
-- **Selected chip:** the check icon carries the state, so it never rests on the fill alone. background `surface-elevated`; box-shadow inset 0 0 0 `line-thin` `hairline`; padding-inline-start `space-2`.
-- **Selected hover:** with a mouse, a selected chip not disabled and not pressed: background `surface-elevated`; box-shadow inset 0 0 0 `line-thin` `mute`, changed in 0s.
+- **Selected chip:** the check icon carries the state, so it never rests on the fill alone. background `surface-elevated`; box-shadow inset 0 0 0 `line-thin` `hairline`; padding-inline-start `space-2`. (replaced in: glassmorphism)
+- **Selected hover:** with a mouse, a selected chip not disabled and not pressed: background `surface-elevated`; box-shadow inset 0 0 0 `line-thin` `mute`, changed in 0s. (replaced in: glassmorphism)
 - **Check icon:** the Hugeicons `Tick02`, at the chip's start. Closed: flex none; width 0; margin-inline-end 0; stroke-dasharray 1; stroke-dashoffset 1; transition width `duration-base` `ease-out`, margin-inline-end `duration-base` `ease-out`, stroke-dashoffset `duration-base` `ease-out`.
 - **Selected check icon:** it opens in place (Motion, Transform and opacity) and draws its stroke from start to end, while the chip's padding and the gap before the label follow, so the chip widens and the label slides over; on deselect it runs backwards. width `icon-sm`; margin-inline-end `space-2`; stroke-dashoffset 0.
 - **Icon:** flex none; display block.

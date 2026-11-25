@@ -4,6 +4,7 @@
 - **Plot svg:** viewBox 0 0 100 100 with preserveAspectRatio none. position absolute; inset 0; width 100%; height 100%; overflow visible.
 - **Y value:** centred on its grid line, `space-2` from the plot. position absolute; inset-inline-start −`space-10`; width `space-8`; text-align end; transform translateY(−50%); color `mute`; font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`; font-variant-numeric tabular-nums.
 - **X label:** centred under its point. position absolute; bottom −`space-6`; transform translateX(−50%); color `mute`; font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`.
+- **X labels that do not fit:** at the plot's current width, when two neighbouring x labels sit closer than `space-2`, every other label shows, from the first; the others take visibility hidden.
 - **Lines:** `line-thick` strokes, round joins and caps, fill none, with vector-effect non-scaling-stroke on the line and the grid, so the strokes keep their width when the plot stretches.
 - **End point:** centred on the last point, its background the series color. position absolute; width `space-2`; height `space-2`; border-radius `rounded-full`; corner-shape round; transform translate(−50%, −50%); box-shadow 0 0 0 `line-thick` `canvas`, `surface-card` inside a card; pointer-events none.
 - **Area under a line:** the series color at 10% (color-mix with transparent), down to the plot's bottom edge; on a chart with a y axis, only when the axis starts at 0.

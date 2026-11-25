@@ -173,7 +173,7 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
   const boxes = [], inView = [];
   for (const [el, nodes] of texts) {
     if (!shown(el)) continue;
-    const t = textBox(nodes);
+    let t = textBox(nodes);
     if (!t) continue;
     let hidden = false, cut = false, scrolled = false;
     for (let a = el; a && !hidden && !cut; a = a.parentElement) {
@@ -185,6 +185,8 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
         if (c.scrolls) { scrolled = scrolled || out; continue; }
         if (hi - lo <= 1 || thi <= lo || tlo >= hi) { hidden = true; break; }  // visually hidden, or off on purpose
         if (out && !trimmed(el, a)) { cut = true; break; }
+        // Text trimmed with an ellipsis shows only inside the box that trims it.
+        if (out) t = axis === 'x' ? {...t, l: Math.max(t.l, lo), r: Math.min(t.r, hi)} : {...t, t: Math.max(t.t, lo), b: Math.min(t.b, hi)};
       }
     }
     if (hidden) continue;

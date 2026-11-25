@@ -10,4 +10,4 @@
 - **Snap position:** "<position> of <total>" at the bottom end. justify-self end; font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`; font-variant-numeric tabular-nums; color `mute`.
 - **Footer:** under the card, `space-4` below, the indicator of the Photo variant at its start edge, the arrow group at its end edge. display flex; align-items center; justify-content space-between; gap `space-4`; width min(calc(`measure` + 2 × `space-6`), 100%).
 - **Footer indicator:** margin-top 0.
-- **Arrow group:** small secondary buttons, shown on every device. display flex; gap `space-2`.
+- **Arrow group:** small tertiary buttons, shown on every device. display flex; gap `space-2`.

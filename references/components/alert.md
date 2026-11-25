@@ -16,7 +16,7 @@
 - **Add-on files:** read only the file of each add-on that the part being built or checked contains: Action `references/components/alert/action.md`, Close `references/components/alert/close.md`.
 - **Stack:** display flex; flex-direction column; gap `space-4`.
 - **Alert:** position relative; display flex; align-items flex-start; gap `space-3`; width 100%; min-height `space-12`; max-width `dialog`; padding `space-2` `space-2` `space-2` `space-4`; border-radius `rounded-lg`; color `ink`.
-- **Container:** background-color color-mix(in srgb, the kind's vivid color `mix-tint`, `canvas`); box-shadow `shadow-raised-rim`, inset 0 −`line-thick` 0 color-mix(in srgb, the kind's vivid color `mix-ledge`, transparent), 0 0 0 `line-thin` color-mix(in srgb, the kind's semantic color `mix-edge`, transparent). (replaced in: minimalism)
+- **Container:** background-color color-mix(in srgb, the kind's vivid color `mix-tint`, `canvas`); box-shadow `shadow-raised-rim`, inset 0 −`line-thick` 0 color-mix(in srgb, the kind's vivid color `mix-ledge`, transparent), 0 0 0 `line-thin` color-mix(in srgb, the kind's semantic color `mix-edge`, transparent). (replaced in: minimalism, glassmorphism)
 - **Icon box:** align-self center; display grid; place-items center; flex none; width `space-8`; height `space-8`.
 - **Icon circle:** border-radius `rounded-full`; corner-shape round; background-color the kind's vivid color; background-image `gradient-raised`; box-shadow `shadow-raised-sm`, 0 0 0 `line-thin` color-mix(in srgb, the kind's vivid color `mix-icon-edge`, `ink`); color `on-vivid`. (replaced in: minimalism)
 - **Icon:** width `icon-md`; height `icon-md`.
