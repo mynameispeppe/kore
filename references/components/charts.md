@@ -40,7 +40,7 @@
 
 **Interaction**
 
-- **Readout:** this file's element, not the Tooltip; no shadow. position absolute; top 0; z-index `zIndex-tooltip`; background `surface-float`; outline `line-thin` solid `hairline`; outline-offset −`line-thin`; border-radius `rounded-md`; padding `space-2` `space-3`; display flex; flex-direction column; gap `space-1`; white-space nowrap; pointer-events none. (replaced in: glassmorphism)
+- **Readout:** this file's element, not the Tooltip; no shadow. position absolute; top 0; z-index `zIndex-tooltip`; background `surface-float`; outline `line-thin` solid `hairline`; outline-offset −`line-thin`; border-radius `rounded-md`; padding `space-2` `space-3`; display flex; flex-direction column; gap `space-1`; white-space nowrap; pointer-events none.
 - **Readout row:** one per series, with its mark. display flex; align-items center; gap `space-2`.
 - **Readout value:** first. color `ink`; font-family `title-sm`; font-size `title-sm`; font-weight `title-sm`; line-height `title-sm`; letter-spacing `title-sm`; font-variant-numeric tabular-nums.
 - **Readout label:** after the value. color `mute`; font-family `body-sm`; font-size `body-sm`; font-weight `body-sm`; line-height `body-sm`; letter-spacing `body-sm`.

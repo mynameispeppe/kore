@@ -252,7 +252,10 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
     if (group.length > 1) add('✗', 'The One Primary Rule', `${group.length} primary buttons in one decision: ${group.map(name).join(', ')}`, ...group);
 
   // Cards (cards.md): a shown element with the surface-card background and the rounded-xl radius.
+  // A Panel (GLOSSARY) looks the same but holds one component other than Cards, which keeps its own rules.
+  const panel = el => el.children.length === 1 && el.children[0].matches('[data-kore]:not([data-kore="Cards"])');
   const cards = new Set(everyShown.filter(el => {
+    if (panel(el)) return false;
     const bg = resolve(el, '--surface-card', 'backgroundColor'), radius = resolve(el, '--rounded-xl', 'borderTopLeftRadius');
     return bg && radius && style(el).backgroundColor === bg && Math.abs(parseFloat(style(el).borderTopLeftRadius) - parseFloat(radius)) <= 1;
   }));

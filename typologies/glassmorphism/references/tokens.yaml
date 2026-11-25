@@ -9,6 +9,8 @@ colors:
     accent: "#9d5700"
     hairline-strong: "#676a6b"
     focus-ring: "#676a6b"
+    danger-fill: "#c22d2e"
+    disabled-background: "rgba(255, 255, 255, 0.31)"
   dark:
     mute: "#ddd5d5"
     link: "#aaddff"
@@ -18,7 +20,12 @@ colors:
     success: "#74edbc"
     hairline-strong: "#b6afb0"
     focus-ring: "#b6afb0"
-# The Glass recipe and the inner glass (Glass inside glass, from 21st.dev Adjustable Glass Dashboard's .gw-panel); glass-icon-*: Glass icon color of the Alert; glass-edge-*: Image avatar of the Avatar, the slides of the Carousel; glass-badge-*: Status badge of the Badge; glass-button-fill, glass-button-danger: fill of the filled Buttons; glass-disabled-mix: disabled text on glass, stone's 38%; glass-page-dim: Apple HIG dark dimming layer over the Page background; dark glass-background: surface-card at 50% under a diagonal sheen.
+    danger-fill: "#ff5a56"
+    disabled-background: "rgba(21, 18, 19, 0.31)"
+# danger-fill: the Destructive button's fill, the danger of references/tokens.yaml before Text on glass moves it; mix-disabled: disabled text, ink at stone's 38% over the page gradient; disabled-background: the flat fill of a disabled control, white or dark at 31% with no blur and no edge, in place of surface-elevated
+mix:
+  mix-disabled: 38%
+# The Glass recipe; glass-icon-*: Glass icon color of the Toast; glass-edge-*: the slides of the Carousel and the Toast's icon circle; glass-drop: the drop shadow of glass-shadow alone, for the Popover whose fill and edge cover its arrow; glass-page-dim: Apple HIG dark dimming layer over the Page background; dark glass-background: surface-card at 50% under a diagonal sheen.
 glass:
   light:
     glass-page-dim: "rgba(0, 0, 0, 0)"
@@ -26,38 +33,26 @@ glass:
     glass-scrim-background: "rgba(255, 255, 255, 0.49)"
     glass-backdrop: "blur(22px) saturate(1.2)"
     glass-shadow: "inset 0 1px 0 rgba(255, 255, 255, 0.60), inset 0 0 0 1px rgba(255, 255, 255, 0.204), 0 20px 52px -25px rgba(10, 10, 10, 0.18)"
-    glass-inner-background: "rgba(255, 255, 255, 0.31)"
-    glass-inner-shadow: "inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 8px 22px -20px rgba(39, 42, 44, 0.16)"
+    glass-drop: "0 20px 52px -25px rgba(10, 10, 10, 0.18)"
     glass-edge-top: "rgba(255, 255, 255, 0.60)"
     glass-edge: "rgba(255, 255, 255, 0.204)"
-    glass-badge-tint: 30%
-    glass-badge-ink: "#272a2c"
-    glass-button-fill: 90%
-    glass-button-danger: "#c22d2e"
-    glass-disabled-mix: 38%
-    glass-icon-danger: "#ce3637"
-    glass-icon-warning: "#9e7500"
-    glass-icon-success: "#008d67"
-    glass-icon-info: "#3d7799"
+    glass-icon-danger: "#c02c2e"
+    glass-icon-warning: "#946d00"
+    glass-icon-success: "#00825e"
+    glass-icon-info: "#316d8e"
   dark:
     glass-page-dim: "rgba(0, 0, 0, 0.35)"
     glass-background: "linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.015) 55%), rgba(21, 18, 19, 0.50)"
     glass-scrim-background: "linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.015) 55%), rgba(21, 18, 19, 0.50)"
     glass-backdrop: "blur(18px) saturate(1.5)"
     glass-shadow: "inset 0 1px 0 rgba(255, 255, 255, 0.38), inset 0 0 0 1px rgba(255, 255, 255, 0.06)"
-    glass-inner-background: "rgba(21, 18, 19, 0.31)"
-    glass-inner-shadow: "inset 0 1px 0 rgba(255, 255, 255, 0.285), 0 8px 22px -20px rgba(0, 0, 0, 0.16)"
+    glass-drop: "none"
     glass-edge-top: "rgba(255, 255, 255, 0.38)"
     glass-edge: "rgba(255, 255, 255, 0.06)"
-    glass-badge-tint: 20%
-    glass-badge-ink: "#fffaff"
-    glass-button-fill: 90%
-    glass-button-danger: "#ff5a56"
-    glass-disabled-mix: 38%
-    glass-icon-danger: "#ff8078"
-    glass-icon-warning: "#ffc53d"
-    glass-icon-success: "#6ee7b7"
-    glass-icon-info: "#73accf"
+    glass-icon-danger: "#ffb3ad"
+    glass-icon-warning: "#ffda91"
+    glass-icon-success: "#77f0bf"
+    glass-icon-info: "#8ec7ec"
 gradients:
   light:
     glass-gradient: "linear-gradient(to right top, #cebef5, #f2b3e3, #ffabc3, #ffac9c, #ffb779)"

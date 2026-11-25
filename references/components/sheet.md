@@ -9,7 +9,7 @@
 - **Markup:** the platform's modal element where it exists (`<dialog>` on the web), named by its title (`aria-labelledby`).
 - **Sheet:** from `md`, on the side of the screen where the button that opens it sits: a button in the left half of the screen opens it from the left, one in the right half from the right. position fixed; margin 0; padding 0; border 0; background `surface-float`; outline `line-thin` solid `hairline`; outline-offset −`line-thin`; color `ink`; inset `space-2` `space-2` `space-2` auto; width `panel`; max-width calc(100vw − `space-4`); height calc(100dvh − `space-4`); max-height none; border-radius `rounded-xl`; display none; flex-direction column. (replaced in: glassmorphism)
 - **Scrim:** the sheet's ::backdrop: background `scrim`.
-- **Sheet on the left:** inset `space-2` auto `space-2` `space-2`. (replaced in: glassmorphism)
+- **Sheet on the left:** inset `space-2` auto `space-2` `space-2`.
 - **Open sheet:** display flex, changed in 0s.
 - **Sheet open:** it slides in from its side, from past the screen's edge: transform from translateX(calc(100% + `space-2`)), × −1 on the left; animation `duration-slow` `ease-out`.
 - **Sheet closing:** it slides back out to its side, the same distance, in `duration-base` with `ease-in`, and stays so until it is hidden.

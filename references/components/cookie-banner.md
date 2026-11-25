@@ -22,7 +22,7 @@
 - **Preferences:** "Customise" opens a Sheet; opening it shows the saved choices; its close button keeps them. Its actions are "Accept all", "Reject all" and "Save choices", three secondary buttons of equal weight and no primary (EDPB), placed like every Sheet's actions.
 - **Preferences title:** "Cookie preferences" after the cookie icon at `icon-md`, the icon size closest to `title-lg` without passing it. display flex; align-items center; gap `space-2`; font-family `title-lg`; font-size `title-lg`; font-weight `title-lg`; line-height `title-lg`; letter-spacing `title-lg`.
 - **Categories:** one row per category, with no box around the list.
-- **Category:** a Switch row, its Switch at the end, centred on both lines. padding-block `space-3`; max-width none.
+- **Category:** a Switch row, its Switch at the end, centred on both lines. padding-block `space-3`; max-width none; justify-content space-between.
 - **Category divider:** a category after another: border-block-start `line-thin` solid `hairline`.
 - **Category text:** the name, then the help text under it. display flex; flex-direction column; gap `space-1`.
 - **Category name:** font-family `body-md`; font-size `body-md`; font-weight `body-md`; line-height `body-md`; letter-spacing `body-md`.

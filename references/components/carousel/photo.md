@@ -11,6 +11,6 @@
 - **Photo arrows:** elevated, medium. They show only with a fine pointer (pointer: fine); on touch they are visually hidden (Status) and stay for screen readers.
 - **Arrow slot:** position absolute; top 50%; transform translateY(−50%); z-index `zIndex-raised`. The previous one inset-inline-start `space-4`, the next one inset-inline-end `space-4`.
 - **Indicator:** decoration (`aria-hidden`): the status says the position. display flex; justify-content center; gap `space-2`; margin-top `space-4`.
-- **Indicator mark:** one per photo. height `space-1`; width `space-2`; border-radius `rounded-full`; corner-shape round; background `hairline-strong`; transform-origin center; transition background-color `duration-base` `ease-out`. (replaced in: glassmorphism)
-- **Current mark:** width `space-6`; background `ink`. The change of width is animated with a transform (FLIP) in `duration-base`, never by animating the width (Motion). While a finger, a trackpad or a drag moves the photos, the current mark is the photo nearest the centre. (replaced in: glassmorphism)
+- **Indicator mark:** one per photo. height `space-1`; width `space-2`; border-radius `rounded-full`; corner-shape round; background `hairline-strong`; transform-origin center; transition background-color `duration-base` `ease-out`.
+- **Current mark:** width `space-6`; background `ink`. The change of width is animated with a transform (FLIP) in `duration-base`, never by animating the width (Motion). While a finger, a trackpad or a drag moves the photos, the current mark is the photo nearest the centre.
 - **Indicator reduced motion:** transition 0s.

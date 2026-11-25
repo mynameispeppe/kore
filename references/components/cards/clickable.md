@@ -5,6 +5,6 @@
 - **Clickable focus title:** text-decoration underline `line-thick`; text-underline-offset `space-1`, all changed in 0s (the link focus underline, States).
 - **Clickable reduced motion:** transform none.
 - **Clickable top:** display flex; color `mute`.
-- **Icon circle:** holds one `icon-md` icon. flex none; display grid; place-items center; width `space-10`; height `space-10`; border-radius `rounded-full`; corner-shape round; background `surface-elevated`; box-shadow inset 0 0 0 `line-thin` `hairline`; color `mute`. (replaced in: glassmorphism)
+- **Icon circle:** holds one `icon-md` icon. flex none; display grid; place-items center; width `space-10`; height `space-10`; border-radius `rounded-full`; corner-shape round; background `surface-elevated`; box-shadow inset 0 0 0 `line-thin` `hairline`; color `mute`.
 - **Clickable grid:** columns that never stretch, as many as fit, the space left at the end of a row empty; a row of cards shares one height, so a card whose text needs more room makes its row taller instead of clipping. display grid; grid-template-columns repeat(auto-fill, calc(`space-32` + `space-8`)); gap `space-8`.
 - **Clickable grid below sm:** gap `space-6`.
