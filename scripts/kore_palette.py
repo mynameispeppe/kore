@@ -1016,9 +1016,11 @@ def main(argv=None):
                      f"in every theme shipped: {','.join(themes)})")
     kore = kore_colors()
     tables, notes, problems = palette(given, themes, kore)
-    page = page_background({t: {k: tab[k][0] for k in ("primary", "accent")} for t, tab in tables.items()}) \
-        if args.typology and one else None  # a palette's gradient is stored in candidates.md and tokens.yaml
-    gradients = page_background({t: {k: tab[k][0] for k in ("primary", "accent")} for t, tab in tables.items()})
+    ends = {t: {k: tab[k][0] for k in ("primary", "accent")} for t, tab in tables.items()}
+    if one and "dark" in ends:  # SchemeFidelity keeps the given color in dark too: the light page takes MCU's dark primary and tertiary
+        p = mcu(fmt(next(iter(given["primary"].values()))))["palettes"]
+        ends["dark"] = {k: parse_color("#%06x" % (palette_tone(p[r], 80) & 0xFFFFFF)) for k, r in (("primary", "primary"), ("accent", "tertiary"))}
+    gradients = page_background(ends)
     for theme, tokens in tables.items():
         print(f"{theme}\n{'token':<22} {'value':<26} {'lowest':<8} {'on':<42} source")
         for name in (n for n in kore[theme] if n in tokens):  # in the order of tokens.yaml
@@ -1043,8 +1045,8 @@ def main(argv=None):
                     print(f"{name:<22} {fmt(color) if color else '—':<26} {'—':<8} {'—':<42} Glass icon color")
                     problems += [f"{theme}: {token} cannot reach {m}:1 on the icon circle over {where}, even at tone 0 or 100 "
                                  "(Glass icon color): ask for another color." for token, m, where in failed]
-            if page:
-                print(f"{'page-background':<22} {page[theme]}")
+                if one:  # a palette's gradient is stored in candidates.md and tokens.yaml
+                    print(f"{'page-background':<22} {gradients[other]}")
         print()
     for line in notes + problems:
         print(line)

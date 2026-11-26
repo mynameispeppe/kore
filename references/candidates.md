@@ -25,7 +25,7 @@ Alternative values for `canvas` and the fonts, the two starting choices of a pro
 
 ## Palettes
 
-Theme is the theme the colors are given for. `gradient` is the candidate background behind the glass of glassmorphism in that theme; Page background keeps its two glows until a glassmorphism rule adopts the gradient (#6).
+Theme is the theme the colors are given for. `gradient` is glassmorphism's Page background in that theme.
 
 | Id | Name | Theme | `canvas` | `primary` | `accent` | `ink` | `gradient` |
 |---|---|---|---|---|---|---|---|
