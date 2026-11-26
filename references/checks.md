@@ -28,7 +28,7 @@ Measured on the result, never assumed. Run Kore's script on the project, where `
 - [ ] At most one button with a `primary` background per form, dialog or `data-kore` root, and per page outside them (The One Primary Rule).
 - [ ] Horizontal padding equals the radius; nested radii are concentric (The Radius-Padding Rule, The Concentric Rule).
 - [ ] Shadows only on clickable elements; everything else a 1px border: `hairline` on containers, `hairline-medium` on labelled controls, `hairline-strong` on controls known only by their outline (Shadows, Contrast, AI tells).
-- [ ] Layers on the `zIndex` scale, floating layers never clipped (Stacking order).
+- [ ] Layers on the `zIndex` scale, floating layers never clipped, fixed layers placed against the screen (Stacking order).
 - [ ] Touch targets 44px, adjacent targets `space-2` apart (Accessibility).
 - [ ] A whole page opens with a Skip link to the id of `<main>`, hidden until focused, then `space-2` from the top start corner, an `elevated` button (`surface-card`) at `zIndex` `toast`; a fixed or sticky bar as wide as the screen at the top or bottom edge has a `scroll-padding` of at least its height on that edge (Accessibility).
 - [ ] Clicking a tab or the next page changes the URL, and a reload of that URL shows the same tab or page (Usability).

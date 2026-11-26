@@ -9,7 +9,7 @@
 - **Elements:** the Toast's own: host, toast, icon circle, close button, time bar. Other components: the container, the title, the action and the close button (Alert).
 - **Add-on files:** read only the file of each add-on that the part being built or checked contains: Action `references/components/toast/action.md`.
 - **Host:** where the toast shows: bottom centre, `space-4` from the side edges, above the bottom safe area. position fixed; inset-inline 0; margin-inline auto; bottom calc(`space-4` + the bottom safe area); z-index `zIndex-toast`; width min(`panel`, calc(100% − `space-8`)). From `md` up: bottom calc(`space-6` + the bottom safe area). It sits `space-4` above a FAB or the Cookie banner when one is there.
-- **Layer:** the `toast` layer of the `zIndex` scale, above dialogs and sheets.
+- **Layer:** the `toast` layer of the `zIndex` scale, above dialogs and sheets (Stacking order).
 - **Toast:** the Alert's container (tint, border and raised effect of the kind, radius, padding, at least `space-12` tall), opaque, so the content behind never shows through: background-color color-mix(in srgb, the kind's vivid colour `mix-tint`, `surface-float`). (replaced in: glassmorphism)
 - **Title:** as the Alert's title, one line, a statement of what happened ("Lunch deleted"), never a question or an apology. A toast has no message under the title: it follows what the user just did, so the title alone says it.
 - **Icon circle:** the Alert's circle, smaller for the single line. width `space-6`; height `space-6`. Its icon: width `icon-sm`; height `icon-sm`. (replaced in: glassmorphism)

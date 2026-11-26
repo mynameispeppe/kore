@@ -490,6 +490,11 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
       if ( (parseFloat(style(doc)[`scrollPadding${edge === 'top' ? 'Top' : 'Bottom'}`]) || 0) < r.height - 0.5)
         add('✗', 'Accessibility', `${name(el)} is ${s.position} at the ${edge} edge: give <html> a scroll-padding-${edge} of at least its height, so it never covers the focus`, el);
   }
+  // Stacking order (elevation.md): a fixed layer is placed against the screen; Chrome's offsetParent names the
+  // ancestor that places it against itself instead (backdrop-filter, filter, transform).
+  for (const el of everyShown)
+    if (style(el).position === 'fixed' && el.offsetParent)
+      add('✗', 'Stacking order', `${name(el)} is fixed inside ${name(el.offsetParent)}, which places it against itself, not the screen: move it outside (popover API, dialog, portal)`, el);
   const owns = (el, hit) => hit && (el.contains(hit) || [...(el.labels || [])].some(l => l.contains(hit)));
   const inList = el => el.localName === 'a' && el.parentElement && el.parentElement.localName === 'li';
   const inText = el => el.localName === 'a' && [...el.parentElement.childNodes]
