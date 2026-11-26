@@ -352,6 +352,12 @@ async ({touch, zoom, tables, mode, whole}) => {""" + HELPERS + r"""
     if (english && ['ok', 'yes', 'no', 'submit'].includes(label.toLowerCase())) add('✗', 'Button', `${name(el)}: name the action with a verb and an object`, el);
     if (label.split(' ').filter(w => /^\p{Lu}{2,}$/u.test(w)).length >= 2) add('✗', 'Button', `${name(el)}: the label is written in capitals`, el);
   }
+  const sees = e => shown(e) && rect(e).width > 1 && rect(e).height > 1;
+  const hasIcon = b => [...b.querySelectorAll('svg')].some(sees);
+  const hasLabel = b => { const w = document.createTreeWalker(b, NodeFilter.SHOW_TEXT); for (let n; (n = w.nextNode());) if (n.data.trim() && !n.parentElement.closest('[aria-hidden=true]') && sees(n.parentElement)) return true; return false; };
+  // Button, No icons on labeled buttons: a Button shows its icon or its label; rows, selects, accordions, chips, menu items and a loading button follow their own rules.
+  for (const el of everyShown.filter(isButton))
+    if (!el.matches('[role^=menuitem], [role=option], [role=radio], [aria-pressed], [aria-haspopup=listbox], [aria-busy=true], :is(h1,h2,h3,h4,h5,h6) > [aria-expanded]') && !el.closest('nav, th') && hasIcon(el) && hasLabel(el)) add('?', 'Button', `${name(el)} shows its icon and its label together: a labeled Button shows only its label`, el);
 
   // Page language: a date, a price or a measure needs the country in lang; month names and numeric dates follow its locale.
   const lang = doc.lang.trim(), locale = lang || undefined;

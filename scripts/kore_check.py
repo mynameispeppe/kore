@@ -537,12 +537,6 @@ def check_markup(path, text, insets):
             report("✗", path, line, "Images", "an <img> without alt")
         if not (re.search(r"\bwidth\s*=", tag) and re.search(r"\bheight\s*=", tag)):
             report("✗", path, line, "Images", "an <img> without width and height")
-    for m in re.finditer(r"<button\b[^>]*>(.*?)</button>", text, re.S | re.I):
-        inner = m.group(1)
-        read = re.sub(r"<(\w+)\b[^>]*aria-hidden\s*=\s*[\"']true[\"'][^>]*>.*?</\1>", "", inner, flags=re.S | re.I)
-        label = re.sub(r"<[^>]+>|\{[^}]*\}", "", read).strip()  # text hidden from screen readers (a tooltip) is no label
-        if "<svg" in inner.lower() and label and "spinner" not in inner.lower():
-            report("?", path, line_of(text, m.start()), "Button", f"a labeled button with an icon (\"{label[:30]}\")")
     for m in re.finditer(r"<a(?=[\s>])(?![^>]*(\bhref\b|\{\.\.\.|v-bind|routerLink))[^>]*>", text):
         report("✗", path, line_of(text, m.start()), "Button", "an <a> without href (a link is an <a href>)")
     for m in re.finditer(r"<(?!a\b)\w+\b[^>]*\brole\s*=\s*[\"']link[\"']", text, re.I):
