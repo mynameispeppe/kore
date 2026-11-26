@@ -15,7 +15,7 @@
   | [text as it reads] | [user's question] | [group] | Primary | [role] [weight] [color] | space-[n] to [next element] | [Rule name], [Rule name] |
   ```
 - **Heading:** the name of the section or component, `·`, every file it touches, separated by commas.
-- **On the page:** the root element of the section or component carries `data-kore="[Name]"`, every copy of a repeated component included; each element of a row carries `data-kore-element="[Element]"`: a text, an image, a control, a component. Through them `kore_check --url` finds each row, measures the Style of its text and the Space to its Element (From role to style, The Distance Ratio Rule).
+- **On the page:** the root element of the section or component carries `data-kore="[Name]"`, every copy of a repeated component included; each element of a row carries `data-kore-element="[Element]"`: a text, an image, a control, a component. Through them `kore_check --url` finds each row, measures the Style of its text and the Space to its Element (From role to style, The Distance Ratio Rule). Every Panel carries `data-kore-panel`, so `kore_check --url` tells it from a card.
 - **Shape:** the Layout primitive (Order of decisions, step 3), with its items in brackets; its items are the Elements of the table, each written once, case ignored.
 - **Primary group:** the group that answers the main question of the section or component (Order of decisions, step 2).
 - **Element:** one visible element as it reads on screen: a text, an image, a control, or a component taken whole (a Button, a Social links).
